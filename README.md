@@ -1,4 +1,6 @@
 # knockknock
+- clone 후 migrate 부탁드립니당
+- login/migrations/는 항상 올라가게 해놨음!(user 추가하기 귀찮아서...ㅎ)
 
 ## Contributor
 - 선영
