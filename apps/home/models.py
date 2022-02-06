@@ -3,7 +3,7 @@ from login.models import User
 from setting.models import Home
 
 # Create your models here.
-# 2.Todo
+# 1.Todo
 class TodoCate(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name= 'todo_cate')
     name = models.CharField(max_length=10)
@@ -23,7 +23,7 @@ class TodoReaction(models.Model):
     emoji = models.ImageField()
 
 
-# 3.LivingRule
+# 2.LivingRule
 class LivingRuleCate(models.Model):
     name = models.CharField(max_length=20)
     
@@ -33,7 +33,7 @@ class LivingRule(models.Model):
     content = models.CharField(max_length=50)
 
 
-# 4.Guideline
+# 3.Guideline
 class Guideline(models.Model):
     home = models.OneToOneField(Home, on_delete=models.CASCADE, related_name='guideline')
     is_done = models.BooleanField(default=False)

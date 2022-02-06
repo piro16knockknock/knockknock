@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>오늘해야하는 전체 할일~</h2>
+<a type="button" class="add-btn btn btn-light" data-bs-toggle="modal" href="#addToDoModal">등록</a>
+<div class="total-todos">
+{% for total_todo in total_todos %}
+<div class="total-todo">
+    <p>{{total_todo.content}}</p>
+    <button type="button" class="edit-btn {{total_todo.id}} btn btn-light" data-bs-toggle="modal" data-bs-target="#editToDoModal">수정</button>
+    <button class="delete-btn {{total_todo.id}} btn btn-ligth">삭제</button>
+</div>
+{% endfor %}
+
+</div>
+<h2>오늘해야하는 {{username}}님의 할일 ~</h2>
+<a type="button" class="add-btn btn btn-ligth" data-bs-toggle="modal" href="#addToDoModal">등록</a>
+<div class="user-todos">
+{% for user_todo in user_todos %}
+<div class="user-todo">
+    <p>{{user_todo.content}}</p>
+    <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" data-bs-toggle="modal" data-bs-target="#editToDoModal">수정</button>
+    <button class="delete-btn {{user_todo.id}} btn btn-ligth">삭제</button>
+</div>
+{% endfor %}
+</div>
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">모달 예시-버튼</button>
+
+<a type="button" class="btn btn-primary" data-bs-toggle="modal" href="#exampleModal">모달 예시-a태그</a> -->
+
+<!-- Modal -->
+<div class="modal fade" id="addToDoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+		        <div class="modal-header">
+		            <h5 class="modal-title">할 일 추가하기</h5>
+		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+		        </div>
+		        <div class="modal-body">
+		            내용을 여기에 적어주세요
+		        </div>
+		        <div class="modal-footer">
+		            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+		        </div>
+        </div>
+    </div>
+</div>
+    
+<div class="modal fade" id="editToDoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+		        <div class="modal-header">
+		            <h5 class="modal-title">할 일 수정하기</h5>
+		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+		        </div>
+		        <div class="modal-body">
+		            내용을 여기에 적어주세요
+		        </div>
+		        <div class="modal-footer">
+		            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+		        </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
