@@ -13,7 +13,7 @@ class Todo(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='todo')
     cate = models.ForeignKey(TodoCate, on_delete=models.SET_NULL, null=True, related_name='todo')
     content = models.CharField(max_length=100)
-    date = models.DateField(auto_now=True)
+    date = models.DateField()
     is_done = models.BooleanField(default=False)
 
 class TodoReaction(models.Model):

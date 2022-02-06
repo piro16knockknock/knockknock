@@ -38,16 +38,20 @@
 		            <h5 class="modal-title">할 일 추가하기</h5>
 		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 		        </div>
-		        <div class="modal-body">
-		            내용을 여기에 적어주세요
-		        </div>
-		        <div class="modal-footer">
-		            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-		        </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        {{ form.as_table }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">저장</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                </form>
         </div>
     </div>
 </div>
-    
+
 <div class="modal fade" id="editToDoModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -55,12 +59,16 @@
 		            <h5 class="modal-title">할 일 수정하기</h5>
 		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 		        </div>
-		        <div class="modal-body">
-		            내용을 여기에 적어주세요
-		        </div>
-		        <div class="modal-footer">
-		            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-		        </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        {{ form.as_table }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">저장</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                </form>
         </div>
     </div>
 </div>
