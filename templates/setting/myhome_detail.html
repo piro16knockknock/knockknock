@@ -111,7 +111,7 @@ const getCheckboxValue = (event) => {
 
 const onClickInvite = async() => {
     if (checkedNickName.length==0) return; //아무것도 체크 X
-    const url = "/myhome/invite_roommate/";
+    const url = "../../myhome/invite_roommate/";
     const res = await fetch(url, {
         method: 'POST',
         headers: {

@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 ## Entities
 # 1.User
 class User(AbstractUser):
-    home = models.ForeignKey('setting.Home', on_delete=models.SET_NULL, null=True)
+    home = models.ForeignKey('setting.Home', on_delete=models.SET_NULL, blank=True, null=True)
     nick_name = models.CharField(max_length=10, unique=True)
     profile_img = models.ImageField(null=True)
     GENDER_CHOICES = (

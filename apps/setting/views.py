@@ -78,13 +78,23 @@ def invite_roommate(request):
     for nickname in invite_list:
         user = User.objects.get(nick_name=nickname)
         Invite.objects.create(home=request.user.home, receive_user=user)
-    
     return JsonResponse({'success':True})
+
+
+#초대 수락하기
+def accept_invite(request):
+    user = request.user
+    user.invite.is_accepted = True
+    user.home = user.invite.home
+    print(user.home)
+    user.save()
+    return redirect('setting:myhome_setting')
 
 # 집 목록
 def myhome_setting(request):
     current_user = request.user
     current_home = current_user.home
+    print(current_home)
     if(current_home == None):
         is_home = False
         ctx = {

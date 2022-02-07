@@ -15,6 +15,10 @@
             {% endfor %}
             <a href="{% url 'setting:myhome_detail' %}" class="btn btn-outline-primary">입장하기</a>
         </div>
+    {% elif request.user.invite and request.user.invite.is_accepted is False %}
+        <p>초대가 왔어요!</p>
+        <p>{{request.user.invite.home.name}}</p>
+        <a href="{% url 'setting:accept_invite' %}" class="btn btn-dark">수락하기</a>
     {% else %}
         집을 먼저 등록해주세요.
         <a href="{% url 'setting:myhome_register' %}" class="btn btn-outline-primary">집 등록하러 가기</a>
