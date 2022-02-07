@@ -9,7 +9,7 @@
 }
 
 .ym-wrapper {
-    font-size: 35px;
+    font-size: 24px;
 }
 
 .calendar_nav {
@@ -45,6 +45,10 @@
 .days {
     display: flex;
     margin: 25px 0 10px;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+    border-bottom: 1px solid #333333;
+    background: rgb(254, 255, 215);
 }
 
 .day {
@@ -56,15 +60,16 @@
 .dates {
     display: flex;
     flex-flow: row wrap;
-    border: 1px solid #333333;
+    /*border: 1px solid #333333;*/
 }
 
 .date {
     cursor: pointer;
     width: calc(100% / 7);
-    padding: 5% 2%;
-    text-align: center;
-    border: 1px solid #333333;
+    /*padding: 5% 2%;*/
+    padding: 0 1% 11% 1%;
+    /*text-align: center;*/
+    border-bottom: 1px solid #333333;
     transition: all .3s;
 }
 

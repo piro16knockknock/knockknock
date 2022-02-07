@@ -44,7 +44,7 @@ def add_todo(request):
 def home(request):
     if request.method == "POST":
         add_todo(request)
-        return redirect('home')
+        return redirect('todo')
     else:
         current_user = request.user
         print(current_user.home.name)
