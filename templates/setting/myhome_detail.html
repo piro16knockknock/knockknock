@@ -44,7 +44,7 @@
             {% if roommate.profile_img %}
                 <img src="{{ roommate.profile_img.url }}" height="220" width="220"/>
             {% else %}
-                <i class="fas fa-user-circle">
+                <i class="fas fa-user-circle"></i>
             {% endif %}
              <p>{{ roommate.nick_name }}</p>
             </div>
@@ -71,7 +71,7 @@
                                 {% if user.profile_img %}
                                     <img src="{{ user.profile_img.url }}" height="50" width="50"/>
                                 {% else %}
-                                    <i class="fas fa-user-circle">
+                                    <i class="fas fa-user-circle"></i>
                                 {% endif %}
                                 <p>{{ user.nick_name }}</p>
                             </div>
