@@ -24,6 +24,6 @@ class LiveIn(models.Model):
 
 class Invite(models.Model):
     receive_user = models.OneToOneField(User, on_delete=models.CASCADE)
-    home = models.OneToOneField(Home, on_delete=models.CASCADE)
+    home = models.ForeignKey(Home, on_delete=models.CASCADE)
     is_accepted = models.BooleanField(default=False)
     invited_at = models.DateTimeField(auto_now=True)

@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
+    {% if request.user.home == None %}
+        집을 먼저 등록해주세요.
+        <a href="{% url 'setting:myhome_register' %}" class="btn btn-outline-primary">집 등록하러 가기</a>
+    {% else %}
     <div class="roommate-list">
         <!--룸메이트-->
         {% for roommate in roommates %}
@@ -28,6 +32,7 @@
         </div>
         {% endfor %}
     </div>
+    {% endif %}
 
 
 <script>
