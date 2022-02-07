@@ -1,0 +1,68 @@
+html,
+body {
+width: 100%;
+height: 100%;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.side-nav li {
+    margin-left: 1rem;
+}
+
+.rate-box {
+    background-color: cadetblue;
+    border-radius: 50%;
+    width: 8rem;
+    height: 8rem;
+}
+
+.cal-profile-box {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.cal-profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.intro-main-notset-img {
+    background: url("../img/intro-main3.png");
+    background-position-x: 90%;
+    background-position-y: 70%;
+    background-repeat: no-repeat;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    
+}
+
+.intro-main-notlog-img {
+    background: url("../img/intro-main1.png");
+    background-position-x: 90%;
+    background-position-y: 70%;
+    background-repeat: no-repeat;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.calendar {
+    max-width: 75%;
+
+}
+
+#calendar-side {
+    margin-left: 5rem;
+}
