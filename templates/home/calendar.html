@@ -3,17 +3,12 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/home/calendar.css' %}">
-<div class="clearfix">
-	<a class="btn btn-info left" href="{% url 'home:calendar' %}?{{ prev_month }}"> Previous Month </a>
-	<a class="btn btn-info right" href="{% url 'home:calendar' %}?{{ next_month }}"> Next Month </a>
-	<a class="btn btn-info right" href="#"> New Event </a>
-</div>
 
 <section>
     <div class="side-nav">
 		<ul class="d-flex">
 			<li>생활관리</li>
-			<li><a href="{%url 'calendar' %}">캘린더</a></li>
+			<li><a href="{%url 'home:calendar' %}">캘린더</a></li>
 			<li><a href="">생활수칙</a></li>
 			<li><a href="">가이드라인</a></li>
 		</ul>
@@ -56,7 +51,7 @@
                 </div>
                 <div class="calendar_nav">
                     <a class="nav-btn btn-info go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"> Previous Month </a>
-                    <a class="nav-btn btn-info go-today" href="{% url 'home:calendar' %}?{{ prev_month }}"> Previous Month </a>
+                    <a class="nav-btn btn-info go-today" href="{% url 'home:calendar' %}"> Today </a>
                     <a class="navbtn btn-info gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"> Next Month </a>
                     <a class="btn btn-info right" href="#"> New Event </a>
                 </div>
@@ -67,10 +62,5 @@
         </div>
     </div>
 </section>
-
-<script type="text/javascript">
-    var user_todos = "{{ user_todos.0 }}";
-</script>
-<script defer src="{% static 'js/home/calendar.js' %}"></script>
 
 {% endblock %}

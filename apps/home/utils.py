@@ -13,7 +13,7 @@ class Calendar(HTMLCalendar):
 	def formatday(self, day, events):
 		event_count =events.filter(date__day=day).count()
 		d = ''
-		d += f'<li> {event_count} </li>'
+		d += f'<p>{event_count}</p>'
 
 		if day != 0:
 			return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
