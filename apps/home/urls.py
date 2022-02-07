@@ -5,7 +5,7 @@ from . import views
 app_name = 'home'
 urlpatterns = [
     path('', views.CalendarView.as_view(), name='calendar'),
-    path('todo/<int:pk>/', views.home, name='todo'),
-    path('todo/<int:pk>/new/', views.add_todo, name='add_todo'),
-    path('todo/<int:pk>/edit/', views.add_todo, name='add_todo'),
+    path('todo/<date>', views.date_todo, name='date_todo'),
+    path('todo/<date>/<todo_id>/delete/', views.delete_todo, name='delete_todo'),
+    path('todo/<date>/<todo_id>/edit/', views.edit_todo, name='edit_todo'),
 ]

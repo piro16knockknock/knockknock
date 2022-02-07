@@ -7,7 +7,7 @@
 	<div class="side-nav">
 		<ul class="d-flex">
 			<li>생활관리</li>
-			<li><a href="{%url 'calendar' %}">캘린더</a></li>
+			<li><a href="{%url 'home:calendar' %}">캘린더</a></li>
 			<li><a href="">생활수칙</a></li>
 			<li><a href="">가이드라인</a></li>
 		</ul>
@@ -42,28 +42,32 @@
 		</div>
 	
 		<div class="todo-main">
+            <div class="select_date">
+                <h3>{{select_date}}</h3>
+                <a type="button" class="add-btn btn btn-ligth" data-bs-toggle="modal" href="#addToDoModal">할 일 등록</a>
+                <a type="button" class="add-btn btn btn-ligth" data-bs-toggle="modal" href="#addToDoModal">카테고리 등록</a>
+            </div>
 			<div id="todo">
 				<div>
 					<h2>오늘해야하는 {{username}}님의 할일 ~</h2>
-					<a type="button" class="add-btn btn btn-ligth" data-bs-toggle="modal" href="#addToDoModal">등록</a>
 					<div class="user-todos">
 						{% for user_todo in user_todos %}
 						<div class="user-todo">
 							<p>{{user_todo.content}}</p>
-							<button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" data-bs-toggle="modal" data-bs-target="#editToDoModal">수정</button>
-							<button class="delete-btn {{user_todo.id}} btn btn-ligth">삭제</button>
+							<button type="button" class="set-btn todo-id-{{user_todo.id}} btn btn-light" onclick="setBtn(this)" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
 						</div>
 						{% endfor %}
 					</div>
 
 					<h2>오늘해야하는 전체 할일~</h2>
-					<a type="button" class="add-btn btn btn-light" data-bs-toggle="modal" href="#addToDoModal">등록</a>
 					<div class="total-todos">
 						{% for total_todo in total_todos %}
 						<div class="total-todo">
 							<p>{{total_todo.content}}</p>
-							<button type="button" class="edit-btn {{total_todo.id}} btn btn-light" data-bs-toggle="modal" data-bs-target="#editToDoModal">수정</button>
-							<button class="delete-btn {{total_todo.id}} btn btn-ligth">삭제</button>
+                            <div class="cal-profile-box my-3">
+                                <img class="cal-profile-img" src={% if user.profile_img %}"{{total_todo.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                            </div>
+                            <button type="button" class="set-btn todo-id-{{total_todo.id}} btn btn-light" onclick="setBtn(this)" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
 						</div>
 						{% endfor %}
 					</div>
@@ -108,26 +112,62 @@
     </div>
 </div>
 
-<div class="modal fade" id="editToDoModal">
+<div class="modal fade" id="setToDoModal">
     <div class="modal-dialog">
         <div class="modal-content">
 		        <div class="modal-header">
-		            <h5 class="modal-title">할 일 수정하기</h5>
+		            <h5 class="modal-title">할 일 설정</h5>
 		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 		        </div>
                 <form method="post">
-                    {% csrf_token %}
                     <div class="modal-body">
-                        {{ form.as_table }}
+                        <a class="edit-btn btn btn-light" onclick="showEdit()">수정</a>
+                        <a class="delete-btn btn btn-ligth" href="{% url 'home:delete_todo' date='{{select_date}}' todo_id=0 %}">삭제</a>
+                        <div class="edit-todo" style="display: none;">
+                            {{form.as_p}}
+                            <a class="edit-back-btn btn btn-light" type="submit">완료</a>
+                            <a class="edit-back-btn btn btn-light" onclick="closeEdit()">돌아가기</a>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">저장</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeEdit()" data-bs-dismiss="modal">닫기</button>
                     </div>
                 </form>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    var edit_btn = document.querySelector('.edit-btn');
+    var delete_btn = document.querySelector('.delete-btn');
+    var edit_div = document.querySelector('.edit-todo');
+
+    function setBtn(event) {
+        for (var i=0, l=edit_btn.classList.length; i<l; ++i) {
+            if(/todo-id-.*/.test(edit_btn.classList[i])) {
+                edit_btn.classList.replace(edit_btn.classList[i], event.classList[1]);
+                delete_btn.classList.replace(delete_btn.classList[i], event.classList[1]);
+                return;
+            }
+        }
+        edit_btn.classList.add(event.classList[1]);
+        delete_btn.classList.add(event.classList[1]);
+        delete_btn.href = `{{select_date}}/${event.classList[1]}`
+    };
+
+    function showEdit(event) {
+        delete_btn.style.display = 'None';
+        console.log(delete_btn.style)
+        edit_div.style.display = 'block';
+        console.log(edit_done_btn.style)
+    }
+
+    function closeEdit(event) {
+        delete_btn.style.display = 'inline-block';
+        edit_div.style.display = 'None';
+    }
+
+</script>
 
 
 {% endblock %}
