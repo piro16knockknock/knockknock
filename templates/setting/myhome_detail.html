@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="myhome-detail">
+    <div class="myhome-info">
+        <p>집 정보</p>
+        <hr/>
+        <p>
+            <label>현재 집이름</label>
+            <p>{{ home_name }}</p>
+        </p>
+        <p>
+            <label>집이름 변경</label>
+            <input type="text" placeholder="변경할 집 이름을 입력하고 버튼을 눌러주세요"/>
+            <i class="fas fa-pen"></i>
+        </p>
+        <p>
+            <label>전세/월세</label>
+            <!--전세 클릭하면 n개월마다 n일 클릭X 월세 클릭하면 n개월마다 n일 활성화-->
+            <div class="myhome-info__button">전세</div>
+            <div class="myhome-info__button">월세</div>
+        </p>
+        <p>
+            <label>월세 납부일</label>
+            <input type="number"/>개월마다
+            <input type="number" value="{{ rent_date }}" />일
+        </p>
+        <p>
+            <label>공과금 납부일</label>
+            {% for utility in utilities %}
+                <label>종류</label><div>{{ utility.name }}</div>
+                <input type="number"/>개월마다
+                <input type="number" value="{{ utility.date }}"/>일
+            {% endfor %}
+        </p>
+        <button type="submit" class="btn btn-outline-primary">저장하기</button>
+    </div>
+    <div class="myhome-rommate">
+        <p>룸메이트</p>
+        <hr/>
+        <div>
+        {% for roommate in roommates %}
+            <div>
+            {% if roommate.profile_img %}
+                <img src="{{ roommate.profile_img.url }}" height="220" width="220"/>
+            {% else %}
+                <i class="fas fa-user-circle"></i>
+            {% endif %}
+             <p>{{ roommate.nick_name }}</p>
+            </div>
+        {% endfor %}    
+             <!--룸메이트 추가 버튼-->
+             <div>
+                <a data-bs-toggle="modal" data-bs-target="#roommateAddModal"><i class="fas fa-plus-circle"></i></a>
+            </div>    
+            <!-- Modal -->
+            <div class="modal fade" id="roommateAddModal" tabindex="-1" aria-labelledby="roommateAddModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="roommateAddModalLabel">룸메이트 초대</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" placeholder="등록할 룸메이트의 아이디를 입력하세요."/>
+                        <div><i class="fas fa-plus-square"></i></div>
+                        <div class="form-check">
+                            {% for user in users %}
+                            <div>
+                                <input class="form-check-input" type="checkbox" value="{{ user.nick_name }}" onclick='getCheckboxValue(event)' id="flexCheckDefault">
+                                {% if user.profile_img %}
+                                    <img src="{{ user.profile_img.url }}" height="50" width="50"/>
+                                {% else %}
+                                    <i class="fas fa-user-circle"></i>
+                                {% endif %}
+                                <p>{{ user.nick_name }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>                        
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" onclick="onClickInvite()" class="btn btn-primary" data-bs-dismiss="modal">룸메이트 초대</button>
+                    <!--ajax로 초대 구현-->
+                    </div>
+                    </div>
+                </div>
+                </div>
+        </div>
+    </div>
+    <div class="myhome-move">
+        <p>집 이전</p>
+        <hr/>
+        <a href="{% url 'login:mypage' %}" class="btn btn-outline-danger">이사하기</a>
+    </div>
+</div>
+
+<script>
+
+//초대를 위해 체크한 사람들 목록
+let checkedNickName = [];
+const getCheckboxValue = (event) => {
+    if(event.target.checked)  {
+        checkedNickName.push(event.target.value);
+    }else {
+        checkedNickName = checkedNickName.filter(function(item) {
+            return item !== event.target.value;
+        });
+    }
+}
+
+const onClickInvite = async() => {
+    if (checkedNickName.length==0) return; //아무것도 체크 X
+    const url = "/myhome/invite_roommate/";
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'invite_list' : checkedNickName
+        })
+    });
+    checkedNickName = [];
+}
+
+</script>
+{% endblock %}
