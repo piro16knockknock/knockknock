@@ -20,7 +20,7 @@ class LiveIn(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     home = models.OneToOneField(Home, on_delete=models.CASCADE)
     start_date = models.DateField(auto_now=True)
-    end_date = models.DateField(null = True)
+    end_date = models.DateField(null = True, blank=True)
 
 class Invite(models.Model):
     receive_user = models.OneToOneField(User, on_delete=models.CASCADE)

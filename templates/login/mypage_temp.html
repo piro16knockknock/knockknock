@@ -1,6 +1,29 @@
-<!--이전 집 기록 html. 나중에 mypage 밑에 붙여넣는다. -->
+<!--나중에 mypage 밑에 붙여넣는다. -->
 {% extends 'base.html' %}
 {% block content %}
+
+    <!--이사하기 버튼-->
+    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">이사하기</button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">이사하기</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                정말로 이사가시겠습니까?<br/>
+                이사하실 경우 집 관련 전체 정보가 초기화되며, 일부 기록(거주 기간, 생활수칙)을 제외한 모든 기록이 파기됩니다.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            <a href="{% url 'login:leave_home' %}" class="btn btn-danger">이사가기</a>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!--이전 집 기록 html-->
     <div class="past-record">
         <h5>이전 집 기록</h5>
         <hr/>
