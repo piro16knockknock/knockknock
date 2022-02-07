@@ -1,25 +1,34 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="myhome-setting">
+<section class="myhome-setting">
+    <div class="myhome-setting__exist">
     {% if is_home %}
-    <h3>{{ user_name }} 의 {{ home_name }}</h3>
-        <div>
+        <div class="myhome-setting__list">
+            <h1>{{ user_name }} 의 {{ home_name }}</h1>
+            <div class="myhome-setting__list__row">
             {% for roommate in roommates %}
-                {% if roommate.profile_img %}
-                    <img src="{{ roommate.profile_img.url }}" height="220" width="220"/>
-                {% else %}
-                    <i class="fas fa-user-circle"></i>
-                {% endif %}
-                {{ roommate.nick_name }}
-                <!--나중에 칭호-->
+                <div class="myhome-setting__list__column">
+                    {% if roommate.profile_img %}
+                        <img src="{{ roommate.profile_img.url }}"/>
+                    {% else %}
+                        <i class="fas fa-user-circle"></i>
+                    {% endif %}
+                        <div>{{ roommate.nick_name }}</div>
+                    <!--나중에 칭호-->
+                </div>
             {% endfor %}
-            <a href="{% url 'setting:myhome_detail' %}" class="btn btn-outline-primary">입장하기</a>
+            </div>
         </div>
+        <div class="myhome-setting__enter">
+            <a href="{% url 'setting:myhome_detail' %}" class="myhome-setting__enter__btn"><i class="fas fa-door-open"></i> 입장하기</a>
+            <p>입장하기 버튼을 눌러 우리 집을 관리해보세요.</p>
+        </div>
+    </div>
     {% else %}
         집을 먼저 등록해주세요.
         <a href="{% url 'setting:myhome_register' %}" class="btn btn-outline-primary">집 등록하러 가기</a>
     {% endif %}
     
-</div>
+</section>
 
 {% endblock %}
