@@ -63,15 +63,15 @@
                     <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="roommateAddModalLabel">룸메이트 초대</h5>
+                            <h5 class="modal-title myhome-roommate__modal-font" id="roommateAddModalLabel">룸메이트 초대</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <input type="text" placeholder="등록할 룸메이트의 아이디를 입력하세요."/>
-                            <div><i class="fas fa-plus-square"></i></div>
+                            <div class="myhome-roommate__modal-input"><input type="text" placeholder="등록할 룸메이트의 아이디를 입력하세요."/>
+                            <i class="fas fa-plus-square"></i></div>
                             <div class="form-check">
                                 {% for user in users %}
-                                <div>
+                                <div class="myhome-roommate__modal-user-list">
                                     <input class="form-check-input" type="checkbox" value="{{ user.nick_name }}" onclick='getCheckboxValue(event)' id="flexCheckDefault">
                                     {% if user.profile_img %}
                                         <img src="{{ user.profile_img.url }}" height="50" width="50"/>
@@ -84,8 +84,8 @@
                             </div>                        
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" onclick="onClickInvite()" class="btn btn-primary" data-bs-dismiss="modal">룸메이트 초대</button>
+                        <button type="button" class="btn btn-secondary myhome-roommate__modal-font" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" onclick="onClickInvite()" class="btn btn-primary myhome-roommate__modal-font" data-bs-dismiss="modal">룸메이트 초대</button>
                         <!--ajax로 초대 구현-->
                         </div>
                         </div>

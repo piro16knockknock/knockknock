@@ -126,3 +126,41 @@
 .myhome-move hr{
     margin-bottom: 2rem;
 }
+
+
+/*modal*/
+.myhome-roommate__modal-input {
+    display: flex;
+    align-items: center;
+}
+.myhome-roommate__modal-input input{
+    font-size: 1.3rem;
+    width: 80%;
+    padding: 1rem 2rem;
+    border-radius: .2rem;
+    background-color: rgba(1, 1, 1, 0.05);
+    border: .2rem solid rgb(137, 186, 159);
+}
+
+.myhome-roommate__modal-input i {
+    margin-left: 1rem;
+    color: rgb(137, 186, 159);
+    font-size: 4.2rem;
+}
+
+.myhome-roommate__modal-font {
+    font-size: 1.3rem;
+}
+
+.myhome-roommate__modal-user-list{
+    display: flex;
+    align-items: center;
+}
+
+.myhome-roommate__modal-user-list input {
+    padding: 1rem;
+}
+
+.myhome-roommate__modal-user-list p{
+    font-size: 1.3rem;
+}

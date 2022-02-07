@@ -4,21 +4,23 @@
         집을 먼저 등록해주세요.
         <a href="{% url 'setting:myhome_register' %}" class="btn btn-outline-primary">집 등록하러 가기</a>
     {% else %}
-    <div class="roommate-list">
+    <section class="roommate-list">
         <!--룸메이트-->
+        <p class="roommate-list__title">룸메이트 관리</p>
         {% for roommate in roommates %}
             <div class="roommate-list__user">
             {% if roommate.profile_img %}
-                <img src="{{ roommate.profile_img.url }}" height="220" width="220"/>
+                <img src="{{ roommate.profile_img.url }}"/>
             {% else %}
                 <i class="fas fa-user-circle"></i>
             {% endif %}
-                <p>{{ roommate.nick_name }}</p>
-                <button type="button" class="btn btn-outline-primary">프로필 보기</button>
+                <p class="roommate-list__user__name">{{ roommate.nick_name }}</p>
+                <a href="#" class="roommate-list__btn">프로필 보기</a>
             </div>
         {% endfor %}
 
         <!--아직 룸메이트X 초대중 리스트-->
+        <p class="roommate-list__title">초대중인 유저</p>
         {% for invite_user in invite_users %}
         <div class="roommate-list__user roommate-id-{{ invite_user.pk }}">
             {% if invite_user.profile_img %}
@@ -26,12 +28,12 @@
             {% else %}
                 <i class="fas fa-user-circle"></i>
             {% endif %}
-            <p>{{ invite_user.nick_name }}</p>
+            <p class="roommate-list__user__name">{{ invite_user.nick_name }}</p>
             <p>룸메이트가 아직 초대에 수락하지 않았습니다.</p>
-            <button type="button" onclick="onClickInviteCancel({{ invite_user.pk }})" class="btn btn-outline-primary">초대 취소</button>
+            <button type="button" onclick="onClickInviteCancel({{ invite_user.pk }})" class="roommate-list__btn roommate-list__btn-tomato ">초대 취소</button>
         </div>
         {% endfor %}
-    </div>
+    </section>
     {% endif %}
 
 

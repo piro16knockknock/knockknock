@@ -1,6 +1,7 @@
 @import 'reset.css';
 @import 'setting/myhome_setting.css';
 @import 'setting/myhome_detail.css';
+@import 'setting/roommate_list.css';
 
 /*반응형*/
 html { font-size: 62.5%; }
