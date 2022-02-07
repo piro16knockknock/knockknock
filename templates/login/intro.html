@@ -2,9 +2,45 @@
 {% load static %}
 
 {% block content %}
-<div style="background-color: #FFF9E2; height: 100vh;">
-    <p>요기가 인트로 페이지~</p>
-    <h3>안녕하세요! {{username}}님</h3>
-    <button></button>
+ <!-- user가 처음 로그인하고 설정을 완료하지 않았을 때-->
+ {% if request.user.is_authenticated %} 
+<div class="intro-main" style="background-color: #FFF9E2; height: 100vh;">
+   
+    <div>
+        <h2>{{ username }}님</h2>
+        <h2>만나서 반갑습니다!</h2>
+    </div>
+    <div>
+        <p>서비스를 시작하기 전에<br>
+        룸메이트 등록과 집 설정을 먼저 해주세요!</p>
+    </div>
+    <div>
+        <button>설정하기</button>
+    </div>
 </div>
+
+<!-- usr가 로그인 하고 설정도 완료 했을 때의 소개 페이지-->
+<div>
+
+</div>
+<!-- user가 로그인 하지 않은 상태의 메인 서비스 소개 페이지-->
+{% else %}
+<div class="intro-main" style="height: 100vh; background-color: lightgray;">
+    <div class="p-5">
+        <h5>룸메이트와의 쾌적하고 편안한 생활 지킴이</h5>
+        <div>
+            <h1>Knock/Knock</h1>
+        </div>
+        <div style="width: 30rem;">
+            <p>노크노크는 새로운 환경에서 함께 할 수 있는 낯선 사람을 
+                찾아주고 한 지붕 아래 함께 살아가는 사람들과의 안정적인 
+                거주 생활을 도와주기 위한 서비스입니다<br>
+                지금 노크노크를 시작해보세요!</p>
+        </div>
+    
+        <button>시작하기</button>
+    </div>
+</div>
+{% endif %}
+
 {% endblock%}

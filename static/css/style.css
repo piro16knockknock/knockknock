@@ -3,3 +3,44 @@ body {
 width: 100%;
 height: 100%;
 }
+
+li {
+    list-style: none;
+}
+
+.side-nav a {
+    text-decoration: none;
+}
+
+.side-nav li {
+    margin-left: 1rem;
+}
+
+.rate-box {
+    background-color: cadetblue;
+    border-radius: 50%;
+    width: 8rem;
+    height: 8rem;
+}
+
+.cal-profile-box {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.cal-profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.intro-main-img {
+
+    position: absolute;
+    width: 711px;
+    height: 647px;
+    left: 658px;
+    top: 156px;
+}
