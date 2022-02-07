@@ -6,6 +6,37 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+
+#룸메이트 취소
+@csrf_exempt
+def invite_cancel(request):
+    req = json.loads(request.body)
+    user_id = req['invite_cancel_id']
+    recieve_user = User.objects.get(pk=user_id)
+    Invite.objects.filter(receive_user=recieve_user, home=request.user.home).delete()
+    return JsonResponse({'id': user_id })
+    
+#룸메이트 목록
+def roommate_list(request):
+    roommates = User.objects.filter(home=request.user.home)
+    roommates = roommates.exclude(nick_name=request.user.nick_name)
+    invites = Invite.objects.filter(home=request.user.home)
+    
+    invite_users = []
+    for invite in invites:
+        invite_users.append(User.objects.filter(nick_name=invite.receive_user.nick_name))
+    
+    if len(invite_users)==0:
+        invite_users = []
+    else:
+        invite_users = invite_users[0]
+        
+    ctx = {
+        'roommates' : roommates,
+        'invite_users' : invite_users, #리스트 안에 쿼리셋이 들어간 형태라
+    }
+    return render(request, 'setting/roommate_list.html', context=ctx)
+
 #집 등록
 def myhome_register(request):
     if request.method == 'POST':        

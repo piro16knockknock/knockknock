@@ -9,4 +9,7 @@ urlpatterns = [
     path('myhome/register/', views.myhome_register, name='myhome_register'),
     path('myhome/detail/', views.myhome_detail, name='myhome_detail'),
     path('myhome/invite_roommate/', views.invite_roommate, name='invite_roommate'),
+    
+    path('roommate/list', views.roommate_list, name='roommate_list'),
+    path('roommate/invite_cancel/', views.invite_cancel, name='invite_cancel'),
 ]
