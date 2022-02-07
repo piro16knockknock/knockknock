@@ -8,8 +8,9 @@ li {
     list-style: none;
 }
 
-.side-nav a {
+a {
     text-decoration: none;
+    color: black;
 }
 
 .side-nav li {
@@ -36,11 +37,32 @@ li {
     object-fit: cover;
 }
 
-.intro-main-img {
+.intro-main-notset-img {
+    background: url("../img/intro-main3.png");
+    background-position-x: 90%;
+    background-position-y: 70%;
+    background-repeat: no-repeat;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    
+}
 
-    position: absolute;
-    width: 711px;
-    height: 647px;
-    left: 658px;
-    top: 156px;
+.intro-main-notlog-img {
+    background: url("../img/intro-main1.png");
+    background-position-x: 90%;
+    background-position-y: 70%;
+    background-repeat: no-repeat;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.calendar {
+    max-width: 75%;
+
+}
+
+#calendar-side {
+    margin-left: 5rem;
 }

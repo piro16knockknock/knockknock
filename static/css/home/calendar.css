@@ -63,9 +63,12 @@ body {
 }
 
 .calendar td {
-  width: 200px;
-  height: 150px;
-  padding: 20px 0px 0px 5px;
+  /*width: 180px;
+  height: 150px;*/
+  width: 6rem;
+  height: 8rem;
+  padding:0px 0px 0px 5px;
+  vertical-align : top;
 }
 
 .month {

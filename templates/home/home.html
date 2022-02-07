@@ -14,7 +14,7 @@
 	</div>
 	
 	<div class="d-flex mt-4">
-		<div id="todo-side" class="mx-5">
+		<div id="todo-side" class="ms-5">
 			<div id="cal-profile" class="text-center d-flex flex-column align-items-center pt-2">
                 <div class="cal-profile-title border rounded-pill px-3 py-1">
                     <!-- 타이틀 가져오는 거로 바꿔야 함 -->
@@ -40,34 +40,53 @@
                 <p>공과금 납부일<span class="ps-3">30일</span></p>
             </div>
 		</div>
-	
-		<div class="todo-main">
+
+		<!-- 할일 메인 -->
+		<div class="todo-main ms-3" style="width: 70%;">
 			<div id="todo">
+				<div class="text-center d-flex align-items-center justify-content-center">
+					<div class="btn"><a href=""><i style="font-size: 1.6rem" class="fas fa-chevron-circle-left"></i></a></div>
+					<h5>2022.02</h5>
+					<div class="btn"><a href=""><i style="font-size: 1.6rem" class="fas fa-chevron-circle-right"></i></a></div>
+				</div>
+				<h6>할일</h6>
 				<div>
-					<h2>오늘해야하는 {{username}}님의 할일 ~</h2>
-					<a type="button" class="add-btn btn btn-ligth" data-bs-toggle="modal" href="#addToDoModal">등록</a>
-					<div class="user-todos">
-						{% for user_todo in user_todos %}
-						<div class="user-todo">
-							<p>{{user_todo.content}}</p>
-							<button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" data-bs-toggle="modal" data-bs-target="#editToDoModal">수정</button>
-							<button class="delete-btn {{user_todo.id}} btn btn-ligth">삭제</button>
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active" id="mytodo-tab" data-bs-toggle="tab" data-bs-target="#mytodo" type="button" role="tab" aria-controls="mytodo" aria-selected="true">{{ user.nick_name }}</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">룸메</button>
+						</li>
+					</ul>
+					<div class="tab-content " id="myTabContent">
+						<div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
+							<h2>오늘해야하는 {{username}}님의 할일 ~</h2>
+							<a type="button" class="add-btn btn btn-ligth" data-bs-toggle="modal" href="#addToDoModal">등록</a>
+							<div class="user-todos">
+								{% for user_todo in user_todos %}
+								<div class="user-todo">
+									<p>{{user_todo.content}}</p>
+									<button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" data-bs-toggle="modal" data-bs-target="#editToDoModal">수정</button>
+									<button class="delete-btn {{user_todo.id}} btn btn-ligth">삭제</button>
+								</div>
+								{% endfor %}
+							</div>
 						</div>
-						{% endfor %}
-					</div>
-
-					<h2>오늘해야하는 전체 할일~</h2>
-					<a type="button" class="add-btn btn btn-light" data-bs-toggle="modal" href="#addToDoModal">등록</a>
-					<div class="total-todos">
-						{% for total_todo in total_todos %}
-						<div class="total-todo">
-							<p>{{total_todo.content}}</p>
-							<button type="button" class="edit-btn {{total_todo.id}} btn btn-light" data-bs-toggle="modal" data-bs-target="#editToDoModal">수정</button>
-							<button class="delete-btn {{total_todo.id}} btn btn-ligth">삭제</button>
+						<div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
+							<h2>오늘해야하는 전체 할일~</h2>
+							<a type="button" class="add-btn btn btn-light" data-bs-toggle="modal" href="#addToDoModal">등록</a>
+							<div class="total-todos">
+								{% for total_todo in total_todos %}
+								<div class="total-todo">
+									<p>{{total_todo.content}}</p>
+									<button type="button" class="edit-btn {{total_todo.id}} btn btn-light" data-bs-toggle="modal" data-bs-target="#editToDoModal">수정</button>
+									<button class="delete-btn {{total_todo.id}} btn btn-ligth">삭제</button>
+								</div>
+								{% endfor %}
+							</div>
 						</div>
-						{% endfor %}
 					</div>
-
 				</div>
 				
 			</div> <!-- todo-->
