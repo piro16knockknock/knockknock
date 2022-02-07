@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form">
+        <p>집 정보</p>
+        <hr/>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>
+                <label>현재 집 이름 </label> 
+                <input class="form-input" name="name" type="text" maxlength="30"/>
+            </p>
+            <p>
+                <label>월세 납부일</label>
+                <input class="form-input" name="rent_date" type="number"/> 일
+            </p>
+            <p>
+                <label>공과금 종류 </label> 
+                <input class="form-input" name="utility_name" type="text" maxlength="30"/>
+            </p>
+            <p>
+                <label>공과금 납부일: </label> 
+                <input class="form-input" name="utility_date" type="number"/> 일
+            </p>
+            <button type="submit" class="btn btn-outline-primary">집 등록</button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

@@ -13,11 +13,11 @@
                 {{ roommate.nick_name }}
                 <!--나중에 칭호-->
             {% endfor %}
-            <a class="btn btn-outline-primary">입장하기</a>
+            <a href="{% url 'setting:myhome_detail' %}" class="btn btn-outline-primary">입장하기</a>
         </div>
     {% else %}
         집을 먼저 등록해주세요.
-        <a class="btn btn-outline-primary">집 등록하러 가기</a>
+        <a href="{% url 'setting:myhome_register' %}" class="btn btn-outline-primary">집 등록하러 가기</a>
     {% endif %}
     
 </div>
