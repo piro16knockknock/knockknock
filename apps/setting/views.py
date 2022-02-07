@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from .forms import HomeForm, UtilityForm
 from login.models import User
-from .models import Utility
+from .models import Utility, Invite
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
+#집 등록
 def myhome_register(request):
-    print(request)
     if request.method == 'POST':        
         home_form = HomeForm(request.POST)
         utility_form = UtilityForm(request.POST)
@@ -19,7 +21,36 @@ def myhome_register(request):
     else:
         print("get")
     return render(request, 'setting/myhome_form.html')
+
+# 집 디테일. 여기서 업데이트
+def myhome_detail(request):
+    current_user = request.user
+    current_home = current_user.home
+    utilities = Utility.objects.filter(home=current_home) # 본인 포함
+    current_roommates = User.objects.filter(home=current_home) # 본인 포함
+    users = User.objects.exclude(home=current_home)
+    ctx = {
+        'home_name' : current_home.name,
+        'rent_date' : current_home.rent_date,
+        'utilities' : utilities,
+        'roommates' : current_roommates,
+        'users' : users,
+    }
+    return render(request, 'setting/myhome_detail.html', context=ctx)
+
+#초대하기
+@csrf_exempt
+def invite_roommate(request):
+    req = json.loads(request.body)
+    invite_list = req['invite_list']
+    # 룸메이트 초대 db 저장
+    for nickname in invite_list:
+        user = User.objects.get(nick_name=nickname)
+        Invite.objects.create(home=request.user.home, receive_user=user)
     
+    return JsonResponse({'success':True})
+
+# 집 목록
 def myhome_setting(request):
     current_user = request.user
     current_home = current_user.home
