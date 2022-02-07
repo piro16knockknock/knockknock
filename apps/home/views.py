@@ -76,8 +76,10 @@ def delete_todo(request, date, todo_id):
 def edit_todo(request, date, todo_id):
     todo_id = todo_id.split('-')[-1]
     edit_todo = Todo.objects.get(id = todo_id)
-
-    
+    edit_todo.content = request.POST['content']
+    edit_todo.user.id = request.POST['user']
+    edit_todo.cate.id = request.POST['cate']
+    edit_todo.save()
     return redirect('home:date_todo', date = date)
 
 

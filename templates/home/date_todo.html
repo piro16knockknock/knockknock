@@ -54,7 +54,7 @@
 						{% for user_todo in user_todos %}
 						<div class="user-todo">
 							<p>{{user_todo.content}}</p>
-							<button type="button" class="set-btn todo-id-{{user_todo.id}} btn btn-light" onclick="setBtn(this)" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+							<button type="button" class="set-btn todo-id-{{user_todo.id}} btn btn-light" onclick="setBtn(this, '{{user_todo.content}}', '{{user_todo.user.username}}', '{{user_todo.cate.name}}' )" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
 						</div>
 						{% endfor %}
 					</div>
@@ -67,7 +67,7 @@
                             <div class="cal-profile-box my-3">
                                 <img class="cal-profile-img" src={% if user.profile_img %}"{{total_todo.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
                             </div>
-                            <button type="button" class="set-btn todo-id-{{total_todo.id}} btn btn-light" onclick="setBtn(this)" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+                            <button type="button" class="set-btn todo-id-{{total_todo.id}} btn btn-light" onclick="setBtn(this, '{{total_todo.content}}', '{{total_todo.user.username}}', '{{total_todo.cate.name}}' )" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
 						</div>
 						{% endfor %}
 					</div>
@@ -119,13 +119,17 @@
 		            <h5 class="modal-title">할 일 설정</h5>
 		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 		        </div>
-                <form method="post">
+                <form method="post" action="{% url 'home:edit_todo' date='{ {select_date }}' todo_id=0 %}">
+                    {% csrf_token %}
                     <div class="modal-body">
                         <a class="edit-btn btn btn-light" onclick="showEdit()">수정</a>
+                        <a class="date-change-btn btn btn-light">날짜 바꾸기</a>
+                        <a class="date-next-btn btn btn-light">내일 하기</a>
                         <a class="delete-btn btn btn-ligth" href="{% url 'home:delete_todo' date='{{select_date}}' todo_id=0 %}">삭제</a>
+                        
                         <div class="edit-todo" style="display: none;">
                             {{form.as_p}}
-                            <a class="edit-back-btn btn btn-light" type="submit">완료</a>
+                            <button class="edit-back-btn btn btn-light" type="submit">완료</button>
                             <a class="edit-back-btn btn btn-light" onclick="closeEdit()">돌아가기</a>
                         </div>
                     </div>
@@ -141,8 +145,9 @@
     var edit_btn = document.querySelector('.edit-btn');
     var delete_btn = document.querySelector('.delete-btn');
     var edit_div = document.querySelector('.edit-todo');
+    var form = document.querySelector('#setToDoModal form');
 
-    function setBtn(event) {
+    function setBtn(event, content, user_name, cate_name) {
         for (var i=0, l=edit_btn.classList.length; i<l; ++i) {
             if(/todo-id-.*/.test(edit_btn.classList[i])) {
                 edit_btn.classList.replace(edit_btn.classList[i], event.classList[1]);
@@ -152,20 +157,32 @@
         }
         edit_btn.classList.add(event.classList[1]);
         delete_btn.classList.add(event.classList[1]);
-        delete_btn.href = `{{select_date}}/${event.classList[1]}`
+        delete_btn.href = `{{select_date}}/${event.classList[1]}/delete/`
+        form.action = `{{select_date}}/${event.classList[1]}/edit/`
+        makeEditForm(content, user_name, cate_name)
     };
 
     function showEdit(event) {
         delete_btn.style.display = 'None';
-        console.log(delete_btn.style)
         edit_div.style.display = 'block';
-        console.log(edit_done_btn.style)
+    }
+
+    function makeEditForm(content, user_name, cate_name) {
+        const edit_content = document.querySelector('#setToDoModal input[name="content"]');
+        var edit_user = document.querySelector('#setToDoModal select[name="user"]').firstElementChild;
+        var edit_cate = document.querySelector('#setToDoModal select[name="cate"]').firstElementChild;
+
+        edit_content.placeholder = content;
+        edit_user.innerHTML = user_name;
+        edit_cate.innerHTML = cate_name;
     }
 
     function closeEdit(event) {
         delete_btn.style.display = 'inline-block';
         edit_div.style.display = 'None';
     }
+
+
 
 </script>
 
