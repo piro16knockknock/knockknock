@@ -4,6 +4,26 @@ from .models import Todo, Home
 from .forms import TodoForm
 
 # Create your views here.
+@login_required
+def calendar(request):
+    current_user = request.user
+    print(current_user.home.name)
+    total_todos = Todo.objects.filter(home__name = current_user.home.name)
+    print('total_todos : ', total_todos)
+    user_todos = total_todos.filter(user__username = current_user.username)
+    print('user_todos : ', user_todos)
+    current_home = Home.objects.filter(user = current_user)
+    print(current_home)
+    form = TodoForm(current_home[0])
+
+    ctx = {
+        'total_todos' : total_todos,
+        'user_todos' : user_todos,
+        'username' : current_user.username,
+        'form' : form,
+    }
+    return render(request, 'home/calendar.html', context = ctx)
+
 
 @login_required
 def add_todo(request):
@@ -43,4 +63,4 @@ def home(request):
             'form' : form,
         }
 
-    return render(request, 'home/home.html', context=ctx)
+        return render(request, 'home/home.html', context=ctx)
