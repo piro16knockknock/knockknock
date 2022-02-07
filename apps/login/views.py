@@ -15,6 +15,7 @@ def intro(request):
 #이전집 기록 보기
 def prehome_list(request):
     prehome_info = LiveIn.objects.filter(user=request.user)
+    prehome_info = prehome_info.filter(end_date__isnull=False)
     return prehome_info
 
 #이사하기
