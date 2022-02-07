@@ -46,8 +46,8 @@
         <div class="calendar">
             <div class="calendar_header d-flex flex-column align-items-center">
                 <div class="ym-wrapper ">
-                    <span class="year"></span>년
-                    <span class="month"></span>월
+                    <span class="year">{{ year }}</span>년
+                    <span class="month">{{ month }}</span>월
                 </div>
                 <div class="calendar_nav">
                     <a class="nav-btn btn-info go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"> Previous Month </a>
