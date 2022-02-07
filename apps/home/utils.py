@@ -13,10 +13,12 @@ class Calendar(HTMLCalendar):
 	def formatday(self, day, events):
 		event_count =events.filter(date__day=day).count()
 		d = ''
-		d += f'<p>{event_count}</p>'
-
+		d += f'<a>{event_count}</a>'
+		print(day)
+		date_content = f"<span>{day}</span><p> 할일 개수 :{d}</p>"
+		date_content += "<a href=\"#\">할 일 +</a>"
 		if day != 0:
-			return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
+			return f"<td>{date_content}</td>"
 		return '<td></td>'
 
 	# formats a week as a tr
