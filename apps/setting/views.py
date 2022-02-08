@@ -70,15 +70,6 @@ def myhome_detail(request):
     current_home = current_user.home
     utilities = Utility.objects.filter(home=current_home) # 본인 포함
     current_roommates = User.objects.filter(home=current_home) # 본인 포함
-    users = User.objects.exclude(home=current_home)
-    
-    #초대한 유저 거르기
-    invites = Invite.objects.filter(home=request.user.home)    
-    invite_users = []
-    for invite in invites:
-        invite_users.append(invite.receive_user.nick_name)
-    for invite_user in invite_users:
-        users = users.exclude(nick_name=invite_user)
 
     ctx = {
         'home_name' : current_home.name,
@@ -86,7 +77,6 @@ def myhome_detail(request):
         'rent_month' : current_home.rent_month,
         'utilities' : utilities,
         'roommates' : current_roommates,
-        'users' : users,
     }
     return render(request, 'setting/myhome_detail.html', context=ctx)
 
@@ -122,6 +112,31 @@ def invite_roommate(request):
         
     return JsonResponse({'success':True})
 
+#초대 검색
+@csrf_exempt
+def search_user(request):
+    req = json.loads(request.body)
+    search_word = req['search_word']
+    
+    #검색 단어 필터링 전, 1. 집이 있는 유저 2. 초대한 룸메를 제외시킨다.
+    users = User.objects.exclude(home__isnull=False)
+    invites = Invite.objects.filter(home=request.user.home)    
+    invite_users = []
+    for invite in invites:
+        invite_users.append(invite.receive_user.nick_name)
+    for invite_user in invite_users:
+        users = users.exclude(username=invite_user) # nick_name이 아닌 username.
+    
+    #db에서 search_word와 일치하는 탑4 유저 검색
+    users = users.filter(username__startswith=search_word)[:4]
+    search_list = []
+    for user in users : # 검색은 아이디, 출력은 닉네임
+        if user.profile_img :
+            search_list.append({'nickname' : user.nick_name, 'profile' : user.profile_img.url})
+        else:
+            search_list.append({'nickname' : user.nick_name, 'profile' : ''})
+    
+    return JsonResponse( { "user_list" : search_list } )
 
 #초대 수락하기
 def accept_invite(request):

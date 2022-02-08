@@ -9,6 +9,8 @@ urlpatterns = [
     path('myhome/detail/', views.myhome_detail, name='myhome_detail'),
     path('myhome/invite_roommate/', views.invite_roommate, name='invite_roommate'),
 
+    #ajax
+    path('myhome/search_user/', views.search_user, name='search_user'),
     path('myhome/check_homename/', views.check_homename, name='check_homename'),
     path('myhome/myhome_update/', views.myhome_update, name='myhome_update'),
     path('myhome/accept_invite/', views.accept_invite, name='accept_invite'),

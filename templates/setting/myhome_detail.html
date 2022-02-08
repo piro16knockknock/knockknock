@@ -67,20 +67,11 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="myhome-roommate__modal-input"><input type="text" placeholder="등록할 룸메이트의 아이디를 입력하세요."/>
-                            <i class="fas fa-plus-square"></i></div>
+                            <div class="myhome-roommate__modal-input"><input type="text" id="myhome-roommate-invite__input" placeholder="등록할 룸메이트의 아이디를 입력하세요."/>
+                            <!--<i class="fas fa-plus-square"></i>-->
+                            </div>
                             <div class="form-check">
-                                {% for user in users %}
-                                <div class="myhome-roommate__modal-user-list">
-                                    <input class="form-check-input" type="checkbox" value="{{ user.nick_name }}" onclick='getCheckboxValue(event)' id="flexCheckDefault">
-                                    {% if user.profile_img %}
-                                        <img src="{{ user.profile_img.url }}"/>
-                                    {% else %}
-                                        <i class="fas fa-user-circle"></i>
-                                    {% endif %}
-                                    <p>{{ user.nick_name }}</p>
-                                </div>
-                                {% endfor %}
+                            <!--유저 검색 결과 리스트가 나타날 곳-->
                             </div>                        
                         </div>
                         <div class="modal-footer">
@@ -141,6 +132,51 @@
     }
     
 
+/*초대 검색창 - ajax*/
+    const search_input = document.querySelector('#myhome-roommate-invite__input');
+    search_input.addEventListener("keyup", (e) => {
+        if(search_input.value == "") return;
+        onSearchUserList(search_input.value);
+    });
+
+    const onSearchUserList = async(value) => {
+        const url = "../../myhome/search_user/";
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+                'search_word' : value
+            })
+        });
+        const { user_list: user_list } = await res.json()
+        searchUserListHandleResponse(user_list);
+    }
+
+    const searchUserListHandleResponse = (user_list) => {
+        //list 보여줌
+        const div = document.querySelector('.form-check');
+        div.innerHTML = "";
+        for(let i = 0 ; i < user_list.length ; i++){
+            const li = document.createElement('div');
+            li.classList.add('myhome-roommate__modal-user-list');
+
+            if(user_list[i]['profile'] ==""){
+
+                li.innerHTML =`<input class="form-check-input" type="checkbox" value="${user_list[i]['nickname']}" onclick='getCheckboxValue(event)' id="flexCheckDefault">
+                            <i class="fas fa-user-circle"></i>
+                            <p>${user_list[i]['nickname']}</p>`;
+                            
+            }else{
+                li.innerHTML = `<input class="form-check-input" type="checkbox" value="${user_list[i]['nickname']}" onclick='getCheckboxValue(event)' id="flexCheckDefault">
+                            <img src="${user_list[i]['profile']}"/>
+                            <p>${user_list[i]['nickname']}</p>`;
+            }
+            div.appendChild(li);
+        }
+    }
+
 /*초대 ajax*/
     //초대를 위해 체크한 사람들 목록
     let checkedNickName = [];
@@ -168,5 +204,14 @@
         });
         checkedNickName = [];
     }
+
+/*부트스트랩 모달 닫힘 이벤트 감지*/
+    const invite_modal_close = document.querySelector('#roommateAddModal');
+    invite_modal_close.addEventListener('hidden.bs.modal', ()=>{
+        search_input.value="";
+        const div = document.querySelector('.form-check');
+        div.innerHTML = "";
+    })
+
 </script>
 {% endblock %}
