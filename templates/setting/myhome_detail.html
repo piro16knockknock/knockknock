@@ -112,6 +112,10 @@
     const utility_date = document.querySelector('#new-utility-date');
 
     const onClickSaveHome = async() => {
+        if(home_name.value.trim() == "" || rent_month.value == "" || rent_date.value == "" || utility_month.value == "" || utility_date.value == ""){
+            alert('입력하지 않은 항목이 있습니다.');
+            return;
+        }
         const url = "../../myhome/myhome_update/";
         const res = await fetch(url, {
             method: 'POST',
