@@ -108,6 +108,11 @@
     width: 10rem;
     height: 10rem;
 }
+
+.myhome-roommate__column i{
+    font-size: 10rem;
+}
+
 .myhome-roommate__column > p {
     font-size: 1.3rem;
     color: slategray;
@@ -134,7 +139,7 @@
 }
 .myhome-roommate__modal-input input{
     font-size: 1.3rem;
-    width: 80%;
+    width: 100%;
     padding: 1rem 2rem;
     border-radius: .2rem;
     background-color: rgba(1, 1, 1, 0.05);
@@ -155,11 +160,15 @@
     display: flex;
     align-items: center;
 }
-.myhome-roommate__modal-user-list img, .myhome-roommate__modal-user-list i {
+.myhome-roommate__modal-user-list img {
     border-radius: 50%;
     width: 5rem;
     height: 5rem;
     margin: 1rem;
+}
+.myhome-roommate__modal-user-list i{
+    margin: 1rem;
+    font-size: 5rem;
 }
 
 .myhome-roommate__modal-user-list input {

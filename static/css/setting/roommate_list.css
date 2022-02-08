@@ -19,10 +19,15 @@
     align-items: center;
 }
 
-.roommate-list__user img, .roommate-list__user i{
+.roommate-list__user img {
     height: 22rem;
     width: 22rem;
     border-radius: 50%;
+    margin-bottom: 2rem;
+}
+
+.roommate-list__user i{
+    font-size: 22rem;
     margin-bottom: 2rem;
 }
 
