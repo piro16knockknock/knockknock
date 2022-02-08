@@ -20,7 +20,7 @@
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white px-5 py-3">
         <div class="container-fluid" style="vertical-align:middle">
-          <a class="navbar-brand" href="{%url 'intro' %}">Knock/Knock</a>
+          <a class="navbar-brand" href="{%url 'login:intro' %}">Knock/Knock</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -49,8 +49,8 @@
                     설정
                     </a>
                     <ul class="dropdown-menu main-drop-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">집관리</a></li>
-                    <li><a class="dropdown-item" href="#">룸메이트관리</a></li>
+                    <li><a class="dropdown-item" href="{% url 'setting:myhome_setting' %}">집관리</a></li>
+                    <li><a class="dropdown-item" href="{% url 'setting:roommate_list' %}">룸메이트관리</a></li>
                     </ul>
                 </li>
             </ul>
