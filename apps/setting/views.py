@@ -93,6 +93,10 @@ def accept_invite(request):
     user = request.user
     user.invite.is_accepted = True
     user.invite.save()
+
+    live_in = LiveIn.objects.create(user=user, home=user.invite.home)
+    live_in.save()
+    
     user.home = user.invite.home
     user.save()
     return redirect('login:intro')

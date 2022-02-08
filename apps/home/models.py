@@ -1,6 +1,9 @@
 from django.db import models
+from django.forms import BooleanField
 from login.models import User
 from setting.models import Home
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 # Create your models here.
 # 1.Todo
@@ -14,14 +17,16 @@ class Todo(models.Model):
     cate = models.ForeignKey(TodoCate, on_delete=models.SET_NULL, null=True, related_name='todo')
     content = models.CharField(max_length=100)
     date = models.DateField()
+    #0 - 상관없음 1-조금 급함 2-당장 해줘
+    priority_num = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(2), default=0] 
+    is_postpone = models.BooleanField(default=False)
+    is_done_date = models.DateField(null=True, blank=True)
     is_done = models.BooleanField(default=False)
 
 class TodoReaction(models.Model):
     todo = models.ForeignKey(Todo, on_delete=models.CASCADE, related_name='reaction')
     send_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reation')
     reaction_num = models.IntegerField()
-    emoji = models.ImageField()
-
 
 # 2.LivingRule
 class LivingRuleCate(models.Model):
