@@ -39,4 +39,4 @@ class Invite(models.Model):
     invited_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return "(user)" + self.receive_user + "에게 (home)" + self.home + "으로부터 온 초대"
+        return "(user)" + self.receive_user.nick_name + "에게 (home)" + self.home.name + "으로부터 온 초대"
