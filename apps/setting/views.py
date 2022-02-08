@@ -92,6 +92,7 @@ def invite_roommate(request):
 def accept_invite(request):
     user = request.user
     user.invite.is_accepted = True
+    user.invite.save()
     user.home = user.invite.home
     user.save()
     return redirect('login:intro')
