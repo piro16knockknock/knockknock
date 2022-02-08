@@ -15,8 +15,13 @@
             룸메이트 등록과 집 설정을 먼저 해주세요!</p>
         </div>
         <div class="mt-5">
-            <button class="btn btn-lg btn-outline-dark rounded-pill px-5 py-2 button-bg-white "><a href="{% url 'setting:myhome_setting' %}">룸메이트 등록</a></button>
-            <button class="btn btn-lg btn-outline-dark rounded-pill px-5 py-2 button-bg-white "><a href="{% url 'setting:roommate_list' %}">집 입장</a></button>
+            <button class="btn btn-lg btn-outline-dark rounded-pill px-5 py-2 button-bg-white "><a href="{% url 'setting:roommate_list' %}">룸메이트 등록</a></button>
+            {% if request.user.home == None %}
+                <button class="btn btn-lg btn-outline-dark rounded-pill px-5 py-2 button-bg-white "><a href="{% url 'setting:myhome_register' %}">집 등록</a></button>
+            {% else %}
+                <button class="btn btn-lg btn-outline-dark rounded-pill px-5 py-2 button-bg-white "><a href="{% url 'setting:myhome_detail' %}">집 입장</a></button>
+            {% endif %}
+            
         </div>
       
     </div>

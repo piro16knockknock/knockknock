@@ -43,16 +43,17 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">커뮤니티</a>
                 </li>
-                
+                {% if request.user.home != None %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     설정
                     </a>
                     <ul class="dropdown-menu main-drop-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="{% url 'setting:myhome_setting' %}">집관리</a></li>
+                    <li><a class="dropdown-item" href="{% url 'setting:myhome_detail' %}">집관리</a></li>
                     <li><a class="dropdown-item" href="{% url 'setting:roommate_list' %}">룸메이트관리</a></li>
                     </ul>
                 </li>
+                {% endif %}
             </ul>
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
