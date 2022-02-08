@@ -9,8 +9,9 @@
             <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p class="myhome-detail__row">
-                    <label>현재 집 이름 </label> 
-                    <input class="form-input" name="name" type="text" maxlength="30"/>
+                    <label>집 이름 </label>  
+                    <input class="form-input" id="myhome-register-name" name="name" type="text" maxlength="30"/>
+                    <button type="submit" onclick="onClickDupleHomeName()" class="myhome-detail__btn">중복 확인</button>
                 </p>
                 <p class="myhome-detail__row">
                     <label>월세 납부일: </label>
@@ -31,4 +32,13 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    const onClickDupleHomeName = async() {
+
+    }
+    
+</script>
 {% endblock %}

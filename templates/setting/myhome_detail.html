@@ -100,7 +100,9 @@
         </div>
     </div>
 </section>
+{% endblock %}
 
+{% block script %}
 <script>
 /* 집 정보 변경 ajax */
     const home_name = document.querySelector('#new-home-name');
@@ -162,6 +164,5 @@
         });
         checkedNickName = [];
     }
-
 </script>
 {% endblock %}

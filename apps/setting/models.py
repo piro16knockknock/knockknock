@@ -6,7 +6,7 @@ from login.models import User
 ## Entities
 # 1.KnockKnock_Home
 class Home(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     rent_date = models.IntegerField(null=True) #전세면 이자 납부일?
     rent_month = models.IntegerField(null=True, blank=True)
     
