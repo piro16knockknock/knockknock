@@ -50,7 +50,7 @@
 			<div id="todo">
 				<div class="text-center d-flex align-items-center justify-content-center">
 					<div class="btn"><a href=""><i style="font-size: 1.6rem" class="fas fa-chevron-circle-left"></i></a></div>
-					<h5>2022.02</h5>
+					<h5>{{select_date}}</h5>
 					<div class="btn"><a href=""><i style="font-size: 1.6rem" class="fas fa-chevron-circle-right"></i></a></div>
 				</div>
 				<h6>할일</h6>
@@ -66,30 +66,25 @@
 					<div class="tab-content " id="myTabContent">
 						<div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
 							<h2>오늘해야하는 {{username}}님의 할일 ~</h2>
-							<a type="button" class="add-btn btn btn-ligth" data-bs-toggle="modal" href="#addToDoModal">등록</a>
 							<div class="user-todos">
 								{% for user_todo in user_todos %}
 								<div class="user-todo">
 									<p>{{user_todo.content}}</p>
-									<button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" data-bs-toggle="modal" data-bs-target="#editToDoModal">수정</button>
-									<button class="delete-btn {{user_todo.id}} btn btn-ligth">삭제</button>
+									<button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
 								</div>
 								{% endfor %}
 							</div>
 						</div>
 						<div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
 							<h2>오늘해야하는 전체 할일~</h2>
-							<a type="button" class="add-btn btn btn-light" data-bs-toggle="modal" href="#addToDoModal">등록</a>
 							<div class="total-todos">
 								{% for total_todo in total_todos %}
 								<div class="total-todo">
 									<p>{{total_todo.content}}</p>
-									<button type="button" class="edit-btn {{total_todo.id}} btn btn-light" data-bs-toggle="modal" data-bs-target="#editToDoModal">수정</button>
-									<button class="delete-btn {{total_todo.id}} btn btn-ligth">삭제</button>
+									<button type="button" class="edit-btn {{total_todo.id}} btn btn-light" onclick="setBtn(this, '{{ total_todo.content }}', '{{ total_todo.user.username }}', '{{ total_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
 								</div>
 								{% endfor %}
 							</div>
-						</div>
 					</div>
 				</div>
 				
@@ -191,7 +186,7 @@
         var edit_user = document.querySelector('#setToDoModal select[name="user"]').firstElementChild;
         var edit_cate = document.querySelector('#setToDoModal select[name="cate"]').firstElementChild;
 
-        edit_content.placeholder = content;
+        edit_content.value = content;
         edit_user.innerHTML = user_name;
         edit_cate.innerHTML = cate_name;
     }
