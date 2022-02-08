@@ -1,11 +1,15 @@
-@import "reset.css";
+@import 'reset.css';
+@import 'setting/myhome_setting.css';
+@import 'setting/myhome_detail.css';
+@import 'setting/roommate_list.css';
 @import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
 /*font-family: 'Gothic A1', sans-serif;
 font-family: 'Noto Sans KR', sans-serif;*/
 
-html { font-size: 62.5%; }
 
+
+/*반응형*/
 html,
 body {
 width: 100%;

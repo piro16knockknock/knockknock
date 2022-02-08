@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import HomeForm, UtilityForm
 from login.models import User
-from .models import Utility, Invite
+from .models import Utility, Invite, LiveIn
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -24,16 +24,11 @@ def roommate_list(request):
     
     invite_users = []
     for invite in invites:
-        invite_users.append(User.objects.filter(nick_name=invite.receive_user.nick_name))
-    
-    if len(invite_users)==0:
-        invite_users = []
-    else:
-        invite_users = invite_users[0]
-        
+        invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
+            
     ctx = {
         'roommates' : roommates,
-        'invite_users' : invite_users, #리스트 안에 쿼리셋이 들어간 형태라
+        'invite_users' : invite_users
     }
     return render(request, 'setting/roommate_list.html', context=ctx)
 
@@ -48,6 +43,9 @@ def myhome_register(request):
             request.user.home = current_home
             request.user.save()
             Utility.objects.create(home = current_home, name = request.POST.get("utility_name"), date = request.POST.get("utility_date"))
+            
+            #거주하기도 만들어야함
+            LiveIn.objects.create(user = request.user, home = current_home)
             return redirect('setting:myhome_setting')
     else:
         print("get")
@@ -60,6 +58,15 @@ def myhome_detail(request):
     utilities = Utility.objects.filter(home=current_home) # 본인 포함
     current_roommates = User.objects.filter(home=current_home) # 본인 포함
     users = User.objects.exclude(home=current_home)
+    
+    #초대한 유저 거르기
+    invites = Invite.objects.filter(home=request.user.home)    
+    invite_users = []
+    for invite in invites:
+        invite_users.append(invite.receive_user.nick_name)
+    for invite_user in invite_users:
+        users = users.exclude(nick_name=invite_user)
+
     ctx = {
         'home_name' : current_home.name,
         'rent_date' : current_home.rent_date,

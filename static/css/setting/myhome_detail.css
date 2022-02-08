@@ -1,0 +1,172 @@
+.myhome-detail{
+    display: flex;
+    justify-content: center;
+}
+.myhome-detail > div {
+    margin: 3rem 20rem;
+    width: 80rem;
+}
+
+/*myhome-info*/
+.myhome-detail__title{
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 3rem;
+}
+
+.myhome-detail__row {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.myhome-detail__row label, .myhome-detail__row__utility label {
+    font-size: 1.5rem;
+    width: 15rem;
+    font-weight: 500;
+    color: slategray;
+}
+
+.myhome-detail__row span {
+    font-size: 1.3rem;
+}
+
+.myhome-detail__row input, .myhome-detail__row__rent > input {
+    border: 1px solid slategray;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+    padding: .3rem;
+}
+
+.myhome-detail__row__homename > input{
+    width: 40rem;
+}
+
+.myhome-detail__row__homename > i {
+    background-color: rgba(1, 1, 1, .2);
+    padding: .5rem;
+    margin-left: .8rem;
+    font-size: 1.3rem;
+    border-radius: 50%;
+}
+
+.myhome-info__rent-btn {
+    border: 0.2rem solid slategray;
+    padding: .5rem 1.5rem;
+    margin-right: 1rem;
+    border-radius: 5rem;
+    font-size: 1.3rem;
+}
+
+.myhome-detail__row__rent {
+    font-size: 1.3rem;
+}
+
+.myhome-detail__row__rent > input{
+    width: 3.5rem;
+    margin-right: .5rem;
+}
+.myhome-detail__row__rent > span{
+    margin-right: .5rem;
+}
+
+.myhome-detail__row__rent-type {
+    display: flex;
+}
+
+.myhome-detail__row__utility {
+    display: flex;
+    flex-direction: row;
+}
+
+.myhome-detail__row__rent-type {
+    margin-bottom: .8rem;
+}
+
+.myhome-detail__row__rent-type span {
+    margin-right: .8rem;
+}
+
+.myhome-detail__btn{
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    border: 0.2rem solid rgb(255, 197, 109);
+    padding: .5rem 1.5rem;
+    color: rgb(255, 197, 109);
+    border-radius: 5rem;
+}
+
+/*roommate*/
+.myhome-roommate > div {
+    display: flex;
+    align-items: center;
+}
+.myhome-roommate__column{
+    margin-right: 2rem;
+}
+.myhome-roommate__column > img{
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem;
+}
+.myhome-roommate__column > p {
+    font-size: 1.3rem;
+    color: slategray;
+    padding-top: .5rem;
+    text-align: center;
+
+}
+
+.myhome-roommate__invite a i{
+    font-size: 5rem;
+    color: rgba(1, 1, 1, .2);
+}
+
+/*movehome*/
+.myhome-move hr{
+    margin-bottom: 2rem;
+}
+
+
+/*modal*/
+.myhome-roommate__modal-input {
+    display: flex;
+    align-items: center;
+}
+.myhome-roommate__modal-input input{
+    font-size: 1.3rem;
+    width: 80%;
+    padding: 1rem 2rem;
+    border-radius: .2rem;
+    background-color: rgba(1, 1, 1, 0.05);
+    border: .2rem solid rgb(137, 186, 159);
+}
+
+.myhome-roommate__modal-input i {
+    margin-left: 1rem;
+    color: rgb(137, 186, 159);
+    font-size: 4.2rem;
+}
+
+.myhome-roommate__modal-font {
+    font-size: 1.3rem;
+}
+
+.myhome-roommate__modal-user-list{
+    display: flex;
+    align-items: center;
+}
+.myhome-roommate__modal-user-list img, .myhome-roommate__modal-user-list i {
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    margin: 1rem;
+}
+
+.myhome-roommate__modal-user-list input {
+    padding: 1rem;
+}
+
+.myhome-roommate__modal-user-list p{
+    font-size: 1.3rem;
+}
