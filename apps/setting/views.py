@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import HomeForm, UtilityForm
-from login.models import User
+from login.models import User, Notice
 from .models import Utility, Invite, LiveIn, Home
 import json
 from django.http import JsonResponse
@@ -106,6 +106,10 @@ def invite_roommate(request):
     for nickname in invite_list:
         user = User.objects.get(nick_name=nickname)
         Invite.objects.create(home=request.user.home, receive_user=user)
+        #알림에 저장
+        Notice.objects.create(receive_user=user, content="룸메이트 초대")
+        
+        
     return JsonResponse({'success':True})
 
 

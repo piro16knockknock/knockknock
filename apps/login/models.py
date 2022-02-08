@@ -25,5 +25,5 @@ class Title(models.Model): #User's title
 class Notice(models.Model):
     receive_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'notice')
     content = models.CharField(max_length=50)
-    link = models.CharField(max_length = 200)
+    link = models.CharField(max_length = 200, null=True)
     create_at = models.DateTimeField(auto_now_add=True)
