@@ -58,6 +58,15 @@ def myhome_detail(request):
     utilities = Utility.objects.filter(home=current_home) # 본인 포함
     current_roommates = User.objects.filter(home=current_home) # 본인 포함
     users = User.objects.exclude(home=current_home)
+    
+    #초대한 유저 거르기
+    invites = Invite.objects.filter(home=request.user.home)    
+    invite_users = []
+    for invite in invites:
+        invite_users.append(invite.receive_user.nick_name)
+    for invite_user in invite_users:
+        users = users.exclude(nick_name=invite_user)
+
     ctx = {
         'home_name' : current_home.name,
         'rent_date' : current_home.rent_date,

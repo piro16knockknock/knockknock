@@ -33,7 +33,7 @@
                     <div class="myhome-detail__row__rent" >
                         <div class="myhome-detail__row__rent-type"><span>종류</span><span>{{ utility.name }}</span></div>
                         <input type="number"/><span>개월마다</span>
-                        <input type="number" value="{{ utility_date }}" /><span>일</span>
+                        <input type="number" value="{{ utility.date }}" /><span>일</span>
                     </div>
                     {% endfor %}
                 </div>
@@ -74,7 +74,7 @@
                                 <div class="myhome-roommate__modal-user-list">
                                     <input class="form-check-input" type="checkbox" value="{{ user.nick_name }}" onclick='getCheckboxValue(event)' id="flexCheckDefault">
                                     {% if user.profile_img %}
-                                        <img src="{{ user.profile_img.url }}" height="50" width="50"/>
+                                        <img src="{{ user.profile_img.url }}"/>
                                     {% else %}
                                         <i class="fas fa-user-circle"></i>
                                     {% endif %}

@@ -156,6 +156,12 @@
     display: flex;
     align-items: center;
 }
+.myhome-roommate__modal-user-list img, .myhome-roommate__modal-user-list i {
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    margin: 1rem;
+}
 
 .myhome-roommate__modal-user-list input {
     padding: 1rem;
