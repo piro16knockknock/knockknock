@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import HomeForm, UtilityForm
 from login.models import User
-from .models import Utility, Invite, LiveIn
+from .models import Utility, Invite, LiveIn, Home
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -54,7 +54,7 @@ def myhome_register(request):
         print("get")
     return render(request, 'setting/myhome_form.html')
 
-# 집 디테일. 여기서 업데이트
+# 집 디테일
 def myhome_detail(request):
     current_user = request.user
     current_home = current_user.home
@@ -80,6 +80,23 @@ def myhome_detail(request):
     }
     return render(request, 'setting/myhome_detail.html', context=ctx)
 
+#집 업데이트
+@csrf_exempt
+def myhome_update(request):
+    req = json.loads(request.body)
+    home_name = req['home_name']
+    rent_month = req['rent_month']
+    rent_date = req['rent_date']
+    utility_month = req['utility_month']
+    utility_date = req['utility_date']
+    
+    #나중에 공과금 여러개 되면 복잡해지긴 할듯..
+    current_home = Home.objects.filter(name=request.user.home.name)
+    current_home.update(name=home_name, rent_month=rent_month, rent_date=rent_date)
+    Utility.objects.filter(home=request.user.home).update(month=utility_month, date=utility_date)
+        
+    return JsonResponse({ 'home_name' : home_name })
+
 #초대하기
 @csrf_exempt
 def invite_roommate(request):
@@ -101,24 +118,3 @@ def accept_invite(request):
     user.save()
     return redirect('login:intro')
 
-# 집 목록
-def myhome_setting(request):
-    current_user = request.user
-    current_home = current_user.home
-    print(current_home)
-    if(current_home == None):
-        is_home = False
-        ctx = {
-            'is_home' : is_home,
-        }
-        return render(request, 'setting/myhome_setting.html', context=ctx)
-    else:
-        current_roommates = User.objects.filter(home=current_home) # 본인 포함
-        is_home = True
-        ctx = {
-            'is_home' : is_home,
-            'user_name' : current_user.nick_name,
-            'home_name' : current_home.name,
-            'roommates' : current_roommates,
-        }
-        return render(request, 'setting/myhome_setting.html', context=ctx)
