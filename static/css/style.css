@@ -1,3 +1,11 @@
+@import "reset.css";
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+/*font-family: 'Gothic A1', sans-serif;
+font-family: 'Noto Sans KR', sans-serif;*/
+
+html { font-size: 62.5%; }
+
 html,
 body {
 width: 100%;
@@ -5,12 +13,49 @@ height: 100%;
 font-size: 62.5%;
 }
 
+body {
+    padding-top: 5.3rem;
+}
+
 li {
     list-style: none;
 }
 
-.side-nav a {
+a {
     text-decoration: none;
+    color: black;
+}
+
+.navbar:hover {
+    box-shadow: 1px 1px 20px #fbdb67;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-right: 5rem;
+}
+
+.navbar a:hover {
+    font-weight: 600;
+}
+
+.nav-item {
+    font: 1.4rem black;
+    margin-left: 0.5rem;
+}
+
+.nav-item span {
+    font: 1.2rem;
+}
+
+.main-drop-menu li {
+    font: 1.4rem black;
+}
+
+/* calendar page */
+.side-nav {
+    margin-top: 2rem;
 }
 
 .side-nav li {
@@ -37,11 +82,192 @@ li {
     object-fit: cover;
 }
 
-.intro-main-img {
+.calendar {
+    max-width: 80%;
+}
 
-    position: absolute;
-    width: 711px;
-    height: 647px;
-    left: 658px;
-    top: 156px;
+#calendar-side {
+    margin-left: 5rem;
+}
+
+/* intro page */
+.intro-main-cnt {
+    padding-top: 5rem;
+    padding-left: 8rem;
+}
+
+#intro-main-notset-cnt {
+    background: url("../img/intro-main2.png");
+    background-size: 80rem;
+    background-position-x: 90%;
+    background-position-y: 70%;
+    background-repeat: no-repeat;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    
+}
+
+#intro-main-notlog-cnt {
+    background: url("../img/intro-main1.png");
+    background-size: 80rem;
+    background-position-x: 90%;
+    background-position-y: 70%;
+    background-repeat: no-repeat;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.intro-main-cnt h2{
+    font-family: 'Gothic A1', 'Noto Sans KR', sans-serif;
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 5.3rem;
+}
+
+.intro-main-cnt p {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 200;
+    line-height: 2.8rem;
+    color: #535353;
+}
+
+#intro-persona h5{
+    font-size: 2rem;
+    margin-top: 6rem;
+    margin-bottom: 2rem;
+    color: black;
+}
+
+#intro-persona h6{
+    font-size: 1.6rem;
+    line-height: 2.5rem;
+}
+
+#intro-persona-title {
+    margin-bottom: 12rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #535353;
+}
+
+#intro-persona-title span {
+    font-weight: 700;
+    color: black;
+}
+
+.intro-persona-box {
+    text-align: center;
+    padding-top: 5rem;
+    background-color: #eee;
+    width: 25rem;
+    min-height: 20rem;
+    border-radius: 1rem;
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    box-shadow: 2px 4px 10px 0px rgb(82 82 82 / 30%);
+}
+
+.intro-persona-box h6 {
+    margin-bottom: 2rem;
+}
+
+.intro-persona-box p {
+    padding-top: 1.5rem;
+    font-size: 1.3rem;
+    line-height: 1.8rem;
+}
+
+.intro-persona-box img {
+    top: -10%;
+    left: 50%;
+    transform:translate(-50%, -50%);
+    height: 12rem;
+}
+
+#intro-persona-center {
+    margin-left: 6rem;
+    margin-right: 6rem;
+    margin-bottom: 3rem;
+}
+
+#intro-service {
+    font-family: 'Noto Sans KR', sans-serif;
+    padding-top: 8rem;
+    margin-top: 10rem;
+}
+
+#intro-service-text h5 {
+    font-size: 2.4rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    color: black;
+}
+
+#intro-service-text h6 {
+    font-size: 1.6rem;
+    line-height: 2.5rem;
+    color: #535353;
+    margin-bottom: 2.5rem;
+}
+
+#intro-service-text span {
+    font-weight: 500;
+    color: black;
+}
+
+#intro-service-text p {
+    font-size: 1.4rem;
+    line-height: 2.5rem;
+    color: #535353;
+}
+
+.intro-service-circle {
+    padding: 3rem;
+    margin: 6rem 0.5rem 10rem 0.5rem ;
+    overflow: hidden;
+    background-color: white;
+    border: #ddd 1px solid;
+    border-radius: 50%;
+    width: 20rem;
+    height: 20rem;
+    /*box-shadow: 2px 3px 10px 1px rgba(82, 82, 82, 0.52);*/
+}
+
+.intro-service-circle span {
+    font-size: 5rem;
+    margin-bottom: 0.5rem;
+    color: #474747;
+}
+
+.intro-service-circle h6 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.intro-service-circle p {
+    font-size: 1.1rem;
+    line-height: 1.8rem;
+    color: #535353;
+}
+
+#intro-feat1 {
+    padding-top: 15rem;
+    background-color: #75AFF2;
+}
+
+#intro-feat1 >div {
+    margin-left: 15rem;
+}
+
+#intro-achieve-img {
+    top: 45%;
+    left: 75%;
+}
+
+#intro-achieve-img > img {
+    box-shadow: 2px 4px 10px 0px rgb(82 82 82 / 30%);
+    border-radius: 1.5rem;
 }

@@ -4,18 +4,20 @@
 {% block content %}
  <!-- user가 처음 로그인하고 설정을 완료하지 않았을 때-->
  {% if request.user.is_authenticated %} 
-<div class="intro-main" style="background-color: #FFF9E2; height: 100vh;">
-   
-    <div>
-        <h2>{{ username }}님</h2>
-        <h2>만나서 반갑습니다!</h2>
-    </div>
-    <div>
-        <p>서비스를 시작하기 전에<br>
-        룸메이트 등록과 집 설정을 먼저 해주세요!</p>
-    </div>
-    <div>
-        <button>설정하기</button>
+<div class="intro-main-notset" style="background-color: #FFF9E2; height: 100vh;">
+   <div id="intro-main-notset-cnt" class="intro-main-cnt">
+        <div class="mt-5">
+            <h2>🖐️<br>{{ user.nick_name }}님</h2>
+            <h2>만나서 반갑습니다!</h2>
+        </div>
+        <div class="mt-5">
+            <p>서비스를 시작하기 전에<br>
+            룸메이트 등록과 집 설정을 먼저 해주세요!</p>
+        </div>
+        <div class="mt-5">
+            <button class="btn btn-lg btn-outline-dark rounded-pill px-5 py-2">설정하기</button>
+        </div>
+      
     </div>
 </div>
 
@@ -25,8 +27,8 @@
 </div>
 <!-- user가 로그인 하지 않은 상태의 메인 서비스 소개 페이지-->
 {% else %}
-<div class="intro-main" style="height: 100vh; background-color: lightgray;">
-    <div class="p-5">
+<div class="intro-main-notlog" style="height: 100vh; background-color: lightgray;">
+    <div id="intro-main-notlog-cnt" class="intro-main-cnt">
         <h5>룸메이트와의 쾌적하고 편안한 생활 지킴이</h5>
         <div>
             <h1>Knock/Knock</h1>
@@ -42,5 +44,97 @@
     </div>
 </div>
 {% endif %}
+<div id="intro-persona">
+    <div class="py-5 text-center" id="intro-persona-title">
+        <h5>룸메이트와 함께 살기, 어렵지 않냐고요?</h5>
+        <h6>룸메이트와의 생활이<br>점점 지치고 막막하게만 느껴지시나요?</h6>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="intro-persona-box position-relative mt-5">
+            <img src="{% static 'img/intro-avatar1.png' %}" class="position-absolute">
+            <h6 class="rounded-pill  bg-white">20대, 대학생</h6>
+            <p>“룸메이트와 자취를 시작할 예정인데 처음이라 뭐부터 해야할지 &nbsp;모르겠어요”
+            </p>
+            
+        </div>
+        <div class="intro-persona-box position-relative" id="intro-persona-center">
+            <img src="{% static 'img/intro-avatar2.png' %}" class="position-absolute">
+            <h6 class="rounded-pill bg-white">20대, 기숙사생</h6>
+            <p>“기숙사 생활에 체계가 있었으면 좋겠어요”
+
+            </p>
+            
+        </div>
+        <div class="intro-persona-box position-relative mt-5">
+            <img src="{% static 'img/intro-avatar3.png' %}" class="position-absolute">
+            <h6 class="rounded-pill bg-white">30대, 직장인</h6>
+            <p>“동생과 같이 살게 된 지 몇 달째, 이제는 서로 지킬 건 지키고 살고 싶어요”
+            </p>
+            
+        </div>
+    </div>
+</div>
+
+<div id="intro-service" style="background-color: #eee;">
+    <div id="intro-service-text" class="text-center">
+        <h5>이제는 간편하고 평화롭게!</h5>
+        <h6><span>노크노크</span>와 함께라면 할 수 있어요!</h6>
+        <p>생활 수칙, 공유 캘린더, 오늘의 할 일 체크 등 <span>노크노크</span>의 다양한 기능들과<br>
+        간편하게 룸메이트와의 생활을 관리해 보아요</p>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="intro-service-circle text-center">
+            <span class="material-icons-round">
+                manage_accounts
+                </span>
+            
+            <h6>룸메이트 관리</h6>
+            <p>룸메이트를 등록하고 프로필을 확인하세요!</p>
+        </div>
+        <div class="intro-service-circle text-center">
+            <span class="material-icons-round">
+                inventory
+                </span>
+            <h6>생활수칙 관리</h6>
+            <p>가이드라인을 통해
+                생활 수칙을
+                관리해 보세요!</p>
+        </div>
+        <div class="intro-service-circle text-center">
+            <span class="material-icons-round">
+                event_available
+                </span>
+            <h6>캘린더 공유</h6>
+            <p>룸메이트와 나의 일정을
+                한눈에 확인하세요!</p>
+        </div>
+        <div class="intro-service-circle text-center">
+            <span class="material-icons-round">
+                list_alt
+                </span>
+            <h6>할 일 체크</h6>
+            <p>룸메이트와 나의 할 일을 매번 체크하고 달성률을 확인해 보세요!</p>
+        </div>
+        <div class="intro-service-circle text-center">
+            <span class="material-icons-round">
+                library_books
+                </span>
+            <h6>커뮤니티</h6>
+            <p>룸메이트 생활을 하고 있는 다양한 사람들과 소통해 보세요!</p>
+        </div>
+    </div>
+</div>
+
+<div id="intro-feat1" class="d-flex" >
+    <div id="intro-cal-img" class="position-relative">
+        <img  src="{% static 'img/intro-cal.png' %}">
+        <div id="intro-achieve-img" class="position-absolute">
+            <img src="{% static 'img/intro-cal2.png' %}">
+        </div>
+    </div>
+    <div>
+        <h6>캘린더 공유</h6>
+    </div>
+</div>
 
 {% endblock%}

@@ -15,7 +15,7 @@
 	</div>
 
     <div class="d-flex mt-4">
-        <div id="calendar-side" class="mx-5">
+        <div id="calendar-side">
             
             <div id="cal-profile" class="text-center d-flex flex-column align-items-center pt-2">
                 <div class="cal-profile-title border rounded-pill px-3 py-1">
@@ -37,26 +37,35 @@
                     <div class="btn btn-sm bg-secondary " style="border-radius: 50%;"><a href="" class="text-light"><i class="fas fa-cog "></i></a></div>
                 </div>
             </div>
-            <div id="cal-achieve-rate" class="text-center py-4 border" style="border-radius: 0.5rem; width: 15rem;">
+            <div id="cal-achieve-rate" class="text-center py-4 border mb-3" style="border-radius: 0.5rem; width: 15rem;">
                 <p>월세 납부일<span class="ps-3">30일</span></p>
                 <p>공과금 납부일<span class="ps-3">30일</span></p>
+            </div>
+            <div id="cal-todo" class="text-center py-4 border" style="border-radius: 0.5rem; width: 15rem;">
+                <p>오늘의 할 일</p>
+                
+                {% for user_todo in user_todos %}
+                    <div class="user-todo">
+                        <p>{{user_todo.content}}</p>
+                    </div>
+                {% endfor %}
             </div>
         </div>
 
         <div class="calendar">
-            <div class="calendar_header d-flex flex-column align-items-center">
+            <div class="calendar-header d-flex flex-column align-items-center">
                 <div class="ym-wrapper ">
                     <span class="year">{{ year }}</span>년
                     <span class="month">{{ month }}</span>월
                 </div>
-                <div class="calendar_nav">
+                <div class="calendar-nav">
                     <a class="nav-btn btn-info go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"> Previous Month </a>
                     <a class="nav-btn btn-info go-today" href="{% url 'home:calendar' %}"> Today </a>
                     <a class="navbtn btn-info gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"> Next Month </a>
                     <a class="btn btn-info right" href="#"> New Event </a>
                 </div>
             </div>
-            <div class="calendar_main">
+            <div class="calendar-main pb-3">
                 {{ calendar }}
             </div>
         </div>
