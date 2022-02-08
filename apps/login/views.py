@@ -34,4 +34,4 @@ def leave_home(request):
 #나중에 합치면서 삭제.
 def mypage(request):
     ctx = { 'prehomes' : prehome_list(request) }
-    return render(request, 'login/mypage_temp.html', ctx)
+    return render(request, 'login/mypage.html', ctx)
