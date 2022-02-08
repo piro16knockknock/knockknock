@@ -59,10 +59,9 @@
                     <span class="month">{{ month }}</span>월
                 </div>
                 <div class="calendar-nav">
-                    <a class="nav-btn btn-info go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"> Previous Month </a>
+                    <a class="nav-btn btn-info go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"> < </a>
                     <a class="nav-btn btn-info go-today" href="{% url 'home:calendar' %}"> Today </a>
-                    <a class="navbtn btn-info gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"> Next Month </a>
-                    <a class="btn btn-info right" href="#"> New Event </a>
+                    <a class="navbtn btn-info gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"> > </a>
                 </div>
             </div>
             <div class="calendar-main pb-3">

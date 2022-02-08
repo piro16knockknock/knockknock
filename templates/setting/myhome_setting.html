@@ -18,19 +18,16 @@
                 </div>
             {% endfor %}
             </div>
+            <div class="myhome-setting__enter">
+                <a href="{% url 'setting:myhome_detail' %}" class="myhome-setting__enter__btn"><i class="fas fa-door-open"></i> 입장하기</a>
+                <p>입장하기 버튼을 눌러 우리 집을 관리해보세요.</p>
+            </div>
         </div>
-<<<<<<< HEAD
     {% elif request.user.invite and request.user.invite.is_accepted is False %}
         <p>초대가 왔어요!</p>
         <p>{{request.user.invite.home.name}}</p>
         <a href="{% url 'setting:accept_invite' %}" class="btn btn-dark">수락하기</a>
-=======
-        <div class="myhome-setting__enter">
-            <a href="{% url 'setting:myhome_detail' %}" class="myhome-setting__enter__btn"><i class="fas fa-door-open"></i> 입장하기</a>
-            <p>입장하기 버튼을 눌러 우리 집을 관리해보세요.</p>
-        </div>
-    </div>
->>>>>>> f5a5311155802883ad477c564f1a61454d6e8214
+
     {% else %}
         <div class="myhome-setting__empty">
             집을 먼저 등록해주세요.
