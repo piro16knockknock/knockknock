@@ -42,11 +42,14 @@ def myhome_register(request):
             current_home = home_form.save()
             request.user.home = current_home
             request.user.save()
-            Utility.objects.create(home = current_home, name = request.POST.get("utility_name"), date = request.POST.get("utility_date"))
+            Utility.objects.create(home = current_home, 
+                                   name = request.POST.get("utility_name"), 
+                                   month = request.POST.get("utility_month"),
+                                   date = request.POST.get("utility_date"))
             
             #거주하기도 만들어야함
             LiveIn.objects.create(user = request.user, home = current_home)
-            return redirect('setting:myhome_setting')
+            return redirect('setting:myhome_detail')
     else:
         print("get")
     return render(request, 'setting/myhome_form.html')
@@ -70,6 +73,7 @@ def myhome_detail(request):
     ctx = {
         'home_name' : current_home.name,
         'rent_date' : current_home.rent_date,
+        'rent_month' : current_home.rent_month,
         'utilities' : utilities,
         'roommates' : current_roommates,
         'users' : users,

@@ -8,10 +8,12 @@ from login.models import User
 class Home(models.Model):
     name = models.CharField(max_length=20)
     rent_date = models.IntegerField(null=True) #전세면 이자 납부일?
+    rent_month = models.IntegerField(null=True, blank=True)
 
 class Utility(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name= 'utility', blank=True)
     name = models.CharField(max_length=10, null=True, blank=True)
+    month = models.IntegerField(null=True, blank=True)
     date = models.IntegerField(null=True, blank=True)
 
 

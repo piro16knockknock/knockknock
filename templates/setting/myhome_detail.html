@@ -23,7 +23,7 @@
             </p>
             <p class="myhome-detail__row myhome-detail__row__rent">
                 <label>월세 납부일</label>
-                <input type="number"/><span>개월마다</span>
+                <input type="number" value="{{ rent_month }}"/><span>개월마다</span>
                 <input type="number" value="{{ rent_date }}" /><span>일</span>
             </p>
             <p class="myhome-detail__row">
@@ -32,7 +32,7 @@
                     {% for utility in utilities %}
                     <div class="myhome-detail__row__rent" >
                         <div class="myhome-detail__row__rent-type"><span>종류</span><span>{{ utility.name }}</span></div>
-                        <input type="number"/><span>개월마다</span>
+                        <input type="number" value="{{ utility.month }}"/><span>개월마다</span>
                         <input type="number" value="{{ utility.date }}" /><span>일</span>
                     </div>
                     {% endfor %}
