@@ -33,6 +33,16 @@ def roommate_list(request):
     return render(request, 'setting/roommate_list.html', context=ctx)
 
 #집 등록
+@csrf_exempt
+def check_homename(request):
+    req = json.loads(request.body)
+    home_name = req['home_name']
+    if( Home.objects.filter(name=home_name).exists() ):
+        return JsonResponse({'is_available' : False })
+    else:
+        return JsonResponse({'is_available' : True })
+
+
 def myhome_register(request):
     if request.method == 'POST':        
         home_form = HomeForm(request.POST)
