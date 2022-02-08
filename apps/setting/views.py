@@ -93,9 +93,8 @@ def accept_invite(request):
     user = request.user
     user.invite.is_accepted = True
     user.home = user.invite.home
-    print(user.home)
     user.save()
-    return redirect('setting:myhome_setting')
+    return redirect('login:intro')
 
 # 집 목록
 def myhome_setting(request):
