@@ -18,7 +18,7 @@ font-size: 62.5%;
 }
 
 body {
-    padding-top: 5.3rem;
+    padding-top: 5rem;
 }
 
 li {
@@ -28,6 +28,10 @@ li {
 a {
     text-decoration: none;
     color: black;
+}
+
+.button-bg-white {
+    background-color: white;
 }
 
 .navbar:hover {
@@ -136,6 +140,30 @@ a {
     font-weight: 200;
     line-height: 2.8rem;
     color: #535353;
+}
+
+#intro-main-notlog-cnt h5 {
+    font-size: 1.6rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+#intro-main-notlog-cnt h1 {
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 5.3rem;
+    margin-bottom: 6rem;
+}
+
+#intro-main-notlog-cnt p {
+    font-size: 1.6rem;
+    line-height: 2.5rem;
+    margin-bottom: 5rem;
+}
+
+#intro-main-notlog-cnt span {
+    font-weight: 500;
+    color: black;
 }
 
 #intro-persona h5{

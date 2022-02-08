@@ -15,7 +15,8 @@
             룸메이트 등록과 집 설정을 먼저 해주세요!</p>
         </div>
         <div class="mt-5">
-            <button class="btn btn-lg btn-outline-dark rounded-pill px-5 py-2">설정하기</button>
+            <button class="btn btn-lg btn-outline-dark rounded-pill px-5 py-2 button-bg-white "><a href="{% url 'setting:myhome_setting' %}">룸메이트 등록</a></button>
+            <button class="btn btn-lg btn-outline-dark rounded-pill px-5 py-2 button-bg-white "><a href="{% url 'setting:roommate_list' %}">집 입장</a></button>
         </div>
       
     </div>
@@ -33,14 +34,15 @@
         <div>
             <h1>Knock/Knock</h1>
         </div>
-        <div style="width: 30rem;">
-            <p>노크노크는 새로운 환경에서 함께 할 수 있는 낯선 사람을 
-                찾아주고 한 지붕 아래 함께 살아가는 사람들과의 안정적인 
+        <div>
+            <p><span>노크노크</span>는 새로운 환경에서 함께 할 수 있는 낯선 사람을 
+                찾아주고<br>한 지붕 아래 함께 살아가는 사람들과의 안정적인 
                 거주 생활을 도와주기 위한 서비스입니다<br>
-                지금 노크노크를 시작해보세요!</p>
+                지금 <span>노크노크</span>를 시작해보세요!</p>
         </div>
-    
-        <button>시작하기</button>
+        <div>
+            <button class="btn btn-lg btn-dark rounded-pill px-4 py-2">시작하기</button>
+        </div>
     </div>
 </div>
 {% endif %}
