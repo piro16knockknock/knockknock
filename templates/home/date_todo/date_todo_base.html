@@ -1,39 +1,38 @@
 {% extends 'home/home_base.html' %}
 {% load static %}
-{% block css %}
-    <link rel="stylesheet" href="{% static 'css/home/date_todo.css' %}">
-{% endblock %}
+
 {% block content %}
-<div class="todo-main container">
-    <div id="todo h-100" class="container px-0" style="overflow: hidden; height: 100%;">
-        <div class="text-center d-flex align-items-center justify-content-center">
-            <div class="btn"><a href=""><i style="font-size: 1.6rem" class="fas fa-chevron-circle-left"></i></a></div>
-            <h5>{{select_date}}</h5>
-            <div class="btn"><a href=""><i style="font-size: 1.6rem" class="fas fa-chevron-circle-right"></i></a></div>
+    <div class="todo-main">
+        <div class="select_date">
+            <h3>{{select_date}}</h3>
+            <a type="button" class="add-btn btn btn-ligth" data-bs-toggle="modal" href="#addToDoModal">할 일 등록</a>
+            <a type="button" class="add-btn btn btn-ligth" data-bs-toggle="modal" href="#addToDoModal">카테고리 등록</a>
         </div>
-        <div class="tab-content">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item d-flex" role="presentation">
-                    <button class="nav-link active" id="mytodo-tab" data-bs-toggle="tab" data-bs-target="#mytodo" type="button" role="tab" aria-controls="mytodo" aria-selected="true">{{ user.nick_name }}</button>
-                    <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">전체 할일</button>
-                </li>
-                <div class="nav-item d-flex align-items-center" >
-                    <p class="d-inline">아직 담당이 정해지지 않은 일이 <span>"3개"</span> 남았어요!</p>
-                </div>
-                <div class="nav-item d-flex align-items-center" >
-                    <button>+ 반복 할일 추가하기</button>
-                </div>
-            </ul>
-
-            <div id="myTabContent" style="height: 95%;">
-                {% block data_todo %}
-                {% endblock %}
+        <div id="todo">
+            <div class="text-center d-flex align-items-center justify-content-center">
+                <div class="btn"><a href=""><i style="font-size: 1.6rem" class="fas fa-chevron-circle-left"></i></a></div>
+                <h5>{{select_date}}</h5>
+                <div class="btn"><a href=""><i style="font-size: 1.6rem" class="fas fa-chevron-circle-right"></i></a></div>
             </div>
-        </div>
-        
-    </div> <!-- todo-->
+            <h6>할일</h6>
+            <div>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="mytodo-tab" data-bs-toggle="tab" data-bs-target="#mytodo" type="button" role="tab" aria-controls="mytodo" aria-selected="true">{{ user.nick_name }}</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">전체 할일</button>
+                    </li>
+                </ul>
+                <div class="tab-content " id="myTabContent">
+                    {% block data_todo %}
+                    {% endblock %}
+                </div>
+            </div>
+            
+        </div> <!-- todo-->
 
-</div>
+    </div>
 
 </div>
 

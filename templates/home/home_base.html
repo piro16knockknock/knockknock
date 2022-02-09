@@ -12,32 +12,32 @@
     {% endblock %}
 
     {% block page-side-menu %}
-    <div id="todo-side" class="ms-5">
-        <div id="cal-profile" class="text-center d-flex flex-column align-items-center pt-2">
-            <div class="cal-profile-title border rounded-pill px-3 py-1">
-                <!-- 타이틀 가져오는 거로 바꿔야 함 -->
-                🏅킹갓
+	<div class="d-flex mt-4">
+		<div id="todo-side" class="ms-5">
+			<div id="cal-profile" class="text-center d-flex flex-column align-items-center pt-2">
+                <div class="cal-profile-title border rounded-pill px-3 py-1">
+                    <!-- 타이틀 가져오는 거로 바꿔야 함 -->
+                    🏅킹갓
+                </div>
+                <div class="cal-profile-box my-3">
+                    <img class="cal-profile-img" src={% if user.profile_img %}"{{user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                    
+                </div>
+                <div class="cal-profile-username">
+                    {{user.nick_name}}
+                    <p>@{{username}}</p>
+                </div>
             </div>
-            <div class="cal-profile-box my-3">
-                <img class="cal-profile-img" src={% if user.profile_img %}"{{user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
-                
+            <div id="cal-house-name" class="text-center border py-4 my-3 position-relative" style=" width: 15rem; border-radius: 0.5rem;">
+                {{request.user.home.name}}
+                <div class="position-absolute" style="top: -5%; right: -5%;">
+                    <div class="btn btn-sm bg-secondary " style="border-radius: 50%;"><a href="" class="text-light"><i class="fas fa-cog "></i></a></div>
+                </div>
             </div>
-            <div class="cal-profile-username">
-                {{user.nick_name}}
-                <p>@{{username}}</p>
+            <div id="cal-achieve-rate" class="text-center py-4 border" style="border-radius: 0.5rem; width: 15rem;">
+                <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}</span></p>
+                <p>공과금 납부일<span class="ps-3">30일</span></p>
             </div>
-        </div>
-        <div id="cal-house-name" class="text-center border py-4 my-3 position-relative" style=" width: 15rem; border-radius: 0.5rem;">
-            {{request.user.home.name}}
-            <div class="position-absolute" style="top: -5%; right: -5%;">
-                <div class="btn btn-sm bg-secondary " style="border-radius: 50%;"><a href="" class="text-light"><i class="fas fa-cog "></i></a></div>
-            </div>
-        </div>
-        <div id="cal-achieve-rate" class="text-center py-4 border" style="border-radius: 0.5rem; width: 15rem;">
-            <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}</span></p>
-            <p>공과금 납부일<span class="ps-3">30일</span></p>
-        </div>
-    </div>
-
+		</div>
     {% endblock %}
 </section>
