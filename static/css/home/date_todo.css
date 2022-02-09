@@ -1,0 +1,31 @@
+.nav-tabs {
+    justify-content: space-between;
+}
+
+p span {
+    font: 2rem;
+    font-weight: bold;
+}
+
+.todo-main {
+    padding-right: 5rem;
+    overflow: hidden;
+}
+
+.tab-content {
+    height: 90%;
+}
+
+.todo-section {
+    display: flex;
+    height: inherit;
+}
+
+.todos {
+    padding-left: 2rem;
+    width: 50rem;
+}
+
+.todos h4 {
+    font-weight: bold;
+}

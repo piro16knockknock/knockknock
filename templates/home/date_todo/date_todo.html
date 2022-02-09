@@ -1,0 +1,48 @@
+{% extends 'home/date_todo/date_todo_base.html' %}
+{% load static %}
+{% block data_todo %}
+
+<div class="tab-pane fade show active h-100" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
+    <div class="todo-section">
+        <div class="complete-todos todos">
+            <h4>완료</h4>
+            {% if complete_user_todos.count is not 0%}
+                {% for complete_user_todo in complete_user_todos %}
+                <div class="complete-user-todo">
+                    <p>{{complete_user_todo.content}}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="complete-user-todo">
+                <p>할 일을 완료 해볼까요?</p>
+            </div>
+            {% endif %}
+        </div>
+        {% for todo_cate in todo_cates %}
+        <div class="cate-todos todos">
+            <h4>{{ todo_cate.name }}</h4>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+
+<div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
+    {% if total_todos.count is 0  %}
+    <h2>오늘 해야할 일을 등록해주세요~!</h2>
+    {% else %}
+    <h2>오늘 우리 집의 할일~</h2>
+    {% endif %}
+    <div class="total-todos">
+        {% for total_todo in total_todos %}
+        <div class="total-todo">
+            <p>{{total_todo.content}}</p>
+            <button type="button" class="edit-btn {{total_todo.id}} btn btn-light" onclick="setBtn(this, '{{ total_todo.content }}', '{{ total_todo.user.username }}', '{{ total_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

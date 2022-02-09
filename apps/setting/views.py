@@ -24,7 +24,8 @@ def roommate_list(request):
     
     invite_users = []
     for invite in invites:
-        invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
+        if invite.is_accepted is False:
+            invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
             
     ctx = {
         'roommates' : roommates,
@@ -63,7 +64,8 @@ def myhome_detail(request):
     invites = Invite.objects.filter(home=request.user.home)    
     invite_users = []
     for invite in invites:
-        invite_users.append(invite.receive_user.nick_name)
+        if invite.is_accepted is False:
+            invite_users.append(invite.receive_user.nick_name)
     for invite_user in invite_users:
         users = users.exclude(nick_name=invite_user)
 
