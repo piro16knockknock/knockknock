@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.safestring import mark_safe
 from django.views import generic
 
-from .models import Todo, Home
+from .models import Todo, Home, TodoCate
 from .forms import TodoForm
 from .utils import Calendar
 from datetime import datetime, timedelta, date
@@ -88,13 +88,14 @@ def date_todo(request, date):
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     user_todos = total_todos.filter(user__username = current_user.username, date = date)
-    current_home = Home.objects.filter(user = current_user)
+    current_home = Home.objects.filter(user = current_user)[0]
+    cate = TodoCate.objects.filter(home__todo_cate__name = current_home.todo_cate.name)
 
     if request.method == "POST":
         add_todo(request, date)
         return redirect('home:date_todo', date = date)
 
-    form = TodoForm(current_home[0])
+    form = TodoForm(current_home)
 
     ctx = {
         'select_date' : date,
@@ -104,4 +105,4 @@ def date_todo(request, date):
         'form' : form,
     }
 
-    return render(request, 'home/date_todo.html', context=ctx)
+    return render(request, 'home/date_todo/date_todo.html', context=ctx)
