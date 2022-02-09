@@ -1,6 +1,7 @@
 /* Common styles */
 body {
   font-family: "ptsans", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: lighter;
 }
 
 .left {
@@ -48,8 +49,10 @@ body {
   font-size: 13px;
 }
 
-.calendar tr, .calendar td {
-  border: 1px solid black;
+.calendar tr {
+  border: 0.5px solid #c3c3c3;
+  border-right: none;
+  border-left: none;
 }
 
 .calendar th {
@@ -139,3 +142,8 @@ ul {
 a {
   color: #17a2b8;
 }
+
+
+/* calendar decorate */
+/* week-info */
+ 

@@ -1,14 +1,23 @@
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.utils import timezone
-
+from datetime import datetime
+from django.utils.dateformat import DateFormat
+from home.models import Todo
 #이전 집 기록 보기
 from setting.models import LiveIn
 
 # Create your views here.
 def intro(request):
+    today = DateFormat(datetime.now()).format('Y-m-d')
+    today_url = '/home/todo/' + str(today)
+    user_todos = Todo.objects.filter(user=request.user)[:2]
+    print(user_todos)
     ctx = {
-        'username' : request.user.username
+        'username' : request.user.username,
+        'today_date' : today,
+        'today_date_url' : today_url,
+        'user_todos' : user_todos,
     }
     return render(request, 'login/intro.html', context= ctx)
 

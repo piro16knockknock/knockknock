@@ -1,12 +1,28 @@
 {% extends 'home/date_todo/date_todo_base.html' %}
 {% load static %}
-{% block data_todo %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/home/date_todo.css' %}">
+{% endblock %}
+{% block data_todo %}
 <div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
     
     {% if user_todos.count is 0 %}
-    <h2>아직 담당하는 할 일이 없어요~!</h2>
-    <h2>전체 할 일에서 가져와 볼까요?</h2>
+    <div class="todo-container">
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
+ 
+    </div>
     {% else %}
     <h2>오늘해야하는 {{username}}님의 할일 ~</h2>
     {% endif %}
@@ -42,6 +58,59 @@
         {% endfor %}
     </div>
 </div>
+{% endblock %}
 
 
+
+{% block date_todo_modal %}
+<div class="modal fade" id="addToDoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+		        <div class="modal-header">
+		            <h5 class="modal-title">할 일 추가하기</h5>
+		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+		        </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        {{ form.as_table }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">저장</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="setToDoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+		        <div class="modal-header">
+		            <h5 class="modal-title">할 일 설정</h5>
+		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+		        </div>
+                <form method="post" action="{% url 'home:edit_todo' date='{ {select_date }}' todo_id=0 %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <a class="edit-btn btn btn-light" onclick="showEdit()">수정</a>
+                        <a class="date-change-btn btn btn-light">날짜 바꾸기</a>
+                        <a class="date-next-btn btn btn-light">내일 하기</a>
+                        <a class="delete-btn btn btn-ligth" href="{% url 'home:delete_todo' date='{{select_date}}' todo_id=0 %}">삭제</a>
+                        
+                        <div class="edit-todo" style="display: none;">
+                            {{form.as_p}}
+                            <button class="edit-back-btn btn btn-light" type="submit">완료</button>
+                            <a class="edit-back-btn btn btn-light" onclick="closeEdit()">돌아가기</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeEdit()" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

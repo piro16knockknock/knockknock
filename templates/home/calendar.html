@@ -54,14 +54,15 @@
 
         <div class="calendar">
             <div class="calendar-header d-flex flex-column align-items-center">
-                <div class="ym-wrapper ">
-                    <span class="year">{{ year }}</span>년
-                    <span class="month">{{ month }}</span>월
-                </div>
                 <div class="calendar-nav">
-                    <a class="nav-btn btn-info go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"> < </a>
-                    <a class="nav-btn btn-info go-today" href="{% url 'home:calendar' %}"> Today </a>
-                    <a class="navbtn btn-info gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"> > </a>
+                    <div class="ym-wrapper ">
+                        <a class="nav-btn btn-info go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"> < </a>
+                        <a class="nav-btn btn-info go-today" href="{% url 'home:calendar' %}"> 
+                            <span class="year">{{ year }}</span>년
+                            <span class="month">{{ month }}</span>월
+                        </a>
+                        <a class="nav-btn btn-info gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"> > </a>
+                    </div>
                 </div>
             </div>
             <div class="calendar-main pb-3">

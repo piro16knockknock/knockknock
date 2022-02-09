@@ -29,3 +29,14 @@ p span {
 .todos h4 {
     font-weight: bold;
 }
+
+.todo-container {
+    width: 100rem;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.todo {
+    display: inline-block;
+}

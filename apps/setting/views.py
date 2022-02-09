@@ -26,7 +26,7 @@ def roommate_list(request):
     for invite in invites:
         if invite.is_accepted is False:
             invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
-            
+    print(invite_users)
     ctx = {
         'roommates' : roommates,
         'invite_users' : invite_users
@@ -47,7 +47,7 @@ def myhome_register(request):
             
             #거주하기도 만들어야함
             LiveIn.objects.create(user = request.user, home = current_home)
-            return redirect('setting:myhome_setting')
+            return redirect('setting:myhome_detail')
     else:
         print("get")
     return render(request, 'setting/myhome_form.html')
