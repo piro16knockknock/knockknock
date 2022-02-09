@@ -1,0 +1,53 @@
+
+.roommate-list{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 1.3rem;
+}
+
+.roommate-list__title {
+    margin: 3rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.roommate-list__user{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.roommate-list__user img, .roommate-list__user i{
+    height: 22rem;
+    width: 22rem;
+    border-radius: 50%;
+    margin-bottom: 2rem;
+}
+
+.roommate-list__user__name{
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+.roommate-list__btn {
+    text-align: center;
+    border: 0.2rem solid slategray;
+    padding: .8rem 5rem;
+    margin-right: 1rem;
+    border-radius: 5rem;
+    font-size: 1.3rem;
+}
+
+.roommate-list__btn-tomato {
+    border: 0.2rem solid tomato;
+    margin-top: 2rem;
+    color: tomato;
+    margin-bottom: 2rem;
+}
+
+.roommate-list__btn-tomato:hover{
+    background-color: tomato;
+    color: white;
+}

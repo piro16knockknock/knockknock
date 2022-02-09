@@ -1,3 +1,4 @@
+from sqlite3 import Date
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.safestring import mark_safe
@@ -49,7 +50,7 @@ def next_month(d):
 
 
 @login_required
-def add_todo(request):
+def add_todo(request, date):
     current_user = request.user
     current_home = Home.objects.filter(user = current_user)[0]
     form = TodoForm(current_home, request.POST)
@@ -57,33 +58,50 @@ def add_todo(request):
     if form.is_valid():
         print("valid")
         todo = form.save(commit=False)
-        print('but not save?')
         todo.home = current_home
+        todo.date = date
         todo.save()
         return
 
+@login_required
+def delete_todo(request, date, todo_id):
+    todo_id = todo_id.split('-')[-1]
+    print(todo_id.split('-')[-1])
+    delete_todo = Todo.objects.get(id = todo_id)
+    delete_todo.delete()
+    return redirect('home:date_todo', date = date)
+
 
 @login_required
-def home(request):
+def edit_todo(request, date, todo_id):
+    todo_id = todo_id.split('-')[-1]
+    edit_todo = Todo.objects.get(id = todo_id)
+    edit_todo.content = request.POST['content']
+    edit_todo.user.id = request.POST['user']
+    edit_todo.cate.id = request.POST['cate']
+    edit_todo.save()
+    return redirect('home:date_todo', date = date)
+
+
+@login_required
+def date_todo(request, date):
+    current_user = request.user
+    total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
+    user_todos = total_todos.filter(user__username = current_user.username, date = date)
+    current_home = Home.objects.filter(user = current_user)
+
     if request.method == "POST":
-        add_todo(request)
-        return redirect('todo')
-    else:
-        current_user = request.user
-        print(current_user.home.name)
-        total_todos = Todo.objects.filter(home__name = current_user.home.name)
-        print('total_todos : ', total_todos)
-        user_todos = total_todos.filter(user__username = current_user.username)
-        print('user_todos : ', user_todos)
-        current_home = Home.objects.filter(user = current_user)
-        print(current_home)
-        form = TodoForm(current_home[0])
+        add_todo(request, date)
+        return redirect('home:date_todo', date = date)
 
-        ctx = {
-            'total_todos' : total_todos,
-            'user_todos' : user_todos,
-            'username' : current_user.username,
-            'form' : form,
-        }
+    form = TodoForm(current_home[0])
 
-        return render(request, 'home/home.html', context=ctx)
+    ctx = {
+        'select_date' : date,
+        'total_todos' : total_todos,
+        'user_todos' : user_todos,
+        'username' : current_user.username,
+        'form' : form,
+    }
+
+    return render(request, 'home/date_todo.html', context=ctx)
