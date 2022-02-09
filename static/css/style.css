@@ -105,9 +105,9 @@ a {
 }
 
 #intro-main-todo {
-    position: sticky;
-    bottom: 10%;
-    right: 20%;
+    position: absolute;
+    top: 60%;
+    right: 5%;
     width: 35rem;
     min-height: 20rem;
 
