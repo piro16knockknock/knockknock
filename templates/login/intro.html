@@ -35,6 +35,10 @@
             <div class="mt-3">
                 <button class="btn btn-lg btn-warning rounded-pill px-4 py-2 "><a href="{% url 'home:calendar' %}">생활 관리</a></button>
             </div>
+
+            <div id="intro-main-todo" class="text-center">
+                <p>오늘의 할 일</p>
+            </div>
         {% endif %}
     </div>
 </div>
@@ -71,7 +75,7 @@
             <h6 class="rounded-pill  bg-white">20대, 대학생</h6>
             <p>“룸메이트와 자취를 시작할 예정인데 처음이라 뭐부터 해야할지 &nbsp;모르겠어요”</p>
         </div>
-        
+
         <div class="intro-persona-box position-relative" id="intro-persona-center">
             <img src="{% static 'img/intro-avatar2.png' %}" class="position-absolute">
             <h6 class="rounded-pill bg-white">20대, 기숙사생</h6>
