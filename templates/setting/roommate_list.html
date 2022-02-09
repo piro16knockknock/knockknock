@@ -24,16 +24,18 @@
         <!--아직 룸메이트X 초대중 리스트-->
         <p class="roommate-list__title">초대중인 유저</p>
         {% for invite_user in invite_users %}
-        <div class="roommate-list__user roommate-id-{{ invite_user.pk }}">
-            {% if invite_user.profile_img %}
-                <img src="{{ invite_user.profile_img.url }}" height="220" width="220"/>
-            {% else %}
-                <i class="fas fa-user-circle"></i>
+            {% if invite_user.is_accepted is False %}
+            <div class="roommate-list__user roommate-id-{{ invite_user.pk }}">
+                {% if invite_user.profile_img %}
+                    <img src="{{ invite_user.profile_img.url }}" height="220" width="220"/>
+                {% else %}
+                    <i class="fas fa-user-circle"></i>
+                {% endif %}
+                <p class="roommate-list__user__name">{{ invite_user.nick_name }}</p>
+                <p>룸메이트가 아직 초대에 수락하지 않았습니다.</p>
+                <button type="button" onclick="onClickInviteCancel({{ invite_user.pk }})" class="roommate-list__btn roommate-list__btn-tomato ">초대 취소</button>
+            </div>
             {% endif %}
-            <p class="roommate-list__user__name">{{ invite_user.nick_name }}</p>
-            <p>룸메이트가 아직 초대에 수락하지 않았습니다.</p>
-            <button type="button" onclick="onClickInviteCancel({{ invite_user.pk }})" class="roommate-list__btn roommate-list__btn-tomato ">초대 취소</button>
-        </div>
         {% endfor %}
     </section>
     {% endif %}
