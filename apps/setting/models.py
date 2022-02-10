@@ -25,7 +25,7 @@ class Utility(models.Model):
 ## Relationships
 class LiveIn(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    home = models.OneToOneField(Home, on_delete=models.CASCADE)
+    home = models.ForeignKey(Home, on_delete=models.CASCADE)
     start_date = models.DateField(auto_now=True)
     end_date = models.DateField(null = True, blank=True)
     
