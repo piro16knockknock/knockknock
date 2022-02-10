@@ -14,5 +14,5 @@ class TodoForm(forms.ModelForm):
 class LivingRuleForm(forms.ModelForm):
     class Meta:
         model = LivingRule
-        fields = ('cate','content',)
+        fields = ('cate','content')
  

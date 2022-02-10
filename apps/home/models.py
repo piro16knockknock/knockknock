@@ -29,7 +29,7 @@ class LivingRuleCate(models.Model):
     
 class LivingRule(models.Model):
     cate = models.ForeignKey(LivingRuleCate, on_delete=models.CASCADE, related_name='living_rule')
-    home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name='living_rule')
+    home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name='living_rule', blank=True, null=True)
     content = models.CharField(max_length=50)
 
 

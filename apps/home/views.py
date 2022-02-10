@@ -11,6 +11,8 @@ from datetime import datetime, timedelta, date
 import calendar
 
 
+
+
 # Create your views here.
 class CalendarView(generic.ListView):
     model = Todo
@@ -124,7 +126,10 @@ def living_rule_new(request):
     if request.method == "POST":
         form = LivingRuleForm(request.POST)
         if form.is_valid():
-            form.save()
+            print("here")
+            rule = form.save()
+            rule.home = request.user.home
+            rule.save()
             return redirect('home:living_rules')
     else:
         form = LivingRuleForm()
@@ -153,7 +158,7 @@ def living_rule_edit(request, pk):
         if form.is_valid():
             rule = form.save()
             cate = rule.cate
-            return redirect('home:living_rules', pk=cate.pk)
+            return redirect('home:living_rules')
     else:
         form = LivingRuleForm(instance=rule)
     ctx = {
