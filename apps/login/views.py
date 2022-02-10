@@ -38,7 +38,8 @@ def leave_home(request):
     current_user.home = None
     current_user.save()
     
-    Todo.objects.filter(home=current_home, user=current_user).delete()
+    Todo.objects.filter(home=current_home, user=current_user).update(user=None)    
+        
     return redirect('login:mypage')
 
 #나중에 합치면서 삭제.
