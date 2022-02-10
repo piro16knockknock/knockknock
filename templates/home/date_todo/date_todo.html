@@ -7,15 +7,6 @@
 {% block data_todo %}
 <div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
     <div class="cate-container">
-<<<<<<< HEAD
-        <div class="cate"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-    </div>
-    {% else %}
-    <!-- dflex 나중에 확인하기!!! -->
-    <div class="cate-container d-flex">
-        {% for cate in cates %}
-        <div class="cate user-todo d-flex flex-column">
-=======
         <div class="cate complete-cate">
             <p>완료</p>
             <div class="complete-user-todo"></div>
@@ -35,30 +26,22 @@
         </div>
         {% for cate, user_todos in user_todo_dict.items %}
         <div class="cate user-todo d-inline-block">
->>>>>>> feature-datepage_todo
             <p>{{cate.name}}</p>
             <div class="user-todos">
             {% if user_todos.count is not 0 %}
                 {% for user_todo in user_todos %}
-<<<<<<< HEAD
-                    <div class="user-todo user-todo-cnt">
-                        <div class="d-flex align-items-center">
-                            <p>{{ user_todo.content }}</p>
-                            <div class="btn">
-                                <i class="fas fa-heart"></i>
-                            </div>
-                        </div>
-                        <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
-                    </div>
-=======
                 {% if user_todo.is_done is False%}
-                <div class="user-todo">
-                    <button class="btn" onclick="isDoneBtn()">미완료</button>
-                    <p>{{ user_todo.content }}</p>
+                <div class="user-todo user-todo-cnt">
+                    <div class="d-flex align-items-center"></div>
+                        <button class="btn" onclick="isDoneBtn()">미완료</button>
+                        <p>{{ user_todo.content }}</p>
+                        <div class="btn">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
                     <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
                 </div>
                 {% endif %}
->>>>>>> feature-datepage_todo
                 {% endfor %}
             {% endif %}
             </div>
