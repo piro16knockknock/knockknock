@@ -16,14 +16,17 @@
         {% for cate in cates %}
         <div class="cate user-todo d-inline-block">
             <p>{{cate.name}}</p>
-            <button class="is-done-btn btn btn-dark">
-                {% if user_todo.is_done is True %}
-                <p>완료!</p>
-                {% else %}
-                <p>진행중...</p>
-                {% endif %}
-            </button>
-            <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+            <div class="user-todos">
+            {% if user_todos.count is 0 %}
+            {% else %}
+                {% for user_todo in user_todos %}
+                    <div class="user-todo">
+                        <p>{{ user_todo.content }}</p>
+                        <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            </div>
         </div>
         {% endfor %}
     </div>
