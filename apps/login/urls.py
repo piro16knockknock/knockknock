@@ -12,6 +12,6 @@ urlpatterns = [
     #이전집 기록 보기 만들려고 만든 임시 url. 나중에 삭제
     path('mypage/', views.mypage, name='mypage'),
     path('signup/', views.sign_up, name='sign_up'),
-    path('login/', views.login, name='login'),
+    path('login/', views.login_user, name='login'),
     path('logout/', views.logoutUser, name='logout'),
 ]

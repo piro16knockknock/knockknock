@@ -7,14 +7,14 @@ from django.contrib.auth.models import AbstractUser
 # 1.User
 class User(AbstractUser):
     home = models.ForeignKey('setting.Home', on_delete=models.SET_NULL, blank=True, null=True)
-    nick_name = models.CharField(max_length=10, unique=True)
-    profile_img = models.ImageField(null=True)
+    nick_name = models.CharField(max_length=10, unique=True, null=True, blank=True)
+    profile_img = models.ImageField(null=True, blank=True)
     GENDER_CHOICES = (
         ('여성', '여성'),
         ('남성', '남성'),
         ('그외', '그외'),
     )
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
 
 class Title(models.Model): #User's title
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'title')
