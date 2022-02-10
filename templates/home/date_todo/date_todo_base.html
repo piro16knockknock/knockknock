@@ -67,10 +67,11 @@
         const edit_content = document.querySelector('#setToDoModal input[name="content"]');
         var edit_user = document.querySelector('#setToDoModal select[name="user"]').firstElementChild;
         var edit_cate = document.querySelector('#setToDoModal select[name="cate"]').firstElementChild;
-
+        console.log(edit_user)
+        console.log(edit_cate)
         edit_content.value = content;
-        edit_user.innerHTML = user_name;
-        edit_cate.innerHTML = cate_name;
+        // edit_user.innerHTML = user_name;
+        // edit_cate.innerHTML = cate_name;
     }
 
     function closeEdit(event) {
