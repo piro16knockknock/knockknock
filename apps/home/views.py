@@ -87,11 +87,14 @@ def edit_todo(request, date, todo_id):
 def date_todo(request, date):
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
-    user_todos = total_todos.filter(user__username = current_user.username, date = date)
+    user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=False)
+    complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True)
+    print(complete_user_todos)
+    
     current_home = Home.objects.filter(user = current_user)[0]
     cates = TodoCate.objects.filter(home = current_home)
-    print(cates)
 
+    user_todo_dict = make_todo_with_cate_dict(user_todos, cates)
     if request.method == "POST":
         add_todo(request, date)
         return redirect('home:date_todo', date = date)
@@ -101,10 +104,18 @@ def date_todo(request, date):
     ctx = {
         'select_date' : date,
         'total_todos' : total_todos,
-        'user_todos' : user_todos,
+        'user_todo_dict' : user_todo_dict,
+        'complete_user_todos' : complete_user_todos,
         'username' : current_user.username,
         'form' : form,
         'cates' : cates,
     }
 
     return render(request, 'home/date_todo/date_todo.html', context=ctx)
+
+def make_todo_with_cate_dict(todos, cates):
+    todo_dict= {}
+    for cate in cates:
+        todo_dict[cate] = todos.filter(cate=cate)
+    print(todo_dict)
+    return todo_dict
