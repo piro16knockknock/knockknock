@@ -8,28 +8,14 @@
 <div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
     
     {% if user_todos.count is 0 %}
-    <div class="todo-container">
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-        <div class="todo"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
- 
+    <div class="cate-container">
+        <div class="cate"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
     </div>
     {% else %}
-    <h2>오늘해야하는 {{username}}님의 할일 ~</h2>
-    {% endif %}
-    <div class="user-todos">
-        {% for user_todo in user_todos %}
-        <div class="user-todo">
-            <p>{{user_todo.content}}</p>
+    <div class="cate-container">
+        {% for cate in cates %}
+        <div class="cate user-todo d-inline-block">
+            <p>{{cate.name}}</p>
             <button class="is-done-btn btn btn-dark">
                 {% if user_todo.is_done is True %}
                 <p>완료!</p>
@@ -41,6 +27,7 @@
         </div>
         {% endfor %}
     </div>
+    {% endif %}
 </div>
 
 <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
