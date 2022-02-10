@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import HomeForm, UtilityForm
 from login.models import User, Notice
+from home.models import TodoCate
 from .models import Utility, Invite, LiveIn, Home
 import json
 from django.http import JsonResponse
@@ -58,8 +59,9 @@ def myhome_register(request):
                                    month = request.POST.get("utility_month"),
                                    date = request.POST.get("utility_date"))
             
-            #거주하기도 만들어야함
             LiveIn.objects.create(user = request.user, home = current_home)
+            TodoCate.objects.create(home = current_home, name="빨래")
+            TodoCate.objects.create(home = current_home, name="청소")
             return redirect('setting:myhome_detail')
     else:
         print("get")
