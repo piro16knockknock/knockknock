@@ -10,3 +10,9 @@ class TodoForm(forms.ModelForm):
         super(TodoForm, self).__init__(*args, **kwargs)
         self.fields['user'].queryset = User.objects.filter(home = home)
         self.fields['cate'].queryset = TodoCate.objects.filter(home = home)
+
+class LivingRuleForm(forms.ModelForm):
+    class Meta:
+        model = LivingRule
+        fields = ('cate','content',)
+ 

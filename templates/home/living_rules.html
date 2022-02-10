@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home/living_rules.css' %}">
+<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#guidelinemodal">가이드라인 모달</button>
+<div class="living-rules">
+    <div class="title">생활수칙</div>
+    {% for cate, rules in order_rules.items %}
+    <button type="button" class="category"  >
+        <h3 class="category-name"><a href="{% url 'home:living_rules' %}">{{ cate.name }}</a></h3>
+        <a href="{% url 'home:living_rule_new' %}">
+            <span class="material-icons-outlined">add_circle_outline</span>
+        </a>
+    </button>
+
+
+
+    <ul>
+        {% for m in rules %}
+            <li>
+                {{ m.content }}
+                <a href="{% url 'home:living_rule_edit' pk=m.pk %}">수정</a>
+                <a href="{% url 'home:living_rule_delete' pk=m.pk %}">삭제</a>
+            </li>
+
+        {% endfor %}
+    </ul>
+
+    {% endfor %}
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="guidelinemodal" tabindex="-1" aria-labelledby="guidelineModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="guidelineModalLabel">가이드라인 보기</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                가이드라인을 보시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <hr>
+                <button type="button" class="skip_btn" data-bs-dismiss="modal">건너뛰기</button>
+                <a href="{%url 'home:guideline' %}" class="movetoguideline">보기</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
