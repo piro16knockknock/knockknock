@@ -22,7 +22,9 @@
             </div>
         {% else %} <!-- 유저가 집이 있는 경우 -->
             <div class="mt-5" style="max-width: 50rem;">
-                <h2>🏡<br>{{ user.home.name }}</h2>
+                <h2>🏡</h2>
+                <p>{{user.nick_name}}네 집</p>
+                <h2>{{ user.home.name }}</h2>
             </div>
             <div class="mt-5">
                 <p>오늘도 노크노크와 함께<br>
