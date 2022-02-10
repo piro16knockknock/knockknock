@@ -67,6 +67,12 @@ a {
 
 .side-nav li {
     margin-left: 1rem;
+    font-size: 1.4rem;
+}
+
+.sid-nav a:hover {
+    color: #fbdb67;
+    
 }
 
 .rate-box {
