@@ -5,7 +5,7 @@ home/migrations/
 setting/migrations/
 typetest/migrations/
 community/migrations/
-
+#.gitignore 수정중
 
 ### Django ###
 *.log
