@@ -151,4 +151,3 @@ def accept_invite(request):
     user.home = user.invite.home
     user.save()
     return redirect('login:intro')
-

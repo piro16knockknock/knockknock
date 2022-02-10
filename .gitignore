@@ -5,6 +5,7 @@ apps/home/migrations/
 apps/setting/migrations/
 apps/typetest/migrations/
 apps/community/migrations/
+apps/login/migrations/
 #.gitignore 수정중
 
 ### Django ###
