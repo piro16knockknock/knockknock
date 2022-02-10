@@ -20,7 +20,7 @@ class Todo(models.Model):
     #0 - 상관없음 1-조금 급함 2-당장 해줘
     priority_num = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(2)], default=0)
     is_postpone = models.BooleanField(default=False)
-    is_done_date = models.DateField(null=True, blank=True)
+    is_done_date = models.DateTimeField(null=True, blank=True)
     is_done = models.BooleanField(default=False)
 
 class TodoReaction(models.Model):
