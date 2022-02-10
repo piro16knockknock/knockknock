@@ -152,7 +152,7 @@ def living_rule_edit(request, pk):
         form = LivingRuleForm(request.POST, instance=rule)
         if form.is_valid():
             rule = form.save()
-            cate = rule.category
+            cate = rule.cate
             return redirect('home:living_rules', pk=cate.pk)
     else:
         form = LivingRuleForm(instance=rule)
