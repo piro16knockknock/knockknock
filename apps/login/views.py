@@ -6,6 +6,7 @@ from django.utils.dateformat import DateFormat
 from home.models import Todo
 #이전 집 기록 보기
 from setting.models import LiveIn
+from home.models import Todo
 
 # Create your views here.
 def intro(request):
@@ -36,8 +37,8 @@ def leave_home(request):
     #정보 초기화
     current_user.home = None
     current_user.save()
-    #아 할일 모델이 아직 없네
-    # ToDo.objects.filter(user=current_user).delete()
+    
+    Todo.objects.filter(home=current_home, user=current_user).delete()
     return redirect('login:mypage')
 
 #나중에 합치면서 삭제.

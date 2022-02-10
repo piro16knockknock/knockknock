@@ -8,12 +8,12 @@
             <hr/>
             <p class="myhome-detail__row">
                 <label>현재 집이름</label>
-                <span>{{ home_name }}</span>
+                <span id="myhome-info__current-home-name">{{ home_name }}</span>
             </p>
             <p class="myhome-detail__row myhome-detail__row__homename">
                 <label>집이름 변경</label>
-                <input type="text" placeholder="변경할 집 이름을 입력하고 버튼을 눌러주세요"/>
-                <i class="fas fa-pen"></i>
+                <input type="text" id="new-home-name" placeholder="변경할 집 이름을 입력하세요."/>
+                <!--<i class="fas fa-pen"></i>-->
             </p>
             <p class="myhome-detail__row">
                 <label>전세/월세</label>
@@ -23,8 +23,8 @@
             </p>
             <p class="myhome-detail__row myhome-detail__row__rent">
                 <label>월세 납부일</label>
-                <input type="number"/><span>개월마다</span>
-                <input type="number" value="{{ rent_date }}" /><span>일</span>
+                <input type="number" id="new-rent-month" value="{{ rent_month }}"/><span>개월마다</span>
+                <input type="number" id="new-rent-date" value="{{ rent_date }}" /><span>일</span>
             </p>
             <p class="myhome-detail__row">
                 <div class="myhome-detail__row__utility">
@@ -32,13 +32,13 @@
                     {% for utility in utilities %}
                     <div class="myhome-detail__row__rent" >
                         <div class="myhome-detail__row__rent-type"><span>종류</span><span>{{ utility.name }}</span></div>
-                        <input type="number"/><span>개월마다</span>
-                        <input type="number" value="{{ utility.date }}" /><span>일</span>
+                        <input type="number" id="new-utility-month" value="{{ utility.month }}"/><span>개월마다</span>
+                        <input type="number" id="new-utility-date" value="{{ utility.date }}" /><span>일</span>
                     </div>
                     {% endfor %}
                 </div>
             </p>
-            <button type="submit" class="myhome-detail__btn">저장하기</button>
+            <button type="submit" onclick="onClickSaveHome()" class="myhome-detail__btn">저장하기</button>
         </div>
         <div class="myhome-roommate">
             <p class="myhome-detail__title">룸메이트</p>
@@ -67,20 +67,11 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="myhome-roommate__modal-input"><input type="text" placeholder="등록할 룸메이트의 아이디를 입력하세요."/>
-                            <i class="fas fa-plus-square"></i></div>
+                            <div class="myhome-roommate__modal-input"><input type="text" id="myhome-roommate-invite__input" placeholder="등록할 룸메이트의 아이디를 입력하세요."/>
+                            <!--<i class="fas fa-plus-square"></i>-->
+                            </div>
                             <div class="form-check">
-                                {% for user in users %}
-                                <div class="myhome-roommate__modal-user-list">
-                                    <input class="form-check-input" type="checkbox" value="{{ user.nick_name }}" onclick='getCheckboxValue(event)' id="flexCheckDefault">
-                                    {% if user.profile_img %}
-                                        <img src="{{ user.profile_img.url }}"/>
-                                    {% else %}
-                                        <i class="fas fa-user-circle"></i>
-                                    {% endif %}
-                                    <p>{{ user.nick_name }}</p>
-                                </div>
-                                {% endfor %}
+                            <!--유저 검색 결과 리스트가 나타날 곳-->
                             </div>                        
                         </div>
                         <div class="modal-footer">
@@ -100,35 +91,127 @@
         </div>
     </div>
 </section>
+{% endblock %}
 
+{% block script %}
 <script>
+/* 집 정보 변경 ajax */
+    const home_name = document.querySelector('#new-home-name');
+    const rent_month = document.querySelector('#new-rent-month');
+    const rent_date = document.querySelector('#new-rent-date');
+    const utility_month = document.querySelector('#new-utility-month');
+    const utility_date = document.querySelector('#new-utility-date');
 
-//초대를 위해 체크한 사람들 목록
-let checkedNickName = [];
-const getCheckboxValue = (event) => {
-    if(event.target.checked)  {
-        checkedNickName.push(event.target.value);
-    }else {
-        checkedNickName = checkedNickName.filter(function(item) {
-            return item !== event.target.value;
+    const onClickSaveHome = async() => {
+        if(home_name.value.trim() == "" || rent_month.value == "" || rent_date.value == "" || utility_month.value == "" || utility_date.value == ""){
+            alert('입력하지 않은 항목이 있습니다.');
+            return;
+        }
+        const url = "../../myhome/myhome_update/";
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+                'home_name' : home_name.value,
+                'rent_month' : rent_month.value,
+                'rent_date' : rent_date.value,
+                'utility_month' : utility_month.value,
+                'utility_date' : utility_date.value,
+            })
         });
+        const { home_name: new_home_name } = await res.json()
+        saveHomeHandleResponse(new_home_name);
     }
-}
 
-const onClickInvite = async() => {
-    if (checkedNickName.length==0) return; //아무것도 체크 X
-    const url = "../../myhome/invite_roommate/";
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': "application/x-www-form-urlencoded"
-        },
-        body: JSON.stringify({
-            'invite_list' : checkedNickName
-        })
+    const saveHomeHandleResponse = (new_home_name) => {
+        const current_name = document.querySelector('#myhome-info__current-home-name');
+        current_name.innerText = new_home_name;
+        home_name.value = "";
+    }
+    
+
+/*초대 검색창 - ajax*/
+    const search_input = document.querySelector('#myhome-roommate-invite__input');
+    search_input.addEventListener("keyup", (e) => {
+        if(search_input.value == "") return;
+        onSearchUserList(search_input.value);
     });
-    checkedNickName = [];
-}
+
+    const onSearchUserList = async(value) => {
+        const url = "../../myhome/search_user/";
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+                'search_word' : value
+            })
+        });
+        const { user_list: user_list } = await res.json()
+        searchUserListHandleResponse(user_list);
+    }
+
+    const searchUserListHandleResponse = (user_list) => {
+        //list 보여줌
+        const div = document.querySelector('.form-check');
+        div.innerHTML = "";
+        for(let i = 0 ; i < user_list.length ; i++){
+            const li = document.createElement('div');
+            li.classList.add('myhome-roommate__modal-user-list');
+
+            if(user_list[i]['profile'] ==""){
+
+                li.innerHTML =`<input class="form-check-input" type="checkbox" value="${user_list[i]['nickname']}" onclick='getCheckboxValue(event)' id="flexCheckDefault">
+                            <i class="fas fa-user-circle"></i>
+                            <p>${user_list[i]['nickname']}</p>`;
+                            
+            }else{
+                li.innerHTML = `<input class="form-check-input" type="checkbox" value="${user_list[i]['nickname']}" onclick='getCheckboxValue(event)' id="flexCheckDefault">
+                            <img src="${user_list[i]['profile']}"/>
+                            <p>${user_list[i]['nickname']}</p>`;
+            }
+            div.appendChild(li);
+        }
+    }
+
+/*초대 ajax*/
+    //초대를 위해 체크한 사람들 목록
+    let checkedNickName = [];
+    const getCheckboxValue = (event) => {
+        if(event.target.checked)  {
+            checkedNickName.push(event.target.value);
+        }else {
+            checkedNickName = checkedNickName.filter(function(item) {
+                return item !== event.target.value;
+            });
+        }
+    }
+
+    const onClickInvite = async() => {
+        if (checkedNickName.length==0) return; //아무것도 체크 X
+        const url = "../../myhome/invite_roommate/";
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+                'invite_list' : checkedNickName
+            })
+        });
+        checkedNickName = [];
+    }
+
+/*부트스트랩 모달 닫힘 이벤트 감지*/
+    const invite_modal_close = document.querySelector('#roommateAddModal');
+    invite_modal_close.addEventListener('hidden.bs.modal', ()=>{
+        search_input.value="";
+        const div = document.querySelector('.form-check');
+        div.innerHTML = "";
+    })
 
 </script>
 {% endblock %}
