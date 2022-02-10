@@ -89,7 +89,8 @@ def date_todo(request, date):
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     user_todos = total_todos.filter(user__username = current_user.username, date = date)
     current_home = Home.objects.filter(user = current_user)[0]
-    cate = TodoCate.objects.filter(home__todo_cate__name = current_home.todo_cate.name)
+    cates = TodoCate.objects.filter(home = current_home)
+    print(cates)
 
     if request.method == "POST":
         add_todo(request, date)
@@ -103,6 +104,7 @@ def date_todo(request, date):
         'user_todos' : user_todos,
         'username' : current_user.username,
         'form' : form,
+        'cates' : cates,
     }
 
     return render(request, 'home/date_todo/date_todo.html', context=ctx)

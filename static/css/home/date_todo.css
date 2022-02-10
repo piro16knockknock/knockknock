@@ -30,13 +30,14 @@ p span {
     font-weight: bold;
 }
 
-.todo-container {
-    width: 100rem;
+.cate-container {
+    width: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
 }
 
-.todo {
+.cate {
     display: inline-block;
+    width: 20rem;
 }
