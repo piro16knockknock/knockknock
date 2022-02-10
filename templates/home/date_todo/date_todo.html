@@ -33,6 +33,13 @@
                 {% if user_todo.is_done is False%}
                 <div class="user-todo user-todo-cnt">
                     <div class="d-flex align-items-center"></div>
+                        {% if user_todo.priority is None %}
+                            <p>아무때나</p>
+                            <p>불꽃?</p>
+                        {% else %}
+                            <p>{{ user_todo.priority.content }}</p>
+                            <p>불꽃 색깔{{ user_todo.priority.priority_num }}</p>
+                        {% endif%}
                         <button class="btn" onclick="isDoneBtn()">미완료</button>
                         <p>{{ user_todo.content }}</p>
                         <div class="btn">
@@ -44,9 +51,15 @@
                 {% endif %}
                 {% endfor %}
             {% endif %}
+            <div class="add-todo todo">
+                <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" href="#addToDoModal"> + 할 일 등록</a>
+            </div>
             </div>
         </div>
         {% endfor %}
+        <div class="add-cate cate">
+            <button class="btn btn-dark">+ 카테고리 추가하기</button>
+        </div>
     </div>
 </div>
 
