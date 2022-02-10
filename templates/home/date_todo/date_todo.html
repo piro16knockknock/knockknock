@@ -12,16 +12,22 @@
         <div class="cate"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
     </div>
     {% else %}
-    <div class="cate-container">
+    <!-- dflex 나중에 확인하기!!! -->
+    <div class="cate-container d-flex">
         {% for cate in cates %}
-        <div class="cate user-todo d-inline-block">
+        <div class="cate user-todo d-flex flex-column">
             <p>{{cate.name}}</p>
             <div class="user-todos">
             {% if user_todos.count is 0 %}
             {% else %}
                 {% for user_todo in user_todos %}
-                    <div class="user-todo">
-                        <p>{{ user_todo.content }}</p>
+                    <div class="user-todo user-todo-cnt">
+                        <div class="d-flex align-items-center">
+                            <p>{{ user_todo.content }}</p>
+                            <div class="btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                        </div>
                         <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
                     </div>
                 {% endfor %}
@@ -41,7 +47,7 @@
     {% endif %}
     <div class="total-todos">
         {% for total_todo in total_todos %}
-        <div class="total-todo">
+        <div class="total-todo user-todo-cnt">
             <p>{{total_todo.content}}</p>
             <button type="button" class="edit-btn {{total_todo.id}} btn btn-light" onclick="setBtn(this, '{{ total_todo.content }}', '{{ total_todo.user.username }}', '{{ total_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
         </div>

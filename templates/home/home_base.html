@@ -12,7 +12,7 @@
     {% endblock %}
 
     {% block page-side-menu %}
-	<div class="d-flex mt-4">
+	<div class="d-flex mt-4 justify-content-center">
 		<div id="todo-side" class="ms-5">
 			<div id="cal-profile" class="text-center d-flex flex-column align-items-center pt-2">
                 <div class="cal-profile-title border rounded-pill px-3 py-1">
@@ -31,7 +31,7 @@
             <div id="cal-house-name" class="text-center border py-4 my-3 position-relative" style=" width: 15rem; border-radius: 0.5rem;">
                 {{request.user.home.name}}
                 <div class="position-absolute" style="top: -5%; right: -5%;">
-                    <div class="btn btn-sm bg-secondary " style="border-radius: 50%;"><a href="" class="text-light"><i class="fas fa-cog "></i></a></div>
+                    <div class="btn btn-sm bg-secondary " style="border-radius: 50%;"><a href="{% url 'setting:myhome_detail' %}" class="text-light"><i class="fas fa-cog "></i></a></div>
                 </div>
             </div>
             <div id="cal-achieve-rate" class="text-center py-4 border" style="border-radius: 0.5rem; width: 15rem;">
