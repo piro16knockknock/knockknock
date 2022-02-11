@@ -40,10 +40,6 @@ p span {
 
 .cate {
     display: inline-block;
-<<<<<<< Updated upstream
-    width: 20rem;
-}
-=======
     margin-left: 1rem;
     margin-right: 1rem;
     padding-top: 2rem;
@@ -99,4 +95,3 @@ p span {
     width: 100%;
     padding: 3rem;
 }
->>>>>>> Stashed changes

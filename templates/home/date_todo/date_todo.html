@@ -6,31 +6,6 @@
 {% endblock %}
 {% block data_todo %}
 <div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
-<<<<<<< Updated upstream
-    
-    {% if user_todos.count is 0 %}
-    <div class="cate-container">
-        <div class="cate"style="display: inline-block;">아직 담당하는 할 일이 없어요~!</div>
-    </div>
-    {% else %}
-    <div class="cate-container">
-        {% for cate in cates %}
-        <div class="cate user-todo d-inline-block">
-            <p>{{cate.name}}</p>
-            <div class="user-todos">
-            {% if user_todos.count is 0 %}
-            {% else %}
-                {% for user_todo in user_todos %}
-                    <div class="user-todo">
-                        <p>{{ user_todo.content }}</p>
-                        <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-            </div>
-        </div>
-        {% endfor %}
-=======
     <div class="cate-container d-flex align-items-start">
         <div class="cate complete-cate">
             <p class="cate-name">완료</p>
@@ -91,7 +66,6 @@
         <div class="add-cate cate">
             <button class="btn btn-dark"><i class="fa-solid fa-folder-plus"></i>&nbsp;&nbsp;카테고리 추가</button>
         </div>
->>>>>>> Stashed changes
     </div>
     {% endif %}
 </div>
@@ -105,18 +79,12 @@
     {% endif %}
     <div class="total-todos">
         {% for total_todo in total_todos %}
-<<<<<<< Updated upstream
-        <div class="total-todo">
-            <p>{{total_todo.content}}</p>
-            <button type="button" class="edit-btn {{total_todo.id}} btn btn-light" onclick="setBtn(this, '{{ total_todo.content }}', '{{ total_todo.user.username }}', '{{ total_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
-=======
         <div class="total-todo todo-cnt">
             <p class="todo-text">{{total_todo.content}}</p>
             <div class="d-flex align-items-end justify-content-end">
             <button type="button" class="edit-btn {{total_todo.id}} date-edit-btn" onclick="setBtn(this, '{{ total_todo.content }}', '{{ total_todo.user.username }}', '{{ total_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
                 <i class="fa-solid fa-ellipsis"></i></button>
             </div>
->>>>>>> Stashed changes
         </div>
         {% endfor %}
     </div>
