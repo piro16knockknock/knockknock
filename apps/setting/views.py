@@ -40,9 +40,9 @@ def check_homename(request):
     req = json.loads(request.body)
     home_name = req['home_name']
     if( Home.objects.filter(name=home_name).exists() ):
-        return JsonResponse({'is_available' : False })
+        return JsonResponse({'is_available' : False, 'input_name': home_name })
     else:
-        return JsonResponse({'is_available' : True })
+        return JsonResponse({'is_available' : True, 'input_name': home_name })
 
 
 def myhome_register(request):
