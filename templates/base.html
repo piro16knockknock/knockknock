@@ -14,14 +14,14 @@
     
     <!-- Google Material Icons-->
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
-    <!-- fontawesome icon-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet"> 
+    <!-- fontawesome icon 버전 낮아서 cdn 대신 kit 넣음 (애니메이션도 가능)-->
+    <script src="https://kit.fontawesome.com/81e35a1647.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}?after %}">
     <title>Knock Knock</title>
 
 </head>
 <body>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white px-5 py-3">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid" style="vertical-align:middle">
           <a class="navbar-brand" href="{%url 'login:intro' %}">Knock/Knock</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

@@ -6,15 +6,15 @@
 
 <section>
     <div class="side-nav">
-		<ul class="d-flex">
-			<li>생활관리</li>
-			<li><a href="{%url 'home:calendar' %}">캘린더</a></li>
-			<li><a href="">생활수칙</a></li>
-			<li><a href="">가이드라인</a></li>
-		</ul>
-	</div>
+        <ul class="d-flex">
+            <li>생활관리&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
+            <li><a href="{%url 'home:calendar' %}">캘린더</a></li>
+            <li><a href="">생활수칙</a></li>
+            <li><a href="">가이드라인</a></li>
+        </ul>
+    </div>
 
-    <div class="d-flex mt-4">
+    <div class="d-flex mt-4 plr-6">
         <div id="calendar-side">
             
             <div id="cal-profile" class="text-center d-flex flex-column align-items-center pt-2">
@@ -26,22 +26,22 @@
                     <img class="cal-profile-img" src={% if user.profile_img %}"{{user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
                     
                 </div>
-                <div class="cal-profile-username">
+                <div class="cal-profile-username mb-2">
                     {{user.nick_name}}
-                    <p>@{{username}}</p>
+                    <p>@{{user.username}}</p>
                 </div>
             </div>
-            <div id="cal-house-name" class="text-center border py-4 my-3 position-relative" style=" width: 15rem; border-radius: 0.5rem;">
+            <div id="cal-house-name" class="cal-side-box position-relative">
                 {{request.user.home.name}}
                 <div class="position-absolute" style="top: -5%; right: -5%;">
                     <div class="btn btn-sm bg-secondary " style="border-radius: 50%;"><a href="" class="text-light"><i class="fas fa-cog "></i></a></div>
                 </div>
             </div>
-            <div id="cal-achieve-rate" class="text-center py-4 border mb-3" style="border-radius: 0.5rem; width: 15rem;">
-                <p>월세 납부일<span class="ps-3">30일</span></p>
-                <p>공과금 납부일<span class="ps-3">30일</span></p>
+            <div id="cal-achieve-rate" class="cal-side-box">
+                <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}일</span></p>
+                <p>공과금 납부일<span class="ps-3">일</span></p>
             </div>
-            <div id="cal-todo" class="text-center py-4 border" style="border-radius: 0.5rem; width: 15rem;">
+            <div id="cal-todo" class="cal-side-box">
                 <p>오늘의 할 일</p>
                 
                 {% for user_todo in user_todos %}
@@ -51,20 +51,24 @@
                 {% endfor %}
             </div>
         </div>
-
+        
         <div class="calendar">
-            <div class="calendar-header d-flex flex-column align-items-center">
-                <div class="calendar-nav">
+        
+                <div class="calendar-nav text-center">
                     <div class="ym-wrapper ">
-                        <a class="nav-btn btn-info go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"> < </a>
-                        <a class="nav-btn btn-info go-today" href="{% url 'home:calendar' %}"> 
+                        <a class="nav-btn go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"><i class="fa-solid fa-square-caret-left"></i></a>
+                        <a> 
                             <span class="year">{{ year }}</span>년
                             <span class="month">{{ month }}</span>월
                         </a>
-                        <a class="nav-btn btn-info gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"> > </a>
+                        <a class="nav-btn gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"><i class="fa-solid fa-square-caret-right"></i></a>
                     </div>
+                    
                 </div>
-            </div>
+                <div class="d-flex justify-content-end mb-3" style="width: 95%;">
+                    <button class="btn btn-outline-dark"><a class="nav-btn go-today" href="{%url 'home:calendar' %}"><i class="fa-solid fa-calendar-days">&nbsp;오늘</i></a></button>
+                </div>
+        
             <div class="calendar-main pb-3">
                 {{ calendar }}
             </div>
