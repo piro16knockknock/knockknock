@@ -7,7 +7,7 @@
 {% block data_todo %}
 <div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
     <div class="cate-container">
-        <div class="cate complete-cate">
+        <div class="cate complete-cate d-inline-block">
             <p>완료</p>
             <div class="complete-user-todo"></div>
             {% for todo in complete_user_todos %}
@@ -28,32 +28,32 @@
         <div class="cate user-todo d-inline-block">
             <p>{{cate.name}}</p>
             <div class="user-todos">
-            {% if user_todos.count is not 0 %}
-                {% for user_todo in user_todos %}
-                {% if user_todo.is_done is False%}
-                <div class="user-todo user-todo-cnt">
-                    <div class="d-flex align-items-center"></div>
-                        {% if user_todo.priority is None %}
-                            <p>아무때나</p>
-                            <p>불꽃?</p>
-                        {% else %}
-                            <p>{{ user_todo.priority.content }}</p>
-                            <p>불꽃 색깔{{ user_todo.priority.priority_num }}</p>
-                        {% endif%}
-                        <button class="btn" onclick="isDoneBtn()">미완료</button>
-                        <p>{{ user_todo.content }}</p>
-                        <div class="btn">
-                            <i class="fas fa-heart"></i>
+                {% if user_todos.count is not 0 %}
+                    {% for user_todo in user_todos %}
+                    {% if user_todo.is_done is False%}
+                    <div class="user-todo user-todo-cnt">
+                        <div class="d-flex align-items-center">
+                            {% if user_todo.priority is None %}
+                                <p>아무때나</p>
+                                <p>불꽃?</p>
+                            {% else %}
+                                <p>{{ user_todo.priority.content }}</p>
+                                <p>불꽃 색깔{{ user_todo.priority.priority_num }}</p>
+                            {% endif%}
+                            <button class="btn" onclick="isDoneBtn()">미완료</button>
+                            <p>{{ user_todo.content }}</p>
+                            <div class="btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
                         </div>
+                        <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
                     </div>
-                    <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
-                </div>
+                    {% endif %}
+                    {% endfor %}
                 {% endif %}
-                {% endfor %}
-            {% endif %}
-            <div class="add-todo todo">
-                <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" href="#addToDoModal"> + 할 일 등록</a>
-            </div>
+                <div class="add-todo todo">
+                    <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" href="#addToDoModal"> + 할 일 등록</a>
+                </div>
             </div>
         </div>
         {% endfor %}
