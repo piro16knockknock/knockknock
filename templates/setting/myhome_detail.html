@@ -13,6 +13,8 @@
             <p class="myhome-detail__row myhome-detail__row__homename">
                 <label>집이름 변경</label>
                 <input type="text" id="new-home-name" placeholder="변경할 집 이름을 입력하세요."/>
+                <button type="button" onclick="onClickCheckHomeName()" class="myhome-detail__btn">중복 확인</button>
+                <span id="myhome-detail-alert"></span>
                 <!--<i class="fas fa-pen"></i>-->
             </p>
             <p class="myhome-detail__row">
@@ -101,12 +103,30 @@
     const rent_date = document.querySelector('#new-rent-date');
     const utility_month = document.querySelector('#new-utility-month');
     const utility_date = document.querySelector('#new-utility-date');
-
+    let check_name = "" //중복검사를 통과한 이름
+    let temp_home_name = "";
     const onClickSaveHome = async() => {
-        if(home_name.value.trim() == "" || rent_month.value == "" || rent_date.value == "" || utility_month.value == "" || utility_date.value == ""){
+
+        //집이름 제외하곤 빈칸이 되어선 안됨
+        if(rent_month.value == "" || rent_date.value == "" || utility_month.value == "" || utility_date.value == ""){
             alert('입력하지 않은 항목이 있습니다.');
             return;
         }
+
+        //집이름을 입력했는데 중복이면 안됨.
+        if(home_name.value != "" && home_name.value != check_name ){
+            event.preventDefault();
+            alert("집 이름 중복 확인을 먼저 해주세요.");
+            return;
+        }
+        
+        //집이름은 입력 안했으면 그냥 변경 안하는걸로 간주
+        if(home_name.value == ""){
+            temp_home_name = "{{ home_name }}";
+        } else {
+            temp_home_name = home_name.value;
+        }
+
         const url = "../../myhome/myhome_update/";
         const res = await fetch(url, {
             method: 'POST',
@@ -114,7 +134,7 @@
                 'Content-Type': "application/x-www-form-urlencoded"
             },
             body: JSON.stringify({
-                'home_name' : home_name.value,
+                'home_name' : temp_home_name,
                 'rent_month' : rent_month.value,
                 'rent_date' : rent_date.value,
                 'utility_month' : utility_month.value,
@@ -213,5 +233,42 @@
         div.innerHTML = "";
     })
 
+
+/* 집이름 중복 확인*/
+    const onClickCheckHomeName = async() => {
+        if(home_name.value == "") return;
+        const url = "../../myhome/check_homename/";
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+                'home_name' : home_name.value
+            })
+        });
+        const { is_available: is_available, input_name: input_name } = await res.json()
+        checkHomeNameHandleResponse(is_available, input_name);
+    }
+
+    const checkHomeNameHandleResponse = (is_available, input_name) => {
+        const alert = document.querySelector('#myhome-detail-alert');
+        
+        if(is_available){
+            alert.innerHTML=" 사용할 수 있는 이름입니다. ";
+            alert.style.color="green";
+            check_name = input_name;
+            
+            console.log(input_name);
+            return;
+        }
+        else{
+            alert.innerHTML=" 이미 사용 중인 이름입니다. ";
+            alert.style.color="red";
+        }
+        // 중복임 =>경고
+        home_name.value = "";
+    }
+ 
 </script>
 {% endblock %}
