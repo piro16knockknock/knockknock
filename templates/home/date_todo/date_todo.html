@@ -14,7 +14,9 @@
                 <div class="complete-user-todo">
                     <button class="btn" onclick="notDoneBtn()">완료! 버튼</button>
                     <p>{{ todo.content }}</p>
-                    <button class="btn" onclick="feedbackBtn()">피드백 버튼</button>
+                    <div class="btn" oncanplay="feedbackBtn()">
+                        <i class="fas fa-heart"></i>
+                    </div>
                     <p>{{ todo.is_done_date }} 완료!</p>
                     {% if todo.is_postpon is True %}
                     <p>잊지 않고 해냈어요~!</p>
@@ -42,9 +44,6 @@
                             {% endif%}
                             <button class="btn" onclick="isDoneBtn()">미완료</button>
                             <p>{{ user_todo.content }}</p>
-                            <div class="btn">
-                                <i class="fas fa-heart"></i>
-                            </div>
                         </div>
                         <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
                     </div>
@@ -57,25 +56,105 @@
             </div>
         </div>
         {% endfor %}
+        <div class="etc-cate cate">
+            <p>기타</p>
+            {% if user_todos.count is not 0 %}
+            {% for user_todo in no_cate_user_todos %}
+            {% if user_todo.is_done is False%}
+            <div class="user-todo user-todo-cnt">
+                <div class="d-flex align-items-center">
+                    {% if user_todo.priority is None %}
+                        <p>아무때나</p>
+                        <p>불꽃?</p>
+                    {% else %}
+                        <p>{{ user_todo.priority.content }}</p>
+                        <p>불꽃 색깔{{ user_todo.priority.priority_num }}</p>
+                    {% endif%}
+                    <button class="btn" onclick="isDoneBtn()">미완료</button>
+                    <p>{{ user_todo.content }}</p>
+                </div>
+                <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+            </div>
+            {% endif %}
+            {% endfor %}
+            <div class="add-todo todo">
+                <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" href="#addToDoModal"> + 할 일 등록</a>
+            </div>
+        {% endif %}
+        </div>
         <div class="add-cate cate">
             <button class="btn btn-dark">+ 카테고리 추가하기</button>
         </div>
     </div>
 </div>
-
 <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
-    {% if total_todos.count is 0  %}
-    <h2>오늘 해야할 일을 등록해주세요~!</h2>
-    {% else %}
-    <h2>오늘 우리 집의 할일~</h2>
-    {% endif %}
-    <div class="total-todos">
-        {% for total_todo in total_todos %}
-        <div class="total-todo user-todo-cnt">
-            <p>{{total_todo.content}}</p>
-            <button type="button" class="edit-btn {{total_todo.id}} btn btn-light" onclick="setBtn(this, '{{ total_todo.content }}', '{{ total_todo.user.username }}', '{{ total_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+    <div class="cate-container">
+        <div class="cate complete-cate d-inline-block">
+            <p>완료</p>
+            <div class="complete-total-todos"></div>
+            {% for todo in complete_total_todos %}
+                <div class="complete-total-todo">
+                    <button class="btn" onclick="notDoneBtn()">완료! 버튼</button>
+                    <p>{{ todo.content }}</p>
+                    <div class="btn" oncanplay="feedbackBtn()">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <p>{{ todo.is_done_date }} 완료!</p>
+                    {% if todo.is_postpon is True %}
+                    <p>잊지 않고 해냈어요~!</p>
+                    {% else %}
+                    <p>미루지 않고 해냈어요!</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+        <div class="cate no-user-cate d-inline-block">
+            <p>담당 없음</p>
+            <div class="no-user-todos">
+            {% if no_user_todos.count is not 0 %}
+            {% for todo in no_user_todos %}
+                {% if todo.is_done is False%}
+                <div class="no-user-todo">
+                    <div class="d-flex align-items-center">
+                        {% if todo.priority is None %}
+                            <p>아무때나</p>
+                            <p>불꽃?</p>
+                        {% else %}
+                            <p>{{ todo.priority.content }}</p>
+                            <p>불꽃 색깔{{ todo.priority.priority_num }}</p>
+                        {% endif%}
+                        <button class="btn" onclick="adduserBtn()">담당 추가</button>
+                        <p>{{ todo.content }}</p>
+                    </div>
+                    <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+
+                </div>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+            <div class="add-todo todo">
+                <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" href="#addToDoModal"> + 할 일 등록</a>
+            </div>
+            </div>
+        </div>
+        <div class="cate doing-cate">
+            <p>진행중</p>
+            {% if doing_todos.count is not 0 %}
+            {% for todo in doing_todos %}
+                {% if todo.is_done is False%}
+                <div class="no-user-todo">
+                    <div class="d-flex align-items-center">
+                        <p>{{ todo.priority.content }}</p>
+                        <p>불꽃 색깔{{ todo.priority.priority_num }}</p>
+                        <img class="cal-profile-img" style="width:10rem; height:10rem;" src={% if user.profile_img %}"{{todo.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                        <p>{{ todo.content }}</p>
+                    </div>
+                    <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+                </div>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -103,7 +182,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="setToDoModal">
     <div class="modal-dialog">
@@ -133,4 +211,40 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+
+{% block script %}
+<script type="text/javascript">
+    var edit_btn = document.querySelector('.edit-btn');
+    var delete_btn = document.querySelector('.delete-btn');
+    var edit_div = document.querySelector('.edit-todo');
+    var form = document.querySelector('#setToDoModal form');
+
+    function setBtn(event, content, user_name, cate_name) {
+        for (var i=0, l=edit_btn.classList.length; i<l; ++i) {
+            if(/todo-id-.*/.test(edit_btn.classList[i])) {
+                edit_btn.classList.replace(edit_btn.classList[i], event.classList[1]);
+                delete_btn.classList.replace(delete_btn.classList[i], event.classList[1]);
+                return;
+            }
+        }
+        edit_btn.classList.add(event.classList[1]);
+        delete_btn.classList.add(event.classList[1]);
+        delete_btn.href = `{{select_date}}/${event.classList[1]}/delete/`
+        form.action = `{{select_date}}/${event.classList[1]}/edit/`
+        makeEditForm(content, user_name, cate_name)
+    };
+
+    function showEdit(event) {
+        delete_btn.style.display = 'None';
+        edit_div.style.display = 'block';
+    }
+
+    function closeEdit(event) {
+        delete_btn.style.display = 'inline-block';
+        edit_div.style.display = 'None';
+    }
+
+</script>
 {% endblock %}

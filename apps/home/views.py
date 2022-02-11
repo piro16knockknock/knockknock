@@ -1,4 +1,5 @@
 from sqlite3 import Date
+from urllib.parse import uses_relative
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.safestring import mark_safe
@@ -26,7 +27,6 @@ class CalendarView(generic.ListView):
         context['next_month'] = next_month(d)
         context['month'] = str(d.month)
         context['year'] = str(d.year)
-        print(context)
         return context
 
 def get_date(req_month):
@@ -87,25 +87,30 @@ def edit_todo(request, date, todo_id):
 def date_todo(request, date):
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
+    complete_total_todos = total_todos.filter(is_done=True)
     user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=False)
     complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True)
-    print(complete_user_todos)
-    
+ 
     current_home = Home.objects.filter(user = current_user)[0]
     cates = TodoCate.objects.filter(home = current_home)
 
     user_todo_dict = make_todo_with_cate_dict(user_todos, cates)
-    if request.method == "POST":
-        add_todo(request, date)
-        return redirect('home:date_todo', date = date)
+    total_todo_dict = make_todo_with_cate_dict(total_todos, cates)
+    no_user_todos = total_todos.filter(user=None)
+    no_cate_user_todos = user_todos.filter(cate=None)
+    doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
 
     form = TodoForm(current_home)
 
     ctx = {
         'select_date' : date,
-        'total_todos' : total_todos,
+        'total_todo_dict' : total_todo_dict,
         'user_todo_dict' : user_todo_dict,
         'complete_user_todos' : complete_user_todos,
+        'complete_total_todos' : complete_total_todos,
+        'no_user_todos' : no_user_todos,
+        'no_cate_user_todos' : no_cate_user_todos,
+        'doing_todos' : doing_todos,
         'username' : current_user.username,
         'form' : form,
         'cates' : cates,
@@ -117,5 +122,4 @@ def make_todo_with_cate_dict(todos, cates):
     todo_dict= {}
     for cate in cates:
         todo_dict[cate] = todos.filter(cate=cate)
-    print(todo_dict)
     return todo_dict
