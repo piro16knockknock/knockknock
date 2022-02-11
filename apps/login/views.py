@@ -14,7 +14,6 @@ def intro(request):
         today = DateFormat(datetime.now()).format('Y-m-d')
         today_url = '/home/todo/' + str(today)
         user_todos = Todo.objects.filter(user=request.user)[:2]
-        print(user_todos)
         ctx = {
             'username' : request.user.username,
             'today_date' : today,
