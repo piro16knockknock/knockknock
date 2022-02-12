@@ -46,7 +46,7 @@
                             <button class="btn" onclick="isDoneBtn()">미완료</button>
                             <p>{{ user_todo.content }}</p>
                         </div>
-                        <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick=setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+                        <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
                     </div>
                     {% endif %}
                     {% endfor %}
@@ -176,7 +176,7 @@
                             {% for cate in cates %}
                             <label><input type="radio" class="cate-id-{{ cate.id }}" name="cate" value="{{ cate.id }}">{{ cate.name }}</label>
                             {% endfor %}
-                            <label><input type="radio" class="cate-id-no-cate" name="cate" value="no-cate">{{ cate.name }}</label>
+                            <label><input type="radio" class="cate-id-no-cate" name="cate" value="no-cate">기타</label>
                         </div>
                         <div class="select-todo-user">
                             {% for user in roomates %}
@@ -268,7 +268,7 @@
         }
     }
 
-// 어던 todo를 선택했냐에 따른 설정 모달 내 할 일 수정, 삭제 url setup
+// 어떤 todo를 선택했냐에 따른 설정 모달 내 할 일 수정, 삭제 url setup
     function setEditBtn(event, content, user_name, cate_name) {
         for (var i=0, l=edit_btn.classList.length; i<l; ++i) {
             if(/todo-id-.*/.test(edit_btn.classList[i])) {
