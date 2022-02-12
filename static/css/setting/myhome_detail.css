@@ -8,6 +8,11 @@
     width: 90rem;
 }
 
+.myhome-detail__display-none {
+    display: none !important;
+
+}
+
 /*myhome-info*/
 .myhome-detail__title {
     font-size: 2rem;
@@ -43,14 +48,6 @@
 
 .myhome-detail__row__homename>input {
     width: 40rem;
-}
-
-.myhome-detail__row__homename>i {
-    background-color: rgba(1, 1, 1, .2);
-    padding: .5rem;
-    margin-left: .8rem;
-    font-size: 1.3rem;
-    border-radius: 50%;
 }
 
 /*전세 월세 버튼*/
@@ -174,12 +171,6 @@
     border-radius: .2rem;
     background-color: rgba(1, 1, 1, 0.05);
     border: .2rem solid rgb(137, 186, 159);
-}
-
-.myhome-roommate__modal-input i {
-    margin-left: 1rem;
-    color: rgb(137, 186, 159);
-    font-size: 4.2rem;
 }
 
 .myhome-roommate__modal-font {
