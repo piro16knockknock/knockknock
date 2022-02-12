@@ -67,12 +67,24 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'login:mypage' %}">마이페이지</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="material-icons-round" style="font-size: 2rem;">
-                            notifications
-                            </span>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" >
+                        <span class="material-icons-round" style="font-size: 2rem;">notifications</span>
                     </a>
+                    <ul class="dropdown-menu main-drop-menu" aria-labelledby="navbarDropdown" style="position: absolute; transform: translate(-85%, 0%);">
+                        <h3 class="notice-title">알림</h3>       
+
+                        <li><a class="dropdown-item" href="#">
+                            {% if request.user.invite and request.user.invite.is_accepted is False %}
+                            <p>{{request.user.invite.home.name}} 로부터 초대장이 도착하였습니다.</p>
+                            
+                            <a href="{% url 'setting:accept_invite' %}" class="btn btn-default">수락하기</a>
+                            {% endif %}
+                        </a></li>
+
+                    </ul>
+
+                    
                 </li>
                 {% else %}                
                 <li class="nav-item">

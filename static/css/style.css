@@ -58,7 +58,19 @@ a {
 
 .main-drop-menu li {
     font: 1.4rem black;
+    display: flex;
+    justify-content: space-around;
 }
+
+.main-drop-menu h3{
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+}
+.btn-default{
+    font-size: 1.2rem;
+    width: 8rem;
+}
+
 
 /* calendar page */
 .side-nav {
