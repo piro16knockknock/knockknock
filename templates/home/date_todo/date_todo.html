@@ -40,7 +40,7 @@
                             {% else %}
                                 <p>{{ user_todo.priority.content }}</p>
                                 <!-- 우선순위에 따라 불꽃 아이콘 색 다르게 -->
-                                <i class="fa-solid fa-fire"></i>
+                                <i class="fa-solid fa-fire {{ user_todo.priority.priority_num }}"></i>
                                 <p>{{ user_todo.priority.priority_num }}</p>
                             {% endif%}
                         </div>
