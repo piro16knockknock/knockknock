@@ -9,6 +9,9 @@ from django.shortcuts import get_object_or_404
 #이전 집 기록 보기
 from setting.models import LiveIn, Home
 from home.models import Todo
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 #template custom (dictionary)
 from django.template.defaulttags import register
 
@@ -34,18 +37,18 @@ def intro(request):
         return render(request, 'login/intro.html')
 
 #이전집 생활수칙 가져오기
-def take_prelivingrule(request, pk):
+@csrf_exempt
+def take_prelivingrule(request):
     current_home = request.user.home
-    target_home = get_object_or_404(Home, id=pk)
-    target_living_rules = LivingRule.objects.filter(home=target_home)
-    target_living_rules_cate = LivingRuleCate.objects.filter(home=target_home)
-    
-    for living_rule in target_living_rules:
-        LivingRule.objects.get_or_create(home = current_home, cate = living_rule.cate, content= living_rule.content)
-    
-    for living_rule_cate in target_living_rules_cate:
-        LivingRuleCate.objects.get_or_create(home = current_home, name = living_rule_cate.name)
-    
+    req = json.loads(request.body)
+    checked_list = req['checked_list']
+    for checked in checked_list:
+        category = checked['cate']
+        content = checked['content']
+        LivingRuleCate.objects.get_or_create(home = current_home, name = category)
+        livingrule_cate = LivingRuleCate.objects.get(home=current_home, name=category)
+        LivingRule.objects.get_or_create(home = current_home, cate = livingrule_cate, content= content)
+        
     return redirect('login:mypage')
 
 #이전집 기록 보기

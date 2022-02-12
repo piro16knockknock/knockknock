@@ -9,7 +9,10 @@ urlpatterns = [
     
     #이사가기
     path('leave_home/', views.leave_home, name='leave_home'),
+    
+    #ajax
+    path('mypage/take_prelivingrule/', views.take_prelivingrule, name='take_prelivingrule'),
+
     #이전집 기록 보기 만들려고 만든 임시 url. 나중에 삭제
     path('mypage/', views.mypage, name='mypage'),
-    path('mypage/<int:pk>/take_prelivingrule', views.take_prelivingrule, name='take_prelivingrule'),
 ]

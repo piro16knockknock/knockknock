@@ -41,11 +41,30 @@
 }
 
 .past-record__modal-rule-content {
-    padding: .3rem 0 .3rem 2rem;
+    padding: .3rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 2.5rem;
 }
 
 .past-record__modal-rule .past-record__modal-rule-footer button,
 .past-record__modal-rule .past-record__modal-rule-footer a {
     font-size: 1.5rem;
     margin-top: 2rem;
+}
+
+/*ajax*/
+.past-record__display-none {
+    display: none;
+}
+
+.past-record__checkbox {
+    border: 2px solid rgb(255, 197, 109);
+    padding: .8rem;
+    cursor: pointer;
+}
+
+.past-record__checkbox:checked {
+    background-color: rgb(255, 197, 109);
 }
