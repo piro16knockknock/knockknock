@@ -3,10 +3,15 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from datetime import datetime
 from django.utils.dateformat import DateFormat
-from home.models import Todo
+from home.models import Todo, LivingRule
 #이전 집 기록 보기
 from setting.models import LiveIn
 from home.models import Todo
+#template custom (dictionary)
+from django.template.defaulttags import register
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 
 # Create your views here.
 def intro(request):
@@ -27,9 +32,31 @@ def intro(request):
 
 #이전집 기록 보기
 def prehome_list(request):
-    prehome_info = LiveIn.objects.filter(user=request.user)
-    prehome_info = prehome_info.filter(end_date__isnull=False)
-    return prehome_info
+    prehome_infos = LiveIn.objects.filter(user=request.user)
+    prehome_infos = prehome_infos.filter(end_date__isnull=False)
+    prehome_dict = {}
+    for prehome_info in prehome_infos:
+        prehome = prehome_info.home
+        prehome_dict[prehome.name] = {}
+        living_rules = LivingRule.objects.filter(home = prehome)
+        for living_rule in living_rules:
+            if living_rule.cate.name in prehome_dict[prehome.name] : # 이미 키가 있으면
+                prehome_dict[prehome.name][living_rule.cate.name].append(living_rule.content)
+            else: #없으면 생성
+                prehome_dict[prehome.name][living_rule.cate.name] = [living_rule.content]
+    
+    '''
+        ['집1'] : [
+            ['생활 수칙 카테'] : '생활수칙1', '생활수칙2', '생활수칙3'...,
+            ['생활 수칙 카테'] : '생활수칙1', '생활수칙2', '생활수칙3'...,
+        ],
+        ['집2'] :  [
+            ['생활 수칙 카테'] : '생활수칙1', '생활수칙2', '생활수칙3'...,
+            ['생활 수칙 카테'] : '생활수칙1', '생활수칙2', '생활수칙3'...,
+        ],
+    
+    '''
+    return prehome_infos, prehome_dict
 
 #이사하기
 def leave_home(request):
@@ -47,5 +74,9 @@ def leave_home(request):
 
 #나중에 합치면서 삭제.
 def mypage(request):
-    ctx = { 'prehomes' : prehome_list(request) }
+    prehomes, prehome_dict = prehome_list(request)
+    
+    print(prehome_dict)
+    
+    ctx = { 'prehomes' : prehomes, 'prehome_dict' : prehome_dict }
     return render(request, 'login/mypage_temp.html', ctx)

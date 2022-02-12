@@ -11,3 +11,23 @@
 #moveHomeModal .modal-footer a {
     font-size: 1.5rem;
 }
+
+/*생활수칙 모달*/
+.past-record__modal-rule {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.past-record__modal-rule .modal-content {
+    padding: 4rem;
+}
+
+.past-record__modal-rule .modal-content .past-record__modal-rule-header {
+    font-weight: 600;
+    font-size: 1.7rem;
+}
+
+.past-record__modal-rule .past-record__modal-rule-footer button,
+.past-record__modal-rule .past-record__modal-rule-footer a {
+    font-size: 1.5rem;
+}

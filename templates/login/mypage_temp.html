@@ -5,11 +5,13 @@
 <!--이사하기 버튼-->
 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
     data-bs-target="#moveHomeModal">이사하기</button>
+
 {% if request.user.invite and request.user.invite.is_accepted is False %}
 <p>초대가 왔어요!</p>
 <p>{{request.user.invite.home.name}}</p>
 <a href="{% url 'setting:accept_invite' %}" class="btn btn-dark">수락하기</a>
 {% endif %}
+
 <!-- Modal -->
 <div class="modal fade" id="moveHomeModal" tabindex="-1" aria-labelledby="moveHomeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -29,6 +31,7 @@
         </div>
     </div>
 </div>
+
 <!--이전 집 기록 html-->
 <div class="past-record">
     <h5>이전 집 기록</h5>
@@ -44,10 +47,46 @@
             <tr>
                 <td>{{prehome.start_date}} ~ {{prehome.end_date}}</td>
                 <td>{{prehome.home.name}}</td>
-                <td><a class="btn btn-outline-primary">생활수칙 보기</a></td>
+                <td><a class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#prehomeRuleModal-{{prehome.pk}}">생활수칙
+                        보기</a></td>
+
+                <!-- Modal -->
+                <div class="modal fade" id="prehomeRuleModal-{{prehome.pk}}" tabindex="-1"
+                    aria-labelledby="prehomeRuleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog past-record__modal-rule">
+                        <div class="modal-content">
+                            <div class="past-record__modal-rule-header">
+                                <p class="modal-title" id="prehomeRuleModalLabel">{{ prehome.home.name }}의
+                                    생활수칙</p>
+                            </div>
+                            <div class="modal-body">
+                                {% for cate in prehome_dict|get_item:prehome.home.name %}
+                                <span>{{ cate }}</span>
+                                {% for rule in prehome_dict|get_item:prehome.home.name|get_item:cate %}
+                                <p>{{ rule }}</p>
+                                {% endfor %}
+                                {% endfor %}
+
+                                {% comment %}
+                                {% for key, value in prehome_dict.items %}
+                                <span> {{ key }} </span>
+                                <p></p>
+                                {% endfor %}
+                                {% endcomment %}
+                            </div>
+                            <div class="past-record__modal-rule-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                <a href="" class="btn btn-outline-primary">생활수칙 가져오기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+
 {% endblock %}
