@@ -32,6 +32,7 @@ p span {
     font-weight: bold;
 }
 
+
 .cate-container {
     width: 100%;
     overflow-x: scroll;
@@ -41,6 +42,63 @@ p span {
 
 .cate {
     display: inline-block;
+<<<<<<< HEAD
+=======
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding-top: 2rem;
+}
+
+.todo-cnt {
+    border-radius: 1rem;
+    width: 24rem;
+    padding: 2rem;
+    background-color: #ddd;
+    margin-bottom: 1.2rem;
+}
+
+.todo-cnt i {
+    font-size: 1.6rem;
+}
+
+.user-todo-head p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    
+}
+
+.todo-text {
+    font-size: 1.5rem;
+    font-weight: 400;
+    word-break: break-all;
+    white-space: normal;
+}
+
+.cate-name {
+    margin-bottom: 1.6rem;
+    font-weight: 600;
+    font-size: 1.4rem;
+}
+
+.date-edit-btn {
+    border: 1px solid black;
+    border-radius: 5rem;
+    padding: 0 0.5rem;
+}
+
+.add-todo {
+    border-radius: 1rem;
+    width: 24rem;
+    background-color: #FFF6E8;
+    border: 2px dashed #ddd;
+    margin-bottom: 1.2rem;
+    text-align: center;
+}
+
+.add-btn {
+    width: 100%;
+    padding: 3rem;
+>>>>>>> 982668570de7264817462b46fd01873a43bddb57
 }
 
 .user-todo-cnt {

@@ -3,16 +3,15 @@
 
 {% block content %}
     <div class="todo-main">
-        <div class="select_date">
-            <h3>{{select_date}}</h3>
-        </div>
         <div id="todo">
             <div class="text-center d-flex align-items-center justify-content-center">
-                <div class="btn"><a href=""><i style="font-size: 1.6rem" class="fas fa-chevron-circle-left"></i></a></div>
+                <div class="btn"><a href=""><i style="font-size: 1.6rem" class="fa-solid fa-circle-chevron-left"></i></a></div>
                 <h5>{{select_date}}</h5>
-                <div class="btn"><a href=""><i style="font-size: 1.6rem" class="fas fa-chevron-circle-right"></i></a></div>
+                <div class="btn"><a href=""><i style="font-size: 1.6rem" class="fa-solid fa-circle-chevron-right"></i></a></div>
             </div>
-            <h6>할일</h6>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-outline-dark"><a href="{%url 'home:calendar' %}"><i class="fa-solid fa-calendar-days">&nbsp;캘린더 보기</i></a></button>
+            </div>
             <div>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">

@@ -1,12 +1,11 @@
 @import 'reset.css';
 @import 'setting/myhome_detail.css';
 @import 'setting/roommate_list.css';
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
 @import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
 /*font-family: 'Gothic A1', sans-serif;
 font-family: 'Noto Sans KR', sans-serif;*/
-
-
 
 /*반응형*/
 html,
@@ -18,6 +17,7 @@ font-size: 62.5%;
 
 body {
     padding-top: 5rem;
+    font-family: 'Pretendard Variable', system-ui, Roboto, 'Helvetica Neue', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
 }
 
 li {
@@ -26,11 +26,19 @@ li {
 
 a {
     text-decoration: none;
-    color: black;
+}
+
+.plr-6 {
+    padding-left: 6rem;
+    padding-right: 6rem;
 }
 
 .button-bg-white {
     background-color: white;
+}
+
+.navbar {
+    padding: 1rem 6rem;
 }
 
 .navbar:hover {
@@ -60,9 +68,16 @@ a {
     font: 1.4rem black;
 }
 
+.cnt-padding{
+    padding-left: 8rem;
+    padding-right: 8rem;
+}
+
+
 /* calendar page */
 .side-nav {
     margin-top: 2rem;
+    margin-left: 5rem;
 }
 
 .side-nav li {
@@ -70,9 +85,9 @@ a {
     font-size: 1.4rem;
 }
 
-.sid-nav a:hover {
-    color: #fbdb67;
-    
+.side-nav a:hover {
+    /*background-color: #fbdb67;*/
+    border-bottom: #fbdb67 2px solid;
 }
 
 .rate-box {
@@ -95,8 +110,18 @@ a {
     object-fit: cover;
 }
 
-.calendar {
-    max-width: 80%;
+#cal-house-name {
+    background-color: #FFEEC3;
+}
+
+.cal-side-box {
+    width: 16rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    border-radius: 1rem;
+    padding: 2rem;
+    font-size: 1.2rem;
+    box-shadow: 2px 3px 10px #FFEEC3;
 }
 
 #calendar-side {
@@ -104,18 +129,18 @@ a {
 }
 
 /* intro page */
-.intro-main-cnt {
+
+.intro-main-cnt{
     padding-top: 5rem;
-    padding-left: 8rem;
 }
 
 #intro-main-todo {
     position: absolute;
     top: 60%;
     right: 5%;
-    width: 35rem;
-    min-height: 20rem;
-
+    width: 30rem;
+    min-height: 18rem;
+    padding-top: 1.6drem;
     background: rgba(255, 255, 255, 0.7);
     border: 2px solid #FFFFFF;
     box-shadow: 2px 5px 10px 1px rgba(0, 0, 0, 0.14);
@@ -153,7 +178,6 @@ a {
 }
 
 .intro-main-cnt p {
-    font-family: 'Noto Sans KR', sans-serif;
     font-size: 1.7rem;
     font-weight: 200;
     line-height: 2.8rem;
