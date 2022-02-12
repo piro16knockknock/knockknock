@@ -96,15 +96,12 @@
 
 .myhome-detail__row__rent-type {
     display: flex;
+    margin-bottom: .8rem;
 }
 
 .myhome-detail__row__flex_row {
     display: flex;
     flex-direction: row;
-}
-
-.myhome-detail__row__rent-type {
-    margin-bottom: .8rem;
 }
 
 .myhome-detail__row__rent-type span {

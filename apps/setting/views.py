@@ -46,12 +46,26 @@ def check_homename(request):
 
 
 def myhome_register(request):
-    if request.method == 'POST':        
+    if request.method == 'POST':
         home_form = HomeForm(request.POST)
         utility_form = UtilityForm(request.POST)
         if home_form.is_valid() and utility_form.is_valid():
             print("post")
-            current_home = home_form.save()
+            current_home = Home()
+            current_home.name = home_form.cleaned_data['name']
+            
+            if(request.POST.get('utility_or_rent') == "월세"):
+                print("here")
+                current_home.is_rent = True
+                current_home.rent_month = home_form.cleaned_data['rent_month']
+                current_home.rent_date = home_form.cleaned_data['rent_date']
+        
+            else:
+                current_home.is_rent = False
+                current_home.rent_month = 1
+                current_home.rent_date = 1
+            
+            current_home.save()
             request.user.home = current_home
             request.user.save()
             Utility.objects.create(home = current_home, 

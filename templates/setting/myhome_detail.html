@@ -118,7 +118,7 @@
     const utility_date = document.querySelector('#new-utility-date');
     let check_name = "" //중복검사를 통과한 이름
 
-    /* 전세/월세 선택 ajax*/
+    /* 전세/월세 선택*/
     const onSelectUtilityOrRent = (event) => {
         const rent_div = document.querySelector('.myhome-detail__row.myhome-detail__row__rent');
         if (event.target.value == "전세") {
@@ -127,7 +127,6 @@
             rent_div.classList.remove('myhome-detail__display-none');
         }
     }
-
 
     /* input창 제한 걸기 */
     let replaceNotInt = /[^0-9]/gi; // 숫자 아닌 정규식
@@ -177,7 +176,6 @@
         //집이름 제외하곤 빈칸이 되어선 안됨
         if (is_rent && (rent_month.value == "" || rent_date.value == "")) { //월세 체크했는데 빈칸일 때. 전세 체크했을 땐 빈칸이어도 됨
             alert('입력하지 않은 항목이 있습니다.');
-            console.log("here");
             return;
         }
 
