@@ -4,6 +4,7 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/home/date_todo.css' %}">
 {% endblock %}
+
 {% block data_todo %}
 <div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
     <div class="cate-container">
@@ -45,13 +46,13 @@
                             <button class="btn" onclick="isDoneBtn()">미완료</button>
                             <p>{{ user_todo.content }}</p>
                         </div>
-                        <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+                        <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick=setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
                     </div>
                     {% endif %}
                     {% endfor %}
                 {% endif %}
                 <div class="add-todo todo">
-                    <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" href="#addToDoModal"> + 할 일 등록</a>
+                    <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')" href="#addToDoModal"> + 할 일 등록</a>
                 </div>
             </div>
         </div>
@@ -73,12 +74,12 @@
                     <button class="btn" onclick="isDoneBtn()">미완료</button>
                     <p>{{ user_todo.content }}</p>
                 </div>
-                <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+                <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
             </div>
             {% endif %}
             {% endfor %}
             <div class="add-todo todo">
-                <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" href="#addToDoModal"> + 할 일 등록</a>
+                <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')"  href="#addToDoModal"> + 할 일 등록</a>
             </div>
         {% endif %}
         </div>
@@ -123,17 +124,16 @@
                             <p>{{ todo.priority.content }}</p>
                             <p>불꽃 색깔{{ todo.priority.priority_num }}</p>
                         {% endif%}
-                        <button class="btn" onclick="adduserBtn()">담당 추가</button>
+                        <button class="btn" onclick="editBtn()">담당 추가</button>
                         <p>{{ todo.content }}</p>
                     </div>
                     <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
-
                 </div>
                 {% endif %}
             {% endfor %}
             {% endif %}
             <div class="add-todo todo">
-                <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" href="#addToDoModal"> + 할 일 등록</a>
+                <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" onclick="setAddBtn(this, null, null, null)" href="#addToDoModal"> + 할 일 등록</a>
             </div>
             </div>
         </div>
@@ -160,7 +160,6 @@
 {% endblock %}
 
 
-
 {% block date_todo_modal %}
 <div class="modal fade" id="addToDoModal">
     <div class="modal-dialog">
@@ -169,16 +168,34 @@
 		            <h5 class="modal-title">할 일 추가하기</h5>
 		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 		        </div>
-                <form method="post">
+                <form method="post" action="{{ select_date }}/add">
                     {% csrf_token %}
                     <div class="modal-body">
-                        {{ form.as_table }}
+                        <input type="text" name="content" placeholder="할 일을 입력하세요"/>
+                        <div class="select-todo-cate">
+                            {% for cate in cates %}
+                            <label><input type="radio" class="cate-id-{{ cate.id }}" name="cate" value="{{ cate.id }}">{{ cate.name }}</label>
+                            {% endfor %}
+                            <label><input type="radio" class="cate-id-no-cate" name="cate" value="no-cate">{{ cate.name }}</label>
+                        </div>
+                        <div class="select-todo-user">
+                            {% for user in roomates %}
+                            <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}" />
+                            <img src="{{ user.profile_img.url }}" style="width: 3rem; height: 3rem;" alt="">
+                            {% endfor %}
+                        </div>
+                        <div class="select-todo-priority">
+                            {% for priority in todo_priority %}
+                            <label><input type="radio" class="priority-id-{{ priority.id }}"  name="priority" value ="{{ priority.id }}"/>{{ priority.content }}</label>
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">저장</button>
+                        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">등록</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     </div>
                 </form>
+            </div>
         </div>
     </div>
 </div>
@@ -221,7 +238,38 @@
     var edit_div = document.querySelector('.edit-todo');
     var form = document.querySelector('#setToDoModal form');
 
-    function setBtn(event, content, user_name, cate_name) {
+
+// 어떤 cate의 할일 추가하기를 선택했냐에 따른 설정 모달 내 보여주는 내용 수정
+    function setAddBtn(event, cate_id, cate_name, user_id) {
+        const add_modal_title = document.querySelector('#addToDoModal .modal-title');
+        const add_form_user_div = document.querySelector('#addToDoModal form .select-todo-user');
+        const add_form_cate_div = document.querySelector('#addToDoModal form .select-todo-cate');
+
+        if (user_id != undefined && cate_id == '') {
+            add_modal_title.innerHTML = "기타 카테고리에 할 일 추가하기";
+        }
+        else if(cate_name != undefined ) {
+            add_modal_title.innerHTML = cate_name + " 카테고리에 할 일 추가하기";
+        }
+        else {
+            add_modal_title.innerHTML = "할 일 추가하기";
+        }
+        console.log(user_id)
+        if (user_id != null &&  cate_id != '') {
+            add_form_user_div.style.display = 'None';
+            add_form_cate_div.style.display = 'None';
+            add_form_user_div.querySelector(`.user-id-${user_id}`).checked = true;
+            add_form_cate_div.querySelector(`.cate-id-${cate_id}`).checked = true;
+        } else if (user_id != null && cate_id == '') {
+            add_form_user_div.style.display = 'None';
+            add_form_cate_div.style.display = 'None';
+            add_form_user_div.querySelector(`.user-id-${user_id}`).checked = true;
+            add_form_cate_div.querySelector(`.cate-id-no-cate`).checked = true;
+        }
+    }
+
+// 어던 todo를 선택했냐에 따른 설정 모달 내 할 일 수정, 삭제 url setup
+    function setEditBtn(event, content, user_name, cate_name) {
         for (var i=0, l=edit_btn.classList.length; i<l; ++i) {
             if(/todo-id-.*/.test(edit_btn.classList[i])) {
                 edit_btn.classList.replace(edit_btn.classList[i], event.classList[1]);

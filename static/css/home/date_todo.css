@@ -50,3 +50,7 @@ p span {
     background-color: #ddd;
     margin: 1.5rem;
 }
+
+input {
+    appearance: radio!important;
+}
