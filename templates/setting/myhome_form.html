@@ -45,6 +45,44 @@
     const utility_month = document.getElementById('myhome-register-utility-month');
     const utility_date = document.getElementById('myhome-register-utility-date');
     let check_name = "" //중복검사를 통과한 이름
+
+    /* input창 제한 걸기 */
+    let replaceNotInt = /[^0-9]/gi; // 숫자 아닌 정규식
+    //let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi; // 특수문자 정규식 변수(공백 미포함)
+    let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
+    //let replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi; // 완성형 아닌 한글 정규식
+    home_name.addEventListener("keyup", (event) => {
+        home_name.value = home_name.value.replace(replaceChar, "")
+    })
+    utility_name.addEventListener("keyup", (event) => {
+        utility_name.value = utility_name.value.replace(replaceChar, "")
+    })
+    rent_month.addEventListener("keyup", (event) => {
+        rent_month.value = rent_month.value.replace(replaceNotInt, "");
+        if( rent_month.value != "" && (rent_month.value > 12 || rent_month.value < 1)) {
+            rent_month.value = rent_month.value.slice(0, -1);
+        }
+    })
+    utility_month.addEventListener("keyup", (event) => {
+        utility_month.value = utility_month.value.replace(replaceNotInt, "");
+        if( utility_month.value != "" && (utility_month.value > 12 || utility_month.value < 1)) {
+            utility_month.value = utility_month.value.slice(0, -1);
+        }
+    })
+    rent_date.addEventListener("keyup", (event) => {
+        rent_date.value = rent_date.value.replace(replaceNotInt, "");
+        if( rent_date.value != "" && (rent_date.value > 31 || rent_date.value < 1)) {
+            rent_date.value = rent_date.value.slice(0, -1);
+        }
+    })
+    utility_date.addEventListener("keyup", (event) => {
+        utility_date.value = utility_date.value.replace(replaceNotInt, "");
+        if( utility_date.value != "" && (utility_date.value > 31 || utility_date.value < 1)) {
+            utility_date.value = utility_date.value.slice(0, -1);
+        }
+    })
+
+    /*중복이름 체크*/
     const onClickCheckHomeName = async() => {
         if(home_name.value == "") return;
         const url = "../../myhome/check_homename/";
