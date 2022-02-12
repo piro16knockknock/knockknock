@@ -27,7 +27,25 @@
     font-size: 1.7rem;
 }
 
+
+.past-record__modal-rule .modal-body {
+    text-align: left;
+}
+
+.past-record__modal-rule-cate {
+    background-color: rgb(255, 197, 109);
+    display: inline-block;
+    padding: 0.5rem .5rem;
+    border-radius: 1rem;
+    margin: 1rem 0 .5rem 0;
+}
+
+.past-record__modal-rule-content {
+    padding: .3rem 0 .3rem 2rem;
+}
+
 .past-record__modal-rule .past-record__modal-rule-footer button,
 .past-record__modal-rule .past-record__modal-rule-footer a {
     font-size: 1.5rem;
+    margin-top: 2rem;
 }

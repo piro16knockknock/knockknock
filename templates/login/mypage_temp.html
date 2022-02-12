@@ -62,18 +62,11 @@
                             </div>
                             <div class="modal-body">
                                 {% for cate in prehome_dict|get_item:prehome.home.name %}
-                                <span>{{ cate }}</span>
+                                <div class="past-record__modal-rule-cate">{{ cate }}</div>
                                 {% for rule in prehome_dict|get_item:prehome.home.name|get_item:cate %}
-                                <p>{{ rule }}</p>
+                                <p class="past-record__modal-rule-content">{{ rule }}</p>
                                 {% endfor %}
                                 {% endfor %}
-
-                                {% comment %}
-                                {% for key, value in prehome_dict.items %}
-                                <span> {{ key }} </span>
-                                <p></p>
-                                {% endfor %}
-                                {% endcomment %}
                             </div>
                             <div class="past-record__modal-rule-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
