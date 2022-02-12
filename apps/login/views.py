@@ -3,12 +3,15 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from datetime import datetime
 from django.utils.dateformat import DateFormat
-from home.models import Todo, LivingRule
+from home.models import Todo, LivingRule, LivingRuleCate
+from django.shortcuts import get_object_or_404
+
 #이전 집 기록 보기
-from setting.models import LiveIn
+from setting.models import LiveIn, Home
 from home.models import Todo
 #template custom (dictionary)
 from django.template.defaulttags import register
+
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
@@ -29,6 +32,21 @@ def intro(request):
         return render(request, 'login/intro.html', context= ctx)
     else:
         return render(request, 'login/intro.html')
+
+#이전집 생활수칙 가져오기
+def take_prelivingrule(request, pk):
+    current_home = request.user.home
+    target_home = get_object_or_404(Home, id=pk)
+    target_living_rules = LivingRule.objects.filter(home=target_home)
+    target_living_rules_cate = LivingRuleCate.objects.filter(home=target_home)
+    
+    for living_rule in target_living_rules:
+        LivingRule.objects.get_or_create(home = current_home, cate = living_rule.cate, content= living_rule.content)
+    
+    for living_rule_cate in target_living_rules_cate:
+        LivingRuleCate.objects.get_or_create(home = current_home, name = living_rule_cate.name)
+    
+    return redirect('login:mypage')
 
 #이전집 기록 보기
 def prehome_list(request):
@@ -75,8 +93,6 @@ def leave_home(request):
 #나중에 합치면서 삭제.
 def mypage(request):
     prehomes, prehome_dict = prehome_list(request)
-    
-    print(prehome_dict)
     
     ctx = { 'prehomes' : prehomes, 'prehome_dict' : prehome_dict }
     return render(request, 'login/mypage_temp.html', ctx)

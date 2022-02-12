@@ -70,7 +70,9 @@
                             </div>
                             <div class="past-record__modal-rule-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                <a href="" class="btn btn-outline-primary">생활수칙 가져오기</a>
+                                <a href="{% url 'login:take_prelivingrule' prehome.home.pk %}"
+                                    class="btn btn-outline-primary">생활수칙
+                                    가져오기</a>
                             </div>
                         </div>
                     </div>
