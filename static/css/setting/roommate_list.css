@@ -1,5 +1,4 @@
-
-.roommate-list{
+.roommate-list {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,7 +12,7 @@
     font-weight: 800;
 }
 
-.roommate-list__user{
+.roommate-list__user {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,16 +25,17 @@
     margin-bottom: 2rem;
 }
 
-.roommate-list__user i{
+.roommate-list__user i {
     font-size: 22rem;
     margin-bottom: 2rem;
 }
 
-.roommate-list__user__name{
+.roommate-list__user__name {
     font-size: 1.4rem;
     font-weight: 600;
     margin-bottom: 2rem;
 }
+
 .roommate-list__btn {
     text-align: center;
     border: 0.2rem solid slategray;
@@ -45,6 +45,12 @@
     font-size: 1.3rem;
 }
 
+.roommate-list__btn:hover {
+    background-color: slategray;
+    color: white;
+    cursor: pointer;
+}
+
 .roommate-list__btn-tomato {
     border: 0.2rem solid tomato;
     margin-top: 2rem;
@@ -52,7 +58,37 @@
     margin-bottom: 2rem;
 }
 
-.roommate-list__btn-tomato:hover{
+.roommate-list__btn-tomato:hover {
     background-color: tomato;
     color: white;
+}
+
+
+/*modal*/
+.roommate-list__modal {
+    padding: 4rem 5rem;
+    height: 60rem;
+}
+
+.roommate-list__modal-profile img {
+    width: 8rem;
+    height: 8rem;
+}
+
+.roommate-list__modal-profile i {
+    font-size: 8rem;
+}
+
+.roommate-list__modal-profile p {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.roommate-list__modal-title {
+    padding: 3rem 0;
+}
+
+.roommate-list__modal-title p {
+    font-size: 1.6rem;
+    font-weight: 600;
 }
