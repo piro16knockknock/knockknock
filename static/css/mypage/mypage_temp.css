@@ -1,0 +1,13 @@
+#moveHomeModal {
+    font-size: 1.5rem;
+}
+
+#moveHomeModal .modal-body {
+    padding: 3rem 2rem;
+    line-height: 2rem;
+}
+
+#moveHomeModal .modal-footer button,
+#moveHomeModal .modal-footer a {
+    font-size: 1.5rem;
+}

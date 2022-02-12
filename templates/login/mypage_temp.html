@@ -2,51 +2,52 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <!--이사하기 버튼-->
-    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#moveHomeModal">이사하기</button>
-    {% if request.user.invite and request.user.invite.is_accepted is False %}
-        <p>초대가 왔어요!</p>
-        <p>{{request.user.invite.home.name}}</p>
-        <a href="{% url 'setting:accept_invite' %}" class="btn btn-dark">수락하기</a>
-    {% endif %}
-    <!-- Modal -->
-    <div class="modal fade" id="moveHomeModal" tabindex="-1" aria-labelledby="moveHomeModalLabel" aria-hidden="true">
+<!--이사하기 버튼-->
+<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+    data-bs-target="#moveHomeModal">이사하기</button>
+{% if request.user.invite and request.user.invite.is_accepted is False %}
+<p>초대가 왔어요!</p>
+<p>{{request.user.invite.home.name}}</p>
+<a href="{% url 'setting:accept_invite' %}" class="btn btn-dark">수락하기</a>
+{% endif %}
+<!-- Modal -->
+<div class="modal fade" id="moveHomeModal" tabindex="-1" aria-labelledby="moveHomeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="moveHomeModalLabel">이사하기</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="moveHomeModalLabel">이사하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                정말로 이사가시겠습니까?<br/>
+                정말로 이사가시겠습니까?<br /><br />
                 이사하실 경우 집 관련 전체 정보가 초기화되며, 일부 기록(거주 기간, 생활수칙)을 제외한 모든 기록이 파기됩니다.
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-            <a href="{% url 'login:leave_home' %}" class="btn btn-danger">이사가기</a>
-            </div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <a href="{% url 'login:leave_home' %}" class="btn btn-danger">이사가기</a>
             </div>
         </div>
     </div>
-    <!--이전 집 기록 html-->
-    <div class="past-record">
-        <h5>이전 집 기록</h5>
-        <hr/>
-        <table class="table table-borderless">
+</div>
+<!--이전 집 기록 html-->
+<div class="past-record">
+    <h5>이전 집 기록</h5>
+    <hr />
+    <table class="table table-borderless">
         <tbody>
             <tr>
-            <td>기간</td>
-            <td>이름</td>
-            <td></td>
+                <td>기간</td>
+                <td>이름</td>
+                <td></td>
             </tr>
-        {% for prehome in prehomes %}
+            {% for prehome in prehomes %}
             <tr>
                 <td>{{prehome.start_date}} ~ {{prehome.end_date}}</td>
                 <td>{{prehome.home.name}}</td>
                 <td><a class="btn btn-outline-primary">생활수칙 보기</a></td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
-        </table>
-    </div>
+    </table>
+</div>
 {% endblock %}
