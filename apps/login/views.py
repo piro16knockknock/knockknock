@@ -50,6 +50,8 @@ def sign_up(request):
             user = User.objects.create_user(
                 username=request.POST.get("username"),
                 password=request.POST.get("password"),
+                nick_name=request.POST.get("nick_name"),
+                gender=request.POST.get("gender"),
             )            
             login(request, user)
 
