@@ -7,7 +7,7 @@ from .models import *
 from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
-
+from .forms import UserUpdateForm
 #이전 집 기록 보기
 from setting.models import LiveIn
 
@@ -73,10 +73,24 @@ def login_user(request):
             return redirect('login:intro')
 
         else:
-            print("123")
             return redirect('login:mypage')
 
 def logoutUser(request):
     logout(request)
     return redirect('login:intro')
 
+
+
+def user_update(request):
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('login:mypage')
+    else:
+        form = UserUpdateForm(instance=request.user)
+    context = {
+        'form': form
+    }
+    return render(request, 'login/user_update.html', context)
+    

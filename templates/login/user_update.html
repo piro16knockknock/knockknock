@@ -2,33 +2,19 @@
 
 {% block content %}
 <div class="container">
-    <h1>회원가입</h1>
+    <h1>회원정보 수정</h1>
 
-    <form method="POST" action="{% url 'login:sign_up' %}">
+    <form method="POST" action="{% url 'login:user_update' %}">
         {% csrf_token %}
         아이디:
         <br>
         <input name="username" type="text">
-        <br>
         비밀번호:
-        <br>
         <input name="password" type="password">
-        <br>
         비밀번호 확인:
-        <br>
         <input name="password2" type="password">
-        <br>
-        이메일: 
-        <br>
-        <input name="email" type="email">
-        <br>
         성별:
-        <br>
-        <input name="gender" type="">
-        <br>
-        닉네임:
-        <br>
-        <input name="nick_name" type="text">
+        <input name="GENDER_CHOICES" type="GENDER_CHOICES">
         <br>
         <input type="submit" value="다음">
     </form>

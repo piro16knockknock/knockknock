@@ -22,7 +22,7 @@
                 {{user.nick_name}}
                 <p>@{{user.username}}</p>
             </div>
-            <button>회원정보 수정</button>
+            <a href="{% url 'login:user_update' %}"><button>회원정보 수정</button></a>
         </div>
 
         <div class="mypage-content">
