@@ -30,6 +30,12 @@
 
 .past-record__modal-rule .modal-body {
     text-align: left;
+    height: 50rem;
+    overflow: scroll;
+}
+
+.past-record__modal-rule .modal-body::-webkit-scrollbar {
+    display: none;
 }
 
 .past-record__modal-rule-cate {
