@@ -75,11 +75,13 @@
                             </div>
                             <div class="past-record__modal-rule-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                {% if request.user.home %}
                                 <a href="#" onclick="takePrehomeRecord({{prehome.pk}})"
                                     id="past-record__take-btn-{{prehome.pk}}" class="btn btn-outline-primary">생활수칙
                                     가져오기</a>
                                 <a onclick="savePrehomeRecord({{prehome.pk}})" id="past-record__save-btn-{{prehome.pk}}"
                                     class="btn btn-outline-danger past-record__display-none">저장하기</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
