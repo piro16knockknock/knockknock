@@ -55,7 +55,7 @@
                             
                         </div>
                         <div class="d-flex align-items-end justify-content-end">
-                            <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="js.setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+                            <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
                             <i class="fa-solid fa-ellipsis text-secondary"></i></button>
                         </div>
                     </div>
@@ -85,8 +85,9 @@
                     <button class="btn" onclick="isDoneBtn()">미완료</button>
                     <p>{{ user_todo.content }}</p>
                 </div>
-                <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
-            </div>
+                <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
+                    <i class="fa-solid fa-ellipsis text-secondary"></i></button>
+                </div>
             {% endif %}
             {% endfor %}
             <div class="add-todo todo">
@@ -138,8 +139,9 @@
                         <button class="btn" onclick="editBtn()">담당 추가</button>
                         <p>{{ todo.content }}</p>
                     </div>
-                    <button type="button" class="edit-btn {{todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}'), '{{ select_date }}'" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
-                </div>
+                    <button type="button" class="edit-btn {{todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
+                        <i class="fa-solid fa-ellipsis text-secondary"></i></button>
+                    </div>
                 {% endif %}
             {% endfor %}
             {% endif %}
@@ -226,8 +228,7 @@
                     {% csrf_token %}
                     <div class="modal-body">
                         <a class="edit-btn btn btn-light" onclick="showEdit()">수정</a>
-                        <a class="date-change-btn btn btn-light">날짜 바꾸기</a>
-                        <a class="date-next-btn btn btn-light">내일 하기</a>
+                        <a class="postpone-btn btn btn-light">내일 하기</a>
                         <a class="delete-btn btn btn-ligth" href="{% url 'home:delete_todo' date='{{select_date}}' todo_id=0 %}">삭제</a>
                         
                         <div class="edit-todo" style="display: none;">

@@ -1,4 +1,4 @@
-givar edit_btn = document.querySelector('.edit-btn');
+var edit_btn = document.querySelector('.edit-btn');
 var delete_btn = document.querySelector('.delete-btn');
 var edit_div = document.querySelector('.edit-todo');
 var form = document.querySelector('#setToDoModal form');
@@ -60,12 +60,18 @@ const AddHandleResponse = () => {
     if (requestAdd.status < 400) {
         console.log(JSON.parse(requestAdd.response));
         const {todo_id, todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name}= JSON.parse(requestAdd.response);
+        console.log(cate_name)
         var todos = null;
         const new_todo = document.createElement('div');
         if (user_name === 'no-user') {
             todos = document.querySelector(`.no-user-cate .add-todo`);
             new_todo.classList = "total-todo todo-cnt";
-        }else {
+        }
+        else if (cate_name === 'no-cate') {
+            todos = document.querySelector(`.user-cate-container .etc-cate .add-todo`);
+            new_todo.classList = "etc-todo todo-cnt";
+        }
+        else {
             todos = document.querySelector(`#cate-id-${ cate_id } .add-todo`);
             new_todo.classList = "user-todo todo-cnt";
         }
@@ -113,7 +119,6 @@ function setEditBtn (event, content, user_name, cate_name, select_date) {
             return;
         }
     }
-
     edit_btn.classList.add(event.classList[1]);
     delete_btn.classList.add(event.classList[1]);
     delete_btn.href = `${select_date}/${event.classList[1]}/delete/`
@@ -132,6 +137,7 @@ function closeEdit(event) {
 };
 
 
+// Utils
 function serialize (data) {
     let obj = {};
     for (let [key, value] of data) {
