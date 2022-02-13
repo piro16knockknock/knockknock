@@ -2,7 +2,8 @@ var edit_btn = document.querySelector('.edit-todo-btn');
 var delete_btn = document.querySelector('.delete-btn');
 var edit_div = document.querySelector('.edit-todo');
 var form = document.querySelector('#setToDoModal form');
-console.log(edit_btn);
+const addTodoModal = document.querySelector('#addToDoModal');
+console.log(addTodoModal);
 
 // 어떤 cate의 할일 추가하기를 선택했냐에 따른 설정 모달 내 보여주는 내용 수정
 function setAddBtn(event, cate_id, cate_name, user_id) {
@@ -69,7 +70,7 @@ reqMakeEditForm.onreadystatechange = () => {
     }
 };
 
-const  makeEditFormHandleResponse = () => {
+const makeEditFormHandleResponse = () => {
     if (requestAdd.status < 400) {
         console.log(JSON.parse(reqMakeEditForm.response));
         const {content, cate_id, user_id, priority_id} = JSON.parse(reqMakeEditForm.response);
@@ -100,7 +101,6 @@ function closeEdit() {
 
 // 할 일 추가 ajax 
 const requestAdd = new XMLHttpRequest();   
-
 function addTodoBtn(event, select_date) {
     const url = `./${select_date}/add`;
     const form = new FormData(document.querySelector('#addToDoModal form'));
@@ -166,9 +166,15 @@ const AddHandleResponse = () => {
 
         new_todo.appendChild(todo_align);
         todos.before(new_todo);
-        
+
+        addModalReset();
     }
 };
+
+function addModalReset() {
+    filled_addToDoModal = document.querySelector('#addToDoModal');
+    filled_addToDoModal.innerHTML = addTodoModal.innerHTML;
+}
 
 // 할 일 삭제 ajax 
 const requestDelete = new XMLHttpRequest();   
@@ -196,8 +202,11 @@ requestDelete.onreadystatechange = () => {
 const deleteHandleResponse = () => {
     if (requestDelete.status < 400) {
         const {todo_id} = JSON.parse(requestDelete.response);
-        const delete_todo_div = document.querySelector(`.todo-id-${todo_id}`);
-        delete_todo_div.remove() 
+        const delete_todo_divs = document.querySelectorAll(`.todo-id-${todo_id}`);
+        for (i=0; i <=delete_todo_divs.length; i++) {
+            var delete_todo_div = delete_todo_divs[i];
+            delete_todo_div.remove(); 
+        }
         delete_btn.classList.remove(todo_id);
     }
 };
