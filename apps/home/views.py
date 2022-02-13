@@ -1,11 +1,14 @@
-from sqlite3 import Date
+import json
+from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.utils.safestring import mark_safe
 from django.views import generic
 
-from .models import Todo, Home, TodoCate
-from .forms import TodoForm
+from .models import Todo, Home, TodoCate, TodoPriority
+from login.models import User
+# from .forms import TodoForm
 from .utils import Calendar
 from datetime import datetime, timedelta, date
 import calendar
@@ -26,7 +29,6 @@ class CalendarView(generic.ListView):
         context['next_month'] = next_month(d)
         context['month'] = str(d.month)
         context['year'] = str(d.year)
-        print(context)
         return context
 
 def get_date(req_month):
@@ -48,20 +50,64 @@ def next_month(d):
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
 
-
+# add_todo_ajax
+@csrf_exempt
 @login_required
 def add_todo(request, date):
-    current_user = request.user
-    current_home = Home.objects.filter(user = current_user)[0]
-    form = TodoForm(current_home, request.POST)
-    print(form.errors)
-    if form.is_valid():
-        print("valid")
-        todo = form.save(commit=False)
-        todo.home = current_home
-        todo.date = date
-        todo.save()
-        return
+    req = json.loads(request.body)
+    data = req['form_data']
+    print(data)
+    content = data['content']
+    priority = data['priority']
+    cate = data['cate']
+    user = data['user']
+
+    # 내 할 일 페이지에서 기타 카테고리가 아닌 카테고리
+    if cate != 'no-cate' and user != 'no-user':
+        print("내꺼 기타말고")
+        todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate), user = User.objects.get(id = user), 
+        priority = TodoPriority.objects.get(id = priority), date = date)
+        res = JsonResponse({
+        'todo_id' : todo.id,
+        'todo_content' : todo.content,
+        'todo_priority_content' : todo.priority.content,
+        'todo_priority_num' : todo.priority.priority_num,
+        'cate_id' : cate,
+        'cate_name' : TodoCate.objects.get(id=cate).name,
+        'user_name' : User.objects.get(id = user).username,
+        })
+
+    # 내 할 일 페이지에서 기타 카테고리
+    elif cate == 'no-cate' and user != 'no-user':
+        print("내꺼 기타")
+        todo = Todo.objects.create(home=request.user.home, content=content, user = User.objects.get(id = user), 
+        priority = TodoPriority.objects.get(id = priority), date = date)
+        res = JsonResponse({
+        'todo_id' : todo.id,
+        'todo_content' : todo.content,
+        'todo_priority_content' : todo.priority.content,
+        'todo_priority_num' : todo.priority.priority_num,
+        'cate_id' : 'no-cate',
+        'cate_name' : '기타',
+        'user_name' : User.objects.get(id = user).username,
+        })
+
+    # 전체 할 일 페이지에서 담당없음 카테고리
+    else:
+        print("전체")
+        todo = Todo.objects.create(home=request.user.home, content=content,
+        priority = TodoPriority.objects.get(id = priority), date = date)
+        res = JsonResponse({
+        'todo_id' : todo.id,
+        'todo_content' : todo.content,
+        'todo_priority_content' : todo.priority.content,
+        'todo_priority_num' : todo.priority.priority_num,
+        'cate_id' : 'no-cate',
+        'cate_name' : '담당 없음',
+        'user_name' : 'no-user',
+        })
+    
+    return res
 
 @login_required
 def delete_todo(request, date, todo_id):
@@ -87,24 +133,43 @@ def edit_todo(request, date, todo_id):
 def date_todo(request, date):
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
-    user_todos = total_todos.filter(user__username = current_user.username, date = date)
+    complete_total_todos = total_todos.filter(is_done=True)
+    user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=False)
+    complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True)
+ 
     current_home = Home.objects.filter(user = current_user)[0]
+    roommates = User.objects.filter(home=request.user.home)
     cates = TodoCate.objects.filter(home = current_home)
-    print(cates)
 
-    if request.method == "POST":
-        add_todo(request, date)
-        return redirect('home:date_todo', date = date)
-
-    form = TodoForm(current_home)
+    user_todo_dict = make_todo_with_cate_dict(user_todos, cates)
+    total_todo_dict = make_todo_with_cate_dict(total_todos, cates)
+    no_user_todos = total_todos.filter(user=None)
+    no_cate_user_todos = user_todos.filter(cate=None)
+    doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
+    todo_priority = TodoPriority.objects.all()
+    print(no_cate_user_todos)
+    # form = TodoForm(current_home)
 
     ctx = {
         'select_date' : date,
-        'total_todos' : total_todos,
-        'user_todos' : user_todos,
+        'total_todo_dict' : total_todo_dict,
+        'user_todo_dict' : user_todo_dict,
+        'complete_user_todos' : complete_user_todos,
+        'complete_total_todos' : complete_total_todos,
+        'no_user_todos' : no_user_todos,
+        'no_cate_user_todos' : no_cate_user_todos,
+        'doing_todos' : doing_todos,
         'username' : current_user.username,
-        'form' : form,
+        # 'form' : form,
         'cates' : cates,
+        'todo_priority' : todo_priority,
+        'roomates' : roommates
     }
 
     return render(request, 'home/date_todo/date_todo.html', context=ctx)
+
+def make_todo_with_cate_dict(todos, cates):
+    todo_dict= {}
+    for cate in cates:
+        todo_dict[cate] = todos.filter(cate=cate)
+    return todo_dict

@@ -31,7 +31,11 @@
             <div id="cal-house-name" class="cal-side-box position-relative">
                 {{request.user.home.name}}
                 <div class="position-absolute" style="top: -5%; right: -5%;">
-                    <div class="btn btn-sm bg-secondary " style="border-radius: 50%;"><a href="" class="text-light"><i class="fas fa-cog "></i></a></div>
+                    <div class="btn btn-sm bg-secondary " style="border-radius: 50%;">
+                        <a href="{% url 'setting:myhome_detail' %}">
+                            <i class="fas fa-cog "></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div id="cal-house-info" class="cal-side-box">

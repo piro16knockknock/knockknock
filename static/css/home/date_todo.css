@@ -1,5 +1,5 @@
 .nav-tabs {
-    justify-content: space-between;
+    justify-content: start;
 }
 
 p span {
@@ -8,8 +8,10 @@ p span {
 }
 
 .todo-main {
+    margin-left: 5rem;
     padding-right: 5rem;
     overflow: hidden;
+    width: 75%;
 }
 
 .tab-content {
@@ -40,6 +42,8 @@ p span {
 
 .cate {
     display: inline-block;
+<<<<<<< HEAD
+=======
     margin-left: 1rem;
     margin-right: 1rem;
     padding-top: 2rem;
@@ -94,4 +98,17 @@ p span {
 .add-btn {
     width: 100%;
     padding: 3rem;
+>>>>>>> 982668570de7264817462b46fd01873a43bddb57
+}
+
+.user-todo-cnt {
+    border-radius: 1rem;
+    width: 20rem;
+    padding: 2rem;
+    background-color: #ddd;
+    margin: 1.5rem;
+}
+
+input {
+    appearance: radio!important;
 }
