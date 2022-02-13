@@ -14,6 +14,10 @@ const utility_date = document.querySelectorAll('.new-utility-date');
 //현재의 리스트(새로 추가한건 반영 X)
 const utility_li = document.querySelectorAll('.myhome-detail__row__utility-li');
 let utility_count = utility_li.length;
+
+const deleteUtility = (tag) => {
+    tag.parentElement.remove();
+}
 const addUtility = (tag) => {
     const ul = document.querySelector('.myhome-detail__row__utility-ul');
     const li = document.createElement('li');
@@ -24,6 +28,7 @@ const addUtility = (tag) => {
             max="12" /><span>개월마다</span>
         <input type="number" class="new-utility-date" min="1"
             max="31" /><span>일</span>
+        <i class="fas fa-minus-square"></i>
     `;
 
     /*input valid 검사 */

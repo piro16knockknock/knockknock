@@ -100,6 +100,11 @@
     border-bottom: .1rem solid rgba(1, 1, 1, .2);
 }
 
+.myhome-detail__row__utility-ul > li > i{
+    font-size: 1.5rem;
+    color: tomato;
+}
+
 .myhome-detail__row__rent-type {
     display: flex;
     align-items: center;
