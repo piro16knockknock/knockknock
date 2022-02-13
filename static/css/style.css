@@ -1,4 +1,5 @@
 @import 'reset.css';
+@import 'mypage/mypage_temp.css';
 @import 'setting/myhome_detail.css';
 @import 'setting/roommate_list.css';
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
@@ -10,9 +11,9 @@ font-family: 'Noto Sans KR', sans-serif;*/
 /*반응형*/
 html,
 body {
-width: 100%;
-height: 100%;
-font-size: 62.5%;
+    width: 100%;
+    height: 100%;
+    font-size: 62.5%;
 }
 
 body {
@@ -156,7 +157,7 @@ a {
     object-fit: contain;
     width: 100%;
     height: 100%;
-    
+
 }
 
 #intro-main-notlog-cnt {
@@ -170,7 +171,7 @@ a {
     height: 100%;
 }
 
-.intro-main-cnt h2{
+.intro-main-cnt h2 {
     font-family: 'Gothic A1', 'Noto Sans KR', sans-serif;
     font-size: 4rem;
     font-weight: 700;
@@ -209,14 +210,14 @@ a {
 }
 
 
-#intro-persona h5{
+#intro-persona h5 {
     font-size: 2rem;
     margin-top: 6rem;
     margin-bottom: 2rem;
     color: black;
 }
 
-#intro-persona h6{
+#intro-persona h6 {
     font-size: 1.6rem;
     line-height: 2.5rem;
 }
@@ -258,7 +259,7 @@ a {
 .intro-persona-box img {
     top: -10%;
     left: 50%;
-    transform:translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     height: 12rem;
 }
 
@@ -301,7 +302,7 @@ a {
 
 .intro-service-circle {
     padding: 3rem;
-    margin: 6rem 0.5rem 10rem 0.5rem ;
+    margin: 6rem 0.5rem 10rem 0.5rem;
     overflow: hidden;
     background-color: white;
     border: #ddd 1px solid;
@@ -333,7 +334,7 @@ a {
     background-color: #75AFF2;
 }
 
-#intro-feat1 >div {
+#intro-feat1>div {
     margin-left: 15rem;
 }
 
@@ -342,7 +343,7 @@ a {
     left: 75%;
 }
 
-#intro-achieve-img > img {
+#intro-achieve-img>img {
     box-shadow: 2px 4px 10px 0px rgb(82 82 82 / 30%);
     border-radius: 1.5rem;
 }
