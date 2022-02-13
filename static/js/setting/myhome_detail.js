@@ -1,9 +1,39 @@
 const home_name = document.querySelector('#new-home-name');
 const rent_month = document.querySelector('#new-rent-month');
 const rent_date = document.querySelector('#new-rent-date');
-const utility_month = document.querySelector('#new-utility-month');
-const utility_date = document.querySelector('#new-utility-date');
-let check_name = "" //중복검사를 통과한 이름
+
+//공과금은 여러개가 될수 있음을... id를 class로 바꿔야함
+/**
+const utility_name = document.querySelectorAll('.new-utility-name');
+const utility_month = document.querySelectorAll('.new-utility-month');
+const utility_date = document.querySelectorAll('.new-utility-date');
+ */
+/* 공과금 추가 */
+//const utility_li = document.querySelectorAll('.myhome-detail__row__utility-li');
+
+//현재의 리스트(새로 추가한건 반영 X)
+const utility_li = document.querySelectorAll('.myhome-detail__row__utility-li');
+let utility_count = utility_li.length;
+const addUtility = (tag) => {
+    const ul = document.querySelector('.myhome-detail__row__utility-ul');
+    const li = document.createElement('li');
+    li.className = 'myhome-detail__row__rent myhome-detail__row__utility-li';
+    li.innerHTML = `
+        <div class="myhome-detail__row__rent-type"><span>종류</span><input class="new-utility-name" name="utility_name" type="text" maxlength="10"/></div>
+        <input type="number" class="new-utility-month" min="1"
+            max="12" /><span>개월마다</span>
+        <input type="number" class="new-utility-date" min="1"
+            max="31" /><span>일</span>
+    `;
+
+    /*input valid 검사 */
+    ul.appendChild(li);
+
+    utility_count++;
+    if(utility_count >= 5){
+        tag.classList.add("myhome-detail__display-none");
+    }
+}
 
 /* 전세/월세 선택*/
 const onSelectUtilityOrRent = (event) => {
@@ -16,9 +46,8 @@ const onSelectUtilityOrRent = (event) => {
 }
 /* input창 제한 걸기 */
 let replaceNotInt = /[^0-9]/gi; // 숫자 아닌 정규식
-//let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi; // 특수문자 정규식 변수(공백 미포함)
 let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
-//let replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi; // 완성형 아닌 한글 정규식
+
 home_name.addEventListener("keyup", (event) => {
     home_name.value = home_name.value.replace(replaceChar, "")
 })
@@ -28,28 +57,47 @@ rent_month.addEventListener("keyup", (event) => {
         rent_month.value = rent_month.value.slice(0, -1);
     }
 })
-utility_month.addEventListener("keyup", (event) => {
-    utility_month.value = utility_month.value.replace(replaceNotInt, "");
-    if (utility_month.value != "" && (utility_month.value > 12 || utility_month.value < 1)) {
-        utility_month.value = utility_month.value.slice(0, -1);
-    }
-})
+
 rent_date.addEventListener("keyup", (event) => {
     rent_date.value = rent_date.value.replace(replaceNotInt, "");
     if (rent_date.value != "" && (rent_date.value > 31 || rent_date.value < 1)) {
         rent_date.value = rent_date.value.slice(0, -1);
     }
 })
-utility_date.addEventListener("keyup", (event) => {
-    utility_date.value = utility_date.value.replace(replaceNotInt, "");
-    if (utility_date.value != "" && (utility_date.value > 31 || utility_date.value < 1)) {
-        utility_date.value = utility_date.value.slice(0, -1);
-    }
-})
 
+/**
+for(let i = 0 ; i < utility_count ; i++){
+    utility_name[i].addEventListener("keyup", (event) => {
+        utility_name[i].value = utility_name[i].value.replace(replaceChar, "");
+    })
+
+    utility_month[i].addEventListener("keyup", (event) => {
+        utility_month[i].value = utility_month[i].value.replace(replaceNotInt, "");
+        if (utility_month[i].value != "" && (utility_month[i].value > 12 || utility_month[i].value < 1)) {
+            utility_month[i].value = utility_month[i].value.slice(0, -1);
+        }
+    })
+
+    utility_date[i].addEventListener("keyup", (event) => {
+        utility_date[i].value = utility_date[i].value.replace(replaceNotInt, "");
+        if (utility_date[i].value != "" && (utility_date[i].value > 31 || utility_date[i].value < 1)) {
+            utility_date[i].value = utility_date[i].value.slice(0, -1);
+        }
+    })
+    
+}
+
+ */
 /* 집 정보 변경 ajax */
-const onClickSaveHome = () => {
+let check_name = "" //중복검사를 통과한 이름
+const onClickSaveHome = (current_name) => {
     const rent_checked = document.querySelector('#myhome-info__rent-checked');
+    
+    const utility_li = document.querySelectorAll('.myhome-detail__row__utility-li');
+    const utility_name = document.querySelectorAll('.new-utility-name');
+    const utility_month = document.querySelectorAll('.new-utility-month');
+    const utility_date = document.querySelectorAll('.new-utility-date');
+    
     let temp_home_name = "";
 
     let is_rent;
@@ -59,34 +107,46 @@ const onClickSaveHome = () => {
         is_rent = false;
     }
 
-    //집이름 제외하곤 빈칸이 되어선 안됨
+    //월세
     if (is_rent && (rent_month.value == "" || rent_date.value == "")) { //월세 체크했는데 빈칸일 때. 전세 체크했을 땐 빈칸이어도 됨
         alert('입력하지 않은 항목이 있습니다.');
         return;
     }
 
-    if (utility_month.value == "" || utility_date.value == "") {
-        alert('입력하지 않은 항목이 있습니다.');
-        return;
+    //공과금
+    utility_name_list = []
+    utility_month_list = []
+    utility_date_list = []
+
+    for(let i = 0 ; i < utility_li.length ; i++){
+        if (utility_month[i].value == "" || utility_date[i].value == "" || utility_name[i].value == "") {
+            alert('입력하지 않은 항목이 있습니다.');
+            return;
+        }
+        utility_name_list.push(utility_name[i].value);
+        utility_month_list.push(utility_month[i].value);
+        utility_date_list.push(utility_date[i].value);
     }
+    console.log(utility_name_list);
+    console.log(utility_month_list);
+    console.log(utility_date_list);
 
     //집이름을 입력했는데 중복이면 안됨.
     if (home_name.value != "" && home_name.value != check_name) {
-        event.preventDefault();
         alert("집 이름 중복 확인을 먼저 해주세요.");
         return;
     }
 
     //집이름은 입력 안했으면 그냥 변경 안하는걸로 간주
     if (home_name.value == "") {
-        temp_home_name = "{{ home_name }}";
+        temp_home_name = current_name;
     } else {
         temp_home_name = home_name.value;
     }
 
-    onClickSaveHomeAjax(temp_home_name, is_rent, rent_month.value, rent_date.value, utility_month.value, utility_date.value);
+    onClickSaveHomeAjax(temp_home_name, is_rent, rent_month.value, rent_date.value, utility_name_list, utility_month_list, utility_date_list);
 }
-const onClickSaveHomeAjax = async (temp_home_name, is_rent, rent_month_value, rent_date_value, utility_month_value, utility_date_value) => {
+const onClickSaveHomeAjax = async (temp_home_name, is_rent, rent_month_value, rent_date_value, utility_name_list, utility_month_list, utility_date_list) => {
     const url = "../../myhome/myhome_update/";
     const res = await fetch(url, {
         method: 'POST',
@@ -98,8 +158,9 @@ const onClickSaveHomeAjax = async (temp_home_name, is_rent, rent_month_value, re
             'is_rent' : is_rent,
             'rent_month': rent_month_value,
             'rent_date': rent_date_value,
-            'utility_month': utility_month_value,
-            'utility_date': utility_date_value,
+            'utility_name': utility_name_list,
+            'utility_month': utility_month_list,
+            'utility_date': utility_date_list,
         })
     });
     const {

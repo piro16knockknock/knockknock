@@ -95,6 +95,11 @@
 }
 
 /*공과금 종류*/
+.myhome-detail__row__utility-ul > li{
+    padding: 1rem 0;
+    border-bottom: .1rem solid rgba(1, 1, 1, .2);
+}
+
 .myhome-detail__row__rent-type {
     display: flex;
     align-items: center;

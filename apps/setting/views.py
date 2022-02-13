@@ -27,7 +27,6 @@ def roommate_list(request):
     for invite in invites:
         if invite.is_accepted is False:
             invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
-    print(invite_users)
     ctx = {
         'roommates' : roommates,
         'invite_users' : invite_users
@@ -105,18 +104,21 @@ def myhome_update(request):
     is_rent = req['is_rent']
     rent_month = req['rent_month']
     rent_date = req['rent_date']
-    utility_month = req['utility_month']
-    utility_date = req['utility_date']
+    utility_name_list = req['utility_name']
+    utility_month_list = req['utility_month']
+    utility_date_list = req['utility_date']
     
-    #나중에 공과금 여러개 되면 복잡해지긴 할듯..
     current_home = Home.objects.filter(name=request.user.home.name)
     if(is_rent):
-        print("월세입니다.")
         current_home.update(name=home_name, rent_month=rent_month, rent_date=rent_date, is_rent=is_rent)
     else:
-        print("전세입니다.")
         current_home.update(name=home_name, rent_month=1, rent_date=1, is_rent=is_rent) # 1개월마다 1일을 default값으로.
-    Utility.objects.filter(home=request.user.home).update(month=utility_month, date=utility_date)
+
+    #공과금
+    #업데이트가 복잡하므로 어차피 몇 안되는거 그냥 다 삭제하고 생성    
+    Utility.objects.filter(home=request.user.home).delete()
+    for i in range(len(utility_month_list)):
+        Utility.objects.create(home=request.user.home, name=utility_name_list[i], month=utility_month_list[i], date=utility_date_list[i])
         
     return JsonResponse({ 'home_name' : home_name })
 
