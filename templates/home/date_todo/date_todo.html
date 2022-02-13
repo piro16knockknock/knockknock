@@ -301,11 +301,11 @@
             AddHandleResponse();
         }
     };
-
+//  add_todo_안에 내용 채우기 ($$$$$선영 언니 도움!)
     const AddHandleResponse = () => {
         if (requestAdd.status < 400) {
             console.log(JSON.parse(requestAdd.response));
-            const {todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name}= JSON.parse(requestAdd.response);
+            const {todo_id,todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name}= JSON.parse(requestAdd.response);
             const todos = document.querySelector(` #cate-id-${ cate_id } .add-todo`);
 
             const new_todo = document.createElement('div');
@@ -325,7 +325,7 @@
             priority_icon.innerHTML = todo_priority_num;
 
             const todo_edit_btn = document.createElement('button');
-            todo_edit_btn.classList = "edit-btn btn btn-ligth";
+            todo_edit_btn.classList = `edit-btn ${todo_id} btn btn-ligth`;
             todo_edit_btn.type = "button";
             todo_edit_btn.setAttribute('onclick', `setEditBtn(this, '${todo_content}', '${user_name }', '${cate_name}')`); 
             todo_edit_btn.setAttribute('data-bs-toggle',"modal");

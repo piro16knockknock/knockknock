@@ -79,6 +79,7 @@ def add_todo(request, date):
         priority = TodoPriority.objects.get(id = priority), date = date)
     
     return JsonResponse({
+        'todo_id' : todo.id,
         'todo_content' : todo.content,
         'todo_priority_content' : todo.priority.content,
         'todo_priority_num' : todo.priority.priority_num,
