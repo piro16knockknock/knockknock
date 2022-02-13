@@ -2,21 +2,17 @@ const home_name = document.querySelector('#new-home-name');
 const rent_month = document.querySelector('#new-rent-month');
 const rent_date = document.querySelector('#new-rent-date');
 
-//공과금은 여러개가 될수 있음을... id를 class로 바꿔야함
-/**
-const utility_name = document.querySelectorAll('.new-utility-name');
-const utility_month = document.querySelectorAll('.new-utility-month');
-const utility_date = document.querySelectorAll('.new-utility-date');
- */
-/* 공과금 추가 */
-//const utility_li = document.querySelectorAll('.myhome-detail__row__utility-li');
-
 //현재의 리스트(새로 추가한건 반영 X)
 const utility_li = document.querySelectorAll('.myhome-detail__row__utility-li');
 let utility_count = utility_li.length;
 
 const deleteUtility = (tag) => {
     tag.parentElement.remove();
+    utility_count--;
+    if(utility_count < 5){
+        const plusBtn = document.querySelector(".myhome-detail__row__add-utility");
+        plusBtn.classList.remove("myhome-detail__display-none");
+    }
 }
 
 const addUtility = (tag) => {
@@ -138,9 +134,6 @@ const onClickSaveHome = (current_name) => {
         utility_month_list.push(utility_month[i].value);
         utility_date_list.push(utility_date[i].value);
     }
-    console.log(utility_name_list);
-    console.log(utility_month_list);
-    console.log(utility_date_list);
 
     //집이름을 입력했는데 중복이면 안됨.
     if (home_name.value != "" && home_name.value != check_name) {

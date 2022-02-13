@@ -10,7 +10,6 @@
 
 .myhome-register__display-none {
     display: none !important;
-
 }
 
 /*myhome-info*/
@@ -123,4 +122,21 @@
     padding: .5rem 1.5rem;
     color: rgb(255, 197, 109);
     border-radius: 5rem;
+}
+
+/*공과금*/
+.myhome-register__row__utility-ul > li{
+    padding: 1rem 0;
+    border-bottom: .1rem solid rgba(1, 1, 1, .2);
+}
+
+.myhome-register__row__utility-ul > li > i{
+    font-size: 1.5rem;
+    color: tomato;
+}
+
+/*공과금 추가*/
+.myhome-register__row__add-utility {
+    margin: 1rem 0;
+    font-size: 3rem;
 }

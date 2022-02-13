@@ -37,14 +37,21 @@
                 <p class="myhome-register__row">
                     <div class="myhome-register__row__flex_row">
                         <label>공과금 납부일</label>
-                        <div class="myhome-register__row__rent">
-                            <div class="myhome-register__row__rent-type"><span>종류</span><input class="form-input" id="myhome-register-utility-name" name="utility_name" type="text" maxlength="30"/></div>
-                            <input class="form-input" id="myhome-register-utility-month" name="utility_month" type="number"/> <span>개월마다</span>
-                            <input class="form-input" id="myhome-register-utility-date" name="utility_date" type="number"/> <span>일</span>
+                        <div class="myhome-register__row__utility">
+                            <ul class="myhome-register__row__utility-ul">
+                                <p>※ 최대 다섯개까지 설정 가능합니다.</p>  
+                                <li class="myhome-register__row__rent myhome-register__row__utility-li">
+                                    <div class="myhome-register__row__rent-type"><span>종류</span><input class="new-utility-name" class="new-utility-name" name="utility_name" type="text" maxlength="10"/></div>
+                                    <input class="new-utility-month" name="utility_month" type="number"/> <span>개월마다</span>
+                                    <input class="new-utility-date" name="utility_date" type="number"/> <span>일</span>
+                                    <i class="fas fa-minus-square" onclick="deleteUtility(this)" ></i>
+                                </li>
+                            </ul>
+                            <i class="fas fa-plus-circle myhome-register__row__add-utility" onclick="addUtility(this)" class="fas fa-plus-circle"></i>
                         </div>
                     </div>
                 </p>
-                <button type="submit" id="myhome-register__register-btn" class="myhome-register__btn">집 등록</button>
+                <button type="submit" onclick="" id="myhome-register__register-btn" class="myhome-register__btn">집 등록</button>
             </form>
         </div>
     </div>

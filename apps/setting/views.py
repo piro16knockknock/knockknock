@@ -43,7 +43,6 @@ def check_homename(request):
     else:
         return JsonResponse({'is_available' : True, 'input_name': home_name })
 
-
 def myhome_register(request):
     if request.method == 'POST':
         home_form = HomeForm(request.POST)
@@ -67,10 +66,16 @@ def myhome_register(request):
             current_home.save()
             request.user.home = current_home
             request.user.save()
-            Utility.objects.create(home = current_home, 
-                                   name = request.POST.get("utility_name"), 
-                                   month = request.POST.get("utility_month"),
-                                   date = request.POST.get("utility_date"))
+            
+            #공과금
+            utility_name_list = request.POST.getlist('utility_name')
+            utility_month_list = request.POST.getlist('utility_month')
+            utility_date_list = request.POST.getlist('utility_date')
+            for i in range(len(utility_name_list)):
+                Utility.objects.create(home = current_home, 
+                                    name = utility_name_list[i], 
+                                    month = utility_month_list[i],
+                                    date = utility_date_list[i])
             
             LiveIn.objects.create(user = request.user, home = current_home)
             TodoCate.objects.create(home = current_home, name="빨래")
