@@ -134,7 +134,7 @@
                         <button class="btn" onclick="editBtn()">담당 추가</button>
                         <p>{{ todo.content }}</p>
                     </div>
-                    <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+                    <button type="button" class="edit-btn {{todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
                 </div>
                 {% endif %}
             {% endfor %}
@@ -157,7 +157,7 @@
                         <p>{{ todo.content }}</p>
                     </div>
                     <div class="d-flex align-items-end justify-content-end">
-                        <button type="button" class="edit-btn {{total_todo.id}} date-edit-btn" onclick="setBtn(this, '{{ total_todo.content }}', '{{ total_todo.user.username }}', '{{ total_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
+                        <button type="button" class="edit-btn {{ todo.id }} date-edit-btn" onclick="setEditBtn(this, '{{ todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
                             <i class="fa-solid fa-ellipsis"></i></button>
                     </div>
                 </div>
@@ -192,6 +192,8 @@
                             <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}" />
                             <img src="{{ user.profile_img.url }}" style="width: 3rem; height: 3rem;" alt="">
                             {% endfor %}
+                            <input type="radio" class="user-id-no-user" name="user" value="no-user"/>
+                            <img src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg style="width: 3rem; height: 3rem;" alt=""y>
                         </div>
                         <div class="select-todo-priority">
                             {% for priority in todo_priority %}
@@ -259,24 +261,21 @@
 
         if (user_id != undefined && cate_id == '') {
             add_modal_title.innerHTML = "기타 카테고리에 할 일 추가하기";
-        }
-        else if(cate_name != undefined ) {
-            add_modal_title.innerHTML = cate_name + " 카테고리에 할 일 추가하기";
-        }
-        else {
-            add_modal_title.innerHTML = "할 일 추가하기";
-        }
-        console.log(user_id)
-        if (user_id != null &&  cate_id != '') {
-            add_form_user_div.style.display = 'None';
-            add_form_cate_div.style.display = 'None';
-            add_form_user_div.querySelector(`.user-id-${user_id}`).checked = true;
-            add_form_cate_div.querySelector(`.cate-id-${cate_id}`).checked = true;
-        } else if (user_id != null && cate_id == '') {
             add_form_user_div.style.display = 'None';
             add_form_cate_div.style.display = 'None';
             add_form_user_div.querySelector(`.user-id-${user_id}`).checked = true;
             add_form_cate_div.querySelector(`.cate-id-no-cate`).checked = true;
+        }
+        else if(cate_name != undefined ) {
+            add_modal_title.innerHTML = cate_name + " 카테고리에 할 일 추가하기";
+            add_form_user_div.style.display = 'None';
+            add_form_cate_div.style.display = 'None';
+            add_form_user_div.querySelector(`.user-id-${user_id}`).checked = true;
+            add_form_cate_div.querySelector(`.cate-id-${cate_id}`).checked = true;
+        }
+        else {
+            add_modal_title.innerHTML = "할 일 추가하기";
+            add_form_cate_div.style.display = 'block';
         }
     }
 // 할 일 추가 ajax 
@@ -305,16 +304,19 @@
     const AddHandleResponse = () => {
         if (requestAdd.status < 400) {
             console.log(JSON.parse(requestAdd.response));
-            const {todo_id,todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name}= JSON.parse(requestAdd.response);
-            const todos = document.querySelector(` #cate-id-${ cate_id } .add-todo`);
-
+            const {todo_id, todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name}= JSON.parse(requestAdd.response);
+            var todos = null;
             const new_todo = document.createElement('div');
-            if (user_name == 'no-user') {
+            if (user_name === 'no-user') {
+                todos = document.querySelector(`.no-user-cate .add-todo`);
                 new_todo.classList = "total-todo todo-cnt";
             }else {
+                todos = document.querySelector(`#cate-id-${ cate_id } .add-todo`);
                 new_todo.classList = "user-todo todo-cnt";
             }
-
+            console.log(todos);
+            
+            console.log(new_todo);
             const todo_align = document.createElement('div');
             todo_align.classList = "d-flex align-items-center";
 
