@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/home/date_todo.css' %}">
+<link rel="stylesheet" href="{% static 'css/home/date_todo.css' %}?after %}">
 {% endblock %}
 
 {% block script %}
@@ -11,7 +11,85 @@
 
 {% block data_todo %}
 <div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
-    <div class="user-cate-container cate-container d-flex align-items-start">
+    <div class="user-cate-container cate-container d-flex align-items-baseline">
+        {% for cate, user_todos in user_todo_dict.items %}
+        <div id="cate-id-{{ cate.id }}" class="cate user-todo">
+            <p class="cate-name">{{cate.name}}</p>
+            <div class="user-todos">
+                {% if user_todos.count is not 0 %}
+                    {% for user_todo in user_todos %}
+                    {% if user_todo.is_done is False%}
+                    <div class="user-todo todo-cnt todo-id-{{ user_todo.id }}">
+                        <div class="user-todo-head d-flex align-items-baseline justify-content-between">
+                            {% if user_todo.priority is None %}
+                                <p>아무때나</p>
+                                <i class="fa-solid fa-fire text-secondary"></i>
+                            {% else %}
+                                <p>{{ user_todo.priority.content }}</p>
+                                <!-- 우선순위에 따라 불꽃 아이콘 색 다르게 -->
+                                <i class="fa-solid fa-fire priority-{{ user_todo.priority.priority_num }}"></i>
+                            {% endif%}
+                        </div>
+                        <div class="d-flex align-items-baseline">
+                            <!-- 완료: "fa-solid fa-check-circle"-->
+                            <button class="todo-check-btn me-2" onclick="isDoneBtn()"><i class="fa-regular fa-circle"></i></button>
+                            <p class="todo-text">{{ user_todo.content }}</p>
+                            
+                        </div>
+                        <div class="d-flex align-items-end justify-content-end">
+                            <button type="button" class="edit-btn {{user_todo.id}} btn date-edit-btn" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
+                            <i class="fa-solid fa-ellipsis"></i></button>
+                            <!-- 삭제 아이콘 넣을까?
+                            <button type="button" class="btn date-del-btn">
+                                <i class="fa-solid fa-trash"></i></button>-->
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <div class="add-todo todo">
+                    <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')" href="#addToDoModal"> + 할 일 등록</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="etc-cate cate">
+            <p class="cate-name">기타</p>
+            {% if user_todos.count is not 0 %}
+            {% for user_todo in no_cate_user_todos %}
+            {% if user_todo.is_done is False%}
+            <div class="todo-cnt todo-id-{{ user_todo.id }}">
+                <div class="user-todo-head d-flex align-items-baseline justify-content-between">
+                    {% if user_todo.priority is None %}
+                        <p>아무때나</p>
+                        <i class="fa-solid fa-fire text-secondary"></i>
+                    {% else %}
+                        <p>{{ user_todo.priority.content }}</p>
+                        <i class="fa-solid fa-fire priority-{{ user_todo.priority.priority_num }}"></i>
+                    {% endif%}
+                </div>
+                <div class="d-flex align-items-baseline">
+                    <!-- 미완료 버튼 -->
+                    <button class="todo-check-btn me-2" onclick="isDoneBtn()"><i class="fa-regular fa-circle"></i></button>
+                    <p class="todo-text">{{ user_todo.content }}</p>
+                </div>
+                <div class="d-flex align-items-end justify-content-end">
+                    <button type="button" class="edit-btn {{user_todo.id}} btn date-edit-btn" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
+                        <i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+            <div class="add-todo todo">
+                <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')"  href="#addToDoModal"> + 할 일 등록</a>
+            </div>
+        {% endif %}
+        </div>    
+        <div class="add-cate cate">
+            <button class="btn btn-dark"><i class="fa-solid fa-folder-plus me-2"></i>카테고리 추가하기</button>
+        </div>
+
         <div class="cate complete-cate">
             <p class="cate-name">완료</p>
             <div class="complete-user-todo"></div>
@@ -29,139 +107,58 @@
                 </div>
             {% endfor %}
         </div>
-        {% for cate, user_todos in user_todo_dict.items %}
-        <div id="cate-id-{{ cate.id }}" class="cate user-todo">
-            <p class="cate-name">{{cate.name}}</p>
-            <div class="user-todos">
-                {% if user_todos.count is not 0 %}
-                    {% for user_todo in user_todos %}
-                    {% if user_todo.is_done is False%}
-                    <div class="user-todo todo-cnt todo-id-{{ user_todo.id }}">
-                        <div class="user-todo-head d-flex align-items-center justify-content-between">
-                            {% if user_todo.priority is None %}
-                                <p>아무때나</p>
-                                <i class="fa-solid fa-fire"></i>
-                            {% else %}
-                                <p>{{ user_todo.priority.content }}</p>
-                                <!-- 우선순위에 따라 불꽃 아이콘 색 다르게 -->
-                                <i class="fa-solid fa-fire {{ user_todo.priority.priority_num }}"></i>
-                                <p>{{ user_todo.priority.priority_num }}</p>
-                            {% endif%}
-                        </div>
-                        <div class="d-flex align-items-baseline">
-                            <!-- 완료: "fa-solid fa-check-circle"-->
-                            <button class="todo-check-btn me-2" onclick="isDoneBtn()"><i class="fa-regular fa-circle"></i></button>
-                            <p class="todo-text">{{ user_todo.content }}</p>
-                            
-                        </div>
-                        <div class="d-flex align-items-end justify-content-end">
-                            <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
-                            <i class="fa-solid fa-ellipsis text-secondary"></i></button>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                {% endif %}
-                <div class="add-todo todo">
-                    <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')" href="#addToDoModal"> + 할 일 등록</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-        <div class="etc-cate cate">
-            <p>기타</p>
-            {% if user_todos.count is not 0 %}
-            {% for user_todo in no_cate_user_todos %}
-            {% if user_todo.is_done is False%}
-            <div class="user-todo todo-cnt todo-id-{{ user_todo.id }}">
-                <div class="d-flex align-items-center">
-                    {% if user_todo.priority is None %}
-                        <p>아무때나</p>
-                        <p>불꽃?</p>
-                    {% else %}
-                        <p>{{ user_todo.priority.content }}</p>
-                        <p>불꽃 색깔{{ user_todo.priority.priority_num }}</p>
-                    {% endif%}
-                    <button class="btn" onclick="isDoneBtn()">미완료</button>
-                    <p>{{ user_todo.content }}</p>
-                </div>
-                <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
-                    <i class="fa-solid fa-ellipsis text-secondary"></i></button>
-                </div>
-            {% endif %}
-            {% endfor %}
-            <div class="add-todo todo">
-                <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')"  href="#addToDoModal"> + 할 일 등록</a>
-            </div>
-        {% endif %}
-        </div>
-        <div class="add-cate cate">
-            <button class="btn btn-dark">+ 카테고리 추가하기</button>
-        </div>
     </div>
 </div>
 <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
-    <div class="cate-container">
-        <div class="cate complete-cate d-inline-block">
-            <p>완료</p>
-            <div class="complete-total-todos"></div>
-            {% for todo in complete_total_todos %}
-                <div class="complete-total-todo">
-                    <button class="btn" onclick="notDoneBtn()">완료! 버튼</button>
-                    <p>{{ todo.content }}</p>
-                    <div class="btn" oncanplay="feedbackBtn()">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <p>{{ todo.is_done_date }} 완료!</p>
-                    {% if todo.is_postpon is True %}
-                    <p>잊지 않고 해냈어요~!</p>
-                    {% else %}
-                    <p>미루지 않고 해냈어요!</p>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-        <div class="cate no-user-cate d-inline-block">
-            <p>담당 없음</p>
-            <div class="no-user-todos">
+    <div class="cate-container d-flex align-items-baseline">
+        <div class="cate no-user-cate">
+            <p class="cate-name">담당 없음</p>
             {% if no_user_todos.count is not 0 %}
             {% for todo in no_user_todos %}
                 {% if todo.is_done is False%}
-                <div class="no-user-todo todo-id-{{ todo.id }}">
-                    <div class="d-flex align-items-center">
+                <div class="no-user-todo todo-id-{{ todo.id }} todo-cnt">
+                    <div class="user-todo-head d-flex align-items-baseline justify-content-between">
                         {% if todo.priority is None %}
                             <p>아무때나</p>
-                            <p>불꽃?</p>
+                            <i class="fa-solid fa-fire text-secondary"></i>
                         {% else %}
                             <p>{{ todo.priority.content }}</p>
-                            <p>불꽃 색깔{{ todo.priority.priority_num }}</p>
+                            <i class="fa-solid fa-fire priority-{{ todo.priority.priority_num }}"></i>
                         {% endif%}
-                        <button class="btn" onclick="editBtn()">담당 추가</button>
-                        <p>{{ todo.content }}</p>
                     </div>
-                    <button type="button" class="edit-btn {{todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
-                        <i class="fa-solid fa-ellipsis text-secondary"></i></button>
+                    <div class="d-flex align-items-baseline">
+                        <!-- 담당 추가 -->
+                        <button class="todo-plus-btn" onclick="editBtn()"><i class="fa-solid fa-user-plus"></i></button>
+                        <p class="all-todo-text">{{ todo.content }}</p>
                     </div>
+                    <div class="d-flex align-items-end justify-content-end">
+                    <button type="button" class="edit-btn {{todo.id}} date-edit-btn" onclick="setEditBtn(this, '{{todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
+                        <i class="fa-solid fa-ellipsis"></i></button>
+                    </div>
+                </div>
                 {% endif %}
             {% endfor %}
             {% endif %}
             <div class="add-todo todo">
-                <a type="button" class="add-btn btn btn-dark" data-bs-toggle="modal" onclick="setAddBtn(this, null, null, null)" href="#addToDoModal"> + 할 일 등록</a>
-            </div>
+                <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, null, null, null)" href="#addToDoModal"> + 할 일 등록</a>
             </div>
         </div>
         <div class="cate doing-cate">
-            <p>진행중</p>
+            <p class="cate-name">진행중</p>
             {% if doing_todos.count is not 0 %}
             {% for todo in doing_todos %}
                 {% if todo.is_done is False%}
-                <div class="no-user-todo todo-id-{{ todo.id }}">
-                    <div class="d-flex align-items-center">
+                <div class="no-user-todo todo-id-{{ todo.id }} todo-cnt">
+                    <div class="user-todo-head d-flex align-items-baseline justify-content-between">
                         <p>{{ todo.priority.content }}</p>
-                        <p>불꽃 색깔{{ todo.priority.priority_num }}</p>
-                        <img class="cal-profile-img" style="width:10rem; height:10rem;" src={% if user.profile_img %}"{{todo.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
-                        <p>{{ todo.content }}</p>
+                        <i class="fa-solid fa-fire priority-{{ todo.priority.priority_num }}"></i>
                     </div>
+                    <div class="d-flex align-items-start">
+                        <div class="todo-profile-box">
+                            <img class="cal-profile-img" src={% if user.profile_img %}"{{todo.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                        </div>
+                        <p class="all-todo-text">{{ todo.content }}</p>
+                   </div>
                     <div class="d-flex align-items-end justify-content-end">
                         <button type="button" class="edit-btn {{ todo.id }} date-edit-btn" onclick="setEditBtn(this, '{{ todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
                             <i class="fa-solid fa-ellipsis"></i></button>
@@ -170,6 +167,28 @@
                 {% endif %}
             {% endfor %}
             {% endif %}
+        </div>
+        <div class="cate complete-cate">
+            <p class="cate-name">완료</p>
+            {% for todo in complete_total_todos %}
+                <div class="complete-total-todo">
+                    <div class="com-todo-head d-flex align-items-baseline justify-content-between">
+                        <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle"></i></button>
+                        <p>{{ todo.content }}</p>
+                        <div class="btn" oncanplay="feedbackBtn()">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="com-todo-text">
+                        <p>{{ todo.is_done_date }} 완료!</p>
+                        {% if todo.is_postpon is True %}
+                        <p>잊지 않고 해냈어요~!</p>
+                        {% else %}
+                        <p>미루지 않고 해냈어요!</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -186,12 +205,14 @@
                 <form method="POST" action="">
                     {% csrf_token %}
                     <div class="modal-body">
-                        <input type="text" name="content" placeholder="할 일을 입력하세요"/>
+                        <div class="todo-input-txt">
+                            <input type="text" name="content" placeholder="할 일을 입력하세요"/>
+                        </div>
                         <div class="select-todo-cate">
                             {% for cate in cates %}
                             <label><input type="radio" class="cate-id-{{ cate.id }}" name="cate" value="{{ cate.id }}">{{ cate.name }}</label>
                             {% endfor %}
-                            <label><input type="radio" class="cate-id-no-cate" name="cate" value="no-cate">기타</label>
+                            <label class="me-3"><input type="radio" class="cate-id-no-cate" name="cate" value="no-cate">기타</label>
                         </div>
                         <div class="select-todo-user">
                             {% for user in roomates %}
@@ -201,7 +222,8 @@
                             <input type="radio" class="user-id-no-user" name="user" value="no-user"/>
                             <img src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg style="width: 3rem; height: 3rem;" alt=""y>
                         </div>
-                        <div class="select-todo-priority">
+                        <div class="select-todo-priority d-flex align-items-center">
+                            <p class="me-5">우선순위</p>
                             {% for priority in todo_priority %}
                             <label><input type="radio" class="priority-id-{{ priority.id }}"  name="priority" value ="{{ priority.id }}"/>{{ priority.content }}</label>
                             {% endfor %}
@@ -224,7 +246,6 @@
 		            <h5 class="modal-title">할 일 설정</h5>
 		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 		        </div>
-
                     {% csrf_token %}
                     <div class="modal-body">
                         <button class="edit-todo-btn btn btn-light" onclick="showEdit(this, '{{ select_date }}')" >수정</button>
@@ -243,8 +264,9 @@
                                 </div>
                                 <div class="select-todo-user">
                                     {% for user in roomates %}
-                                    <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}" />
+                                    <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}"/>
                                     <img src="{{ user.profile_img.url }}" style="width: 3rem; height: 3rem;" alt="">
+
                                     {% endfor %}
                                     <input type="radio" class="user-id-no-user" name="user" value="no-user"/>
                                     <img src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg style="width: 3rem; height: 3rem;" alt=""y>

@@ -21,7 +21,7 @@
                 <button class="btn btn-lg btn-outline-dark rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_register' %}">집 등록</a></button>
             </div>
         {% else %} <!-- 유저가 집이 있는 경우 -->
-            <div class="mt-5" style="max-width: 50rem;">
+            <div class="mt-5" style="max-width: 46rem;">
                 <h2>🏡</h2>
                 <p>{{user.nick_name}}네 집</p>
                 <h2>{{ user.home.name }}</h2>
@@ -38,9 +38,10 @@
                 <button class="btn btn-lg btn-warning rounded-pill px-4 py-2 "><a href="{{ today_date_url }}">생활 관리</a></button>
             </div>
 
-            <div id="intro-main-todo" class="text-center">
-                <!-- 누르면 오늘 date todo로 넘어가게! -->
-                <p>오늘 {{ today_date }}의 할 일</p>
+            <a href="{{ today_date_url }}">
+                <div id="intro-main-todo" class="text-center">
+                <h6>{{ today_date }}</h6>
+                <h5>오늘의 할 일</h5>
                 
                 {% if user_todos.count is 0 %}
                     <p>현재 할 일이 없어요~!</p>
@@ -51,7 +52,7 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-            </div>
+            </div></a>
         {% endif %}
     </div>
 </div>
