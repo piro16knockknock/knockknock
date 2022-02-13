@@ -25,7 +25,7 @@ const addUtility = (tag) => {
             max="12" /><span>개월마다</span>
         <input type="number" class="new-utility-date" min="1"
             max="31" /><span>일</span>
-        <i class="fas fa-minus-square"></i>
+        <i class="fas fa-minus-square" onclick="deleteUtility(this)" ></i>
     `;
 
     /*input valid 검사 */
