@@ -1,5 +1,6 @@
 var edit_btn = document.querySelector('.edit-todo-btn');
 var delete_btn = document.querySelector('.delete-btn');
+var postpone_btn = document.querySelector('.postpone-btn')
 var edit_div = document.querySelector('.edit-todo');
 var form = document.querySelector('#setToDoModal form');
 const addTodoModal = document.querySelector('#addToDoModal');
@@ -45,6 +46,8 @@ function setEditBtn (event, content, user_name, cate_name, select_date) {
     }
     edit_btn.classList.add(event.classList[1]);
     delete_btn.classList.add(event.classList[1]);
+    postpone_btn.setAttribute('href', `./${select_date}/${event.classList[1]}/postpone/`);
+    console.log(postpone_btn)
 };
 
 

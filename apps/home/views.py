@@ -160,6 +160,18 @@ def edit_todo(request, date, todo_id):
 
 
 @login_required
+def postpone_todo(request, date, todo_id):
+    todo = Todo.objects.get(id = todo_id)
+    todo.is_postpone = True
+    nextdate = datetime.strptime(date, "%Y-%m-%d")
+    nextdate = nextdate + timedelta(days=1)
+    
+    todo.date = nextdate
+    todo.save()
+
+    return redirect('home:date_todo', date=date)
+
+@login_required
 def date_todo(request, date):
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)

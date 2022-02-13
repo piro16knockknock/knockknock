@@ -224,7 +224,7 @@
                     {% csrf_token %}
                     <div class="modal-body">
                         <button class="edit-todo-btn btn btn-light" onclick="showEdit(this, '{{ select_date }}')" >수정</button>
-                        <a class="postpone-btn btn btn-light">내일 하기</a>
+                        <a class="postpone-btn btn btn-light" href="">내일 하기</a>
                         <button class="delete-btn btn btn-ligth" onclick= "deleteTodoBtn(this, '{{ select_date }}')" data-bs-dismiss="modal">삭제</button> 
                         
                         <div class="edit-todo" style="display: none;">
