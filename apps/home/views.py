@@ -1,9 +1,8 @@
-from re import T
-from sqlite3 import Date
-from urllib.parse import uses_relative
-from urllib.robotparser import RobotFileParser
+import json
+from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.utils.safestring import mark_safe
 from django.views import generic
 
@@ -51,17 +50,20 @@ def next_month(d):
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
 
-
+# add_todo_ajax
+@csrf_exempt
 @login_required
 def add_todo(request, date):
-    print(request.POST)
-    content = request.POST['content']
-    priority = request.POST['priority']
-    cate = request.POST['cate']
-    user = request.POST['user']
+    req = json.loads(request.body)
+    data = req['form_data']
+    print(data)
+    content = data['content']
+    priority = data['priority']
+    cate = data['cate']
+    user = data['user']
 
     # 내 할 일 페이지에서 기타 카테고리가 아닌 카테고리
-    if request.POST['cate'] != 'no-cate' and int(user) is request.user.id:
+    if cate != 'no-cate' and int(user) is request.user.id:
         print("내꺼 기타말고")
         todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate), user = User.objects.get(id = user), 
         priority = TodoPriority.objects.get(id = priority), date = date)
@@ -76,15 +78,14 @@ def add_todo(request, date):
         todo = Todo.objects.create(home=request.user.home, content=content,
         priority = TodoPriority.objects.get(id = priority), date = date)
     
-    todo.save()
-    return redirect('home:date_todo', date = date)
-    # if form.is_valid():
-    #     print("valid")
-    #     todo = form.save(commit=False)
-    #     todo.home = current_home
-    #     todo.date = date
-    #     todo.save()
-    return
+    return JsonResponse({
+        'todo_content' : todo.content,
+        'todo_priority_content' : todo.priority.content,
+        'todo_priority_num' : todo.priority.priority_num,
+        'cate_id' : cate,
+        'cate_name' : TodoCate.objects.get(id=cate).name,
+        'user_name' : User.objects.get(id = user).username,
+    })
 
 @login_required
 def delete_todo(request, date, todo_id):

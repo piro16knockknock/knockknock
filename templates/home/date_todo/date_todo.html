@@ -7,7 +7,7 @@
 
 {% block data_todo %}
 <div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
-    <div class="cate-container d-flex align-items-start">
+    <div class="user-cate-container cate-container d-flex align-items-start">
         <div class="cate complete-cate">
             <p class="cate-name">완료</p>
             <div class="complete-user-todo"></div>
@@ -26,7 +26,7 @@
             {% endfor %}
         </div>
         {% for cate, user_todos in user_todo_dict.items %}
-        <div class="cate user-todo">
+        <div id="cate-id-{{ cate.id }}" class="cate user-todo">
             <p class="cate-name">{{cate.name}}</p>
             <div class="user-todos">
                 {% if user_todos.count is not 0 %}
@@ -134,7 +134,7 @@
                         <button class="btn" onclick="editBtn()">담당 추가</button>
                         <p>{{ todo.content }}</p>
                     </div>
-                    <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
+                    <button type="button" class="edit-btn {{user_todo.id}} btn btn-ligth" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">설정</button>
                 </div>
                 {% endif %}
             {% endfor %}
@@ -176,9 +176,8 @@
         <div class="modal-content">
 		        <div class="modal-header">
 		            <h5 class="modal-title">할 일 추가하기</h5>
-		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 		        </div>
-                <form method="post" action="{{ select_date }}/add">
+                <form method="POST" action="">
                     {% csrf_token %}
                     <div class="modal-body">
                         <input type="text" name="content" placeholder="할 일을 입력하세요"/>
@@ -200,11 +199,11 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">등록</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                    </div>
                 </form>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="addTodoBtn(this, '{{ select_date }}')" data-bs-dismiss="modal">등록</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
             </div>
         </div>
     </div>
@@ -217,7 +216,7 @@
 		            <h5 class="modal-title">할 일 설정</h5>
 		            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 		        </div>
-                <form method="post" action="{% url 'home:edit_todo' date='{ {select_date }}' todo_id=0 %}">
+                <form method="post" action="{% url 'home:edit_todo' date='{{select_date }}' todo_id=0 %}">
                     {% csrf_token %}
                     <div class="modal-body">
                         <a class="edit-btn btn btn-light" onclick="showEdit()">수정</a>
@@ -248,6 +247,9 @@
     var edit_div = document.querySelector('.edit-todo');
     var form = document.querySelector('#setToDoModal form');
 
+    console.log(delete_btn);
+    console.log(edit_btn);
+
 
 // 어떤 cate의 할일 추가하기를 선택했냐에 따른 설정 모달 내 보여주는 내용 수정
     function setAddBtn(event, cate_id, cate_name, user_id) {
@@ -277,6 +279,73 @@
             add_form_cate_div.querySelector(`.cate-id-no-cate`).checked = true;
         }
     }
+// 할 일 추가 ajax 
+    const requestAdd = new XMLHttpRequest();   
+
+    function addTodoBtn(event, select_date) {
+        const url = `./${select_date}/add`;
+        const form = new FormData(document.querySelector('#addToDoModal form'));
+        var form_data = serialize(form);
+        requestAdd.open("POST", url, true);
+        requestAdd.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded",
+        );
+        requestAdd.send(JSON.stringify({
+            form_data : form_data,
+        }));
+    }
+
+    requestAdd.onreadystatechange = () => {
+        if (requestAdd.readyState === XMLHttpRequest.DONE) {
+            AddHandleResponse();
+        }
+    };
+
+    const AddHandleResponse = () => {
+        if (requestAdd.status < 400) {
+            console.log(JSON.parse(requestAdd.response));
+            const {todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name}= JSON.parse(requestAdd.response);
+            const todos = document.querySelector(` #cate-id-${ cate_id } .add-todo`);
+
+            const new_todo = document.createElement('div');
+            if (user_name == 'no-user') {
+                new_todo.classList = "total-todo todo-cnt";
+            }else {
+                new_todo.classList = "user-todo todo-cnt";
+            }
+
+            const todo_align = document.createElement('div');
+            todo_align.classList = "d-flex align-items-center";
+
+            const priority_contentP = document.createElement('p');
+            priority_contentP.innerHTML = todo_priority_content
+            // 우선순위에 따른 아이콘 부여하는 부분
+            const priority_icon = document.createElement('p');
+            priority_icon.innerHTML = todo_priority_num;
+
+            const todo_edit_btn = document.createElement('button');
+            todo_edit_btn.classList = "edit-btn btn btn-ligth";
+            todo_edit_btn.type = "button";
+            todo_edit_btn.setAttribute('onclick', `setEditBtn(this, '${todo_content}', '${user_name }', '${cate_name}')`); 
+            todo_edit_btn.setAttribute('data-bs-toggle',"modal");
+            todo_edit_btn.setAttribute('data-bs-target',"#setToDoModal");
+            todo_edit_btn.innerHTML = "<i class='fa-solid fa-ellipsis'></i>";
+
+            const todo_contentP = document.createElement('p');
+            todo_contentP.innerHTML = todo_content;
+            
+            todo_align.appendChild(priority_contentP);
+            todo_align.appendChild(priority_icon);
+            todo_align.appendChild(todo_edit_btn);
+            todo_align.appendChild(todo_contentP);
+
+            new_todo.appendChild(todo_align);
+            todos.before(new_todo);
+            
+        }
+    };
+
 
 // 어떤 todo를 선택했냐에 따른 설정 모달 내 할 일 수정, 삭제 url setup
     function setEditBtn(event, content, user_name, cate_name) {
@@ -287,6 +356,7 @@
                 return;
             }
         }
+
         edit_btn.classList.add(event.classList[1]);
         delete_btn.classList.add(event.classList[1]);
         delete_btn.href = `{{select_date}}/${event.classList[1]}/delete/`
@@ -303,6 +373,22 @@
         delete_btn.style.display = 'inline-block';
         edit_div.style.display = 'None';
     }
+
+    // serialize Util
+    function serialize (data) {
+	let obj = {};
+	for (let [key, value] of data) {
+		if (obj[key] !== undefined) {
+			if (!Array.isArray(obj[key])) {
+				obj[key] = [obj[key]];
+			}
+			obj[key].push(value);
+		} else {
+			obj[key] = value;
+		}
+	}
+	return obj;
+}
 
 </script>
 {% endblock %}
