@@ -109,13 +109,14 @@ def add_todo(request, date):
     
     return res
 
+@csrf_exempt
 @login_required
 def delete_todo(request, date, todo_id):
-    todo_id = todo_id.split('-')[-1]
-    print(todo_id.split('-')[-1])
     delete_todo = Todo.objects.get(id = todo_id)
     delete_todo.delete()
-    return redirect('home:date_todo', date = date)
+    return JsonResponse({
+        'todo_id' : todo_id,
+    })
 
 
 @login_required
