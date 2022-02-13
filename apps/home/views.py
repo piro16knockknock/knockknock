@@ -88,7 +88,7 @@ def add_todo(request, date):
         'todo_priority_content' : todo.priority.content,
         'todo_priority_num' : todo.priority.priority_num,
         'cate_id' : 'no-cate',
-        'cate_name' : '기타',
+        'cate_name' : 'no-cate',
         'user_name' : User.objects.get(id = user).username,
         })
 
@@ -103,20 +103,35 @@ def add_todo(request, date):
         'todo_priority_content' : todo.priority.content,
         'todo_priority_num' : todo.priority.priority_num,
         'cate_id' : 'no-cate',
-        'cate_name' : '담당 없음',
+        'cate_name' : 'no-cate',
         'user_name' : 'no-user',
         })
     
     return res
 
+@csrf_exempt
 @login_required
 def delete_todo(request, date, todo_id):
-    todo_id = todo_id.split('-')[-1]
-    print(todo_id.split('-')[-1])
     delete_todo = Todo.objects.get(id = todo_id)
     delete_todo.delete()
-    return redirect('home:date_todo', date = date)
+    return JsonResponse({
+        'todo_id' : todo_id,
+    })
 
+@csrf_exempt
+@login_required
+def make_edit_form(request, date, todo_id):
+    todo = Todo.objects.get(id=todo_id)
+    content = todo.content
+    cate_id = todo.cate.id if not None else 'no-cate'
+    user_id = todo.user.id if not None else 'no-user'
+    priority_id = todo.priority.id
+    return JsonResponse({
+        'content' : content,
+        'cate_id' : cate_id,
+        'user_id' : user_id,
+        'priority_id' : priority_id,
+    })
 
 @login_required
 def edit_todo(request, date, todo_id):

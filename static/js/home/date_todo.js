@@ -1,11 +1,8 @@
-givar edit_btn = document.querySelector('.edit-btn');
+var edit_btn = document.querySelector('.edit-todo-btn');
 var delete_btn = document.querySelector('.delete-btn');
 var edit_div = document.querySelector('.edit-todo');
 var form = document.querySelector('#setToDoModal form');
-
-console.log(delete_btn);
 console.log(edit_btn);
-
 
 // 어떤 cate의 할일 추가하기를 선택했냐에 따른 설정 모달 내 보여주는 내용 수정
 function setAddBtn(event, cate_id, cate_name, user_id) {
@@ -33,6 +30,73 @@ function setAddBtn(event, cate_id, cate_name, user_id) {
     }
 };
 
+
+// 어떤 todo를 선택했냐에 따른 설정 모달 내 할 일 수정, 삭제 url setup
+function setEditBtn (event, content, user_name, cate_name, select_date) {
+    console.log(event);
+    for (var i=0, l=edit_btn.classList.length; i<l; ++i) {
+        if(/todo-id-.*/.test(edit_btn.classList[i])) {
+            edit_btn.classList.replace(edit_btn.classList[i], event.classList[1]);
+            delete_btn.classList.replace(delete_btn.classList[i], event.classList[1]);
+            return;
+        }
+    }
+    edit_btn.classList.add(event.classList[1]);
+    delete_btn.classList.add(event.classList[1]);
+};
+
+
+// ajax로 현재 todo_id 가져가고, todo내용 가져와서 form 만들어주기
+const reqMakeEditForm = new XMLHttpRequest();   
+function showEdit(event, select_date) {
+    todo_id = edit_btn.classList[3];
+    edit_div.style.display = 'block';
+    const url = `./${select_date}/${todo_id}/make-edit-form/`;
+    reqMakeEditForm.open("POST", url, true);
+    reqMakeEditForm.setRequestHeader(
+        "Content-Type",
+        "application/x-www-form-urlencoded",
+    );
+    reqMakeEditForm.send(JSON.stringify({
+        todo_id : todo_id,
+    }));
+};
+
+reqMakeEditForm.onreadystatechange = () => {
+    if (reqMakeEditForm.readyState === XMLHttpRequest.DONE) {
+        makeEditFormHandleResponse();
+    }
+};
+
+const  makeEditFormHandleResponse = () => {
+    if (requestAdd.status < 400) {
+        console.log(JSON.parse(reqMakeEditForm.response));
+        const {content, cate_id, user_id, priority_id} = JSON.parse(reqMakeEditForm.response);
+        
+        const edit_todo_form = document.querySelector('.edit-todo form');
+        const content_input = edit_todo_form.querySelector('input[name="content"]')
+        const select_cate_div = edit_todo_form.querySelector(`div.select-todo-cate input.cate-id-${cate_id}`);
+        const select_user_div = edit_todo_form.querySelector(`div.select-todo-user input.user-id-${user_id}`);
+        const select_priority_div = edit_todo_form.querySelector(`div.select-todo-priority input.priority-id-${priority_id}`);
+        console.log(priority_id);
+        content_input.value = content;
+        select_cate_div.setAttribute('checked', true);
+        select_user_div.setAttribute('checked', true);
+        select_priority_div.setAttribute('checked', true);
+        
+    }
+}
+
+
+function closeEdit() {
+    delete_btn.style.display = 'inline-block';
+    edit_div.style.display = 'None';
+    todo_id = delete_btn.classList[3];
+    console.log(todo_id);
+    delete_btn.classList.remove(todo_id);
+    edit_btn.classList.remove(todo_id);
+};
+
 // 할 일 추가 ajax 
 const requestAdd = new XMLHttpRequest();   
 
@@ -58,20 +122,22 @@ requestAdd.onreadystatechange = () => {
 //  add_todo_안에 내용 채우기 ($$$$$선영 언니 도움!)
 const AddHandleResponse = () => {
     if (requestAdd.status < 400) {
-        console.log(JSON.parse(requestAdd.response));
         const {todo_id, todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name}= JSON.parse(requestAdd.response);
         var todos = null;
         const new_todo = document.createElement('div');
         if (user_name === 'no-user') {
             todos = document.querySelector(`.no-user-cate .add-todo`);
-            new_todo.classList = "total-todo todo-cnt";
-        }else {
-            todos = document.querySelector(`#cate-id-${ cate_id } .add-todo`);
-            new_todo.classList = "user-todo todo-cnt";
+            new_todo.classList = `total-todo todo-cnt todo-id-${todo_id}`;
         }
-        console.log(todos);
-        
-        console.log(new_todo);
+        else if (cate_name === 'no-cate') {
+            todos = document.querySelector(`.user-cate-container .etc-cate .add-todo`);
+            new_todo.classList = `etc-todo todo-cnt todo-id${todo_id}`;
+        }
+        else {
+            todos = document.querySelector(`#cate-id-${ cate_id } .add-todo`);
+            new_todo.classList = `user-todo todo-cnt todo-id-${todo_id}`;
+        }
+
         const todo_align = document.createElement('div');
         todo_align.classList = "d-flex align-items-center";
 
@@ -103,35 +169,40 @@ const AddHandleResponse = () => {
     }
 };
 
+// 할 일 삭제 ajax 
+const requestDelete = new XMLHttpRequest();   
 
-// 어떤 todo를 선택했냐에 따른 설정 모달 내 할 일 수정, 삭제 url setup
-function setEditBtn (event, content, user_name, cate_name, select_date) {
-    for (var i=0, l=edit_btn.classList.length; i<l; ++i) {
-        if(/todo-id-.*/.test(edit_btn.classList[i])) {
-            edit_btn.classList.replace(edit_btn.classList[i], event.classList[1]);
-            delete_btn.classList.replace(delete_btn.classList[i], event.classList[1]);
-            return;
-        }
+function deleteTodoBtn(event, select_date) {
+    todo_id = event.classList[3];
+    console.log(todo_id);
+    const url = `./${select_date}/${todo_id}/delete/`;
+    requestDelete.open("POST", url, true);
+    requestDelete.setRequestHeader(
+        "Content-Type",
+        "application/x-www-form-urlencoded",
+    );
+    requestDelete.send(JSON.stringify({
+        todo_id : todo_id,
+    }));
+};
+
+requestDelete.onreadystatechange = () => {
+    if (requestDelete.readyState === XMLHttpRequest.DONE) {
+        deleteHandleResponse();
     }
-
-    edit_btn.classList.add(event.classList[1]);
-    delete_btn.classList.add(event.classList[1]);
-    delete_btn.href = `${select_date}/${event.classList[1]}/delete/`
-    form.action = `${select_date}/${event.classList[1]}/edit/`
-    makeEditForm(content, user_name, cate_name)
 };
 
-function showEdit(event) {
-    delete_btn.style.display = 'None';
-    edit_div.style.display = 'block';
-};
-
-function closeEdit(event) {
-    delete_btn.style.display = 'inline-block';
-    edit_div.style.display = 'None';
+const deleteHandleResponse = () => {
+    if (requestDelete.status < 400) {
+        const {todo_id} = JSON.parse(requestDelete.response);
+        const delete_todo_div = document.querySelector(`.todo-id-${todo_id}`);
+        delete_todo_div.remove() 
+        delete_btn.classList.remove(todo_id);
+    }
 };
 
 
+// Utils
 function serialize (data) {
     let obj = {};
     for (let [key, value] of data) {
