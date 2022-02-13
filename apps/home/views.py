@@ -133,15 +133,23 @@ def make_edit_form(request, date, todo_id):
         'priority_id' : priority_id,
     })
 
+@csrf_exempt
 @login_required
 def edit_todo(request, date, todo_id):
-    todo_id = todo_id.split('-')[-1]
-    edit_todo = Todo.objects.get(id = todo_id)
-    edit_todo.content = request.POST['content']
-    edit_todo.user.id = request.POST['user']
-    edit_todo.cate.id = request.POST['cate']
-    edit_todo.save()
-    return redirect('home:date_todo', date = date)
+    todo = Todo.objects.get(id=todo_id)
+    req = json.loads(request.body)['form_data']
+
+    todo.content = req['content']
+    todo.priority = TodoPriority.objects.get(id=int(req['priority']))
+    todo.cate = TodoCate.objects.get(id = req['cate'])
+    print(todo)
+    todo.save()
+
+    return JsonResponse({
+        'todo_id' : todo.id,
+        'content' : todo.content,
+        'priority_num' : todo.priority.priority_num,
+    })
 
 
 @login_required

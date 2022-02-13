@@ -26,7 +26,8 @@ function setAddBtn(event, cate_id, cate_name, user_id) {
     }
     else {
         add_modal_title.innerHTML = "할 일 추가하기";
-        add_form_cate_div.style.display = 'block';
+        // add_form_cate_div.style.display = 'block';
+        add_form_user_div.querySelector(`.user-id-no-user`).checked = true;
     }
 };
 
@@ -198,6 +199,50 @@ const deleteHandleResponse = () => {
         const delete_todo_div = document.querySelector(`.todo-id-${todo_id}`);
         delete_todo_div.remove() 
         delete_btn.classList.remove(todo_id);
+    }
+};
+
+//할 일 수정 ajax
+const reqEditTodo = new XMLHttpRequest();
+
+function editTodoBtn(event, select_date) {
+    todo_id = edit_btn.classList[3];
+    const form = new FormData(document.querySelector('#setToDoModal form'));
+    var form_data = serialize(form);
+
+    const url = `./${select_date}/${todo_id}/edit/`;
+    reqEditTodo.open("POST", url, true);
+    reqEditTodo.setRequestHeader(
+        "Content-Type",
+        "application/x-www-form-urlencoded",
+    );
+    reqEditTodo.send(JSON.stringify({
+        todo_id : todo_id,
+        form_data : form_data,
+    }));
+}
+
+reqEditTodo.onreadystatechange = () => {
+    if (reqEditTodo.readyState === XMLHttpRequest.DONE) {
+        editHandleResponse();
+    }
+};
+
+const editHandleResponse = () => {
+    if (reqEditTodo.status < 400) {
+
+        console.log(JSON.parse(reqEditTodo.response));
+        const {todo_id, content, priority_num} = JSON.parse(reqEditTodo.response);
+        const edit_todo_div = document.querySelector(`.todo-id-${todo_id}`);
+
+        const priority_icon = edit_todo_div.querySelector(`i.fa-fire`);
+        priority_icon.classList.replace('1', `${priority_num}`);
+        priority_icon.classList.replace('2', `${priority_num}`);
+        priority_icon.classList.replace('3', `${priority_num}`);
+
+        const edit_content = edit_todo_div.querySelector('p.todo-text');
+        edit_content.innerHTML = content;
+        console.log(edit_todo_div);
     }
 };
 
