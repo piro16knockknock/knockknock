@@ -94,9 +94,19 @@
     margin-right: .5rem;
 }
 
+/*공과금 종류*/
 .myhome-detail__row__rent-type {
     display: flex;
+    align-items: center;
     margin-bottom: .8rem;
+}
+
+.myhome-detail__row__rent-type > input{
+    border: 1px solid slategray;
+    width: 4rem;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+    padding: .3rem;
 }
 
 .myhome-detail__row__flex_row {
@@ -197,4 +207,10 @@
 
 .myhome-roommate__modal-user-list p {
     font-size: 1.3rem;
+}
+
+/*공과금 추가*/
+.myhome-detail__row__add-utility {
+    margin: 1rem 0;
+    font-size: 3rem;
 }
