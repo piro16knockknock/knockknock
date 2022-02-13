@@ -18,6 +18,7 @@ let utility_count = utility_li.length;
 const deleteUtility = (tag) => {
     tag.parentElement.remove();
 }
+
 const addUtility = (tag) => {
     const ul = document.querySelector('.myhome-detail__row__utility-ul');
     const li = document.createElement('li');
@@ -33,8 +34,8 @@ const addUtility = (tag) => {
 
     /*input valid 검사 */
     ul.appendChild(li);
-
     utility_count++;
+    utility_check(0, utility_count);
     if(utility_count >= 5){
         tag.classList.add("myhome-detail__display-none");
     }
@@ -70,29 +71,34 @@ rent_date.addEventListener("keyup", (event) => {
     }
 })
 
-/**
-for(let i = 0 ; i < utility_count ; i++){
-    utility_name[i].addEventListener("keyup", (event) => {
-        utility_name[i].value = utility_name[i].value.replace(replaceChar, "");
-    })
+utility_check(0, utility_count);
+function utility_check(start, end){
+    const utility_name = document.querySelectorAll('.new-utility-name');
+    const utility_month = document.querySelectorAll('.new-utility-month');
+    const utility_date = document.querySelectorAll('.new-utility-date');
 
-    utility_month[i].addEventListener("keyup", (event) => {
-        utility_month[i].value = utility_month[i].value.replace(replaceNotInt, "");
-        if (utility_month[i].value != "" && (utility_month[i].value > 12 || utility_month[i].value < 1)) {
-            utility_month[i].value = utility_month[i].value.slice(0, -1);
-        }
-    })
-
-    utility_date[i].addEventListener("keyup", (event) => {
-        utility_date[i].value = utility_date[i].value.replace(replaceNotInt, "");
-        if (utility_date[i].value != "" && (utility_date[i].value > 31 || utility_date[i].value < 1)) {
-            utility_date[i].value = utility_date[i].value.slice(0, -1);
-        }
-    })
+    for(let i = start ; i < end ; i++){
+        utility_name[i].addEventListener("keyup", (event) => {
+            utility_name[i].value = utility_name[i].value.replace(replaceChar, "");
+        })
     
+        utility_month[i].addEventListener("keyup", (event) => {
+            utility_month[i].value = utility_month[i].value.replace(replaceNotInt, "");
+            if (utility_month[i].value != "" && (utility_month[i].value > 12 || utility_month[i].value < 1)) {
+                utility_month[i].value = utility_month[i].value.slice(0, -1);
+            }
+        })
+    
+        utility_date[i].addEventListener("keyup", (event) => {
+            utility_date[i].value = utility_date[i].value.replace(replaceNotInt, "");
+            if (utility_date[i].value != "" && (utility_date[i].value > 31 || utility_date[i].value < 1)) {
+                utility_date[i].value = utility_date[i].value.slice(0, -1);
+            }
+        })
+    }    
 }
+    
 
- */
 /* 집 정보 변경 ajax */
 let check_name = "" //중복검사를 통과한 이름
 const onClickSaveHome = (current_name) => {
