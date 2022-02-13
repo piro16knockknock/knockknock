@@ -69,7 +69,7 @@
     {% endif %}
     <!--아직 룸메이트X 초대중 리스트-->
     <p class="roommate-list__title">초대중인 유저</p>
-    {% if invvite_users %}
+    {% if invite_users %}
     <div class="roommate-list__carousel">
         <i class="fas fa-caret-left roommate-list__carousel-left"></i>
         <div class="roommate-list__window">
@@ -105,13 +105,16 @@
     const container = document.querySelectorAll(".roommate-list__container");
     const prevBtn = document.querySelectorAll(".roommate-list__carousel-left");
     const nextBtn = document.querySelectorAll(".roommate-list__carousel-right"); 
-    
+   
     (function addEvent(){
-        prevBtn[0].addEventListener('click', translateContainer.bind(this, 1, 0));
-        nextBtn[0].addEventListener('click', translateContainer.bind(this, -1, 0));
-
-        prevBtn[1].addEventListener('click', translateContainer.bind(this, 1, 1));
-        nextBtn[1].addEventListener('click', translateContainer.bind(this, -1, 1));
+        if(prevBtn[0]){
+            prevBtn[0].addEventListener('click', translateContainer.bind(this, 1, 0));
+            nextBtn[0].addEventListener('click', translateContainer.bind(this, -1, 0));
+        }
+        if(prevBtn[1]){
+            prevBtn[1].addEventListener('click', translateContainer.bind(this, 1, 1));
+            nextBtn[1].addEventListener('click', translateContainer.bind(this, -1, 1));
+        }
     })();
 
     function translateContainer(direction, i) {
