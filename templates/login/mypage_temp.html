@@ -2,51 +2,153 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <!--이사하기 버튼-->
-    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#moveHomeModal">이사하기</button>
-    {% if request.user.invite and request.user.invite.is_accepted is False %}
-        <p>초대가 왔어요!</p>
-        <p>{{request.user.invite.home.name}}</p>
-        <a href="{% url 'setting:accept_invite' %}" class="btn btn-dark">수락하기</a>
-    {% endif %}
-    <!-- Modal -->
-    <div class="modal fade" id="moveHomeModal" tabindex="-1" aria-labelledby="moveHomeModalLabel" aria-hidden="true">
+<!--이사하기 버튼-->
+<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+    data-bs-target="#moveHomeModal">이사하기</button>
+
+{% if request.user.invite and request.user.invite.is_accepted is False %}
+<p>초대가 왔어요!</p>
+<p>{{request.user.invite.home.name}}</p>
+<a href="{% url 'setting:accept_invite' %}" class="btn btn-dark">수락하기</a>
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="moveHomeModal" tabindex="-1" aria-labelledby="moveHomeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="moveHomeModalLabel">이사하기</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="moveHomeModalLabel">이사하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                정말로 이사가시겠습니까?<br/>
+                정말로 이사가시겠습니까?<br /><br />
                 이사하실 경우 집 관련 전체 정보가 초기화되며, 일부 기록(거주 기간, 생활수칙)을 제외한 모든 기록이 파기됩니다.
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-            <a href="{% url 'login:leave_home' %}" class="btn btn-danger">이사가기</a>
-            </div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <a href="{% url 'login:leave_home' %}" class="btn btn-danger">이사가기</a>
             </div>
         </div>
     </div>
-    <!--이전 집 기록 html-->
-    <div class="past-record">
-        <h5>이전 집 기록</h5>
-        <hr/>
-        <table class="table table-borderless">
+</div>
+
+<!--이전 집 기록 html-->
+<div class="past-record">
+    <h5>이전 집 기록</h5>
+    <hr />
+    <table class="table table-borderless">
         <tbody>
             <tr>
-            <td>기간</td>
-            <td>이름</td>
-            <td></td>
+                <td>기간</td>
+                <td>이름</td>
+                <td></td>
             </tr>
-        {% for prehome in prehomes %}
+            {% for prehome in prehomes %}
             <tr>
                 <td>{{prehome.start_date}} ~ {{prehome.end_date}}</td>
                 <td>{{prehome.home.name}}</td>
-                <td><a class="btn btn-outline-primary">생활수칙 보기</a></td>
+                <td><a class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#prehomeRuleModal-{{prehome.pk}}">생활수칙
+                        보기</a></td>
+
+                <!-- Modal -->
+                <div class="modal fade" id="prehomeRuleModal-{{prehome.pk}}" tabindex="-1"
+                    aria-labelledby="prehomeRuleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog past-record__modal-rule">
+                        <div class="modal-content">
+                            <div class="past-record__modal-rule-header">
+                                <p class="modal-title" id="prehomeRuleModalLabel">{{ prehome.home.name }}의
+                                    생활수칙</p>
+                            </div>
+                            <div class="modal-body">
+                                {% for cate in prehome_dict|get_item:prehome.home.name %}
+                                <div class="past-record__modal-rule-cate">{{ cate }}</div>
+                                {% for rule in prehome_dict|get_item:prehome.home.name|get_item:cate %}
+                                <div class="past-record__modal-rule-content">
+                                    <p>{{ rule }}</p>
+                                    <input id="past-record__checkbox-{{prehome.pk}}"
+                                        class="past-record__checkbox past-record__checkbox-{{prehome.pk}} past-record__display-none"
+                                        data-cate="{{cate}}" value="{{ rule }}" type="checkbox" />
+                                </div>
+                                {% endfor %}
+                                {% endfor %}
+                            </div>
+                            <div class="past-record__modal-rule-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                {% if request.user.home %}
+                                <a href="#" onclick="takePrehomeRecord({{prehome.pk}})"
+                                    id="past-record__take-btn-{{prehome.pk}}" class="btn btn-outline-primary">생활수칙
+                                    가져오기</a>
+                                <a onclick="savePrehomeRecord({{prehome.pk}})" id="past-record__save-btn-{{prehome.pk}}"
+                                    class="btn btn-outline-danger past-record__display-none">저장하기</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
-        </table>
-    </div>
+    </table>
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+    const takePrehomeRecord = (pk) => {
+        const record_take_btn = document.querySelector(`#past-record__take-btn-${pk}`);
+        const record_save_btn = document.querySelector(`#past-record__save-btn-${pk}`);
+        const record_checkboxes = document.querySelectorAll(`.past-record__checkbox-${pk}`);
+        record_take_btn.classList.add('past-record__display-none');
+        record_save_btn.classList.remove('past-record__display-none');
+        for (let i = 0; i < record_checkboxes.length; i++) {
+            record_checkboxes[i].classList.remove('past-record__display-none');
+        }
+    }
+
+    //저장하기 클릭
+    const savePrehomeRecord = (pk) => {
+        const record_take_btn = document.querySelector(`#past-record__take-btn-${pk}`);
+        const record_save_btn = document.querySelector(`#past-record__save-btn-${pk}`);
+        const record_checkboxes = document.querySelectorAll(`.past-record__checkbox-${pk}`);
+        record_save_btn.classList.add('past-record__display-none');
+        record_take_btn.classList.remove('past-record__display-none');
+
+        let checkedRuleList = []
+        for (let i = 0; i < record_checkboxes.length; i++) {
+            if (record_checkboxes[i].checked) {
+                checkedRuleList.push({
+                    'cate': record_checkboxes[i].dataset.cate,
+                    'content': record_checkboxes[i].value
+                });
+            }
+            record_checkboxes[i].checked = false; //체크 풀기
+            record_checkboxes[i].classList.add('past-record__display-none');
+        }
+        /*
+            checkedRuleList 형태
+            [
+                {'cate': '청소', 'content': '...'},
+                {'cate': '청소', 'content': '...'}
+            ]
+        */
+        //ajax. 체크한 리스트 저장
+        onClickSaveRecordBtn(checkedRuleList);
+    }
+
+    const onClickSaveRecordBtn = async (checkedList) => {
+        const url = `../../mypage/take_prelivingrule/`;
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+                'checked_list': checkedList
+            })
+        });
+    }
+</script>
 {% endblock %}
