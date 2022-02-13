@@ -9,6 +9,7 @@
 <section class="roommate-list">
     <!--룸메이트-->
     <p class="roommate-list__title">룸메이트 관리</p>
+    {% if roommates %}
     <div class="roommate-list__carousel">
         <i class="fas fa-caret-left roommate-list__carousel-left"></i>
         <div class="roommate-list__window">
@@ -63,8 +64,12 @@
         </div>
         <i class="fas fa-caret-right roommate-list__carousel-right"></i>
     </div>
+    {% else %}
+        <p class="roommate-list__empty">룸메이트가 없습니다.</p>
+    {% endif %}
     <!--아직 룸메이트X 초대중 리스트-->
     <p class="roommate-list__title">초대중인 유저</p>
+    {% if invvite_users %}
     <div class="roommate-list__carousel">
         <i class="fas fa-caret-left roommate-list__carousel-left"></i>
         <div class="roommate-list__window">
@@ -86,6 +91,9 @@
         </div>
         <i class="fas fa-caret-right roommate-list__carousel-right"></i>
     </div>
+    {% else %}
+        <p class="roommate-list__empty">초대중인 유저가 없습니다.</p>
+    {% endif %}
 </section>
 {% endif %}
 

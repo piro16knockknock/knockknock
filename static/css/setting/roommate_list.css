@@ -12,6 +12,12 @@
     font-weight: 800;
 }
 
+/*룸메이트가 없을 때*/
+.roommate-list__empty{
+    padding-top: 3rem;
+    font-size:  1.5rem;
+}
+
 /*캐러셀*/
 .roommate-list__carousel {
     display: flex;
