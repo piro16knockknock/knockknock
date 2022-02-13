@@ -45,7 +45,7 @@
                                 <p>{{ user_todo.priority.content }}</p>
                                 <!-- 우선순위에 따라 불꽃 아이콘 색 다르게 -->
                                 <i class="fa-solid fa-fire {{ user_todo.priority.priority_num }}"></i>
-                                <p>{{ user_todo.priority.priority_num }}</p>
+                                <p class="priority-content">{{ user_todo.priority.priority_num }}</p>
                             {% endif%}
                         </div>
                         <div class="d-flex align-items-baseline">
@@ -129,13 +129,8 @@
                 {% if todo.is_done is False%}
                 <div class="no-user-todo todo-id-{{ todo.id }}">
                     <div class="d-flex align-items-center">
-                        {% if todo.priority is None %}
-                            <p>아무때나</p>
-                            <p>불꽃?</p>
-                        {% else %}
-                            <p>{{ todo.priority.content }}</p>
-                            <p>불꽃 색깔{{ todo.priority.priority_num }}</p>
-                        {% endif%}
+                        <p class="priority-content">{{ todo.priority.content }}</p>
+                        <p>불꽃 색깔{{ todo.priority.priority_num }}</p>
                         <button class="btn" onclick="editBtn()">담당 추가</button>
                         <p>{{ todo.content }}</p>
                     </div>
@@ -157,7 +152,7 @@
                 {% if todo.is_done is False%}
                 <div class="no-user-todo todo-id-{{ todo.id }}">
                     <div class="d-flex align-items-center">
-                        <p>{{ todo.priority.content }}</p>
+                        <p class="priority-content">{{ todo.priority.content }}</p>
                         <p>불꽃 색깔{{ todo.priority.priority_num }}</p>
                         <img class="cal-profile-img" style="width:10rem; height:10rem;" src={% if user.profile_img %}"{{todo.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
                         <p>{{ todo.content }}</p>

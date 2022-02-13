@@ -91,10 +91,8 @@ const makeEditFormHandleResponse = () => {
 
 
 function closeEdit() {
-    delete_btn.style.display = 'inline-block';
     edit_div.style.display = 'None';
     todo_id = delete_btn.classList[3];
-    console.log(todo_id);
     delete_btn.classList.remove(todo_id);
     edit_btn.classList.remove(todo_id);
 };
@@ -245,13 +243,14 @@ const editHandleResponse = () => {
         const edit_todo_div = document.querySelector(`.todo-id-${todo_id}`);
 
         const priority_icon = edit_todo_div.querySelector(`i.fa-fire`);
-        priority_icon.classList.replace('1', `${priority_num}`);
-        priority_icon.classList.replace('2', `${priority_num}`);
-        priority_icon.classList.replace('3', `${priority_num}`);
+        const edit_priority_num = edit_todo_div.querySelector('p.priority-content');
+        console.log(edit_priority_num);
+        edit_priority_num.innerHTML = `${priority_num}`;
 
         const edit_content = edit_todo_div.querySelector('p.todo-text');
         edit_content.innerHTML = content;
         console.log(edit_todo_div);
+        closeEdit();
     }
 };
 
