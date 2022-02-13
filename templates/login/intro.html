@@ -5,7 +5,7 @@
  <!-- user가 로그인 했을 때 && 유저가 집 없는 경우 OR 집 있는 경우-->
 {% if request.user.is_authenticated %} 
 <div class="intro-main " style="background-color: #FFF9E2; height: 100vh;">
-   <div id="intro-main-cnt" class="intro-main-cnt position-relative">
+   <div id="intro-main-cnt" class="intro-main-cnt position-relative cnt-padding">
         {% if request.user.home == None %} <!-- 유저가 집이 없는 경우 -->        
             <div class="mt-5">
                 <h2>🖐️<br>{{ user.nick_name }}님</h2>
@@ -60,7 +60,7 @@
 <!-- user가 로그인 하지 않은 상태의 메인 서비스 소개 페이지-->
 {% else %}
 <div class="intro-main-notlog" style="height: 100vh; background-color: lightgray;">
-    <div id="intro-main-notlog-cnt" class="intro-main-cnt">
+    <div id="intro-main-notlog-cnt" class="intro-main-cnt cnt-padding">
         <h5>룸메이트와의 쾌적하고 편안한 생활 지킴이</h5>
         <div>
             <h1>Knock/Knock</h1>
@@ -104,7 +104,7 @@
 </div>
 
 <div id="intro-service" style="background-color: #eee;">
-    <div id="intro-service-text" class="text-center">
+    <div id="intro-service-text" class="text-center ">
         <h5>이제는 간편하고 평화롭게!</h5>
         <h6><span>노크노크</span>와 함께라면 할 수 있어요!</h6>
         <p>생활 수칙, 공유 캘린더, 오늘의 할 일 체크 등 <span>노크노크</span>의 다양한 기능들과<br>
