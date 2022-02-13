@@ -227,16 +227,38 @@
 
                     {% csrf_token %}
                     <div class="modal-body">
-                        <a class="edit-btn btn btn-light" onclick="showEdit()">수정</a>
+                        <button class="edit-todo-btn btn btn-light" onclick="showEdit(this, '{{ select_date }}')">수정</button>
                         <a class="postpone-btn btn btn-light">내일 하기</a>
                         <button class="delete-btn btn btn-ligth" onclick= "deleteTodoBtn(this, '{{ select_date }}')" data-bs-dismiss="modal">삭제</button> 
-                    <form method="post" action="{% url 'home:edit_todo' date='{{select_date }}' todo_id=0 %}">
+                        
                         <div class="edit-todo" style="display: none;">
-                            {{form.as_p}}
+                            <form method="POST" action="">
+                                {% csrf_token %}
+                                <input type="text" name="content" placeholder="할 일을 입력하세요"/>
+                                <div class="select-todo-cate">
+                                    {% for cate in cates %}
+                                    <label><input type="radio" class="cate-id-{{ cate.id }}" name="cate" value="{{ cate.id }}">{{ cate.name }}</label>
+                                    {% endfor %}
+                                    <label><input type="radio" class="cate-id-no-cate" name="cate" value="no-cate">기타</label>
+                                </div>
+                                <div class="select-todo-user">
+                                    {% for user in roomates %}
+                                    <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}" />
+                                    <img src="{{ user.profile_img.url }}" style="width: 3rem; height: 3rem;" alt="">
+                                    {% endfor %}
+                                    <input type="radio" class="user-id-no-user" name="user" value="no-user"/>
+                                    <img src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg style="width: 3rem; height: 3rem;" alt=""y>
+                                </div>
+                                <div class="select-todo-priority">
+                                    {% for priority in todo_priority %}
+                                    <label><input type="radio" class="priority-id-{{ priority.id }}"  name="priority" value ="{{ priority.id }}"/>{{ priority.content }}</label>
+                                    {% endfor %}
+                                </div>
+                            </form>
                             <button class="edit-back-btn btn btn-light" type="submit">완료</button>
                             <a class="edit-back-btn btn btn-light" onclick="closeEdit()">돌아가기</a>
                         </div>
-                    </form>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" onclick="closeEdit()" data-bs-dismiss="modal">닫기</button>
