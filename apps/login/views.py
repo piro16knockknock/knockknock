@@ -104,7 +104,7 @@ def mypage(request):
     prehomes, prehome_dict = prehome_list(request)
     
     ctx = { 'prehomes' : prehomes, 'prehome_dict' : prehome_dict }
-    return render(request, 'login/mypage_temp.html', ctx)
+    return render(request, 'login/mypage.html', ctx)
 
 #로그인 기능
 def sign_up(request):
@@ -137,9 +137,8 @@ def login_user(request):
         if user is not None:
             login(request, user)
             return redirect('login:intro')
-
         else:
-            return redirect('login:mypage')
+            return redirect('login:intro')
 
 def logoutUser(request):
     logout(request)

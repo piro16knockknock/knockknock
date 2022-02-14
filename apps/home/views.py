@@ -10,7 +10,7 @@ from .models import Todo, Home, TodoCate, TodoPriority
 from login.models import User
 # from .forms import TodoForm
 from .models import Todo, Home, LivingRuleCate, LivingRule
-from .forms import TodoForm, LivingRuleForm
+from .forms import LivingRuleForm
 from .utils import Calendar
 from datetime import datetime, timedelta, date
 import calendar
