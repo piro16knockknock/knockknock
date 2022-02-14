@@ -50,56 +50,6 @@ function setEditBtn (event, content, user_name, cate_name, select_date) {
 };
 
 
-// ajax로 현재 todo_id 가져가고, todo내용 가져와서 form 만들어주기
-const reqMakeEditForm = new XMLHttpRequest();   
-function showEdit(event, select_date) {
-    todo_id = edit_btn.classList[3];
-    edit_div.style.display = 'block';
-    const url = `./${select_date}/${todo_id}/make-edit-form/`;
-    reqMakeEditForm.open("POST", url, true);
-    reqMakeEditForm.setRequestHeader(
-        "Content-Type",
-        "application/x-www-form-urlencoded",
-    );
-    reqMakeEditForm.send(JSON.stringify({
-        todo_id : todo_id,
-    }));
-};
-
-reqMakeEditForm.onreadystatechange = () => {
-    if (reqMakeEditForm.readyState === XMLHttpRequest.DONE) {
-        makeEditFormHandleResponse();
-    }
-};
-
-const makeEditFormHandleResponse = () => {
-    if (requestAdd.status < 400) {
-        console.log(JSON.parse(reqMakeEditForm.response));
-        const {content, cate_id, user_id, priority_id} = JSON.parse(reqMakeEditForm.response);
-        
-        const edit_todo_form = document.querySelector('.edit-todo form');
-        const content_input = edit_todo_form.querySelector('input[name="content"]')
-        const select_cate_div = edit_todo_form.querySelector(`div.select-todo-cate input.cate-id-${cate_id}`);
-        const select_user_div = edit_todo_form.querySelector(`div.select-todo-user input.user-id-${user_id}`);
-        const select_priority_div = edit_todo_form.querySelector(`div.select-todo-priority input.priority-id-${priority_id}`);
-        console.log(priority_id);
-        content_input.value = content;
-        select_cate_div.setAttribute('checked', true);
-        select_user_div.setAttribute('checked', true);
-        select_priority_div.setAttribute('checked', true);
-        
-    }
-}
-
-
-function closeEdit() {
-    edit_div.style.display = 'None';
-    todo_id = delete_btn.classList[3];
-    delete_btn.classList.remove(todo_id);
-    edit_btn.classList.remove(todo_id);
-};
-
-
 // 어떤 todo를 선택했냐에 따른 설정 모달 내 할 일 수정, 삭제 url setup
 function setEditBtn (event, content, user_name, cate_name, select_date) {
     console.log(event);
@@ -320,6 +270,7 @@ const editHandleResponse = () => {
         edit_content.innerHTML = content;
         console.log(edit_todo_div);
         closeEdit();
+    }
 };
 
 requestDelete.onreadystatechange = () => {
@@ -343,4 +294,4 @@ function serialize (data) {
         }
     }
     return obj;
-    }
+}
