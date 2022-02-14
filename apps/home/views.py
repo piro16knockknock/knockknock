@@ -22,6 +22,9 @@ class CalendarView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
+        # 캘린더를 시간 객체로 대체할 수 있을 것 같습니다.
+        # arrow 라이브러리 추천드립니다.
+        # https://arrow.readthedocs.io/en/latest/
         cal = Calendar(d.year, d.month)
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
@@ -65,7 +68,7 @@ def add_todo(request, date):
     # 내 할 일 페이지에서 기타 카테고리가 아닌 카테고리
     if cate != 'no-cate' and user != 'no-user':
         print("내꺼 기타말고")
-        todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate), user = User.objects.get(id = user), 
+        todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate), user = User.objects.get(id = user),
         priority = TodoPriority.objects.get(id = priority), date = date)
         res = JsonResponse({
         'todo_id' : todo.id,
@@ -80,7 +83,7 @@ def add_todo(request, date):
     # 내 할 일 페이지에서 기타 카테고리
     elif cate == 'no-cate' and user != 'no-user':
         print("내꺼 기타")
-        todo = Todo.objects.create(home=request.user.home, content=content, user = User.objects.get(id = user), 
+        todo = Todo.objects.create(home=request.user.home, content=content, user = User.objects.get(id = user),
         priority = TodoPriority.objects.get(id = priority), date = date)
         res = JsonResponse({
         'todo_id' : todo.id,
@@ -106,7 +109,7 @@ def add_todo(request, date):
         'cate_name' : 'no-cate',
         'user_name' : 'no-user',
         })
-    
+
     return res
 
 @csrf_exempt
@@ -165,7 +168,7 @@ def postpone_todo(request, date, todo_id):
     todo.is_postpone = True
     nextdate = datetime.strptime(date, "%Y-%m-%d")
     nextdate = nextdate + timedelta(days=1)
-    
+
     todo.date = nextdate
     todo.save()
 
@@ -178,7 +181,7 @@ def date_todo(request, date):
     complete_total_todos = total_todos.filter(is_done=True)
     user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=False)
     complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True)
- 
+
     current_home = Home.objects.filter(user = current_user)[0]
     roommates = User.objects.filter(home=request.user.home)
     cates = TodoCate.objects.filter(home = current_home)
