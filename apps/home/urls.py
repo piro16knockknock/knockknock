@@ -10,4 +10,5 @@ urlpatterns = [
     path('todo/<date>/<todo_id>/delete/', views.delete_todo, name='delete_todo'),
     path('todo/<date>/<todo_id>/make-edit-form/', views.make_edit_form, name='make_edit_form'),
     path('todo/<date>/<todo_id>/edit/', views.edit_todo, name='edit_todo'),
+    path('todo/<date>/<todo_id>/postpone/', views.postpone_todo, name='postpone_todo'),
 ]
