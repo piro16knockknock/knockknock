@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from calendar import HTMLCalendar
 from .models import Todo
 
@@ -6,6 +6,7 @@ class Calendar(HTMLCalendar):
 	def __init__(self, year=None, month=None):
 		self.year = year
 		self.month = month
+		self.today = datetime.now()
 		super(Calendar, self).__init__()
 
 	# formats a day as a td
@@ -14,6 +15,8 @@ class Calendar(HTMLCalendar):
 		event_count =events.filter(date__day=day).count()
 		date = str(year) + "-" + str(month) + "-" + str(day)
 		d = ''
+		if (year==self.today.year) and (month == self.today.month+1) and (day == self.today.date):
+			d += '<p>오늘<p>'
 		d += f'<a>{event_count}</a>'
 		date_content = f"<span>{day}</span><p> 할일 개수 :{d}</p>"
 		date_content += "<a href=\"/home/todo/" + f"{date}" + "\"> 할 일 <i class=\"fa-solid fa-circle-plus\"></i></a>"
