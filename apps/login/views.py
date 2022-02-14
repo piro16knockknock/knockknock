@@ -90,9 +90,9 @@ def user_update(request):
             form.save()
             return redirect('login:mypage')
     else:
+        print("닉네임이 중복되었습니다.")
         form = UserUpdateForm(instance=request.user)
     context = {
         'form': form
     }
     return render(request, 'login/user_update.html', context)
-    
