@@ -99,9 +99,18 @@ a {
     height: 8rem;
 }
 
+.cal-profile-title {
+    border-radius: 50rem;
+    border: 1px solid #ddd;
+    padding: 0.5rem 1.2rem;
+    margin: 1.4rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
 .cal-profile-box {
-    width: 8rem;
-    height: 8rem;
+    width: 10rem;
+    height: 10rem;
     border-radius: 50%;
     overflow: hidden;
 }
@@ -112,24 +121,40 @@ a {
     object-fit: cover;
 }
 
+.cal-profile-username {
+    font-weight: 500;
+    margin: 1.6rem 0;
+    font-size: 1.3rem;
+}
+
+.cal-profile-username p {
+    color: #707070;
+}
+
 #cal-house-name {
     background-color: #FFEEC3;
 }
 
 .cal-side-box {
-    width: 16rem;
-    margin-bottom: 1rem;
+    width: 20rem;
+    margin-bottom: 1.4rem;
     text-align: center;
     border-radius: 1rem;
-    padding: 2rem;
-    font-size: 1.2rem;
+    padding: 2.4rem 2.2rem;
+    font-size: 1.4rem;
+    line-height: 1.8rem;
     box-shadow: 2px 3px 10px #FFEEC3;
 }
 
 #calendar-side {
-    margin-left: 5rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
 }
 
+#todo-side {
+    margin-left: 3rem;
+    margin-right: 3rem;
+}
 /* intro page */
 
 .intro-main-cnt{
@@ -142,11 +167,27 @@ a {
     right: 5%;
     width: 30rem;
     min-height: 18rem;
-    padding-top: 1.6drem;
+    padding: 2rem;
     background: rgba(255, 255, 255, 0.7);
     border: 2px solid #FFFFFF;
     box-shadow: 2px 5px 10px 1px rgba(0, 0, 0, 0.14);
     border-radius: 32px;
+    overflow: hidden;
+}
+
+#intro-main-todo h6 {
+    font-size: 1.4rem;
+}
+
+#intro-main-todo h5 {
+    margin: 0.8rem;
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+#intro-main-todo p {
+    font-size: 1.6rem;
+    font-weight: 500;
 }
 
 #intro-main-cnt {
@@ -174,9 +215,10 @@ a {
 
 .intro-main-cnt h2 {
     font-family: 'Gothic A1', 'Noto Sans KR', sans-serif;
-    font-size: 4rem;
+    font-size: 4.5rem;
     font-weight: 700;
     line-height: 5.3rem;
+    word-break: keep-all;
 }
 
 .intro-main-cnt p {
