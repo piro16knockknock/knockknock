@@ -7,8 +7,9 @@ from login.models import User
 # 1.KnockKnock_Home
 class Home(models.Model):
     name = models.CharField(max_length=20, unique=True)
-    rent_date = models.IntegerField(null=True) #전세면 이자 납부일?
-    rent_month = models.IntegerField(null=True, blank=True)
+    rent_date = models.IntegerField(default=1, null=True, blank=True)
+    rent_month = models.IntegerField(default=1, null=True, blank=True)
+    is_rent = models.BooleanField(default=False, null=True, blank=True)
     
     def __str__(self):
         return self.name
@@ -25,7 +26,7 @@ class Utility(models.Model):
 ## Relationships
 class LiveIn(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    home = models.ForeignKey(Home, on_delete=models.CASCADE)
+    home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name='live_in')
     start_date = models.DateField(auto_now=True)
     end_date = models.DateField(null = True, blank=True)
     

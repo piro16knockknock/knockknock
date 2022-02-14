@@ -14,7 +14,7 @@ class User(AbstractUser):
         ('남성', '남성'),
         ('그외', '그외'),
     )
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
 
 class Title(models.Model): #User's title
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'title')

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import HomeForm, UtilityForm
 from login.models import User, Notice
+from home.models import TodoCate
 from .models import Utility, Invite, LiveIn, Home
 import json
 from django.http import JsonResponse
@@ -26,7 +27,6 @@ def roommate_list(request):
     for invite in invites:
         if invite.is_accepted is False:
             invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
-    print(invite_users)
     ctx = {
         'roommates' : roommates,
         'invite_users' : invite_users
@@ -39,27 +39,47 @@ def check_homename(request):
     req = json.loads(request.body)
     home_name = req['home_name']
     if( Home.objects.filter(name=home_name).exists() ):
-        return JsonResponse({'is_available' : False })
+        return JsonResponse({'is_available' : False, 'input_name': home_name })
     else:
-        return JsonResponse({'is_available' : True })
-
+        return JsonResponse({'is_available' : True, 'input_name': home_name })
 
 def myhome_register(request):
-    if request.method == 'POST':        
+    if request.method == 'POST':
         home_form = HomeForm(request.POST)
         utility_form = UtilityForm(request.POST)
         if home_form.is_valid() and utility_form.is_valid():
             print("post")
-            current_home = home_form.save()
+            current_home = Home()
+            current_home.name = home_form.cleaned_data['name']
+            
+            if(request.POST.get('utility_or_rent') == "월세"):
+                print("here")
+                current_home.is_rent = True
+                current_home.rent_month = home_form.cleaned_data['rent_month']
+                current_home.rent_date = home_form.cleaned_data['rent_date']
+        
+            else:
+                current_home.is_rent = False
+                current_home.rent_month = 1
+                current_home.rent_date = 1
+            
+            current_home.save()
             request.user.home = current_home
             request.user.save()
-            Utility.objects.create(home = current_home, 
-                                   name = request.POST.get("utility_name"), 
-                                   month = request.POST.get("utility_month"),
-                                   date = request.POST.get("utility_date"))
             
-            #거주하기도 만들어야함
+            #공과금
+            utility_name_list = request.POST.getlist('utility_name')
+            utility_month_list = request.POST.getlist('utility_month')
+            utility_date_list = request.POST.getlist('utility_date')
+            for i in range(len(utility_name_list)):
+                Utility.objects.create(home = current_home, 
+                                    name = utility_name_list[i], 
+                                    month = utility_month_list[i],
+                                    date = utility_date_list[i])
+            
             LiveIn.objects.create(user = request.user, home = current_home)
+            TodoCate.objects.create(home = current_home, name="빨래")
+            TodoCate.objects.create(home = current_home, name="청소")
             return redirect('setting:myhome_detail')
     else:
         print("get")
@@ -71,9 +91,9 @@ def myhome_detail(request):
     current_home = current_user.home
     utilities = Utility.objects.filter(home=current_home) # 본인 포함
     current_roommates = User.objects.filter(home=current_home) # 본인 포함
-
     ctx = {
         'home_name' : current_home.name,
+        'is_rent' : current_home.is_rent,
         'rent_date' : current_home.rent_date,
         'rent_month' : current_home.rent_month,
         'utilities' : utilities,
@@ -86,15 +106,24 @@ def myhome_detail(request):
 def myhome_update(request):
     req = json.loads(request.body)
     home_name = req['home_name']
+    is_rent = req['is_rent']
     rent_month = req['rent_month']
     rent_date = req['rent_date']
-    utility_month = req['utility_month']
-    utility_date = req['utility_date']
+    utility_name_list = req['utility_name']
+    utility_month_list = req['utility_month']
+    utility_date_list = req['utility_date']
     
-    #나중에 공과금 여러개 되면 복잡해지긴 할듯..
     current_home = Home.objects.filter(name=request.user.home.name)
-    current_home.update(name=home_name, rent_month=rent_month, rent_date=rent_date)
-    Utility.objects.filter(home=request.user.home).update(month=utility_month, date=utility_date)
+    if(is_rent):
+        current_home.update(name=home_name, rent_month=rent_month, rent_date=rent_date, is_rent=is_rent)
+    else:
+        current_home.update(name=home_name, rent_month=1, rent_date=1, is_rent=is_rent) # 1개월마다 1일을 default값으로.
+
+    #공과금
+    #업데이트가 복잡하므로 어차피 몇 안되는거 그냥 다 삭제하고 생성    
+    Utility.objects.filter(home=request.user.home).delete()
+    for i in range(len(utility_month_list)):
+        Utility.objects.create(home=request.user.home, name=utility_name_list[i], month=utility_month_list[i], date=utility_date_list[i])
         
     return JsonResponse({ 'home_name' : home_name })
 
