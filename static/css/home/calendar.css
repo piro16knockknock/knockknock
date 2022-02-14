@@ -6,7 +6,7 @@
 }
 
 td i {
-  color: #ddd;
+  color: #FFC163;
 }
 
 .left {
@@ -15,14 +15,6 @@ td i {
 
 .right {
   float: right;
-}
-
-.btn {
-  outline: none;
-  color: black;
-  background-color: transparent;
-  box-shadow: 0 0 0 0;
-  margin-right: 3px;
 }
 
 .clearfix {
@@ -48,15 +40,27 @@ td i {
   margin: 10px;
 }
 
-.calendar {
-  width: 90%;
-  margin: auto;
+#calendar {
+  width: 95rem;
   font-size: 1.3rem;
-  padding-left: 4rem;
+  padding-left: 3rem;
+  margin:auto;
+}
+
+.calendar {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+.calendar tbody tr:first-child {
+  background-color: #ffdd94;
+  color: white;
+  border-bottom: hidden;
 }
 
 .calendar tr {
-  border: 0.5px solid #c3c3c3;
+  border-bottom: 0.5px solid #c3c3c3;
   border-right: none;
   border-left: none;
 }
@@ -68,15 +72,17 @@ td i {
 }
 
 .ym-wrapper {
-    font-size: 24px;
+    font-size: 2.4rem;
+    
+}
+
+.ym-wrapper i {
+  color: #555;
 }
 
 .calendar td {
-  /*width: 180px;
-  height: 150px;*/
-  width: 6rem;
-  height: 8rem;
-  padding:0px 0px 0px 5px;
+  width: 8rem;
+  height: 10rem;
   vertical-align : top;
 }
 
@@ -126,12 +132,17 @@ td i {
 }
 
 td a {
-  color: #17a2b8;
+  color: #333333;
 }
 
 td a:visited {
   text-decoration: none;
-  color: #17a2b8;
+  color: #333333;
+}
+
+td a:hover {
+  text-decoration: none;
+  color: #FFC163;
 }
 
 
