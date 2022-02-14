@@ -123,8 +123,15 @@ def delete_todo(request, date, todo_id):
 def make_edit_form(request, date, todo_id):
     todo = Todo.objects.get(id=todo_id)
     content = todo.content
-    cate_id = todo.cate.id if not None else 'no-cate'
-    user_id = todo.user.id if not None else 'no-user'
+    if todo.cate is None:
+        cate_id = 'no-cate'
+    else:
+        cate_id = todo.cate.id
+    if todo.user is None:
+        user_id = 'no-user'
+    else:
+        user_id= todo.user.id
+
     priority_id = todo.priority.id
     return JsonResponse({
         'content' : content,
@@ -151,6 +158,18 @@ def edit_todo(request, date, todo_id):
         'priority_num' : todo.priority.priority_num,
     })
 
+
+@login_required
+def postpone_todo(request, date, todo_id):
+    todo = Todo.objects.get(id = todo_id)
+    todo.is_postpone = True
+    nextdate = datetime.strptime(date, "%Y-%m-%d")
+    nextdate = nextdate + timedelta(days=1)
+    
+    todo.date = nextdate
+    todo.save()
+
+    return redirect('home:date_todo', date=date)
 
 @login_required
 def date_todo(request, date):

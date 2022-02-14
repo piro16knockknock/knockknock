@@ -1,9 +1,10 @@
 var edit_btn = document.querySelector('.edit-todo-btn');
 var delete_btn = document.querySelector('.delete-btn');
+var postpone_btn = document.querySelector('.postpone-btn')
 var edit_div = document.querySelector('.edit-todo');
 var form = document.querySelector('#setToDoModal form');
-console.log(edit_btn);
-
+const addTodoModal = document.querySelector('#addToDoModal');
+console.log(addTodoModal);
 // 어떤 cate의 할일 추가하기를 선택했냐에 따른 설정 모달 내 보여주는 내용 수정
 function setAddBtn(event, cate_id, cate_name, user_id) {
     const add_modal_title = document.querySelector('#addToDoModal .modal-title');
@@ -29,6 +30,73 @@ function setAddBtn(event, cate_id, cate_name, user_id) {
         // add_form_cate_div.style.display = 'block';
         add_form_user_div.querySelector(`.user-id-no-user`).checked = true;
     }
+};
+
+
+// 어떤 todo를 선택했냐에 따른 설정 모달 내 할 일 수정, 삭제 url setup
+function setEditBtn (event, content, user_name, cate_name, select_date) {
+    console.log(event);
+    for (var i=0, l=edit_btn.classList.length; i<l; ++i) {
+        if(/todo-id-.*/.test(edit_btn.classList[i])) {
+            edit_btn.classList.replace(edit_btn.classList[i], event.classList[1]);
+            delete_btn.classList.replace(delete_btn.classList[i], event.classList[1]);
+            return;
+        }
+    }
+    edit_btn.classList.add(event.classList[1]);
+    delete_btn.classList.add(event.classList[1]);
+    postpone_btn.setAttribute('href', `./${select_date}/${event.classList[1]}/postpone/`);
+    console.log(postpone_btn)
+};
+
+
+// ajax로 현재 todo_id 가져가고, todo내용 가져와서 form 만들어주기
+const reqMakeEditForm = new XMLHttpRequest();   
+function showEdit(event, select_date) {
+    todo_id = edit_btn.classList[3];
+    edit_div.style.display = 'block';
+    const url = `./${select_date}/${todo_id}/make-edit-form/`;
+    reqMakeEditForm.open("POST", url, true);
+    reqMakeEditForm.setRequestHeader(
+        "Content-Type",
+        "application/x-www-form-urlencoded",
+    );
+    reqMakeEditForm.send(JSON.stringify({
+        todo_id : todo_id,
+    }));
+};
+
+reqMakeEditForm.onreadystatechange = () => {
+    if (reqMakeEditForm.readyState === XMLHttpRequest.DONE) {
+        makeEditFormHandleResponse();
+    }
+};
+
+const makeEditFormHandleResponse = () => {
+    if (requestAdd.status < 400) {
+        console.log(JSON.parse(reqMakeEditForm.response));
+        const {content, cate_id, user_id, priority_id} = JSON.parse(reqMakeEditForm.response);
+        
+        const edit_todo_form = document.querySelector('.edit-todo form');
+        const content_input = edit_todo_form.querySelector('input[name="content"]')
+        const select_cate_div = edit_todo_form.querySelector(`div.select-todo-cate input.cate-id-${cate_id}`);
+        const select_user_div = edit_todo_form.querySelector(`div.select-todo-user input.user-id-${user_id}`);
+        const select_priority_div = edit_todo_form.querySelector(`div.select-todo-priority input.priority-id-${priority_id}`);
+        console.log(priority_id);
+        content_input.value = content;
+        select_cate_div.setAttribute('checked', true);
+        select_user_div.setAttribute('checked', true);
+        select_priority_div.setAttribute('checked', true);
+        
+    }
+}
+
+
+function closeEdit() {
+    edit_div.style.display = 'None';
+    todo_id = delete_btn.classList[3];
+    delete_btn.classList.remove(todo_id);
+    edit_btn.classList.remove(todo_id);
 };
 
 
@@ -100,7 +168,6 @@ function closeEdit() {
 
 // 할 일 추가 ajax 
 const requestAdd = new XMLHttpRequest();   
-
 function addTodoBtn(event, select_date) {
     const url = `./${select_date}/add`;
     const form = new FormData(document.querySelector('#addToDoModal form'));
@@ -166,9 +233,15 @@ const AddHandleResponse = () => {
 
         new_todo.appendChild(todo_align);
         todos.before(new_todo);
-        
+
+        addModalReset();
     }
 };
+
+function addModalReset() {
+    filled_addToDoModal = document.querySelector('#addToDoModal');
+    filled_addToDoModal.innerHTML = addTodoModal.innerHTML;
+}
 
 // 할 일 삭제 ajax 
 const requestDelete = new XMLHttpRequest();   
@@ -196,8 +269,11 @@ requestDelete.onreadystatechange = () => {
 const deleteHandleResponse = () => {
     if (requestDelete.status < 400) {
         const {todo_id} = JSON.parse(requestDelete.response);
-        const delete_todo_div = document.querySelector(`.todo-id-${todo_id}`);
-        delete_todo_div.remove() 
+        const delete_todo_divs = document.querySelectorAll(`.todo-id-${todo_id}`);
+        for (i=0; i <=delete_todo_divs.length; i++) {
+            var delete_todo_div = delete_todo_divs[i];
+            delete_todo_div.remove(); 
+        }
         delete_btn.classList.remove(todo_id);
     }
 };
@@ -236,13 +312,19 @@ const editHandleResponse = () => {
         const edit_todo_div = document.querySelector(`.todo-id-${todo_id}`);
 
         const priority_icon = edit_todo_div.querySelector(`i.fa-fire`);
-        priority_icon.classList.replace('1', `${priority_num}`);
-        priority_icon.classList.replace('2', `${priority_num}`);
-        priority_icon.classList.replace('3', `${priority_num}`);
+        const edit_priority_num = edit_todo_div.querySelector('p.priority-content');
+        console.log(edit_priority_num);
+        edit_priority_num.innerHTML = `${priority_num}`;
 
         const edit_content = edit_todo_div.querySelector('p.todo-text');
         edit_content.innerHTML = content;
         console.log(edit_todo_div);
+        closeEdit();
+};
+
+requestDelete.onreadystatechange = () => {
+    if (requestDelete.readyState === XMLHttpRequest.DONE) {
+        deleteHandleResponse();
     }
 };
 
