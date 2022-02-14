@@ -1,0 +1,39 @@
+{% extends 'home/home_base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="todo-main">
+        <div id="todo">
+            <div class="text-center d-flex align-items-center justify-content-center">
+                <div class="btn prev-date-btn"><a onclick="prevDate('{{ select_date }}')"><i style="font-size: 1.6rem" class="fa-solid fa-circle-chevron-left"></i></a></div>
+                <h5>{{select_date}}</h5>
+                <div class="btn next-date-btn "><a onclick="nextDate('{{ select_date }}')"><i style="font-size: 1.6rem" class="fa-solid fa-circle-chevron-right"></i></a></div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-outline-dark"><a href="{%url 'home:calendar' %}"><i class="fa-solid fa-calendar-days">&nbsp;캘린더 보기</i></a></button>
+            </div>
+            <div>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="mytodo-tab" data-bs-toggle="tab" data-bs-target="#mytodo" type="button" role="tab" aria-controls="mytodo" aria-selected="true">{{ user.nick_name }}</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">전체 할일</button>
+                    </li>
+                </ul>
+                <div class="tab-content " id="myTabContent">
+                    {% block data_todo %}
+                    {% endblock %}
+                </div>
+            </div>
+            
+        </div> <!-- todo-->
+
+    </div>
+
+</div>
+
+{% block date_todo_modal %}
+{% endblock %}
+
+{% endblock %}

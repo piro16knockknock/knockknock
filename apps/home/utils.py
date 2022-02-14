@@ -16,7 +16,7 @@ class Calendar(HTMLCalendar):
 		d = ''
 		d += f'<a>{event_count}</a>'
 		date_content = f"<span>{day}</span><p> 할일 개수 :{d}</p>"
-		date_content += "<a href=\"/home/todo/" + f"{date}" + "\">할 일 +</a>"
+		date_content += "<a href=\"/home/todo/" + f"{date}" + "\"> 할 일 <i class=\"fa-solid fa-circle-plus\"></i></a>"
 		if day != 0:
 			return f"<td>{date_content}</td>"
 		return '<td></td>'

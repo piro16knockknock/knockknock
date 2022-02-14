@@ -2,34 +2,65 @@
 {% load static %}
 
 {% block content %}
- <!-- user가 처음 로그인하고 설정을 완료하지 않았을 때-->
- {% if request.user.is_authenticated %} 
-<div class="intro-main-notset" style="background-color: #FFF9E2; height: 100vh;">
-   <div id="intro-main-notset-cnt" class="intro-main-cnt">
-        <div class="mt-5">
-            <h2>🖐️<br>{{ user.nick_name }}님</h2>
-            <h2>만나서 반갑습니다!</h2>
-        </div>
-        <div class="mt-5">
-            <p>서비스를 시작하기 전에<br>
-            룸메이트 등록과 집 설정을 먼저 해주세요!</p>
-        </div>
-        <div class="mt-5">
-            <button class="btn btn-lg btn-outline-dark rounded-pill px-5 py-2 button-bg-white "><a href="{% url 'setting:myhome_setting' %}">룸메이트 등록</a></button>
-            <button class="btn btn-lg btn-outline-dark rounded-pill px-5 py-2 button-bg-white "><a href="{% url 'setting:roommate_list' %}">집 입장</a></button>
-        </div>
-      
+ <!-- user가 로그인 했을 때 && 유저가 집 없는 경우 OR 집 있는 경우-->
+{% if request.user.is_authenticated %} 
+<div class="intro-main " style="background-color: #FFF9E2; height: 100vh;">
+   <div id="intro-main-cnt" class="intro-main-cnt position-relative cnt-padding">
+        {% if request.user.home == None %} <!-- 유저가 집이 없는 경우 -->        
+            <div class="mt-5">
+                <h2>🖐️<br>{{ user.nick_name }}님</h2>
+                <h2>만나서 반갑습니다!</h2>
+            </div>
+            <div class="mt-5">
+                <p>서비스를 시작하기 전에<br>
+                룸메이트 등록과 집 설정을 먼저 해주세요!</p>
+            </div>
+            <div class="mt-5">
+                <!-- 초대확인 링크 넣어주기 -->
+                <button class="btn btn-lg btn-outline-dark rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'login:mypage' %}">초대 확인</a></button>
+                <button class="btn btn-lg btn-outline-dark rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_register' %}">집 등록</a></button>
+            </div>
+        {% else %} <!-- 유저가 집이 있는 경우 -->
+            <div class="mt-5" style="max-width: 50rem;">
+                <h2>🏡</h2>
+                <p>{{user.nick_name}}네 집</p>
+                <h2>{{ user.home.name }}</h2>
+            </div>
+            <div class="mt-5">
+                <p>오늘도 노크노크와 함께<br>
+                간편하게 평화로운 생활을 즐겨보아요! </p>
+            </div>
+            <div class="mt-5">
+                <button class="btn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_detail' %}">룸메이트 초대</a></button>
+                <button class="btn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_detail' %}">집 입장</a></button>
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-lg btn-warning rounded-pill px-4 py-2 "><a href="{{ today_date_url }}">생활 관리</a></button>
+            </div>
+
+            <div id="intro-main-todo" class="text-center">
+                <!-- 누르면 오늘 date todo로 넘어가게! -->
+                <p>오늘 {{ today_date }}의 할 일</p>
+                
+                {% if user_todos.count is 0 %}
+                    <p>현재 할 일이 없어요~!</p>
+                {% else %}
+                    {% for user_todo in user_todos %}
+                        <div class="user-todo">
+                            <p>{{user_todo.content}}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
 </div>
 
-<!-- usr가 로그인 하고 설정도 완료 했을 때의 소개 페이지-->
-<div>
 
-</div>
 <!-- user가 로그인 하지 않은 상태의 메인 서비스 소개 페이지-->
 {% else %}
 <div class="intro-main-notlog" style="height: 100vh; background-color: lightgray;">
-    <div id="intro-main-notlog-cnt" class="intro-main-cnt">
+    <div id="intro-main-notlog-cnt" class="intro-main-cnt cnt-padding">
         <h5>룸메이트와의 쾌적하고 편안한 생활 지킴이</h5>
         <div>
             <h1>Knock/Knock</h1>
@@ -55,30 +86,25 @@
         <div class="intro-persona-box position-relative mt-5">
             <img src="{% static 'img/intro-avatar1.png' %}" class="position-absolute">
             <h6 class="rounded-pill  bg-white">20대, 대학생</h6>
-            <p>“룸메이트와 자취를 시작할 예정인데 처음이라 뭐부터 해야할지 &nbsp;모르겠어요”
-            </p>
-            
+            <p>“룸메이트와 자취를 시작할 예정인데 처음이라 뭐부터 해야할지 &nbsp;모르겠어요”</p>
         </div>
+
         <div class="intro-persona-box position-relative" id="intro-persona-center">
             <img src="{% static 'img/intro-avatar2.png' %}" class="position-absolute">
             <h6 class="rounded-pill bg-white">20대, 기숙사생</h6>
-            <p>“기숙사 생활에 체계가 있었으면 좋겠어요”
-
-            </p>
-            
+            <p>“기숙사 생활에 체계가 있었으면 좋겠어요”</p>
         </div>
+
         <div class="intro-persona-box position-relative mt-5">
             <img src="{% static 'img/intro-avatar3.png' %}" class="position-absolute">
             <h6 class="rounded-pill bg-white">30대, 직장인</h6>
-            <p>“동생과 같이 살게 된 지 몇 달째, 이제는 서로 지킬 건 지키고 살고 싶어요”
-            </p>
-            
+            <p>“동생과 같이 살게 된 지 몇 달째, 이제는 서로 지킬 건 지키고 살고 싶어요”</p>
         </div>
     </div>
 </div>
 
 <div id="intro-service" style="background-color: #eee;">
-    <div id="intro-service-text" class="text-center">
+    <div id="intro-service-text" class="text-center ">
         <h5>이제는 간편하고 평화롭게!</h5>
         <h6><span>노크노크</span>와 함께라면 할 수 있어요!</h6>
         <p>생활 수칙, 공유 캘린더, 오늘의 할 일 체크 등 <span>노크노크</span>의 다양한 기능들과<br>

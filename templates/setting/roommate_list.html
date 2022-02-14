@@ -1,64 +1,106 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block script %}
+<script defer src="{% static 'js/setting/roommate_list.js' %}" type="text/javascript"></script>
+{% endblock %}
+
 {% block content %}
-    {% if request.user.home == None %}
-    <div class="myhome-setting__empty">
-        집을 먼저 등록해주세요.
-        <a href="{% url 'setting:myhome_register' %}" class="myhome-setting__empty-btn">집 등록하러 가기</a>
+{% if request.user.home == None %}
+<div class="myhome-setting__empty">
+    집을 먼저 등록해주세요.
+    <a href="{% url 'setting:myhome_register' %}" class="myhome-setting__empty-btn">집 등록하러 가기</a>
+</div>
+{% else %}
+<section class="roommate-list">
+    <!--룸메이트-->
+    <p class="roommate-list__title">룸메이트 관리</p>
+    {% if roommates %}
+    <div class="roommate-list__carousel">
+        <i class="fas fa-caret-left roommate-list__carousel-left"></i>
+        <div class="roommate-list__window">
+            <ul class="roommate-list__container">
+                {% for roommate in roommates %}
+                <li class="roommate-list__user">
+                    {% if roommate.profile_img %}
+                    <img src="{{ roommate.profile_img.url }}" />
+                    {% else %}
+                    <i class="fas fa-user-circle"></i>
+                    {% endif %}
+                    <p class="roommate-list__user__name">{{ roommate.nick_name }}</p>
+                    <a data-bs-toggle="modal" data-bs-target="#roommateProfileModal-{{ roommate.pk }}"
+                        class="roommate-list__btn">프로필 보기</a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="roommateProfileModal-{{ roommate.pk }}" tabindex="-1"
+                        aria-labelledby="roommateProfileLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title myhome-roommate__modal-font" id="roommateProfileLabel">프로필 보기</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body roommate-list__modal">
+                                    <div class="roommate-list__modal-profile text-center">
+                                        {% if roommate.profile_img %}
+                                        <img src="{{ roommate.profile_img.url }}" />
+                                        {% else %}
+                                        <i class="fas fa-user-circle"></i>
+                                        {% endif %}
+                                        <p>{{ roommate.nick_name }}</p>
+                                    </div>
+                                    <div class="roommate-list__modal-title">
+                                        <p>칭호</p>
+                                        <hr />
+                                        <span class="cal-profile-title border rounded-pill px-3 py-1">
+                                            🏅킹갓
+                                        </span>
+                                    </div>
+                                    <div class="roommate-list__modal-title">
+                                        <p>달성률</p>
+                                        <hr />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <i class="fas fa-caret-right roommate-list__carousel-right"></i>
     </div>
     {% else %}
-    <section class="roommate-list">
-        <!--룸메이트-->
-        <p class="roommate-list__title">룸메이트 관리</p>
-        {% for roommate in roommates %}
-            <div class="roommate-list__user">
-            {% if roommate.profile_img %}
-                <img src="{{ roommate.profile_img.url }}"/>
-            {% else %}
-                <i class="fas fa-user-circle"></i>
-            {% endif %}
-                <p class="roommate-list__user__name">{{ roommate.nick_name }}</p>
-                <a href="#" class="roommate-list__btn">프로필 보기</a>
-            </div>
-        {% endfor %}
-
-        <!--아직 룸메이트X 초대중 리스트-->
-        <p class="roommate-list__title">초대중인 유저</p>
-        {% for invite_user in invite_users %}
-        <div class="roommate-list__user roommate-id-{{ invite_user.pk }}">
-            {% if invite_user.profile_img %}
-                <img src="{{ invite_user.profile_img.url }}" height="220" width="220"/>
-            {% else %}
-                <i class="fas fa-user-circle"></i>
-            {% endif %}
-            <p class="roommate-list__user__name">{{ invite_user.nick_name }}</p>
-            <p>룸메이트가 아직 초대에 수락하지 않았습니다.</p>
-            <button type="button" onclick="onClickInviteCancel({{ invite_user.pk }})" class="roommate-list__btn roommate-list__btn-tomato ">초대 취소</button>
-        </div>
-        {% endfor %}
-    </section>
+        <p class="roommate-list__empty">룸메이트가 없습니다.</p>
     {% endif %}
-
-
-<script>
-    const onClickInviteCancel = async( id ) => {
-        const url = "../roommate/invite_cancel/";
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': "application/x-www-form-urlencoded"
-            },
-            body: JSON.stringify({
-                'invite_cancel_id' : id
-            })
-        });
-        const {id: userId} = await res.json()
-        inviteCancelHandleResponse(userId);
-    }
-
-    const inviteCancelHandleResponse = (id) => {
-        const element = document.querySelector(`.roommate-id-${id}`);
-        element.remove();
-    }
-</script>
+    <!--아직 룸메이트X 초대중 리스트-->
+    <p class="roommate-list__title">초대중인 유저</p>
+    {% if invite_users %}
+    <div class="roommate-list__carousel">
+        <i class="fas fa-caret-left roommate-list__carousel-left"></i>
+        <div class="roommate-list__window">
+            <ul class="roommate-list__container">
+                {% for invite_user in invite_users %}
+                <li class="roommate-list__user roommate-id-{{ invite_user.pk }}">
+                    {% if invite_user.profile_img %}
+                    <img src="{{ invite_user.profile_img.url }}" height="220" width="220" />
+                    {% else %}
+                    <i class="fas fa-user-circle"></i>
+                    {% endif %}
+                    <p class="roommate-list__user__name">{{ invite_user.nick_name }}</p>
+                    <p style="text-align: center;">룸메이트가 아직 초대에 수락하지 않았습니다.</p>
+                    <button type="button" onclick="onClickInviteCancel({{ invite_user.pk }})"
+                        class="roommate-list__btn roommate-list__btn-tomato ">초대 취소</button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <i class="fas fa-caret-right roommate-list__carousel-right"></i>
+    </div>
+    {% else %}
+        <p class="roommate-list__empty">초대중인 유저가 없습니다.</p>
+    {% endif %}
+</section>
+{% endif %}
 
 {% endblock %}

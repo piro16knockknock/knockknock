@@ -1,24 +1,25 @@
 @import 'reset.css';
-@import 'setting/myhome_setting.css';
+@import 'setting/myhome_form.css';
+@import 'mypage/mypage_temp.css';
 @import 'setting/myhome_detail.css';
 @import 'setting/roommate_list.css';
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
 @import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
 /*font-family: 'Gothic A1', sans-serif;
 font-family: 'Noto Sans KR', sans-serif;*/
 
-
-
 /*반응형*/
 html,
 body {
-width: 100%;
-height: 100%;
-font-size: 62.5%;
+    width: 100%;
+    height: 100%;
+    font-size: 62.5%;
 }
 
 body {
     padding-top: 5rem;
+    font-family: 'Pretendard Variable', system-ui, Roboto, 'Helvetica Neue', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
 }
 
 li {
@@ -27,11 +28,19 @@ li {
 
 a {
     text-decoration: none;
-    color: black;
+}
+
+.plr-6 {
+    padding-left: 6rem;
+    padding-right: 6rem;
 }
 
 .button-bg-white {
     background-color: white;
+}
+
+.navbar {
+    padding: 1rem 6rem;
 }
 
 .navbar:hover {
@@ -61,13 +70,26 @@ a {
     font: 1.4rem black;
 }
 
+.cnt-padding{
+    padding-left: 8rem;
+    padding-right: 8rem;
+}
+
+
 /* calendar page */
 .side-nav {
     margin-top: 2rem;
+    margin-left: 5rem;
 }
 
 .side-nav li {
     margin-left: 1rem;
+    font-size: 1.4rem;
+}
+
+.side-nav a:hover {
+    /*background-color: #fbdb67;*/
+    border-bottom: #fbdb67 2px solid;
 }
 
 .rate-box {
@@ -90,8 +112,18 @@ a {
     object-fit: cover;
 }
 
-.calendar {
-    max-width: 80%;
+#cal-house-name {
+    background-color: #FFEEC3;
+}
+
+.cal-side-box {
+    width: 16rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    border-radius: 1rem;
+    padding: 2rem;
+    font-size: 1.2rem;
+    box-shadow: 2px 3px 10px #FFEEC3;
 }
 
 #calendar-side {
@@ -99,12 +131,25 @@ a {
 }
 
 /* intro page */
-.intro-main-cnt {
+
+.intro-main-cnt{
     padding-top: 5rem;
-    padding-left: 8rem;
 }
 
-#intro-main-notset-cnt {
+#intro-main-todo {
+    position: absolute;
+    top: 60%;
+    right: 5%;
+    width: 30rem;
+    min-height: 18rem;
+    padding-top: 1.6drem;
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px solid #FFFFFF;
+    box-shadow: 2px 5px 10px 1px rgba(0, 0, 0, 0.14);
+    border-radius: 32px;
+}
+
+#intro-main-cnt {
     background: url("../img/intro-main2.png");
     background-size: 80rem;
     background-position-x: 90%;
@@ -113,7 +158,7 @@ a {
     object-fit: contain;
     width: 100%;
     height: 100%;
-    
+
 }
 
 #intro-main-notlog-cnt {
@@ -127,7 +172,7 @@ a {
     height: 100%;
 }
 
-.intro-main-cnt h2{
+.intro-main-cnt h2 {
     font-family: 'Gothic A1', 'Noto Sans KR', sans-serif;
     font-size: 4rem;
     font-weight: 700;
@@ -135,7 +180,6 @@ a {
 }
 
 .intro-main-cnt p {
-    font-family: 'Noto Sans KR', sans-serif;
     font-size: 1.7rem;
     font-weight: 200;
     line-height: 2.8rem;
@@ -166,14 +210,15 @@ a {
     color: black;
 }
 
-#intro-persona h5{
+
+#intro-persona h5 {
     font-size: 2rem;
     margin-top: 6rem;
     margin-bottom: 2rem;
     color: black;
 }
 
-#intro-persona h6{
+#intro-persona h6 {
     font-size: 1.6rem;
     line-height: 2.5rem;
 }
@@ -215,7 +260,7 @@ a {
 .intro-persona-box img {
     top: -10%;
     left: 50%;
-    transform:translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     height: 12rem;
 }
 
@@ -258,7 +303,7 @@ a {
 
 .intro-service-circle {
     padding: 3rem;
-    margin: 6rem 0.5rem 10rem 0.5rem ;
+    margin: 6rem 0.5rem 10rem 0.5rem;
     overflow: hidden;
     background-color: white;
     border: #ddd 1px solid;
@@ -290,7 +335,7 @@ a {
     background-color: #75AFF2;
 }
 
-#intro-feat1 >div {
+#intro-feat1>div {
     margin-left: 15rem;
 }
 
@@ -299,7 +344,7 @@ a {
     left: 75%;
 }
 
-#intro-achieve-img > img {
+#intro-achieve-img>img {
     box-shadow: 2px 4px 10px 0px rgb(82 82 82 / 30%);
     border-radius: 1.5rem;
 }
