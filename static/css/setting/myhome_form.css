@@ -1,0 +1,142 @@
+.myhome-register {
+    display: flex;
+    justify-content: center;
+}
+
+.myhome-register>div {
+    margin: 3rem 20rem;
+    width: 90rem;
+}
+
+.myhome-register__display-none {
+    display: none !important;
+}
+
+/*myhome-info*/
+.myhome-register__title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 3rem;
+}
+
+.myhome-register__row {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.myhome-register__row label,
+.myhome-register__row__flex_row>label {
+    font-size: 1.5rem;
+    width: 15rem;
+    font-weight: 500;
+    color: slategray;
+}
+
+.myhome-register__row span {
+    font-size: 1.3rem;
+}
+
+.myhome-register__row input,
+.myhome-register__row__rent>input {
+    border: 1px solid slategray;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+    padding: .3rem;
+}
+
+.myhome-register__row__homename>input {
+    width: 40rem;
+}
+
+/*전세 월세 버튼*/
+.myhome-info__rent-or-utility {
+    display: flex;
+    padding: 0 0 1rem 0;
+}
+
+.myhome-info__radio-btn input[type="radio"] {
+    display: none;
+}
+
+.myhome-info__radio-btn input[type="radio"]+span {
+    border: 0.2rem solid slategray;
+    padding: .5rem 1.5rem;
+    margin-right: 1rem;
+    border-radius: 5rem;
+    font-size: 1.3rem;
+}
+
+.myhome-info__radio-btn input[type="radio"]+span:hover {
+    cursor: pointer;
+}
+
+.myhome-info__radio-btn input[type="radio"]:checked+span {
+    background-color: slategray;
+    color: #fff;
+}
+
+
+
+
+/*월세 납부일*/
+.myhome-register__row__rent {
+    font-size: 1.3rem;
+}
+
+.myhome-register__row__rent>input {
+    width: 3.5rem;
+    margin-right: .5rem;
+}
+
+.myhome-register__row__rent>span {
+    margin-right: .5rem;
+}
+
+.myhome-register__row__flex_row {
+    display: flex;
+    flex-direction: row;
+}
+
+.myhome-register__row__rent-type {
+    display: flex;
+    align-items: center;
+    margin-bottom: .8rem;
+}
+
+.myhome-register__row__rent-type span {
+    margin-right: .8rem;
+}
+
+.myhome-register__row__rent-type input{
+    border: 1px solid slategray;
+    width: 4rem;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+    padding: .3rem;
+}
+
+.myhome-register__btn {
+    font-size: 1.5rem;
+    border: 0.2rem solid rgb(255, 197, 109);
+    padding: .5rem 1.5rem;
+    color: rgb(255, 197, 109);
+    border-radius: 5rem;
+}
+
+/*공과금*/
+.myhome-register__row__utility-ul > li{
+    padding: 1rem 0;
+    border-bottom: .1rem solid rgba(1, 1, 1, .2);
+}
+
+.myhome-register__row__utility-ul > li > i{
+    font-size: 1.5rem;
+    color: tomato;
+}
+
+/*공과금 추가*/
+.myhome-register__row__add-utility {
+    margin: 1rem 0;
+    font-size: 3rem;
+}
