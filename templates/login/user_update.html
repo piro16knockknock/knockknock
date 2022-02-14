@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>회원정보 수정</h1>
+
+    <form method="POST" action="{% url 'login:user_update' %}">
+        {% csrf_token %}
+        아이디:
+        <br>
+        <input name="username" type="text">
+        <br>
+        비밀번호:
+        <br>
+        <input name="password" type="password">
+        <br>
+        비밀번호 확인:
+        <br>
+        <input name="password2" type="password">
+        <br>
+        성별:
+        <br>
+        <select name="gender" id="GENDER_CHOICES">
+            <option>남성</option>
+            <option>여성</option>
+            <option>그외</option>
+        </select>
+        <br>
+        닉네임:
+        <br>
+        <input name="nick_name" type="text">
+        <br>
+        <input type="submit" value="다음">
+    </form>
+</div>
+
+{% endblock %}

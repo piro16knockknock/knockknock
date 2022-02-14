@@ -1,0 +1,83 @@
+
+
+.living-rules{
+    font-family: "ptsans", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-align: center;
+    font-size: 2rem;
+    margin: auto;
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -50%);
+}
+
+.title{
+    font-size: 2.5rem;
+    padding: 3rem;
+}
+
+.category{
+    text-align: left;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: flex-start;
+
+}
+
+.category > a > span{
+    position: absolute;
+
+    transform: translate(10%, -20%);
+}
+
+.category-name{
+    display: inline;
+    text-align: left;
+}
+
+
+
+
+
+
+
+/* Modal css */
+.modal-dialog{
+    margin-top: 25rem;
+}
+
+.modal-content{
+    width: 45rem;
+    height: 30rem;
+}
+
+.modal-body{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    
+}
+
+.modal-footer{
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    top: 90%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+
+}
+
+.skip_btn{
+    color: #FF6745;
+    padding: 3.5rem;
+}
+
+.movetoguideline{
+    padding: 3.5rem;
+}
+
+.modal-content{
+    font-size: 1.2rem;
+}

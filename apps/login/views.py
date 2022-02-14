@@ -6,6 +6,13 @@ from django.utils.dateformat import DateFormat
 from home.models import Todo, LivingRule, LivingRuleCate
 from django.shortcuts import get_object_or_404
 
+from multiprocessing import context
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import *
+from django.contrib.auth import authenticate, login, logout
+#from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from .forms import UserUpdateForm
 #이전 집 기록 보기
 from setting.models import LiveIn, Home
 from home.models import Todo
@@ -99,3 +106,58 @@ def mypage(request):
     
     ctx = { 'prehomes' : prehomes, 'prehome_dict' : prehome_dict }
     return render(request, 'login/mypage_temp.html', ctx)
+
+#로그인 기능
+def sign_up(request):
+    if request.method == "POST":
+        if request.POST["password"] == request.POST["password2"]:
+            User = get_user_model()
+            user = User.objects.create_user(
+                username=request.POST.get("username"),
+                password=request.POST.get("password"),
+                nick_name=request.POST.get("nick_name"),
+                gender=request.POST.get("gender"),
+            )            
+            login(request, user)
+
+            return redirect('/')
+        return render(request, 'login/sign_up.html')
+    return render(request, 'login/sign_up.html')
+
+def login_user(request):
+    if request.method == "GET":
+        return render(request, 'login/login.html')
+
+    elif request.method == "POST":
+        
+        user_id= request.POST.get('user_id')
+        user_pw= request.POST.get('user_pw')
+
+        user = authenticate(request, username=user_id, password=user_pw)
+
+        if user is not None:
+            login(request, user)
+            return redirect('login:intro')
+
+        else:
+            return redirect('login:mypage')
+
+def logoutUser(request):
+    logout(request)
+    return redirect('login:intro')
+
+
+
+def user_update(request):
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('login:mypage')
+    else:
+        print("닉네임이 중복되었습니다.")
+        form = UserUpdateForm(instance=request.user)
+    context = {
+        'form': form
+    }
+    return render(request, 'login/user_update.html', context)

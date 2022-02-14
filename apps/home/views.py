@@ -9,9 +9,13 @@ from django.views import generic
 from .models import Todo, Home, TodoCate, TodoPriority
 from login.models import User
 # from .forms import TodoForm
+from .models import Todo, Home, LivingRuleCate, LivingRule
+from .forms import TodoForm, LivingRuleForm
 from .utils import Calendar
 from datetime import datetime, timedelta, date
 import calendar
+
+
 
 
 # Create your views here.
@@ -215,3 +219,72 @@ def make_todo_with_cate_dict(todos, cates):
     for cate in cates:
         todo_dict[cate] = todos.filter(cate=cate)
     return todo_dict
+
+
+
+def living_rules(request):
+    cates = LivingRuleCate.objects.all()
+    order_rules = {}
+    for c in cates:
+        rules = LivingRule.objects.filter(cate=c)
+        order_rules[c] = rules
+    ctx = {
+        'order_rules': order_rules,
+    }
+    return render(request, 'home/living_rules.html', context=ctx)
+
+
+
+def living_rule_new(request):
+    if request.method == "POST":
+        form = LivingRuleForm(request.POST)
+        if form.is_valid():
+            print("here")
+            rule = form.save()
+            rule.home = request.user.home
+            rule.save()
+            return redirect('home:living_rules')
+    else:
+        form = LivingRuleForm()
+    ctx = {
+        'form': form,
+    }
+    return render(request, 'home/living_rules_form.html', context=ctx)
+    
+    
+    # context = {}
+    # form = LivingRuleForm(request.POST)
+ 
+    # if form.is_valid():
+    #     LivingRule.objects.create(**form.cleaned_data)
+        
+    #     return redirect('home:living_rules')
+
+    # context["form"] = form
+    # return render(request, 'home/living_rules.html', context)
+
+
+def living_rule_edit(request, pk):
+    rule = get_object_or_404(LivingRule, pk=pk)
+    if request.method == "POST":
+        form = LivingRuleForm(request.POST, instance=rule)
+        if form.is_valid():
+            rule = form.save()
+            cate = rule.cate
+            return redirect('home:living_rules')
+    else:
+        form = LivingRuleForm(instance=rule)
+    ctx = {
+        'form': form
+    }
+    return render(request, 'home/living_rules_form.html', context=ctx)
+
+
+def living_rule_delete(request, pk):
+    rule = get_object_or_404(LivingRule, pk=pk)
+    rule.delete()
+    return (redirect('home:living_rules'))
+
+
+def guideline(request):
+    return render(request, 'home/guideline.html')

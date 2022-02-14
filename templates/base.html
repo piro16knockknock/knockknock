@@ -41,7 +41,7 @@
                     </a>
                     <ul class="dropdown-menu main-drop-menu" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="{%url 'home:calendar' %}">캘린더</a></li>
-                    <li><a class="dropdown-item" href="#">생활수칙</a></li>
+                    <li><a class="dropdown-item" href="{%url 'home:living_rules' %}">생활수칙</a></li>
                     <li><a class="dropdown-item" href="#">가이드라인</a></li>
                     </ul>
                 </li>
@@ -67,7 +67,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 {% if request.user.is_authenticated %} 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">로그아웃</a>
+                    <a class="nav-link" href="{% url 'login:logout' %}">로그아웃</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'login:mypage' %}">마이페이지</a>
@@ -81,10 +81,10 @@
                 </li>
                 {% else %}                
                 <li class="nav-item">
-                    <a class="nav-link" href="#">로그인</a>
+                    <a class="nav-link" href="{% url 'login:login' %}">로그인</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">회원가입</a>
+                    <a class="nav-link" href="{% url 'login:sign_up' %}">회원가입</a>
                 </li>
                 {% endif %}
             </ul>
