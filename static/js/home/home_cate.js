@@ -68,7 +68,7 @@ const checkCateName = async() => {
         alert('빈 칸은 카테고리 이름으로 사용할 수 없어요');
         return false;
     }
-    const url = "../check_catename/"
+    const url = "/home/todo/check_catename/"
     console.log(url);
     const res = await fetch(url,{
         method : 'POST',

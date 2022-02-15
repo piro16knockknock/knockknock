@@ -46,7 +46,7 @@ function setEditBtn (event, content, user_name, cate_name, select_date) {
     }
     edit_btn.classList.add(event.classList[1]);
     delete_btn.classList.add(event.classList[1]);
-    postpone_btn.setAttribute('href', `./${select_date}/${event.classList[1]}/postpone/`);
+    postpone_btn.setAttribute('href', `/${select_date}/${event.classList[1]}/postpone/`);
     console.log(postpone_btn)
 };
 
@@ -71,7 +71,7 @@ const reqMakeEditForm = new XMLHttpRequest();
 function showEdit(event, select_date) {
     todo_id = edit_btn.classList[3];
     edit_div.style.display = 'block';
-    const url = `./${select_date}/${todo_id}/make-edit-form/`;
+    const url = `/home/todo/${select_date}/${todo_id}/make-edit-form/`;
     reqMakeEditForm.open("POST", url, true);
     reqMakeEditForm.setRequestHeader(
         "Content-Type",
@@ -120,7 +120,7 @@ function closeEdit() {
 // 할 일 추가 ajax 
 const requestAdd = new XMLHttpRequest();   
 function addTodoBtn(event, select_date) {
-    const url = `./${select_date}/add`;
+    const url = `/home/todo/${select_date}/add/`;
     const form = new FormData(document.querySelector('#addToDoModal form'));
     var form_data = serialize(form);
     requestAdd.open("POST", url, true);
@@ -200,7 +200,7 @@ const requestDelete = new XMLHttpRequest();
 function deleteTodoBtn(event, select_date) {
     todo_id = event.classList[3];
     console.log(todo_id);
-    const url = `./${select_date}/${todo_id}/delete/`;
+    const url = `/home/todo/${select_date}/${todo_id}/delete/`;
     requestDelete.open("POST", url, true);
     requestDelete.setRequestHeader(
         "Content-Type",
@@ -237,7 +237,7 @@ function editTodoBtn(event, select_date) {
     const form = new FormData(document.querySelector('#setToDoModal form'));
     var form_data = serialize(form);
 
-    const url = `./${select_date}/${todo_id}/edit/`;
+    const url = `/home/todo/${select_date}/${todo_id}/edit/`;
     reqEditTodo.open("POST", url, true);
     reqEditTodo.setRequestHeader(
         "Content-Type",
