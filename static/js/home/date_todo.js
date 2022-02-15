@@ -51,21 +51,6 @@ function setEditBtn (event, content, user_name, cate_name, select_date) {
 };
 
 
-// 어떤 todo를 선택했냐에 따른 설정 모달 내 할 일 수정, 삭제 url setup
-function setEditBtn (event, content, user_name, cate_name, select_date) {
-    console.log(event);
-    for (var i=0, l=edit_btn.classList.length; i<l; ++i) {
-        if(/todo-id-.*/.test(edit_btn.classList[i])) {
-            edit_btn.classList.replace(edit_btn.classList[i], event.classList[1]);
-            delete_btn.classList.replace(delete_btn.classList[i], event.classList[1]);
-            return;
-        }
-    }
-    edit_btn.classList.add(event.classList[1]);
-    delete_btn.classList.add(event.classList[1]);
-};
-
-
 // ajax로 현재 todo_id 가져가고, todo내용 가져와서 form 만들어주기
 const reqMakeEditForm = new XMLHttpRequest();   
 function showEdit(event, select_date) {
@@ -266,14 +251,10 @@ const editHandleResponse = () => {
         console.log(JSON.parse(reqEditTodo.response));
         const {todo_id, content, priority_num} = JSON.parse(reqEditTodo.response);
         const edit_todo_div = document.querySelector(`.todo-id-${todo_id}`);
+        console.log(todo_id);
 
-        const priority_icon = edit_todo_div.querySelector(`i.fa-fire`);
-        const edit_priority_num = edit_todo_div.querySelector('p.priority-content');
-        console.log(edit_priority_num);
-        edit_priority_num.innerHTML = `${priority_num}`;
-
-        const edit_content = edit_todo_div.querySelector('p.todo-text');
-        edit_content.innerHTML = content;
+        const edit_content = edit_todo_div.querySelector('div p');
+        edit_content.innerHTML = priority_num;
         console.log(edit_todo_div);
         closeEdit();
     }
@@ -327,4 +308,52 @@ async function isDoneBtn(event, select_date, id) {
 
 const doneTodoHandleResponse = (todo_id, todo_content, todo_is_done_date, todo_is_postpone) =>{
     console.log('response is coming')
+    
+    const todo_div = document.querySelector(`.todo-id-${todo_id}`);
+    const doing_todo_div = document.querySelector(`.doing-cate .todo-id-${todo_id}`);
+    todo_div.remove()
+    doing_todo_div.remove()
+
+    const user_complete_cate_div = document.querySelector('.complete-user-todos');
+    const total_complete_cate_div = document.querySelector('.total-cate-container');
+
+    const complete_todo_div = document.createElement('div');
+    complete_todo_div.setAttribute('class', 'complete-total-todo');
+
+    const complete_todo_head_div = document.createElement('div');
+    complete_todo_head_div.setAttribute('class', 'com-todo-head d-flex align-items-baseline justify-content-between');
+
+    const notDoneBtn = document.createElement('button');
+    notDoneBtn.setAttribute('class', 'btn');
+    notDoneBtn.setAttribute('onclick', 'notDoneBtn()');
+    notDoneBtn.innerHTML = '<i class="fa-solid fa-check-circle text-secondary"></i>';
+
+    const contentP = document.createElement('p');
+    contentP.innerHTML = todo_content;
+
+    const feedbackBtn = document.createElement('div');
+    feedbackBtn.setAttribute('class', 'btn');
+    feedbackBtn.innerHTML = '<i class="fas fa-heart"></i>';
+
+    const com_todo_text_div = document.createElement('div');
+    com_todo_text_div.setAttribute('class', 'com-todo-text');
+    if (todo_is_postpone) {
+        com_todo_text_div.innerHTML = `<p>${todo_is_done_date}</p><p>잊지 않고 해냈어요!</p>`;
+    } else {
+        com_todo_text_div.innerHTML = `<p>${todo_is_done_date}</p><p>미루지 않고 해냈어요!</p>`;
+    }
+    console.log(com_todo_text_div);
+    
+    complete_todo_head_div.appendChild(notDoneBtn);
+    complete_todo_head_div.appendChild(contentP);
+    complete_todo_head_div.appendChild(feedbackBtn);
+
+    complete_todo_div = complete_todo_div.appendChild(complete_todo_head_div);
+    complete_todo_div.appendChild(com_todo_text_div);
+
+    const users = complete_todo_div;
+    const totals = complete_todo_div;
+
+    user_complete_cate_div.appendChild(users);
+    total_complete_cate_div.appendChild(totals);
 }

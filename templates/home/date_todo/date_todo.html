@@ -18,7 +18,7 @@
         <div class="cate">
             <p class="cate-name">완료</p>
             {% for todo in complete_user_todos %}
-            <div class="com-user-todo">
+            <div class="com-user-todo complete-user-todo">
                 <div class="com-todo-head">
                     <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle"></i></button>
                     <p>{{ todo.content }}</p>
@@ -102,7 +102,7 @@
             <div class="add-todo todo">
                 <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')"  href="#addToDoModal"> + 할 일 등록</a>
             </div>
-        {% endif %}
+            {% endif %}
         </div>    
         <div class="add-cate cate">
             <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addCateModal">
@@ -171,10 +171,10 @@
             {% endif %}
         </div>
 
-        <div class="cate complete-cate">
+        <div class="cate complete-cate total-cate-container">
             <p class="cate-name">완료</p>
             {% for todo in complete_total_todos %}
-                <div class="com-total-todo">
+                <div class="com-total-todo complete-total-todo">
                     <div class="com-todo-head">
                         <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle"></i></button>
                         <p>{{ todo.content }}</p>
@@ -185,7 +185,7 @@
                     <div class="com-todo-text">
                         <p>{{ todo.is_done_date }} 완료!</p>
                         {% if todo.is_postpon is True %}
-                        <p>잊지 않고 해냈어요~!</p>
+                        <p>잊지 않고 해냈어요!</p>
                         {% else %}
                         <p>미루지 않고 해냈어요!</p>
                         {% endif %}
