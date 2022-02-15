@@ -1,4 +1,5 @@
 import json
+from locale import currency
 from select import select
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
@@ -240,7 +241,36 @@ def make_todo_with_cate_dict(todos, cates):
     for cate in cates:
         todo_dict[cate] = todos.filter(cate=cate)
     return todo_dict
+    
 
+# 카테고리 추가 관련
+@csrf_exempt
+@login_required
+def check_catename(request):
+    req = json.loads(request.body)
+    new_catename = req['new_catename']
+    current_home = get_object_or_404(Home, user=request.user)
+    exist_cates = TodoCate.objects.filter(home=current_home)
+    for cate in exist_cates:
+        if new_catename == cate.name or new_catename == '기타':
+            return JsonResponse({
+                'exist_catename' : True
+            })
+    return JsonResponse({
+        'exist_catename' : False
+    })
+
+@csrf_exempt
+@login_required
+def add_cate(request):
+    req = json.loads(request.body)
+    new_catename = req['new_catename']
+    new_cate = TodoCate.objects.create(home=request.user.home, name = new_catename)
+    return JsonResponse({
+        'user_id' : request.user.id,
+        'cate_id' : new_cate.id,
+        'new_catename' : new_cate.name,
+    })
 
 # 생활수칙관련
 def living_rules(request):
@@ -272,17 +302,6 @@ def living_rule_new(request):
     }
     return render(request, 'home/living_rules_form.html', context=ctx)
     
-    
-    # context = {}
-    # form = LivingRuleForm(request.POST)
- 
-    # if form.is_valid():
-    #     LivingRule.objects.create(**form.cleaned_data)
-        
-    #     return redirect('home:living_rules')
-
-    # context["form"] = form
-    # return render(request, 'home/living_rules.html', context)
 
 
 def living_rule_edit(request, pk):

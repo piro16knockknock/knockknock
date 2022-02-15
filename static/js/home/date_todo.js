@@ -5,6 +5,7 @@ var edit_div = document.querySelector('.edit-todo');
 var form = document.querySelector('#setToDoModal form');
 const addTodoModal = document.querySelector('#addToDoModal');
 console.log(addTodoModal);
+
 // 어떤 cate의 할일 추가하기를 선택했냐에 따른 설정 모달 내 보여주는 내용 수정
 function setAddBtn(event, cate_id, cate_name, user_id) {
     const add_modal_title = document.querySelector('#addToDoModal .modal-title');
