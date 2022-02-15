@@ -99,7 +99,7 @@ def leave_home(request):
     LiveIn.objects.filter(home=current_home, user=current_user).update(end_date=timezone.now())
     #이사가기를 누른 순간의 룸메이트들 저장
     for roommates in User.objects.filter(home=current_home):
-        PreRoommates.objects.create(live_in=get_object_or_404(LiveIn, home=current_home),
+        PreRoommates.objects.get_or_create(live_in=get_object_or_404(LiveIn, home=current_home),
                                     user = roommates)
     
     #정보 초기화
