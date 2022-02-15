@@ -68,7 +68,7 @@
                     {% endif %}
                     {% endfor %}
                 {% endif %}
-                <div class="add-todo"> <!-- class="todo"> -->
+                <div class="add-todo todo"> <!-- class="todo"> -->
                     <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')" href="#addToDoModal"> + 할 일 등록</a>
                 </div>
             </div>
@@ -100,7 +100,7 @@
             </div>
             {% endif %}
             {% endfor %}
-            <div class="add-todo">
+            <div class="add-todo todo">
                 <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')"  href="#addToDoModal"> + 할 일 등록</a>
             </div>
         {% endif %}
@@ -120,7 +120,7 @@
             {% for todo in no_user_todos %}
                 {% if todo.is_done is False%}
                 <div class="no-user-todo todo-id-{{ todo.id }} todo-box">
-                    <div class="user-todo-head d-flex align-items-baseline justify-content-between">
+                    <div class="user-todo-head">
                         {% if todo.priority is None %}
                             <p>아무때나</p>
                             <i class="fa-solid fa-fire text-secondary"></i>
@@ -129,13 +129,12 @@
                             <i class="fa-solid fa-fire priority-{{ todo.priority.priority_num }}"></i>
                         {% endif%}
                     </div>
-                    <div class="d-flex align-items-baseline">
-                        <!-- 담당 추가 -->
+                    <div class="todo-cnt">
                         <button class="todo-plus-btn" onclick="editBtn()"><i class="fa-solid fa-user-plus"></i></button>
                         <p class="all-todo-text">{{ todo.content }}</p>
                     </div>
-                    <div class="d-flex align-items-end justify-content-end">
-                    <button type="button" class="edit-btn {{todo.id}} date-edit-btn" onclick="setEditBtn(this, '{{todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
+                    <div class="todo-bottom">
+                        <button type="button" class="edit-btn {{user_todo.id}} btn date-edit-btn" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
                         <i class="fa-solid fa-ellipsis"></i></button>
                     </div>
                 </div>
@@ -146,23 +145,24 @@
                 <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, null, null, null)" href="#addToDoModal"> + 할 일 등록</a>
             </div>
         </div>
+
         <div class="cate doing-cate">
             <p class="cate-name">진행중</p>
             {% if doing_todos.count is not 0 %}
             {% for todo in doing_todos %}
                 {% if todo.is_done is False%}
-                <div class="no-user-todo todo-id-{{ todo.id }} todo-cnt">
-                    <div class="user-todo-head d-flex align-items-baseline justify-content-between">
+                <div class="no-user-todo todo-id-{{ todo.id }} todo-box">
+                    <div class="user-todo-head">
                         <p>{{ todo.priority.content }}</p>
                         <i class="fa-solid fa-fire priority-{{ todo.priority.priority_num }}"></i>
                     </div>
-                    <div class="d-flex align-items-start">
+                    <div class="all-todo-cnt">
                         <div class="todo-profile-box">
                             <img class="cal-profile-img" src={% if user.profile_img %}"{{todo.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
                         </div>
                         <p class="all-todo-text">{{ todo.content }}</p>
                    </div>
-                    <div class="d-flex align-items-end justify-content-end">
+                    <div class="todo-bottom">
                         <button type="button" class="edit-btn {{ todo.id }} date-edit-btn" onclick="setEditBtn(this, '{{ todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
                             <i class="fa-solid fa-ellipsis"></i></button>
                     </div>
@@ -171,11 +171,12 @@
             {% endfor %}
             {% endif %}
         </div>
+
         <div class="cate complete-cate">
             <p class="cate-name">완료</p>
             {% for todo in complete_total_todos %}
-                <div class="complete-total-todo">
-                    <div class="com-todo-head d-flex align-items-baseline justify-content-between">
+                <div class="com-total-todo">
+                    <div class="com-todo-head">
                         <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle"></i></button>
                         <p>{{ todo.content }}</p>
                         <div class="btn" oncanplay="feedbackBtn()">

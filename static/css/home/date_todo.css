@@ -75,6 +75,10 @@ p span {
     align-items: baseline;
 }
 
+.all-todo-cnt {
+    display: flex;
+    align-items: flex-start;
+}
 
 .cate-container {
     width: 100%;
@@ -132,7 +136,7 @@ p span {
     font-size: 1.8rem;
 }
 
-.complete-total-todo {
+.com-total-todo {
     border-radius: 1rem;
     width: 26rem;
     padding: 2rem;
@@ -140,7 +144,7 @@ p span {
     margin-bottom: 1.2rem;
 }
 
-.complete-total-todo i {
+.com-total-todo i {
     font-size: 1.8rem;
 }
 
