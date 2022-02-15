@@ -49,7 +49,7 @@ def close_utility(request):
         else:
             utility_list.append(utility_list[0])
             del utility_list[0]
-    return utility_list[:5]
+    return utility_list[:3]
 
 
 def get_date(req_month):
