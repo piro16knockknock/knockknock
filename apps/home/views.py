@@ -165,16 +165,25 @@ def make_edit_form(request, date, todo_id):
 @csrf_exempt
 @login_required
 def edit_todo(request, date, todo_id):
-    todo = Todo.objects.get(id=todo_id)
-    req = json.loads(request.body)['form_data']
+    req = json.loads(request.body)
+    todo = Todo.objects.get(id=req['todo_id'])
+
+    req = req['form_data']
 
     todo.content = req['content']
     todo.priority = TodoPriority.objects.get(id=int(req['priority']))
-    todo.cate = TodoCate.objects.get(id = req['cate'])
-    print(todo)
+    if req['cate'] == 'no-cate':
+        todo.cate = None
+    else:
+        todo.cate = TodoCate.objects.get(id = req['cate'])
+    if req['user'] == 'no-user':
+        todo.user = None
+    else:
+        todo.user = User.objects.get(id = req['user'])
     todo.save()
 
     return JsonResponse({
+        'user_id' : req['user'],
         'todo_id' : todo.id,
         'content' : todo.content,
         'priority_num' : todo.priority.priority_num,
