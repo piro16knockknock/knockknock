@@ -16,9 +16,8 @@
                 룸메이트 등록과 집 설정을 먼저 해주세요!</p>
             </div>
             <div class="mt-5">
-                <!-- 초대확인 링크 넣어주기 -->
-                <button class="btn btn-lg btn-outline-dark rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'login:mypage' %}">초대 확인</a></button>
                 <button class="btn btn-lg btn-outline-dark rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_register' %}">집 등록</a></button>
+                <button class="btn btn-lg btn-outline-dark rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'login:mypage' %}">초대 확인</a></button>
             </div>
         {% else %} <!-- 유저가 집이 있는 경우 -->
             <div class="mt-5" style="max-width: 46rem;">
@@ -31,8 +30,8 @@
                 간편하게 평화로운 생활을 즐겨보아요! </p>
             </div>
             <div class="mt-5">
-                <button class="btn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_detail' %}">룸메이트 초대</a></button>
                 <button class="btn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_detail' %}">집 입장</a></button>
+                <button class="btn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_detail' %}">룸메이트 초대</a></button>   
             </div>
             <div class="mt-3">
                 <button class="btn btn-lg btn-warning rounded-pill px-4 py-2 "><a href="{{ today_date_url }}">생활 관리</a></button>
@@ -60,7 +59,7 @@
 
 <!-- user가 로그인 하지 않은 상태의 메인 서비스 소개 페이지-->
 {% else %}
-<div class="intro-main-notlog" style="height: 100vh; background-color: lightgray;">
+<div class="intro-main-notlog" style="height: 100vh; background-color: #FFF9E2;">
     <div id="intro-main-notlog-cnt" class="intro-main-cnt cnt-padding">
         <h5>룸메이트와의 쾌적하고 편안한 생활 지킴이</h5>
         <div>
@@ -73,7 +72,7 @@
                 지금 <span>노크노크</span>를 시작해보세요!</p>
         </div>
         <div>
-            <button class="btn btn-lg btn-dark rounded-pill px-4 py-2">시작하기</button>
+            <button class="btn btn-lg btn-dark rounded-pill px-4 py-2"><a href="{% url 'login:login' %}">시작하기</a></button>
         </div>
     </div>
 </div>
