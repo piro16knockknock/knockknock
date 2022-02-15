@@ -1,5 +1,4 @@
-
-.roommate-list{
+.roommate-list {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8,15 +7,54 @@
 }
 
 .roommate-list__title {
-    margin: 3rem;
-    font-size: 1.5rem;
+    margin: 5rem 0 0 0;
+    font-size: 1.8rem;
     font-weight: 800;
 }
 
-.roommate-list__user{
+/*룸메이트가 없을 때*/
+.roommate-list__empty{
+    padding-top: 3rem;
+    font-size:  1.5rem;
+}
+
+/*캐러셀*/
+.roommate-list__carousel {
+    display: flex;
+    align-items: center;
+}
+.roommate-list__carousel-left, .roommate-list__carousel-right{
+    font-size: 5rem;
+    transition: .2s color ease-in-out;
+    color: rgb(255, 197, 109);
+}
+.roommate-list__carousel-left:hover, .roommate-list__carousel-right:hover{
+    color: red;
+    cursor: pointer;
+}
+
+.roommate-list__window {
+    position: relative;
+    width: 23.2rem;
+    overflow: hidden;
+    margin: 2rem 6rem;
+}
+
+.roommate-list__container{
+    display: flex;
+    /*position: absolute;
+    left: 50%;
+    transform: translateX(-13.8rem);*/
+}
+
+/*프로필 li*/
+.roommate-list__user {
+    margin: 0 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
+    width: 25rem;
 }
 
 .roommate-list__user img {
@@ -26,23 +64,31 @@
     margin-bottom: 2rem;
 }
 
-.roommate-list__user i{
+.roommate-list__user > i {
     font-size: 22rem;
+    height: 22rem;
+    width: 22rem;
     margin-bottom: 2rem;
 }
 
-.roommate-list__user__name{
+.roommate-list__user__name {
     font-size: 1.4rem;
     font-weight: 600;
     margin-bottom: 2rem;
 }
+
 .roommate-list__btn {
     text-align: center;
     border: 0.2rem solid slategray;
     padding: .8rem 5rem;
-    margin-right: 1rem;
     border-radius: 5rem;
     font-size: 1.3rem;
+}
+
+.roommate-list__btn:hover {
+    background-color: slategray;
+    color: white;
+    cursor: pointer;
 }
 
 .roommate-list__btn-tomato {
@@ -52,7 +98,39 @@
     margin-bottom: 2rem;
 }
 
-.roommate-list__btn-tomato:hover{
+.roommate-list__btn-tomato:hover {
     background-color: tomato;
     color: white;
 }
+
+
+/*modal*/
+.roommate-list__modal {
+    padding: 4rem 5rem;
+    height: 60rem;
+}
+
+.roommate-list__modal-profile img {
+    width: 8rem;
+    height: 8rem;
+}
+
+.roommate-list__modal-profile i {
+    font-size: 8rem;
+}
+
+.roommate-list__modal-profile p {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.roommate-list__modal-title {
+    padding: 3rem 0;
+}
+
+.roommate-list__modal-title p {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+

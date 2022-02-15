@@ -1,4 +1,7 @@
 import json
+from locale import currency
+from select import select
+from turtle import Turtle
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -9,6 +12,8 @@ from django.views import generic
 from .models import Todo, Home, TodoCate, TodoPriority
 from login.models import User
 # from .forms import TodoForm
+from .models import Todo, Home, LivingRuleCate, LivingRule
+from .forms import LivingRuleForm
 from .utils import Calendar
 from datetime import datetime, timedelta, date
 import calendar
@@ -123,8 +128,15 @@ def delete_todo(request, date, todo_id):
 def make_edit_form(request, date, todo_id):
     todo = Todo.objects.get(id=todo_id)
     content = todo.content
-    cate_id = todo.cate.id if not None else 'no-cate'
-    user_id = todo.user.id if not None else 'no-user'
+    if todo.cate is None:
+        cate_id = 'no-cate'
+    else:
+        cate_id = todo.cate.id
+    if todo.user is None:
+        user_id = 'no-user'
+    else:
+        user_id= todo.user.id
+
     priority_id = todo.priority.id
     return JsonResponse({
         'content' : content,
@@ -151,7 +163,36 @@ def edit_todo(request, date, todo_id):
         'priority_num' : todo.priority.priority_num,
     })
 
+@csrf_exempt
+@login_required
+def postpone_todo(request, date, todo_id):
+    todo = Todo.objects.get(id = todo_id)
+    todo.is_postpone = True
+    nextdate = datetime.strptime(date, "%Y-%m-%d")
+    nextdate = nextdate + timedelta(days=1)
+    
+    todo.date = nextdate
+    todo.save()
 
+    return redirect('home:date_todo', date=date)
+
+@csrf_exempt
+@login_required
+def done_todo(request, date, todo_id):
+    req = json.loads(request.body)
+    todo = get_object_or_404(Todo, id = req['todo_id'])
+    todo.is_done = True
+    todo.is_done_date = datetime.now()
+    print(todo.is_done_date)
+    todo.save()
+
+    return JsonResponse({
+        'todo_id' : todo.id,
+        'todo_content' : todo.content,
+        'todo_is_done_date' : todo.is_done_date,
+        'todo_is_postpne' : todo.is_postpone,
+    })
+ 
 @login_required
 def date_todo(request, date):
     current_user = request.user
@@ -170,10 +211,12 @@ def date_todo(request, date):
     no_cate_user_todos = user_todos.filter(cate=None)
     doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
     todo_priority = TodoPriority.objects.all()
-    print(no_cate_user_todos)
-    # form = TodoForm(current_home)
+
+    today = datetime.now()
+    today_string = f'{today.year}-{today.month}-{today.day}'
 
     ctx = {
+        'today' : today_string,
         'select_date' : date,
         'total_todo_dict' : total_todo_dict,
         'user_todo_dict' : user_todo_dict,
@@ -191,8 +234,117 @@ def date_todo(request, date):
 
     return render(request, 'home/date_todo/date_todo.html', context=ctx)
 
+
+# 오늘 이전 날짜 페이지 보기
+def prev_date_todo(request, date):
+    current_user = request.user
+    total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
+    complete_total_todos = total_todos.filter(is_done=True)
+    complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True)
+ 
+    roommates = User.objects.filter(home=request.user.home)
+
+    ctx = {
+        'select_date' : date,
+        'complete_user_todos' : complete_user_todos,
+        'complete_total_todos' : complete_total_todos,
+        'username' : current_user.username,
+        # 'form' : form,
+        'roomates' : roommates
+    }
+
+    return render(request, 'home/date_todo/prev_date_todo.html', context=ctx)
+
+
 def make_todo_with_cate_dict(todos, cates):
     todo_dict= {}
     for cate in cates:
         todo_dict[cate] = todos.filter(cate=cate)
     return todo_dict
+    
+
+# 카테고리 추가 관련
+@csrf_exempt
+@login_required
+def check_catename(request):
+    req = json.loads(request.body)
+    new_catename = req['new_catename']
+    current_home = get_object_or_404(Home, user=request.user)
+    exist_cates = TodoCate.objects.filter(home=current_home)
+    for cate in exist_cates:
+        if new_catename == cate.name or new_catename == '기타':
+            return JsonResponse({
+                'exist_catename' : True
+            })
+    return JsonResponse({
+        'exist_catename' : False
+    })
+
+@csrf_exempt
+@login_required
+def add_cate(request):
+    req = json.loads(request.body)
+    new_catename = req['new_catename']
+    new_cate = TodoCate.objects.create(home=request.user.home, name = new_catename)
+    return JsonResponse({
+        'user_id' : request.user.id,
+        'cate_id' : new_cate.id,
+        'new_catename' : new_cate.name,
+    })
+
+# 생활수칙관련
+def living_rules(request):
+    cates = LivingRuleCate.objects.all()
+    order_rules = {}
+    for c in cates:
+        rules = LivingRule.objects.filter(cate=c)
+        order_rules[c] = rules
+    ctx = {
+        'order_rules': order_rules,
+    }
+    return render(request, 'home/living_rules.html', context=ctx)
+
+
+
+def living_rule_new(request):
+    if request.method == "POST":
+        form = LivingRuleForm(request.POST)
+        if form.is_valid():
+            print("here")
+            rule = form.save()
+            rule.home = request.user.home
+            rule.save()
+            return redirect('home:living_rules')
+    else:
+        form = LivingRuleForm()
+    ctx = {
+        'form': form,
+    }
+    return render(request, 'home/living_rules_form.html', context=ctx)
+    
+
+
+def living_rule_edit(request, pk):
+    rule = get_object_or_404(LivingRule, pk=pk)
+    if request.method == "POST":
+        form = LivingRuleForm(request.POST, instance=rule)
+        if form.is_valid():
+            rule = form.save()
+            cate = rule.cate
+            return redirect('home:living_rules')
+    else:
+        form = LivingRuleForm(instance=rule)
+    ctx = {
+        'form': form
+    }
+    return render(request, 'home/living_rules_form.html', context=ctx)
+
+
+def living_rule_delete(request, pk):
+    rule = get_object_or_404(LivingRule, pk=pk)
+    rule.delete()
+    return (redirect('home:living_rules'))
+
+
+def guideline(request):
+    return render(request, 'home/guideline.html')

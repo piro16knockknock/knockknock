@@ -7,11 +7,31 @@
 
 {% block script %}
 <script defer src="{% static 'js/home/date_todo.js' %}" type="text/javascript"></script>
+<script defer src="{% static 'js/home/home_cate.js' %}" type="text/javascript"></script>
+<script defer src="{% static 'js/home/move_date.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block data_todo %}
 <div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
     <div class="user-cate-container cate-container d-flex align-items-baseline">
+        <div class="cate complete-cate">
+            <p class="cate-name">완료</p>
+            <div class="complete-user-todo">
+                {% for todo in complete_user_todos %}
+                <div class="complete-user-todo">
+                    <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle text-secondary"></i></button>
+                    <p>{{ todo.content }}</p>
+                    <button class="btn" onclick="feedbackBtn()"><i class="fas fa-heart"></i></button>
+                    <p>{{ todo.is_done_date }} 완료!</p>
+                    {% if todo.is_postpone is True %}
+                    <p>잊지 않고 해냈어요~!</p>
+                    {% else %}
+                    <p>미루지 않고 해냈어요!</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
         {% for cate, user_todos in user_todo_dict.items %}
         <div id="cate-id-{{ cate.id }}" class="cate user-todo">
             <p class="cate-name">{{cate.name}}</p>
@@ -32,7 +52,7 @@
                         </div>
                         <div class="d-flex align-items-baseline">
                             <!-- 완료: "fa-solid fa-check-circle"-->
-                            <button class="todo-check-btn me-2" onclick="isDoneBtn()"><i class="fa-regular fa-circle"></i></button>
+                            <button class="todo-check-btn me-2" onclick="isDoneBtn(this, '{{ select_date }}', '{{ user_todo.id }}')"><i class="fa-regular fa-circle"></i></button>
                             <p class="todo-text">{{ user_todo.content }}</p>
                             
                         </div>
@@ -70,7 +90,7 @@
                 </div>
                 <div class="d-flex align-items-baseline">
                     <!-- 미완료 버튼 -->
-                    <button class="todo-check-btn me-2" onclick="isDoneBtn()"><i class="fa-regular fa-circle"></i></button>
+                    <button class="todo-check-btn me-2" onclick="isDoneBtn(this, '{{ select_date }}', '{{ user_todo.id }}')"><i class="fa-regular fa-circle"></i></button>
                     <p class="todo-text">{{ user_todo.content }}</p>
                 </div>
                 <div class="d-flex align-items-end justify-content-end">
@@ -87,25 +107,9 @@
         {% endif %}
         </div>    
         <div class="add-cate cate">
-            <button class="btn btn-dark"><i class="fa-solid fa-folder-plus me-2"></i>카테고리 추가하기</button>
-        </div>
-
-        <div class="cate complete-cate">
-            <p class="cate-name">완료</p>
-            <div class="complete-user-todo"></div>
-            {% for todo in complete_user_todos %}
-                <div class="complete-user-todo">
-                    <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle text-secondary"></i></button>
-                    <p>{{ todo.content }}</p>
-                    <button class="btn" onclick="feedbackBtn()"><i class="fas fa-heart"></i></button>
-                    <p>{{ todo.is_done_date }} 완료!</p>
-                    {% if todo.is_postpon is True %}
-                    <p>잊지 않고 해냈어요~!</p>
-                    {% else %}
-                    <p>미루지 않고 해냈어요!</p>
-                    {% endif %}
-                </div>
-            {% endfor %}
+            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addCateModal">
+                <i class="fa-solid fa-folder-plus me-2"></i>카테고리 추가하기
+            </button>
         </div>
     </div>
 </div>
@@ -238,6 +242,35 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="addCateModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+		        <div class="modal-header">
+		            <h5 class="modal-title">카테고리 추가하기</h5>
+		        </div>
+                <form method="None" action="">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="todo-input-txt cate-input-txt">
+                            <input type="text" class="cate-name-input" onchange="checkInputChange()"name="cate_name" placeholder="카테고리 이름을 입력하세요"/>
+                            <button type="button" class="check-cate-name-btn btn btn-light"  onclick="checkCateName(this)">중복확인 하기</button>
+                        </div>
+                        <div class="cate-list" style="display: none;">
+                            {% for cate in cates %}
+                            <p class="cate">{{ cate.name }}</p>
+                            {% endfor %}
+                            <p class="cate"> 기타 </p>
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button class="cate-add-accept-btn btn btn-secondary" onclick="addCateBtn(this)" data-bs-dismiss="">등록</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="setToDoModal">
     <div class="modal-dialog">
@@ -249,7 +282,7 @@
                     {% csrf_token %}
                     <div class="modal-body">
                         <button class="edit-todo-btn btn btn-light" onclick="showEdit(this, '{{ select_date }}')" >수정</button>
-                        <a class="postpone-btn btn btn-light">내일 하기</a>
+                        <a class="postpone-btn btn btn-light" href="">내일 하기</a>
                         <button class="delete-btn btn btn-ligth" onclick= "deleteTodoBtn(this, '{{ select_date }}')" data-bs-dismiss="modal">삭제</button> 
                         
                         <div class="edit-todo" style="display: none;">
@@ -288,5 +321,6 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
 
