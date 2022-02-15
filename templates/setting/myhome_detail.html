@@ -110,22 +110,26 @@
                                     <div class="form-check">
                                         <!--유저 검색 결과 리스트가 나타날 곳-->
                                     </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary myhome-roommate__modal-font"
+                                            data-bs-dismiss="modal">닫기</button>
+                                        <button type="button" onclick="onClickInvite()"
+                                            class="btn btn-primary myhome-roommate__modal-font" data-bs-dismiss="modal">룸메이트
+                                            초대</button>
+                                        <!--ajax로 초대 구현-->
+                                    </div>
                                 </div>
                                 <div id="roommate-link-tab" class="modal-body tab-pane fade">
-                                    <div class="myhome-roommate__modal-input">
+                                    <div class="myhome-roommate__modal-input mb-4">
                                         <input type="text" id="myhome-roommate-link__input" value="{{request.user.home.pk}}/{{ request.user.home.invite_link }}" />
                                         <i id="roommate-invite-url-copy" class="far fa-copy"></i>
                                     </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary myhome-roommate__modal-font" data-bs-dismiss="modal">닫기</button>
+                                    </div>
                                 </div>                                    
                               </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary myhome-roommate__modal-font"
-                                    data-bs-dismiss="modal">닫기</button>
-                                <button type="button" onclick="onClickInvite()"
-                                    class="btn btn-primary myhome-roommate__modal-font" data-bs-dismiss="modal">룸메이트
-                                    초대</button>
-                                <!--ajax로 초대 구현-->
-                            </div>
+
                         </div>
                     </div>
                 </div>
