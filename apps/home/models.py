@@ -38,6 +38,7 @@ class TodoReaction(models.Model):
 class LivingRuleCate(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name='living_rule_cate', null=True)
     name = models.CharField(max_length=20)
+    create_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return "[" + self.home.name + "]" + self.name
@@ -46,6 +47,7 @@ class LivingRule(models.Model):
     cate = models.ForeignKey(LivingRuleCate, on_delete=models.CASCADE, related_name='living_rule')
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name='living_rule', blank=True, null=True)
     content = models.CharField(max_length=50)
+    create_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return "[" + self.home.name + "]" + "[" + self.cate.name + "] " + self.content

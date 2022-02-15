@@ -69,7 +69,7 @@ def prehome_list(request):
         
         prehome = prehome_info.home
         prehome_dict[prehome.name] = {}
-        living_rules = LivingRule.objects.filter(home = prehome)
+        living_rules = LivingRule.objects.filter(home = prehome, create_at__lt = prehome_info.end_date)
         for living_rule in living_rules:
             if living_rule.cate.name in prehome_dict[prehome.name] : # 이미 키가 있으면
                 prehome_dict[prehome.name][living_rule.cate.name].append(living_rule.content)
