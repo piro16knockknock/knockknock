@@ -224,3 +224,15 @@
     margin: 1rem 0;
     font-size: 3rem;
 }
+
+/*초대 링크*/
+#roommate-invite-url-copy{
+    font-size: 3rem;
+    margin-left: .5rem;
+    color: rgb(137, 186, 159);
+}
+
+#roommate-invite-url-copy:hover{
+    cursor: pointer;
+    color: tomato;
+}

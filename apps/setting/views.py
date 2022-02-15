@@ -1,16 +1,28 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import HomeForm, UtilityForm
 from login.models import User, Notice, Title
 from home.models import TodoCate
-from .models import Utility, Invite, LiveIn, Home
+from .models import *
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.template.defaulttags import register
+#초대 코드 생성
+import uuid
+import codecs
+import base64
 
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
+
+#초대 링크
+def invite_link(request, link, pk):
+    home = get_object_or_404(Home, invite_link=link, id=pk)
+    ctx = {
+        'home' : home
+    }
+    return render(request, 'setting/invite_link.html', context=ctx)
 
 #룸메이트 취소
 @csrf_exempt
@@ -53,6 +65,11 @@ def check_homename(request):
     else:
         return JsonResponse({'is_available' : True, 'input_name': home_name })
 
+def create_invite_link():
+    link = codecs.encode(uuid.uuid4().bytes, "base64").rstrip()
+    link = base64.urlsafe_b64encode(link).decode()[:13]
+    return link
+
 def myhome_register(request):
     if request.method == 'POST':
         home_form = HomeForm(request.POST)
@@ -73,6 +90,7 @@ def myhome_register(request):
                 current_home.rent_month = 1
                 current_home.rent_date = 1
             
+            current_home.invite_link = create_invite_link()
             current_home.save()
             request.user.home = current_home
             request.user.save()
@@ -86,8 +104,10 @@ def myhome_register(request):
                                     name = utility_name_list[i], 
                                     month = utility_month_list[i],
                                     date = utility_date_list[i])
-            
+            #거주 기록
             LiveIn.objects.create(user = request.user, home = current_home)
+            
+            #기본 ToDo 카테고리
             TodoCate.objects.create(home = current_home, name="빨래")
             TodoCate.objects.create(home = current_home, name="청소")
             return redirect('setting:myhome_detail')

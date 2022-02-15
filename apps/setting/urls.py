@@ -17,4 +17,7 @@ urlpatterns = [
     
     path('roommate/list', views.roommate_list, name='roommate_list'),
     path('roommate/invite_cancel/', views.invite_cancel, name='invite_cancel'),
+    
+    #초대 링크
+    path('myhome/detail/<int:pk>/<str:link>/', views.invite_link, name='invite_link')
 ]

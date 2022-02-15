@@ -10,6 +10,7 @@ class Home(models.Model):
     rent_date = models.IntegerField(default=1, null=True, blank=True)
     rent_month = models.IntegerField(default=1, null=True, blank=True)
     is_rent = models.BooleanField(default=False, null=True, blank=True)
+    invite_link = models.CharField(max_length=13, null=True, blank=True)
     
     def __str__(self):
         return self.name

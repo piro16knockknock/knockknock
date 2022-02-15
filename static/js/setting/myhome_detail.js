@@ -299,3 +299,13 @@ const checkHomeNameHandleResponse = (is_available, input_name) => {
     // 중복임 =>경고
     home_name.value = "";
 }
+
+
+/* 초대 링크 복사 */
+const copyBtn = document.querySelector('#roommate-invite-url-copy');
+const linkInput = document.querySelector('#myhome-roommate-link__input');
+linkInput.value = window.location.href + linkInput.value;
+copyBtn.addEventListener('click', function (event){
+    linkInput.select();
+    window.navigator.clipboard.writeText(linkInput.value);
+})
