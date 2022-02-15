@@ -49,3 +49,12 @@ class Invite(models.Model):
     
     def __str__(self):
         return "(user)" + self.receive_user.nick_name + "에게 (home)" + self.home.name + "으로부터 온 초대"
+    
+class Knock(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    receive_home = models.ForeignKey(Home, on_delete=models.CASCADE)
+    is_accepted = models.BooleanField(default=False)
+    knock_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return "(user)" + self.user.username + "이 (home)" + self.receive_home.name + "에 노크"

@@ -62,7 +62,18 @@
             <button type="submit" onclick="" id="myhome-register__register-btn" class="myhome-register__btn">집 등록</button>
         </form>
     </div>
-    <div id="myhome-register-search" class="tab-pane fade" role="tabpanel" aria-labelledby="profile-tab">...</div>
+    <div id="myhome-register-search" class="tab-pane fade">
+        <p class="myhome-register__title">집 검색</p>
+        <hr/>
+
+        <div class="myhome-register__search-container">
+            <input type="text" id="myhome-register__search-input" placeholder="노크할 집을 검색하세요." />
+            <a onclick="onClickKnockHome()" type="button" class="btn">노크하기</a>
+        </div>
+        <div class="form-check">
+            <!--유저 검색 결과 리스트가 나타날 곳-->
+        </div>
+    </div>
 </div>
 
 

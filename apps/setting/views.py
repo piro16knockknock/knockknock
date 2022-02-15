@@ -157,6 +157,38 @@ def myhome_update(request):
         
     return JsonResponse({ 'home_name' : home_name })
 
+#노크하기
+@csrf_exempt
+def knock_home(request):
+    req = json.loads(request.body)
+    homename = req['homename']
+    if(homename==None):
+        return redirect('setting:myhome_register')
+    
+    home = get_object_or_404(Home, name=homename)
+    Knock.objects.get_or_create(user=request.user, receive_home=home) #유저는 집 하나에만 노크할 수 있음
+    #알림에 저장. 집 멤버들에게 모두 알림을 보냄
+
+    for user in User.objects.filter(home=home):
+        Notice.objects.get_or_create(receive_user=user, content="집 노크")
+
+    return
+
+#집 검색하기
+@csrf_exempt
+def search_home(request):
+    req = json.loads(request.body)
+    search_word = req['search_word']
+    
+    #db에서 search_word와 일치하는 탑4 유저 검색
+    homes = Home.objects.filter(name__startswith=search_word)[:10]
+    search_list = []
+    for home in homes :
+        search_list.append({'homename' : home.name})
+    
+    return JsonResponse( { "home_list" : search_list } )
+
+
 #초대하기
 @csrf_exempt
 def invite_roommate(request):
