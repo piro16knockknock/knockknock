@@ -20,7 +20,10 @@ class Title(models.Model): #User's title
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'title')
     title_num = models.IntegerField()
     content = models.CharField(max_length=20)
-    emoji = models.ImageField()
+    emoji = models.ImageField(null=True, blank=True)
+    
+    def __str__(self):
+        return "[" + self.user.username + "]" + self.content
 
 class Notice(models.Model):
     receive_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'notice')
