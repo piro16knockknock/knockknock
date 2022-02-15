@@ -39,8 +39,12 @@
                 </div>
             </div>
             <div id="cal-house-info" class="cal-side-box">
+                {% if request.user.home.is_rent %}
                 <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}일</span></p>
-                <p>공과금 납부일<span class="ps-3">일</span></p>
+                {% endif %}
+                {% for utility in utility_list %}
+                    <p>{{utility.name}} 납부일<span class="ps-3">{{utility.date}}일</span></p>
+                {% endfor %}
             </div>
 		</div>
     {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block script %}
-<script defer src="{% static 'js/login/mypage_temp.js' %}" type="text/javascript"></script>
+<script defer src="{% static 'js/login/mypage.js' %}" type="text/javascript"></script>
 {% endblock %}
 {% block content %}
 
@@ -39,12 +39,14 @@
             </div>
             <div class="mypage-item">
                 <h4>나의 집</h4>
-                {% for home in homes %}
-                    <p>{{ home_name }}</p>
-
-                {% endfor %}
-                <!--이사하기 버튼/나의 집 정보 있으면 for문으로-->
+                {% if request.user.home %}
+                    <p>{{ request.user.home.name }}</p>
+                {% else %}
+                    <p>등록된 집이 없습니다.</p>
+                {% endif %}
+                {% if request.user.home %}
                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#moveHomeModal">이사하기</button>
+                {% endif %}
                 {% if request.user.invite and request.user.invite.is_accepted is False %}
                     <p>초대가 왔어요!</p>
                     <p>{{request.user.invite.home.name}}</p>
@@ -109,10 +111,26 @@
                     <div class="modal-dialog past-record__modal-rule">
                         <div class="modal-content">
                             <div class="past-record__modal-rule-header">
-                                <p class="modal-title" id="prehomeRuleModalLabel">{{ prehome.home.name }}의
-                                    생활수칙</p>
+                                <p class="modal-title" id="prehomeRuleModalLabel">{{ prehome.home.name }}</p>
                             </div>
                             <div class="modal-body">
+                                <p>룸메이트</p>
+                                <hr/>
+                                <div class="past-record__preroommates">
+                                {% for preroommate in preroommates_dict|get_item:prehome.home.name %}
+                                    <div class="past-record__preroommates-profile">
+                                    {% if preroommate.user.profile_img %}
+                                    <img src="{{ preroommate.user.profile_img.url }}" />
+                                    {% else %}
+                                    <i class="fas fa-user-circle"></i>
+                                    {% endif %}
+                                    <p>{{ preroommate.user.nick_name }}</p>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                                
+                                <p>생활수칙</p>
+                                <hr/>
                                 {% for cate in prehome_dict|get_item:prehome.home.name %}
                                 <div class="past-record__modal-rule-cate">{{ cate }}</div>
                                 {% for rule in prehome_dict|get_item:prehome.home.name|get_item:cate %}

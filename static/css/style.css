@@ -1,6 +1,6 @@
 @import 'reset.css';
+@import 'login/mypage.css';
 @import 'setting/myhome_form.css';
-@import 'mypage/mypage_temp.css';
 @import 'setting/myhome_detail.css';
 @import 'setting/roommate_list.css';
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
