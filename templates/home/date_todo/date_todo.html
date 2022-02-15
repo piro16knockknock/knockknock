@@ -146,28 +146,6 @@
                 <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, null, null, null)" href="#addToDoModal"> + 할 일 등록</a>
             </div>
         </div>
-
-
-        <div class="user-todo todo-box todo-id-{{ user_todo.id }}">
-            <div class="user-todo-head">
-                {% if user_todo.priority is None %}
-                    <p>아무때나</p>
-                    <i class="fa-solid fa-fire text-secondary"></i>
-                {% else %}
-                    <p>{{ user_todo.priority.content }}</p>
-                    <i class="fa-solid fa-fire priority-{{ user_todo.priority.priority_num }}"></i>
-                {% endif%}
-            </div>
-            <div class="todo-cnt">
-                <button class="todo-check-btn" onclick="isDoneBtn(this, '{{ select_date }}', '{{ user_todo.id }}')"><i class="fa-regular fa-circle"></i></button>
-                <p class="todo-text">{{ user_todo.content }}</p>
-            </div>
-            <div class="todo-bottom">
-                <button type="button" class="edit-btn {{user_todo.id}} btn date-edit-btn" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
-                <i class="fa-solid fa-ellipsis"></i></button>
-            </div>
-        </div>
-
         <div class="cate doing-cate">
             <p class="cate-name">진행중</p>
             {% if doing_todos.count is not 0 %}
