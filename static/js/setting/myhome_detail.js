@@ -368,6 +368,39 @@ const acceptKnockHandleResponse = (user_name, profile, user_id) => {
 }
 
 /*노크 거절 */
-const onRejectKnock = async() => {
-
+const onRejectKnock = async(tag) => {
+    user_id = tag.dataset.id
+    
+    const url = "../../myhome/reject_knock/";
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'user_id': user_id,
+        })
+    });
+    const {
+        'success' : success
+    } = await res.json()
+    if(success){
+        rejectKnockHandleResponse(user_id);
+    }
+}
+const rejectKnockHandleResponse = (user_id) => {
+    const deleteDiv = document.querySelector(`div[data-id="${user_id}"]`);
+    deleteDiv.remove();
+    
+    //노크중인 유저가 0명이 된다면
+    const knockRow = document.querySelector('.myhome-knock__row');
+    const knockColumn = document.querySelectorAll('.myhome-knock__column');
+    
+    if(knockColumn.length == 0){
+        const p = document.createElement('p');
+        p.className = "myhome-knock__empty";
+        p.innerHTML = "현재 노크 중인 유저가 없습니다.";
+        knockRow.after(p);
+        knockRow.remove();
+    }
 }

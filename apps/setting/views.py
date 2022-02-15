@@ -191,6 +191,18 @@ def accept_knock(request):
         'profile': profile,
     })
 
+#노크 거절
+@csrf_exempt
+def reject_knock(request):
+    req = json.loads(request.body)
+    user_id = req['user_id']
+    user = get_object_or_404(User, id=user_id)
+    
+    Knock.objects.filter(user=user).delete()
+        
+    return JsonResponse({'success':True})
+
+
 #(유저가)노크 취소하기
 def knock_cancel(request):
     Knock.objects.filter(user=request.user).delete()
