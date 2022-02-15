@@ -252,7 +252,7 @@
                     <div class="modal-body">
                         <div class="todo-input-txt cate-input-txt">
                             <input type="text" class="cate-name-input" onchange="checkInputChange()"name="cate_name" placeholder="카테고리 이름을 입력하세요"/>
-                            <button type="button" class="check-cate-name-btn btn btn-light"  onclick="checkCateName(this)">중복확인 하기</button>
+                            <button type="button" class="check-cate-name-btn btn btn-light"  onclick="checkCateName(this, '{{ select_date }}')">중복확인 하기</button>
                         </div>
                         <div class="cate-list" style="display: none;">
                             {% for cate in cates %}
@@ -263,7 +263,7 @@
                     </div>
                 </form>
                 <div class="modal-footer">
-                    <button class="cate-add-accept-btn btn btn-secondary" onclick="addCateBtn(this)" data-bs-dismiss="">등록</button>
+                    <a class="cate-add-accept-btn btn btn-secondary" onclick="addCateBtn(this, '{{ select_date }}')" data-bs-dismiss="">등록</a>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
             </div>

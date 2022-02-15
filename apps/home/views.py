@@ -310,12 +310,9 @@ def check_catename(request):
 def add_cate(request):
     req = json.loads(request.body)
     new_catename = req['new_catename']
-    new_cate = TodoCate.objects.create(home=request.user.home, name = new_catename)
-    return JsonResponse({
-        'user_id' : request.user.id,
-        'cate_id' : new_cate.id,
-        'new_catename' : new_cate.name,
-    })
+    select_date = req['select_date']
+    TodoCate.objects.create(home=request.user.home, name = new_catename)
+    return redirect('home:date_todo', date=select_date)
 
 # 생활수칙관련
 def living_rules(request):
