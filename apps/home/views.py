@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.safestring import mark_safe
 from django.views import generic
-
+from setting.models import *
 from .models import Todo, Home, TodoCate, TodoPriority
 from login.models import User
 # from .forms import TodoForm
@@ -32,8 +32,25 @@ class CalendarView(generic.ListView):
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
         context['month'] = str(d.month)
-        context['year'] = str(d.year)
+        context['year'] = str(d.year) 
+        context['utility_list'] = close_utility(self.request)
         return context
+
+#공과금
+def close_utility(request):
+    current_home = request.user.home
+    utility_list = Utility.objects.filter(home=current_home)
+    today = int(datetime.now().strftime("%d"))
+    utility_list = sorted(utility_list, key=lambda x: x.date)
+    
+    for i in range(len(utility_list)):
+        if utility_list[0].date >= today:
+            break
+        else:
+            utility_list.append(utility_list[0])
+            del utility_list[0]
+    return utility_list[:5]
+
 
 def get_date(req_month):
     if req_month:
@@ -216,6 +233,7 @@ def date_todo(request, date):
 
     return render(request, 'home/date_todo/date_todo.html', context=ctx)
 
+
 def prev_date_todo(request, date):
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
@@ -230,7 +248,8 @@ def prev_date_todo(request, date):
         'complete_total_todos' : complete_total_todos,
         'username' : current_user.username,
         # 'form' : form,
-        'roomates' : roommates
+        'roomates' : roommates,
+        'utility_list' : close_utility(request)
     }
 
     return render(request, 'home/date_todo/prev_date_todo.html', context=ctx)
@@ -328,3 +347,4 @@ def living_rule_delete(request, pk):
 
 def guideline(request):
     return render(request, 'home/guideline.html')
+
