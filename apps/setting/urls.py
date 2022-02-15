@@ -12,6 +12,7 @@ urlpatterns = [
     path('myhome/knock_home/', views.knock_home, name='knock_home'),
     path('myhome/knock_cancel/', views.knock_cancel, name='knock_cancel'),
     path('myhome/link_knock/', views.link_knock, name='link_knock'),
+    path('myhome/accept_knock/', views.accept_knock, name='accept_knock'),
     
     path('myhome/check_homename/', views.check_homename, name='check_homename'),
     path('myhome/myhome_update/', views.myhome_update, name='myhome_update'),

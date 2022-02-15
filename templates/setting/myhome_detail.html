@@ -77,7 +77,7 @@
         <div class="myhome-roommate">
             <p class="myhome-detail__title">룸메이트</p>
             <hr />
-            <div>
+            <div class="myhome-roommate__row">
                 {% for roommate in roommates %}
                 <div class="myhome-roommate__column">
                     {% if roommate.profile_img %}
@@ -141,6 +141,30 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="myhome-knock">
+            <p class="myhome-detail__title">노크 중인 유저</p>
+            <hr />
+            {% if knocks %}
+                <div class="myhome-knock__row">
+                    {% for knock in knocks %}
+                        <div data-id='{{ knock.user.pk }}' class="myhome-knock__column">
+                            {% if knock.user.profile_img %}
+                            <img src="{{ knock.user.profile_img.url }}" height="220" width="220" />
+                            {% else %}
+                            <i class="fas fa-user-circle"></i>
+                            {% endif %}
+                            <p>{{ knock.user.nick_name }}</p>
+                            <div class="d-flex justify-content-center mt-1">
+                                <a onclick="onAcceptKnock(this)" data-id='{{ knock.user.pk }}' class="btn btn-outline-primary fs-5 text-center">수락</a>
+                                <a onclick="onRejectKnock(this)" data-id='{{ knock.user.pk }}' class="btn btn-outline-danger fs-5 text-center">거절</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+            <p class="myhome-knock__empty">현재 노크 중인 유저가 없습니다.</p>
+            {% endif %}
         </div>
         <div class="myhome-move">
             <p class="myhome-detail__title">집 이전</p>

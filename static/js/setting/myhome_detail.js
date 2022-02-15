@@ -309,3 +309,65 @@ copyBtn.addEventListener('click', function (event){
     linkInput.select();
     window.navigator.clipboard.writeText(linkInput.value);
 })
+
+
+
+/*노크 수락*/
+const onAcceptKnock = async(tag) => {
+    user_id = tag.dataset.id
+    
+    const url = "../../myhome/accept_knock/";
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'user_id': user_id,
+        })
+    });
+    const {
+        'user_name' : user_name,
+        'profile' : profile,
+   } = await res.json()
+    acceptKnockHandleResponse(user_name, profile, user_id);
+}
+const acceptKnockHandleResponse = (user_name, profile, user_id) => {
+    const deleteDiv = document.querySelector(`div[data-id="${user_id}"]`);
+    deleteDiv.remove();
+
+    //추가 버튼 앞에 넣어주기
+    const afterDiv = document.querySelector('.myhome-roommate__invite');
+    const newDiv = document.createElement('div');
+    newDiv.className = 'myhome-roommate__column';
+    if(profile == ""){ // 프로필 없음
+        newDiv.innerHTML = `
+            <i class="fas fa-user-circle"></i>
+            <p>${user_name}</p>
+        `;
+    }else {
+        newDiv.innerHTML = `
+            <img src="${ profile }" />
+            <p>${user_name}</p>
+        `;        
+    }
+    afterDiv.before(newDiv);
+    
+    //노크중인 유저가 0명이 된다면
+    const knockRow = document.querySelector('.myhome-knock__row');
+    const knockColumn = document.querySelectorAll('.myhome-knock__column');
+    
+    if(knockColumn.length == 0){
+        const p = document.createElement('p');
+        p.className = "myhome-knock__empty";
+        p.innerHTML = "현재 노크 중인 유저가 없습니다.";
+        knockRow.after(p);
+        knockRow.remove();
+    }
+
+}
+
+/*노크 거절 */
+const onRejectKnock = async() => {
+
+}

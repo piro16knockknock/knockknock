@@ -131,6 +131,7 @@ def myhome_detail(request):
     current_home = current_user.home
     utilities = Utility.objects.filter(home=current_home) # 본인 포함
     current_roommates = User.objects.filter(home=current_home) # 본인 포함
+    knocks = Knock.objects.filter(receive_home=current_home)
     ctx = {
         'home_name' : current_home.name,
         'is_rent' : current_home.is_rent,
@@ -138,6 +139,7 @@ def myhome_detail(request):
         'rent_month' : current_home.rent_month,
         'utilities' : utilities,
         'roommates' : current_roommates,
+        'knocks' : knocks
     }
     return render(request, 'setting/myhome_detail.html', context=ctx)
 
@@ -167,7 +169,29 @@ def myhome_update(request):
         
     return JsonResponse({ 'home_name' : home_name })
 
-#노크 취소하기
+
+#노크 승낙
+@csrf_exempt
+def accept_knock(request):
+    req = json.loads(request.body)
+    user_id = req['user_id']
+    user = get_object_or_404(User, id=user_id)
+    user.home = request.user.home
+    user.save()
+    
+    Knock.objects.filter(user=user).delete()
+    
+    if user.profile_img :
+        profile = user.profile_img.url
+    else :
+        profile = ""
+        
+    return JsonResponse({ 
+        'user_name' : user.nick_name,
+        'profile': profile,
+    })
+
+#(유저가)노크 취소하기
 def knock_cancel(request):
     Knock.objects.filter(user=request.user).delete()
     

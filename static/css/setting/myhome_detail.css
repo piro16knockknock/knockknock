@@ -78,8 +78,6 @@
 }
 
 
-
-
 /*월세 납부일*/
 .myhome-detail__row__rent {
     font-size: 1.3rem;
@@ -235,4 +233,37 @@
 #roommate-invite-url-copy:hover{
     cursor: pointer;
     color: tomato;
+}
+
+
+/*노크 중인 유저*/
+.myhome-knock__empty{
+    font-size: 1.4rem;
+}
+
+.myhome-knock__row{
+    display: flex;
+    align-items: center;
+}
+
+.myhome-knock__column {
+    margin-right: 2rem;
+}
+
+.myhome-knock__column>img {
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem;
+}
+
+.myhome-knock__column i {
+    font-size: 10rem;
+}
+
+.myhome-knock__column>p {
+    font-size: 1.3rem;
+    color: slategray;
+    padding-top: .5rem;
+    text-align: center;
+
 }
