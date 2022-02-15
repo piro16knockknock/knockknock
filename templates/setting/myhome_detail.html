@@ -6,6 +6,13 @@
 {% endblock %}
 
 {% block content %}
+<div class="side-nav">
+    <ul class="d-flex">
+        <li>설정&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
+        <li><a href="{%url 'setting:myhome_detail' %}">집 관리</a></li>
+        <li><a href="{%url 'setting:roommate_list' %}">룸메이트 관리</a></li>
+    </ul>
+</div>
 <section class="myhome-detail">
     <div>
         <div class="myhome-info">
@@ -44,7 +51,7 @@
                     <label>공과금 납부일</label>
                     <div class="myhome-detail__row__utility">
                         <ul class="myhome-detail__row__utility-ul">
-                            <p>※ 최대 다섯개까지 설정 가능합니다.</p>
+                            <p>※ 최대 10개까지 설정 가능합니다.</p>
                             {% for utility in utilities %}
                             <li class="myhome-detail__row__rent myhome-detail__row__utility-li">
                                 <div class="myhome-detail__row__rent-type"><span>종류</span><input class="new-utility-name" value="{{ utility.name }}" name="utility_name" type="text" maxlength="10"/></div>

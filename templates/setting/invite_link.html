@@ -1,17 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block script %}
+<script>
+    const inviteLinkAlert = (home_name) =>{
+        alert(`${home_name}에 노크했습니다. 수락을 기다려주세요.`);
+    }
+
+</script>
+{% endblock %}
 {% block content %}
-<section class="myhome-setting">
-    <div class="myhome-setting__exist">
-        <div class="myhome-setting__list">
+<section class="invite-link">
+    <div class="invite-link__exist">
+        <div class="invite-link__list">
             <h1>🏡 {{ home.name }}</h1>
-            <div class="myhome-setting__list__row">
-                <div class="myhome-setting__list__column">
+            <div class="invite-link__list__row">
+                <div class="invite-link__list__column">
                     <i class="fas fa-home"></i>
                 </div>
             </div>
-            <div class="myhome-setting__enter">
-                <a href="#" class="myhome-setting__enter__btn"><i class="fas fa-door-open"></i> 노크하기</a>
+            <div class="invite-link__enter">
+                <a href="#" onclick="inviteLinkAlert('{{home.name}}')" class="invite-link__enter__btn"><i class="fas fa-door-open"></i> 노크하기</a>
             </div>
         </div>
 </section>

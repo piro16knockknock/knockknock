@@ -1,33 +1,33 @@
-.myhome-setting{
+.invite-link{
     text-align: center;
 }
-.myhome-setting__list{
+.invite-link__list{
     padding: 8rem 0 4rem 0;
     background-color: rgb(165, 222, 188);
 }
 
-.myhome-setting__list > h1 {
+.invite-link__list > h1 {
     font-size: 3rem;
     padding-bottom: 3rem;
     font-weight: 800;
 }
 
-.myhome-setting__list__row {
+.invite-link__list__row {
     display: flex;
     justify-content: center;
 }
 
-.myhome-setting__list__column > i {
+.invite-link__list__column > i {
     font-size: 22rem;
     color: white;
     border-radius: 50%;
     margin-bottom: 2rem;
 } 
 
-.myhome-setting__enter{
+.invite-link__enter{
     margin: 4rem;
 }
-.myhome-setting__enter__btn{
+.invite-link__enter__btn{
     padding: 1.2rem 8rem;
     border-radius: 5rem;
     font-size: 1.4rem;
@@ -37,6 +37,6 @@
     border: 0.3rem solid rgb(255, 197, 109);
  /*   box-shadow: 0px 5px 5px rgba(255, 197, 109, 0.5);*/
 }
-.myhome-setting__enter__btn:hover{
+.invite-link__enter__btn:hover{
     background-color: rgb(255, 197, 109);
 }
