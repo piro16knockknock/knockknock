@@ -9,7 +9,7 @@ let utility_count = utility_li.length;
 const deleteUtility = (tag) => {
     tag.parentElement.remove();
     utility_count--;
-    if(utility_count < 5){
+    if(utility_count < 10){
         const plusBtn = document.querySelector(".myhome-detail__row__add-utility");
         plusBtn.classList.remove("myhome-detail__display-none");
     }
@@ -32,7 +32,7 @@ const addUtility = (tag) => {
     ul.appendChild(li);
     utility_count++;
     utility_check(0, utility_count);
-    if(utility_count >= 5){
+    if(utility_count >= 10){
         tag.classList.add("myhome-detail__display-none");
     }
 }
