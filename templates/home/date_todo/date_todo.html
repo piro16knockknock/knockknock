@@ -16,18 +16,22 @@
     <div class="user-cate-container cate-container d-flex align-items-baseline">
         <div class="cate complete-cate">
             <p class="cate-name">완료</p>
-            <div class="complete-user-todo">
+            <div class="complete-user-todos">
                 {% for todo in complete_user_todos %}
-                <div class="complete-user-todo">
-                    <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle text-secondary"></i></button>
-                    <p>{{ todo.content }}</p>
-                    <button class="btn" onclick="feedbackBtn()"><i class="fas fa-heart"></i></button>
-                    <p>{{ todo.is_done_date }} 완료!</p>
-                    {% if todo.is_postpone is True %}
-                    <p>잊지 않고 해냈어요~!</p>
-                    {% else %}
-                    <p>미루지 않고 해냈어요!</p>
+                <div class="complete-user-todo complete-total-todo">
+                    <div class="com-todo-head d-flex align-items-baseline justify-content-between">
+                        <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle text-secondary"></i></button>
+                        <p>{{ todo.content }}</p>
+                        <div class="btn" onclick="feedbackBtn()"><i class="fas fa-heart"></i></div>
+                    </div>
+                    <div class="com-todo-text">
+                        <p>{{ todo.is_done_date }} 완료!</p>
+                        {% if todo.is_postpone is True %}
+                        <p>잊지 않고 해냈어요~!</p>
+                        {% else %}
+                        <p>미루지 않고 해냈어요!</p>
                     {% endif %}
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -172,12 +176,12 @@
             {% endfor %}
             {% endif %}
         </div>
-        <div class="cate complete-cate">
+        <div class="cate total-cate-container complete-cate">
             <p class="cate-name">완료</p>
             {% for todo in complete_total_todos %}
                 <div class="complete-total-todo">
                     <div class="com-todo-head d-flex align-items-baseline justify-content-between">
-                        <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle"></i></button>
+                        <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle text-secondary"></i></button>
                         <p>{{ todo.content }}</p>
                         <div class="btn" oncanplay="feedbackBtn()">
                             <i class="fas fa-heart"></i>
@@ -186,7 +190,7 @@
                     <div class="com-todo-text">
                         <p>{{ todo.is_done_date }} 완료!</p>
                         {% if todo.is_postpon is True %}
-                        <p>잊지 않고 해냈어요~!</p>
+                        <p>잊지 않고 해냈어요!</p>
                         {% else %}
                         <p>미루지 않고 해냈어요!</p>
                         {% endif %}
