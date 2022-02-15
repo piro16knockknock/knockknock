@@ -133,7 +133,7 @@
                         <p class="all-todo-text">{{ todo.content }}</p>
                     </div>
                     <div class="todo-bottom">
-                        <button type="button" class="edit-btn {{user_todo.id}} btn date-edit-btn" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
+                        <button type="button" class="edit-btn {{todo.id}} btn date-edit-btn" onclick="setEditBtn(this, '{{ todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
                         <i class="fa-solid fa-ellipsis"></i></button>
                     </div>
                 </div>

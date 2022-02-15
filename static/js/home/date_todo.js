@@ -137,7 +137,7 @@ const AddHandleResponse = () => {
         // 기타
         else if (cate_name === 'no-cate') {
             todos = document.querySelector(`.user-cate-container .etc-cate .add-todo`);
-            new_todo.classList = `etc-todo todo-box todo-id${todo_id}`;
+            new_todo.classList = `etc-todo todo-box todo-id-${todo_id}`;
         }
         // 그 외
         else {
@@ -211,12 +211,19 @@ const deleteHandleResponse = () => {
     if (requestDelete.status < 400) {
         console.log('response is coming');
         const {todo_id} = JSON.parse(requestDelete.response);
-        // const delete_todo_divs = document.querySelectorAll(`.todo-id-${todo_id}`);
-        // for (i=0; i <=delete_todo_divs.length; i++) {
-        //     var delete_todo_div = delete_todo_divs[i];
-        //     delete_todo_div.remove(); 
-        // }
-        // delete_btn.classList.remove(todo_id);
+        const cate_todo_div = document.querySelector(`.user-cate-container .todo-id-${todo_id}`);
+        const doing_todo_div = document.querySelector(`.doing-cate .todo-id-${todo_id}`);
+        const no_user_todo_div = document.querySelector(`.no-user-cate .todo-id-${todo_id}`);
+        // 유저 할 일 삭제
+        if (cate_todo_div != null) {
+            cate_todo_div.remove();
+            doing_todo_div.remove();
+        }
+        // 담당 없는 일 삭제
+        else {
+            no_user_todo_div.remove();
+        }
+        closeEdit()
     }
 };
 

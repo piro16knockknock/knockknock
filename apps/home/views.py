@@ -134,7 +134,7 @@ def add_todo(request, date):
 @csrf_exempt
 @login_required
 def delete_todo(request, date, todo_id):
-    delete_todo = Todo.objects.get(id = todo_id)
+    delete_todo = get_object_or_404(Todo, id = todo_id)
     delete_todo.delete()
     return JsonResponse({
         'todo_id' : todo_id,
