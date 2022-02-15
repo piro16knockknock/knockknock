@@ -1,6 +1,7 @@
 import json
 from locale import currency
 from select import select
+from turtle import Turtle
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -162,7 +163,7 @@ def edit_todo(request, date, todo_id):
         'priority_num' : todo.priority.priority_num,
     })
 
-
+@csrf_exempt
 @login_required
 def postpone_todo(request, date, todo_id):
     todo = Todo.objects.get(id = todo_id)
@@ -175,6 +176,23 @@ def postpone_todo(request, date, todo_id):
 
     return redirect('home:date_todo', date=date)
 
+@csrf_exempt
+@login_required
+def done_todo(request, date, todo_id):
+    req = json.loads(request.body)
+    todo = get_object_or_404(Todo, id = req['todo_id'])
+    todo.is_done = True
+    todo.is_done_date = datetime.now()
+    print(todo.is_done_date)
+    todo.save()
+
+    return JsonResponse({
+        'todo_id' : todo.id,
+        'todo_content' : todo.content,
+        'todo_is_done_date' : todo.is_done_date,
+        'todo_is_postpne' : todo.is_postpone,
+    })
+ 
 @login_required
 def date_todo(request, date):
     current_user = request.user
@@ -216,6 +234,8 @@ def date_todo(request, date):
 
     return render(request, 'home/date_todo/date_todo.html', context=ctx)
 
+
+# 오늘 이전 날짜 페이지 보기
 def prev_date_todo(request, date):
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)

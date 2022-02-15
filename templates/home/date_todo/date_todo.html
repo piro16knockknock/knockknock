@@ -16,20 +16,21 @@
     <div class="user-cate-container cate-container d-flex align-items-baseline">
         <div class="cate complete-cate">
             <p class="cate-name">완료</p>
-            <div class="complete-user-todo"></div>
-            {% for todo in complete_user_todos %}
+            <div class="complete-user-todo">
+                {% for todo in complete_user_todos %}
                 <div class="complete-user-todo">
                     <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle text-secondary"></i></button>
                     <p>{{ todo.content }}</p>
                     <button class="btn" onclick="feedbackBtn()"><i class="fas fa-heart"></i></button>
                     <p>{{ todo.is_done_date }} 완료!</p>
-                    {% if todo.is_postpon is True %}
+                    {% if todo.is_postpone is True %}
                     <p>잊지 않고 해냈어요~!</p>
                     {% else %}
                     <p>미루지 않고 해냈어요!</p>
                     {% endif %}
                 </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
         {% for cate, user_todos in user_todo_dict.items %}
         <div id="cate-id-{{ cate.id }}" class="cate user-todo">
@@ -51,7 +52,7 @@
                         </div>
                         <div class="d-flex align-items-baseline">
                             <!-- 완료: "fa-solid fa-check-circle"-->
-                            <button class="todo-check-btn me-2" onclick="isDoneBtn()"><i class="fa-regular fa-circle"></i></button>
+                            <button class="todo-check-btn me-2" onclick="isDoneBtn(this, '{{ select_date }}', '{{ user_todo.id }}')"><i class="fa-regular fa-circle"></i></button>
                             <p class="todo-text">{{ user_todo.content }}</p>
                             
                         </div>
@@ -89,7 +90,7 @@
                 </div>
                 <div class="d-flex align-items-baseline">
                     <!-- 미완료 버튼 -->
-                    <button class="todo-check-btn me-2" onclick="isDoneBtn()"><i class="fa-regular fa-circle"></i></button>
+                    <button class="todo-check-btn me-2" onclick="isDoneBtn(this, '{{ select_date }}', '{{ user_todo.id }}')"><i class="fa-regular fa-circle"></i></button>
                     <p class="todo-text">{{ user_todo.content }}</p>
                 </div>
                 <div class="d-flex align-items-end justify-content-end">

@@ -296,3 +296,30 @@ function serialize (data) {
     }
     return obj;
 }
+
+
+// 할 일 완료하기 ajax
+const reqDoneTodo = new XMLHttpRequest();
+async function isDoneBtn(event, select_date, id) {
+    const url = `/home/todo/${select_date}/${id}/done/`
+    const res = await fetch(url,{
+        method : 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'todo_id' : id,
+        })
+    })
+    const {
+        todo_id : todo_id,
+        todo_content : todo_content,
+        todo_is_done_date : todo_is_done_date,
+        todo_is_postpone :todo_is_postpone,
+    } = await res.json()
+    doneTodoHandleResponse(todo_id, todo_content, todo_is_done_date, todo_is_postpone);
+}
+
+const doneTodoHandleResponse = (todo_id, todo_content, todo_is_done_date, todo_is_postpone) =>{
+    console.log('response is coming')
+}
