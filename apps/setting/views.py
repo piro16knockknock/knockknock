@@ -19,8 +19,10 @@ def get_item(dictionary, key):
 #초대 링크
 def invite_link(request, link, pk):
     home = get_object_or_404(Home, invite_link=link, id=pk)
+    knock = Knock.objects.filter(user=request.user)
     ctx = {
-        'home' : home
+        'home' : home,
+        'knock' : knock,
     }
     return render(request, 'setting/invite_link.html', context=ctx)
 
@@ -186,7 +188,18 @@ def knock_home(request):
     for user in User.objects.filter(home=home):
         Notice.objects.get_or_create(receive_user=user, content="집 노크")
 
-    return
+    return JsonResponse({'success':True})
+
+#초대링크로 노크
+@csrf_exempt
+def link_knock(request):
+    req = json.loads(request.body)
+    homename = req['home_name']
+    
+    home = get_object_or_404(Home, name=homename)
+    Knock.objects.get_or_create(user=request.user, receive_home=home) #유저는 집 하나에만 노크할 수 있음
+    
+    return JsonResponse({'success':True})
 
 #집 검색하기
 @csrf_exempt

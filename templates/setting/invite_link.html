@@ -5,6 +5,20 @@
 <script>
     const inviteLinkAlert = (home_name) =>{
         alert(`${home_name}에 노크했습니다. 수락을 기다려주세요.`);
+        onLinkKnockHome(home_name);
+    }
+
+    const onLinkKnockHome = async (home_name) => {
+        const url = "../../../../myhome/link_knock/";
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+                'home_name': home_name
+            })
+        });
     }
 
 </script>
@@ -23,6 +37,10 @@
                 {% if request.user.home %}
                 <div class="invite-link__not-login">
                     <p>집이 있는 상태에서는 노크할 수 없습니다.</p>
+                </div>
+                {% elif knock %}
+                <div class="invite-link__not-login">
+                    <p>현재 다른 집에 노크 중입니다.</p>
                 </div>
                 {% else %}
                     <div class="invite-link__enter">
