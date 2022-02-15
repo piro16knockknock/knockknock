@@ -33,6 +33,13 @@ class LiveIn(models.Model):
     def __str__(self):
         return self.user.nick_name + "가 " + self.home.name + "에 살았던 기록"
 
+class PreRoommates(models.Model):
+    live_in = models.ForeignKey(LiveIn, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "[거주 기록: " + self.live_in.home.name + "] " + self.user.nick_name
+
 class Invite(models.Model):
     receive_user = models.OneToOneField(User, on_delete=models.CASCADE)
     home = models.ForeignKey(Home, on_delete=models.CASCADE)

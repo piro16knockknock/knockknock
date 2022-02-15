@@ -111,10 +111,26 @@
                     <div class="modal-dialog past-record__modal-rule">
                         <div class="modal-content">
                             <div class="past-record__modal-rule-header">
-                                <p class="modal-title" id="prehomeRuleModalLabel">{{ prehome.home.name }}의
-                                    생활수칙</p>
+                                <p class="modal-title" id="prehomeRuleModalLabel">{{ prehome.home.name }}</p>
                             </div>
                             <div class="modal-body">
+                                <p>룸메이트</p>
+                                <hr/>
+                                <div class="past-record__preroommates">
+                                {% for preroommate in preroommates_dict|get_item:prehome.home.name %}
+                                    <div class="past-record__preroommates-profile">
+                                    {% if preroommate.user.profile_img %}
+                                    <img src="{{ preroommate.user.profile_img.url }}" />
+                                    {% else %}
+                                    <i class="fas fa-user-circle"></i>
+                                    {% endif %}
+                                    <p>{{ preroommate.user.nick_name }}</p>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                                
+                                <p>생활수칙</p>
+                                <hr/>
                                 {% for cate in prehome_dict|get_item:prehome.home.name %}
                                 <div class="past-record__modal-rule-cate">{{ cate }}</div>
                                 {% for rule in prehome_dict|get_item:prehome.home.name|get_item:cate %}

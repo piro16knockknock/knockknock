@@ -13,8 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .forms import UserUpdateForm
-#이전 집 기록 보기
-from setting.models import LiveIn, Home
+from setting.models import LiveIn, Home, PreRoommates
 from home.models import Todo
 import json
 from django.http import JsonResponse
@@ -61,8 +60,13 @@ def take_prelivingrule(request):
 def prehome_list(request):
     prehome_infos = LiveIn.objects.filter(user=request.user)
     prehome_infos = prehome_infos.filter(end_date__isnull=False)
+    
+    preroommates_dict = {}
     prehome_dict = {}
     for prehome_info in prehome_infos:
+        #생활수칙 보기 - (이전)룸메이트
+        preroommates_dict[prehome_info.home.name] = PreRoommates.objects.filter(live_in = prehome_info)
+        
         prehome = prehome_info.home
         prehome_dict[prehome.name] = {}
         living_rules = LivingRule.objects.filter(home = prehome)
@@ -83,7 +87,9 @@ def prehome_list(request):
         ],
     
     '''
-    return prehome_infos, prehome_dict
+    
+
+    return prehome_infos, prehome_dict, preroommates_dict
 
 #이사하기
 def leave_home(request):
@@ -91,6 +97,11 @@ def leave_home(request):
     #end_date 저장
     current_home = current_user.home
     LiveIn.objects.filter(home=current_home, user=current_user).update(end_date=timezone.now())
+    #이사가기를 누른 순간의 룸메이트들 저장
+    for roommates in User.objects.filter(home=current_home):
+        PreRoommates.objects.create(live_in=get_object_or_404(LiveIn, home=current_home),
+                                    user = roommates)
+    
     #정보 초기화
     current_user.home = None
     current_user.save()
@@ -99,11 +110,13 @@ def leave_home(request):
         
     return redirect('login:mypage')
 
-#나중에 합치면서 삭제.
+#mypage
 def mypage(request):
-    prehomes, prehome_dict = prehome_list(request)
+    prehomes, prehome_dict, preroommates_dict = prehome_list(request)
     
-    ctx = { 'prehomes' : prehomes, 'prehome_dict' : prehome_dict }
+    ctx = {'prehomes' : prehomes,
+           'prehome_dict' : prehome_dict,
+           'preroommates_dict': preroommates_dict }
     return render(request, 'login/mypage.html', ctx)
 
 #로그인 기능

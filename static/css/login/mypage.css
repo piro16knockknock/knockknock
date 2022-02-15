@@ -1,5 +1,4 @@
 /*이전집 기록 보기, 이사하기, 생활수칙보기*/
-
 #moveHomeModal {
     font-size: 1.5rem;
 }
@@ -29,7 +28,6 @@
     font-size: 1.7rem;
 }
 
-
 .past-record__modal-rule .modal-body {
     text-align: left;
     height: 50rem;
@@ -40,6 +38,26 @@
     display: none;
 }
 
+/*생활수칙 모달 - 룸메이트*/
+.past-record__preroommates {
+    display: flex;
+    align-items: center;
+    padding-bottom: 2rem;
+}
+.past-record__preroommates-profile{
+    text-align: center;
+    padding: 0 1rem;
+}
+.past-record__preroommates-profile img{
+    width: 5rem;
+    height: 5rem;
+    border-radius: 2.5rem;
+}
+.past-record__preroommates-profile i{
+    font-size: 5rem;
+}
+
+/*생활수칙 모달 - 생활수칙*/
 .past-record__modal-rule-cate {
     background-color: rgb(255, 197, 109);
     display: inline-block;
