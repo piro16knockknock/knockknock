@@ -14,7 +14,6 @@
 {% block data_todo %}
 <div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
     <div class="user-cate-container">
-
         <!-- 완료 -->
         <div class="cate">
             <p class="cate-name">완료</p>
@@ -68,7 +67,7 @@
                     {% endif %}
                     {% endfor %}
                 {% endif %}
-                <div class="add-todo todo"> <!-- class="todo"> -->
+                <div class="add-todo todo">
                     <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')" href="#addToDoModal"> + 할 일 등록</a>
                 </div>
             </div>

@@ -144,30 +144,35 @@ const AddHandleResponse = () => {
         const {todo_id, todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name}= JSON.parse(requestAdd.response);
         var todos = null;
         const new_todo = document.createElement('div');
+        // 담당없음
         if (user_name === 'no-user') {
             todos = document.querySelector(`.no-user-cate .add-todo`);
             new_todo.classList = `total-todo todo-box todo-id-${todo_id}`;
         }
+        // 기타
         else if (cate_name === 'no-cate') {
             todos = document.querySelector(`.user-cate-container .etc-cate .add-todo`);
             new_todo.classList = `etc-todo todo-box todo-id${todo_id}`;
         }
+        // 그 외
         else {
             todos = document.querySelector(`#cate-id-${ cate_id } .add-todo`);
             new_todo.classList = `user-todo todo-box todo-id-${todo_id}`;
         }
 
         const todo_align = document.createElement('div');
-        todo_align.classList = "d-flex align-items-center";
+        todo_align.classList = "user-todo-head"; //d-flex align-items-center
 
         const priority_contentP = document.createElement('p');
         priority_contentP.innerHTML = todo_priority_content
         // 우선순위에 따른 아이콘 부여하는 부분
-        const priority_icon = document.createElement('p');
-        priority_icon.innerHTML = todo_priority_num;
+        //const priority_icon = document.createElement('p');
+        //priority_icon.innerHTML = todo_priority_num;
+        const priority_icon = document.createElement('i');
+        priority_icon.classList = `fa-solid fa-fire priority-${ todo_priority_num }`;
 
         const todo_edit_btn = document.createElement('button');
-        todo_edit_btn.classList = `edit-btn ${todo_id} btn btn-ligth`;
+        todo_edit_btn.classList = `edit-btn ${todo_id} btn date-edit-btn`;
         todo_edit_btn.type = "button";
         todo_edit_btn.setAttribute('onclick', `setEditBtn(this, '${todo_content}', '${user_name }', '${cate_name}')`); 
         todo_edit_btn.setAttribute('data-bs-toggle',"modal");
