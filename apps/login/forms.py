@@ -11,4 +11,4 @@ class UserForm(forms.ModelForm):
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ['username', 'email', 'nick_name', 'gender', 'profile_img']
+        fields = ['nick_name', 'gender', 'profile_img']
