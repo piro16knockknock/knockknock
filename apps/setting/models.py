@@ -27,11 +27,18 @@ class Utility(models.Model):
 class LiveIn(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name='live_in')
-    start_date = models.DateField(auto_now=True)
-    end_date = models.DateField(null = True, blank=True)
+    start_date = models.DateTimeField(auto_now=True)
+    end_date = models.DateTimeField(null = True, blank=True)
     
     def __str__(self):
         return self.user.nick_name + "가 " + self.home.name + "에 살았던 기록"
+
+class PreRoommates(models.Model):
+    live_in = models.ForeignKey(LiveIn, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "[거주 기록: " + self.live_in.home.name + "] " + self.user.nick_name
 
 class Invite(models.Model):
     receive_user = models.OneToOneField(User, on_delete=models.CASCADE)

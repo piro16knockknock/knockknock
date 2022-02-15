@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect
 from .forms import HomeForm, UtilityForm
-from login.models import User, Notice
+from login.models import User, Notice, Title
 from home.models import TodoCate
 from .models import Utility, Invite, LiveIn, Home
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.template.defaulttags import register
 
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 
 #룸메이트 취소
 @csrf_exempt
@@ -27,9 +31,15 @@ def roommate_list(request):
     for invite in invites:
         if invite.is_accepted is False:
             invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
+            
+    roommate_titles = {}
+    for roommate in roommates:
+        roommate_titles[roommate.nick_name] = Title.objects.filter(user=roommate)
+    
     ctx = {
         'roommates' : roommates,
-        'invite_users' : invite_users
+        'invite_users' : invite_users,
+        'roommate_titles' : roommate_titles,
     }
     return render(request, 'setting/roommate_list.html', context=ctx)
 
