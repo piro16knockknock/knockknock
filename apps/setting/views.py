@@ -19,7 +19,10 @@ def get_item(dictionary, key):
 #초대 링크
 def invite_link(request, link, pk):
     home = get_object_or_404(Home, invite_link=link, id=pk)
-    knock = Knock.objects.filter(user=request.user)
+    if request.user.is_authenticated:
+        knock = Knock.objects.filter(user=request.user)
+    else:
+        knock = None
     ctx = {
         'home' : home,
         'knock' : knock,
