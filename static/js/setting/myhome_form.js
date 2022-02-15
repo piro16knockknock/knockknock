@@ -1,10 +1,12 @@
 /**집 노크하기(검색하기) */
 /*집 검색창 - ajax*/
 const search_input = document.querySelector('#myhome-register__search-input');
-search_input.addEventListener("keyup", (e) => {
-    if (search_input.value == "") return;
-    onSearchHomeList(search_input.value);
-});
+if(search_input){
+    search_input.addEventListener("keyup", (e) => {
+        if (search_input.value == "") return;
+        onSearchHomeList(search_input.value);
+    });    
+}
 
 const onSearchHomeList = async (value) => {
     const url = "../../myhome/search_home/";

@@ -65,7 +65,14 @@
     <div id="myhome-register-search" class="tab-pane fade">
         <p class="myhome-register__title">집 검색</p>
         <hr/>
-
+        {% if knock %}
+        <div class="myhome-register__search-container mb-5">
+            <p class="myhome-register__empty">현재 {{ knock.receive_home.name }}의 노크 수락을 기다리고 있습니다.</p>
+        </div>
+        <div class="myhome-register__search-container">
+            <a href="{% url 'setting:knock_cancel' %}" type="button" class="btn">노크 취소하기</a>
+        </div>        
+        {% else %}
         <div class="myhome-register__search-container">
             <input type="text" id="myhome-register__search-input" placeholder="노크할 집을 검색하세요." />
             <a onclick="onClickKnockHome()" type="button" class="btn">노크하기</a>
@@ -73,6 +80,7 @@
         <div class="form-check">
             <!--유저 검색 결과 리스트가 나타날 곳-->
         </div>
+        {% endif %}
     </div>
 </div>
 

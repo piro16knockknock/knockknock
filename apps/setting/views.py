@@ -95,6 +95,9 @@ def myhome_register(request):
             request.user.home = current_home
             request.user.save()
             
+            #집이 생겼으므로 노크했던 기록은 삭제
+            Knock.objects.filter(user=request.user).delete()
+            
             #공과금
             utility_name_list = request.POST.getlist('utility_name')
             utility_month_list = request.POST.getlist('utility_month')
@@ -111,9 +114,14 @@ def myhome_register(request):
             TodoCate.objects.create(home = current_home, name="빨래")
             TodoCate.objects.create(home = current_home, name="청소")
             return redirect('setting:myhome_detail')
-    else:
+    else: #get
         print("get")
-    return render(request, 'setting/myhome_form.html')
+        if(Knock.objects.filter(user=request.user).exists()):
+            knock =  Knock.objects.get(user=request.user)
+            ctx = {'knock' : knock}
+            return render(request, 'setting/myhome_form.html', ctx)
+        
+        return render(request, 'setting/myhome_form.html')
 
 # 집 디테일
 def myhome_detail(request):
@@ -156,6 +164,12 @@ def myhome_update(request):
         Utility.objects.create(home=request.user.home, name=utility_name_list[i], month=utility_month_list[i], date=utility_date_list[i])
         
     return JsonResponse({ 'home_name' : home_name })
+
+#노크 취소하기
+def knock_cancel(request):
+    Knock.objects.filter(user=request.user).delete()
+    
+    return redirect('setting:myhome_register')
 
 #노크하기
 @csrf_exempt
@@ -241,4 +255,8 @@ def accept_invite(request):
     
     user.home = user.invite.home
     user.save()
+    
+    #집이 생겼으므로 노크했던 건 삭제
+    Knock.objects.filter(user=request.user).delete()
+    
     return redirect('login:intro')

@@ -2,6 +2,7 @@
 .myhome-register__search-container {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 #myhome-register__search-input {
@@ -33,6 +34,11 @@
 
 .myhome-register__search-container a:hover {
     background-color: tomato;
+}
+
+.myhome-register__empty{
+    padding-top: 3rem;
+    font-size: 1.6rem;
 }
 
 /*검색 결과*/
