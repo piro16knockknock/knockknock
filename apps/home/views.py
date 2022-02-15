@@ -134,7 +134,7 @@ def add_todo(request, date):
 @csrf_exempt
 @login_required
 def delete_todo(request, date, todo_id):
-    delete_todo = Todo.objects.get(id = todo_id)
+    delete_todo = get_object_or_404(Todo, id = todo_id)
     delete_todo.delete()
     return JsonResponse({
         'todo_id' : todo_id,
@@ -310,12 +310,9 @@ def check_catename(request):
 def add_cate(request):
     req = json.loads(request.body)
     new_catename = req['new_catename']
-    new_cate = TodoCate.objects.create(home=request.user.home, name = new_catename)
-    return JsonResponse({
-        'user_id' : request.user.id,
-        'cate_id' : new_cate.id,
-        'new_catename' : new_cate.name,
-    })
+    select_date = req['select_date']
+    TodoCate.objects.create(home=request.user.home, name = new_catename)
+    return redirect('home:date_todo', date=select_date)
 
 # 생활수칙관련
 def living_rules(request):
