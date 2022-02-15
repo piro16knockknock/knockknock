@@ -12,7 +12,7 @@
             </ul>
         </div>
         <div class="mypage-profile">
-            <p><img src="{% static 'img/edit_icon.png' %}" ></p>
+            <a href="{% url 'login:user_update' %}"><img src="{% static 'img/edit_icon.png' %}" ></a>
             <div class="cal-profile-box my-3">
                 {% if user.profile_img %}
                 <img class="cal-profile-img" src= "{{user.profile_img.url}}">
