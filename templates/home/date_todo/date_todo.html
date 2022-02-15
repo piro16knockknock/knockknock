@@ -14,6 +14,23 @@
 {% block data_todo %}
 <div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
     <div class="user-cate-container cate-container d-flex align-items-baseline">
+        <div class="cate complete-cate">
+            <p class="cate-name">완료</p>
+            <div class="complete-user-todo"></div>
+            {% for todo in complete_user_todos %}
+                <div class="complete-user-todo">
+                    <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle text-secondary"></i></button>
+                    <p>{{ todo.content }}</p>
+                    <button class="btn" onclick="feedbackBtn()"><i class="fas fa-heart"></i></button>
+                    <p>{{ todo.is_done_date }} 완료!</p>
+                    {% if todo.is_postpon is True %}
+                    <p>잊지 않고 해냈어요~!</p>
+                    {% else %}
+                    <p>미루지 않고 해냈어요!</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
         {% for cate, user_todos in user_todo_dict.items %}
         <div id="cate-id-{{ cate.id }}" class="cate user-todo">
             <p class="cate-name">{{cate.name}}</p>
@@ -92,24 +109,6 @@
             <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addCateModal">
                 <i class="fa-solid fa-folder-plus me-2"></i>카테고리 추가하기
             </button>
-        </div>
-
-        <div class="cate complete-cate">
-            <p class="cate-name">완료</p>
-            <div class="complete-user-todo"></div>
-            {% for todo in complete_user_todos %}
-                <div class="complete-user-todo">
-                    <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle text-secondary"></i></button>
-                    <p>{{ todo.content }}</p>
-                    <button class="btn" onclick="feedbackBtn()"><i class="fas fa-heart"></i></button>
-                    <p>{{ todo.is_done_date }} 완료!</p>
-                    {% if todo.is_postpon is True %}
-                    <p>잊지 않고 해냈어요~!</p>
-                    {% else %}
-                    <p>미루지 않고 해냈어요!</p>
-                    {% endif %}
-                </div>
-            {% endfor %}
         </div>
     </div>
 </div>
