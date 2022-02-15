@@ -42,7 +42,7 @@ class PreRoommates(models.Model):
         return "[거주 기록: " + self.live_in.home.name + "] " + self.user.nick_name
 
 class Invite(models.Model):
-    receive_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    receive_user = models.ForeignKey(User, on_delete=models.CASCADE)
     home = models.ForeignKey(Home, on_delete=models.CASCADE)
     is_accepted = models.BooleanField(default=False)
     invited_at = models.DateTimeField(auto_now=True)
