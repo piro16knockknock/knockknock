@@ -146,15 +146,15 @@ const AddHandleResponse = () => {
         const new_todo = document.createElement('div');
         if (user_name === 'no-user') {
             todos = document.querySelector(`.no-user-cate .add-todo`);
-            new_todo.classList = `total-todo todo-cnt todo-id-${todo_id}`;
+            new_todo.classList = `total-todo todo-box todo-id-${todo_id}`;
         }
         else if (cate_name === 'no-cate') {
             todos = document.querySelector(`.user-cate-container .etc-cate .add-todo`);
-            new_todo.classList = `etc-todo todo-cnt todo-id${todo_id}`;
+            new_todo.classList = `etc-todo todo-box todo-id${todo_id}`;
         }
         else {
             todos = document.querySelector(`#cate-id-${ cate_id } .add-todo`);
-            new_todo.classList = `user-todo todo-cnt todo-id-${todo_id}`;
+            new_todo.classList = `user-todo todo-box todo-id-${todo_id}`;
         }
 
         const todo_align = document.createElement('div');

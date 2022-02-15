@@ -66,12 +66,23 @@ p span {
     font-weight: bold;
 }
 
+.user-cate-container {
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    display: flex;
+    align-items: baseline;
+}
+
 
 .cate-container {
     width: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
+    display: flex;
+    align-items: baseline;
 }
 
 .cate {
@@ -81,7 +92,7 @@ p span {
     padding-top: 2rem;
 }
 
-.todo-cnt {
+.todo-box {
     border-radius: 1rem;
     width: 26rem;
     padding: 2rem;
@@ -90,8 +101,35 @@ p span {
     margin-bottom: 1.2rem;
 }
 
-.todo-cnt i {
+.todo-box i {
     font-size: 1.6rem;
+}
+
+.todo-check-btn {
+    margin-right: 2rem;
+}
+
+.todo-cnt {
+    display: flex;
+    align-items: baseline;
+}
+
+.todo-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: end;
+}
+
+.com-user-todo {
+    border-radius: 1rem;
+    width: 26rem;
+    padding: 2rem;
+    background-color: #ddd;
+    margin-bottom: 1.2rem;
+}
+
+.com-user-todo i {
+    font-size: 1.8rem;
 }
 
 .complete-total-todo {
@@ -104,6 +142,18 @@ p span {
 
 .complete-total-todo i {
     font-size: 1.8rem;
+}
+
+.com-todo-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.user-todo-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
 }
 
 .user-todo-head p {
@@ -214,13 +264,11 @@ p span {
     color: black;
 }
 
-.user-todo-cnt {
-    border-radius: 1rem;
-    width: 20rem;
-    padding: 2rem;
-    background-color: #ddd;
-    margin: 1.5rem;
+.add-cate i {
+    margin-right: 1rem;
 }
+
+
 
 input {
     appearance: radio!important;
