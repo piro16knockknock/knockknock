@@ -8,9 +8,9 @@ function prevDate(select_date) {
     prev_btn = document.querySelector('.prev-date-btn a');
 
     if (checkisPrevDate(today, prevDay)) {
-        prev_btn.href = `../prev_todo/${date_string}`;
+        prev_btn.href = `/home/prev_todo/${date_string}`;
     } else {
-        prev_btn.href = `../todo/${date_string}`;
+        prev_btn.href = `/home/todo/${date_string}`;
     }
 };
 
@@ -23,9 +23,9 @@ function nextDate(select_date) {
 
     next_btn = document.querySelector('.next-date-btn a');
     if (checkisPrevDate(today, nextDay)) {
-        next_btn.href = `../prev_todo/${date_string}`;
+        next_btn.href = `/home/prev_todo/${date_string}`;
     } else {
-        next_btn.href = `../todo/${date_string}`;
+        next_btn.href = `/home/todo/${date_string}`;
     }
 };
 
