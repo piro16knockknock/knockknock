@@ -104,7 +104,7 @@ def mypage(request):
     prehomes, prehome_dict = prehome_list(request)
     
     ctx = { 'prehomes' : prehomes, 'prehome_dict' : prehome_dict }
-    return render(request, 'login/mypage.html', ctx)
+    return render(request, 'login/mypage_temp.html', ctx)
 
 #로그인 기능
 def sign_up(request):

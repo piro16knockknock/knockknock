@@ -1,4 +1,5 @@
 import json
+from select import select
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -14,8 +15,6 @@ from .forms import LivingRuleForm
 from .utils import Calendar
 from datetime import datetime, timedelta, date
 import calendar
-
-
 
 
 # Create your views here.
@@ -193,10 +192,12 @@ def date_todo(request, date):
     no_cate_user_todos = user_todos.filter(cate=None)
     doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
     todo_priority = TodoPriority.objects.all()
-    print(no_cate_user_todos)
-    # form = TodoForm(current_home)
+
+    today = datetime.now()
+    today_string = f'{today.year}-{today.month}-{today.day}'
 
     ctx = {
+        'today' : today_string,
         'select_date' : date,
         'total_todo_dict' : total_todo_dict,
         'user_todo_dict' : user_todo_dict,
@@ -214,6 +215,26 @@ def date_todo(request, date):
 
     return render(request, 'home/date_todo/date_todo.html', context=ctx)
 
+def prev_date_todo(request, date):
+    current_user = request.user
+    total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
+    complete_total_todos = total_todos.filter(is_done=True)
+    complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True)
+ 
+    roommates = User.objects.filter(home=request.user.home)
+
+    ctx = {
+        'select_date' : date,
+        'complete_user_todos' : complete_user_todos,
+        'complete_total_todos' : complete_total_todos,
+        'username' : current_user.username,
+        # 'form' : form,
+        'roomates' : roommates
+    }
+
+    return render(request, 'home/date_todo/prev_date_todo.html', context=ctx)
+
+
 def make_todo_with_cate_dict(todos, cates):
     todo_dict= {}
     for cate in cates:
@@ -221,7 +242,7 @@ def make_todo_with_cate_dict(todos, cates):
     return todo_dict
 
 
-
+# 생활수칙관련
 def living_rules(request):
     cates = LivingRuleCate.objects.all()
     order_rules = {}

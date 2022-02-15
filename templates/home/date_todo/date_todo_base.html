@@ -21,7 +21,9 @@
                         <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">전체 할일</button>
                     </li>
                     <li class="me-auto ms-auto">
-                        아직 담당이 정해지지 않은 일이 {담당없음 갯수}개 있습니다
+                        {% if today == select_date %}
+                            아직 담당이 정해지지 않은 일이 {{ no_user_todos.count }}개 있습니다
+                        {% endif %}
                     </li>
                     <li style="margin-left: 4rem;" >
                         <button id="add-rpt-todo-btn"><i class="fa-solid fa-plus text-secondary fa-sm me-1"></i>반복 일정 추가</button>
