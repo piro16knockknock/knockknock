@@ -169,8 +169,6 @@
                         <p class="all-todo-text">{{ todo.content }}</p>
                    </div>
                     <div class="todo-bottom">
-                        <button type="button" class="edit-btn {{ todo.id }} date-edit-btn" onclick="setEditBtn(this, '{{ todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
-                            <i class="fa-solid fa-ellipsis"></i></button>
                     </div>
                 </div>
                 {% endif %}
