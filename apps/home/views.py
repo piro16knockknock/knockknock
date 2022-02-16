@@ -167,6 +167,11 @@ def make_edit_form(request, date, todo_id):
 def edit_todo(request, date, todo_id):
     req = json.loads(request.body)
     todo = Todo.objects.get(id=req['todo_id'])
+    if current_user_id is None :
+        current_user_id = 'no-user'
+    else :
+        current_user_id = todo.user.id
+    current_cate_id = todo.cate.id
 
     req = req['form_data']
 
@@ -183,8 +188,11 @@ def edit_todo(request, date, todo_id):
     todo.save()
 
     return JsonResponse({
+        'current_user_id' : current_user_id,
+        'current_cate_id' : current_cate_id,
         'user_id' : req['user'],
         'todo_id' : todo.id,
+        'cate_id' : todo.cate.id,
         'content' : todo.content,
         'priority_num' : todo.priority.priority_num,
     })

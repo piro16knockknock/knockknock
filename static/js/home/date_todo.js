@@ -28,7 +28,7 @@ function setAddBtn(event, cate_id, cate_name, user_id) {
     }
     else {
         add_modal_title.innerHTML = "할 일 추가하기";
-        // add_form_cate_div.style.display = 'block';
+        add_form_user_div.style.display = 'None';
         add_form_user_div.querySelector(`.user-id-no-user`).checked = true;
     }
 };
@@ -46,9 +46,9 @@ function setEditBtn (event, content, user_name, cate_name, select_date) {
     }
     edit_btn.classList.add(event.classList[1]);
     delete_btn.classList.add(event.classList[1]);
-    if (user_name !='no-user') {
-        edit_div.querySelector('.select-todo-user').style.display = "None"
-    }
+    // if (user_name === 'no-user') {
+    //     edit_div.querySelector('.select-todo-user').style.display = "None"
+    // }
     postpone_btn.setAttribute('href', `/home/todo/${select_date}/${event.classList[1]}/postpone/`);
     console.log(postpone_btn)
 };
@@ -83,14 +83,25 @@ const  makeEditFormHandleResponse = () => {
         
         const edit_todo_form = document.querySelector('.edit-todo form');
         const content_input = edit_todo_form.querySelector('input[name="content"]')
-        const select_cate_div = edit_todo_form.querySelector(`div.select-todo-cate input.cate-id-${cate_id}`);
-        const select_user_div = edit_todo_form.querySelector(`div.select-todo-user input.user-id-${user_id}`);
-        const select_priority_div = edit_todo_form.querySelector(`div.select-todo-priority input.priority-id-${priority_id}`);
-        console.log(priority_id);
+        const select_cate_input = edit_todo_form.querySelector(`div.select-todo-cate input.cate-id-${cate_id}`);
+        const select_user_input = edit_todo_form.querySelector(`div.select-todo-user input.user-id-${user_id}`);
+        const select_priority_input = edit_todo_form.querySelector(`div.select-todo-priority input.priority-id-${priority_id}`);
+        console.log(user_id);
+
+        if (user_id == 'no-user') {
+           const select_user_div = edit_todo_form.querySelector('div.select-todo-user');
+           select_user_div.style.display = 'None';
+        }
+        else {
+            select_no_user_input = edit_todo_form.querySelector('div.select-todo-user input.user-id-no-user');
+            select_no_user_img = edit_todo_form.querySelector('div.select-todo-user img.user-id-no-user');
+            select_no_user_img.style.display = 'None';
+            select_no_user_input.style.display = 'None';
+        }
         content_input.value = content;
-        select_cate_div.setAttribute('checked', true);
-        select_user_div.setAttribute('checked', true);
-        select_priority_div.setAttribute('checked', true);
+        select_cate_input.setAttribute('checked', true);
+        select_user_input.setAttribute('checked', true);
+        select_priority_input.setAttribute('checked', true);
         
     }
 }
@@ -259,8 +270,30 @@ reqEditTodo.onreadystatechange = () => {
 const editHandleResponse = () => {
     if (reqEditTodo.status < 400) {
         console.log('response is coming');
+        const {current_user_id, current_cate_id, user_id, todo_id, cate_id, content, priority_num} = JSON.parse(requestDelete.response);
+        // 1. user가 바뀌는 경우
+        // 2. cate가 바뀌는 경우
+        // 3. 동일 카테고리 내에서 내용만 바뀜
+        if (current_user_id == 'no-user') {
+            // 담당없음 내에서만 기능
+        }
+        else {
+            // 유저 할 일 페이지에서 기능
+            const current_user_todo_div = document.querySelector(`.todo-id-${todo_id}`); 
+            const current_doing_todo_div = document.querySelector(`.doing-cate .todo-id-${todo_id}`);
+
+            if (current_user_id != user_id) {
+                // 원래 있었던 거 없애고 진행중으로 옮기기 & 전체 탭 활성화 
+            }
+            else if (current_cate_id != cate_id) {
+                // 원래 있었던 거 없애고 다른 카테고리에다가 넣기
+            }
+            else {
+                // 동일 카테고리 내에서 내용만 바뀜
+            }
+        }
+
         // const {todo_id, content, priority_num} = JSON.parse(reqEditTodo.response);
-        // const edit_todo_div = document.querySelector(`.todo-id-${todo_id}`);
         // console.log(todo_id);
 
         // const edit_content = edit_todo_div.querySelector('div p');
