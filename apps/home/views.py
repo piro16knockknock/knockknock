@@ -120,19 +120,35 @@ def prev_date_todo(request, date):
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     complete_total_todos = total_todos.filter(is_done=True)
     no_complete_todos = total_todos.filter(is_done = False)
+
+    user_todos = total_todos.filter(user=current_user)
+    no_complete_user_todos = total_todos.filter(is_done = False, user=current_user)
  
     roommates = User.objects.filter(home=request.user.home)
 
     today = datetime.now()
     today_string = f'{today.year}-{today.month}-{today.day}'
 
+    if user_todos.count() is 0:
+        user_compelete_ratio = 0
+    else:
+        user_compelete_ratio = no_complete_user_todos.count() / user_todos.count()
+
+    if total_todos.count() is 0:
+        total_compelete_ratio = 0
+    else:
+        total_compelete_ratio = no_complete_todos.count() / total_todos.count()
+
+    print(user_compelete_ratio)
+    print(total_compelete_ratio)
     ctx = {
         'today' : today_string,
         'select_date' : date,
         'no_complete_todos' : no_complete_todos,
         'complete_todo_dict' : make_todo_with_user_dict(complete_total_todos, roommates),
         'username' : current_user.username,
-        # 'form' : form,
+        'user_complete_ratio' : int(user_compelete_ratio * 100),
+        'total_complete_ratio' : int(total_compelete_ratio * 100),
         'roomates' : roommates,
         'utility_list' : close_utility(request)
     }

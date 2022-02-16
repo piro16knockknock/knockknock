@@ -359,9 +359,12 @@ var total_ratio_element = document.querySelector('.total-ratio .chart');
 new EasyPieChart(total_ratio_element, {
     'lineWidth' : 20,
     'lineCap' : 'butt',
+    'barColor' : '#75AFF2',
+    'size' : 150,
  })
 new EasyPieChart(user_ratio_element, {
    'lineWidth' : 20,
    'lineCap' : 'butt',
-   'barColor' : '#CDCDCD',
+   'barColor' : '#FFC163',
+   'size' : 150,
 });

@@ -26,29 +26,15 @@
             <div class="com-ratio-head">
                 <p>{{ request.user.username }}님의 달성률</p>
             </div>
-            <div class="ratio-container">
+            <div class="chart-container ">
                 <div class="user-ratio">
-                    <div class="col-xs-12 col-sm-6 col-md-3">
-                        <div class="skill-item center-block">
-                            <div class="chart-container">
-                                <div class="chart" data-percent="95" data-bar-color="#ff4241">
-                                    <span class="percent" data-after="%">95</span>
-                                    <canvas height="312" width="312" style="height: 250px; width: 250px;"></canvas>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="chart" data-percent="{{ user_complete_ratio }}" data-bar-color="#ff4241">
+                        <span class="percent" data-after="%">{{ user_complete_ratio }}</span>
                     </div>
                 </div>
                 <div class="total-ratio">
-                    <div class="col-xs-12 col-sm-6 col-md-3">
-                        <div class="skill-item center-block">
-                            <div class="chart-container">
-                                <div class="chart" data-percent="95" data-bar-color="#ff4241">
-                                    <span class="percent" data-after="%">45</span>
-                                    <canvas height="312" width="312" style="height: 250px; width: 250px;"></canvas>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="chart" data-percent="{{ total_complete_ratio }}" data-bar-color="#ff4241">
+                        <span class="percent" data-after="%">{{ total_complete_ratio }}</span>
                     </div>
                 </div>
             </div>
