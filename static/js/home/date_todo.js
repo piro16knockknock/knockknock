@@ -28,7 +28,7 @@ function setAddBtn(event, cate_id, cate_name, user_id) {
     }
     else {
         add_modal_title.innerHTML = "할 일 추가하기";
-        // add_form_cate_div.style.display = 'block';
+        add_form_user_div.style.display = 'None';
         add_form_user_div.querySelector(`.user-id-no-user`).checked = true;
     }
 };
@@ -46,7 +46,10 @@ function setEditBtn (event, content, user_name, cate_name, select_date) {
     }
     edit_btn.classList.add(event.classList[1]);
     delete_btn.classList.add(event.classList[1]);
-    postpone_btn.setAttribute('href', `/${select_date}/${event.classList[1]}/postpone/`);
+    // if (user_name === 'no-user') {
+    //     edit_div.querySelector('.select-todo-user').style.display = "None"
+    // }
+    postpone_btn.setAttribute('href', `/home/todo/${select_date}/${event.classList[1]}/postpone/`);
     console.log(postpone_btn)
 };
 
@@ -80,14 +83,25 @@ const  makeEditFormHandleResponse = () => {
         
         const edit_todo_form = document.querySelector('.edit-todo form');
         const content_input = edit_todo_form.querySelector('input[name="content"]')
-        const select_cate_div = edit_todo_form.querySelector(`div.select-todo-cate input.cate-id-${cate_id}`);
-        const select_user_div = edit_todo_form.querySelector(`div.select-todo-user input.user-id-${user_id}`);
-        const select_priority_div = edit_todo_form.querySelector(`div.select-todo-priority input.priority-id-${priority_id}`);
-        console.log(priority_id);
+        const select_cate_input = edit_todo_form.querySelector(`div.select-todo-cate input.cate-id-${cate_id}`);
+        const select_user_input = edit_todo_form.querySelector(`div.select-todo-user input.user-id-${user_id}`);
+        const select_priority_input = edit_todo_form.querySelector(`div.select-todo-priority input.priority-id-${priority_id}`);
+        console.log(user_id);
+
+        if (user_id == 'no-user') {
+           const select_user_div = edit_todo_form.querySelector('div.select-todo-user');
+           select_user_div.style.display = 'None';
+        }
+        else {
+            select_no_user_input = edit_todo_form.querySelector('div.select-todo-user input.user-id-no-user');
+            select_no_user_img = edit_todo_form.querySelector('div.select-todo-user img.user-id-no-user');
+            select_no_user_img.style.display = 'None';
+            select_no_user_input.style.display = 'None';
+        }
         content_input.value = content;
-        select_cate_div.setAttribute('checked', true);
-        select_user_div.setAttribute('checked', true);
-        select_priority_div.setAttribute('checked', true);
+        select_cate_input.setAttribute('checked', true);
+        select_user_input.setAttribute('checked', true);
+        select_priority_input.setAttribute('checked', true);
         
     }
 }
@@ -256,22 +270,57 @@ reqEditTodo.onreadystatechange = () => {
 const editHandleResponse = () => {
     if (reqEditTodo.status < 400) {
         console.log('response is coming');
-        // const {todo_id, content, priority_num} = JSON.parse(reqEditTodo.response);
-        // const edit_todo_div = document.querySelector(`.todo-id-${todo_id}`);
-        // console.log(todo_id);
+        const {current_user_id, current_cate_id, user_id, user_profile_url, todo_id, cate_id, cate_name, content, priority_num, priority_content} = JSON.parse(reqEditTodo.response);
+        // 1. user가 바뀌는 경우
+        // 2. cate가 바뀌는 경우
+        // 3. 동일 카테고리 내에서 내용만 바뀜
+        if (current_user_id == 'no-user') {
+            // 담당없음 내에서만 기능
+            var current_todo_div = document.querySelector(`.todo-id-${todo_id}`); 
+            current_todo_div = editTodoContentDiv(current_todo_div, content, priority_num, priority_content);
+            current_todo_div.querySelector('.todo-bottom p').innerHTML = cate_name;
+        }
+        else {
+            var current_user_todo_div = document.querySelector(`.todo-id-${todo_id}`); 
+            var current_doing_todo_div = document.querySelector(`.doing-cate .todo-id-${todo_id}`);
 
-        // const edit_content = edit_todo_div.querySelector('div p');
-        // edit_content.innerHTML = priority_num;
-        // console.log(edit_todo_div);
-        // closeEdit();
+            current_user_todo_div = editTodoContentDiv(current_user_todo_div, content, priority_num, priority_content);
+            current_doing_todo_div = editTodoContentDiv(current_doing_todo_div, content, priority_num, priority_content);
+
+            if (current_user_id != user_id) {
+                current_user_todo_div.remove();
+                if (user_profile_url == null) {
+                    current_doing_todo_div.querySelector('.todo-profile-box img').setAttribute('src', "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80");
+                }
+                else {
+                    current_doing_todo_div.querySelector('.todo-profile-box img').setAttribute('src', `${user_profile_url}` );
+                    console.log(current_doing_todo_div.querySelector('.todo-profile-box img'));
+                    console.log(user_profile_url);
+                }
+            }
+            else if (current_cate_id != cate_id) {
+                console.log(cate_id)
+                const cate_user_todos_div = document.querySelector(`#cate-id-${cate_id} div.user-todos`);
+                cate_user_todos_div.prepend(current_user_todo_div);
+            }
+        }
+        closeEdit();
     }
 };
 
-requestDelete.onreadystatechange = () => {
-    if (requestDelete.readyState === XMLHttpRequest.DONE) {
-        deleteHandleResponse();
-    }
-};
+function editTodoContentDiv(current_content_div, content, priority_num, priority_content) {
+    const priority_content_p = current_content_div.querySelector(`.user-todo-head p`);
+    const priority_icon = current_content_div.querySelector('.user-todo-head i');
+
+    priority_content_p.innerHTML = priority_content;
+    priority_icon.setAttribute('class', `fa-solid fa-fire priority-${priority_num}`);
+
+    const contentP = current_content_div.querySelector(`.todo-cnt p`);
+    contentP.innerHTML = content;
+
+    return current_content_div;
+}
+
 
 
 // Utils

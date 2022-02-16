@@ -73,34 +73,36 @@
             </div>
         </div>
         {% endfor %}
-        <div class="etc-cate cate">
+        <div class="etc-cate  cate" id ="cate-id-no-cate">
             <p class="cate-name">기타</p>
             {% if user_todos.count is not 0 %}
-            {% for user_todo in no_cate_user_todos %}
-            {% if user_todo.is_done is False%}
-            <div class="todo-box todo-id-{{ user_todo.id }}">
-                <div class="user-todo-head">
-                    {% if user_todo.priority is None %}
-                        <p>아무때나</p>
-                        <i class="fa-solid fa-fire text-secondary"></i>
-                    {% else %}
-                        <p>{{ user_todo.priority.content }}</p>
-                        <i class="fa-solid fa-fire priority-{{ user_todo.priority.priority_num }}"></i>
-                    {% endif%}
+            <div class="user-todos">
+                {% for user_todo in no_cate_user_todos %}
+                {% if user_todo.is_done is False%}
+                <div class="todo-box todo-id-{{ user_todo.id }}">
+                    <div class="user-todo-head">
+                        {% if user_todo.priority is None %}
+                            <p>아무때나</p>
+                            <i class="fa-solid fa-fire text-secondary"></i>
+                        {% else %}
+                            <p>{{ user_todo.priority.content }}</p>
+                            <i class="fa-solid fa-fire priority-{{ user_todo.priority.priority_num }}"></i>
+                        {% endif%}
+                    </div>
+                    <div class="todo-cnt">
+                        <button class="todo-check-btn" onclick="isDoneBtn(this, '{{ select_date }}', '{{ user_todo.id }}')"><i class="fa-regular fa-circle"></i></button>
+                        <p class="todo-text">{{ user_todo.content }}</p>
+                    </div>
+                    <div class="todo-bottom">
+                        <button type="button" class="edit-btn {{user_todo.id}} btn date-edit-btn" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
+                        <i class="fa-solid fa-ellipsis"></i></button>
+                    </div>
                 </div>
-                <div class="todo-cnt">
-                    <button class="todo-check-btn" onclick="isDoneBtn(this, '{{ select_date }}', '{{ user_todo.id }}')"><i class="fa-regular fa-circle"></i></button>
-                    <p class="todo-text">{{ user_todo.content }}</p>
+                {% endif %}
+                {% endfor %}
+                <div class="add-todo todo">
+                    <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')"  href="#addToDoModal"> + 할 일 등록</a>
                 </div>
-                <div class="todo-bottom">
-                    <button type="button" class="edit-btn {{user_todo.id}} btn date-edit-btn" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
-                    <i class="fa-solid fa-ellipsis"></i></button>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-            <div class="add-todo todo">
-                <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')"  href="#addToDoModal"> + 할 일 등록</a>
             </div>
             {% endif %}
         </div>    
@@ -133,6 +135,11 @@
                         <p class="all-todo-text">{{ todo.content }}</p>
                     </div>
                     <div class="todo-bottom">
+                        {% if todo.cate is None %}
+                        <p>기타</p>
+                        {% else %}
+                        <p>{{ todo.cate.name }}</p>
+                        {% endif %}
                         <button type="button" class="edit-btn {{todo.id}} btn date-edit-btn" onclick="setEditBtn(this, '{{ todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
                         <i class="fa-solid fa-ellipsis"></i></button>
                     </div>
@@ -155,15 +162,13 @@
                         <p>{{ todo.priority.content }}</p>
                         <i class="fa-solid fa-fire priority-{{ todo.priority.priority_num }}"></i>
                     </div>
-                    <div class="all-todo-cnt">
+                    <div class="all-todo-cnt todo-cnt">
                         <div class="todo-profile-box">
                             <img class="cal-profile-img" src={% if user.profile_img %}"{{todo.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
                         </div>
                         <p class="all-todo-text">{{ todo.content }}</p>
                    </div>
                     <div class="todo-bottom">
-                        <button type="button" class="edit-btn {{ todo.id }} date-edit-btn" onclick="setEditBtn(this, '{{ todo.content }}', '{{ todo.user.username }}', '{{ todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
-                            <i class="fa-solid fa-ellipsis"></i></button>
                     </div>
                 </div>
                 {% endif %}
@@ -222,8 +227,8 @@
                             <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}" />
                             <img src="{{ user.profile_img.url }}" style="width: 3rem; height: 3rem;" alt="">
                             {% endfor %}
-                            <input type="radio" class="user-id-no-user" name="user" value="no-user"/>
-                            <img src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg style="width: 3rem; height: 3rem;" alt=""y>
+                            <input type="radio" class="user-id-no-user input" name="user" value="no-user"/>
+                            <img class="user-id-no-user img" src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg style="width: 3rem; height: 3rem;" alt=""y>
                         </div>
                         <div class="select-todo-priority d-flex align-items-center">
                             <p class="me-5">우선순위</p>
@@ -255,6 +260,7 @@
                             <button type="button" class="check-cate-name-btn btn btn-light"  onclick="checkCateName(this, '{{ select_date }}')">중복확인 하기</button>
                         </div>
                         <div class="cate-list" style="display: none;">
+                            <p> 현재 사용중인 카테고리</p>
                             {% for cate in cates %}
                             <p class="cate">{{ cate.name }}</p>
                             {% endfor %}
@@ -287,23 +293,28 @@
                         <div class="edit-todo" style="display: none;">
                             <form method="POST" action="">
                                 {% csrf_token %}
-                                <input type="text" name="content" placeholder="할 일을 입력하세요"/>
+                                <div class="todo-input-txt">
+                                    <input type="text" name="content" placeholder="할 일을 입력하세요"/>
+                                </div>
                                 <div class="select-todo-cate">
+                                    <p>카테고리</p>
                                     {% for cate in cates %}
                                     <label><input type="radio" class="cate-id-{{ cate.id }}" name="cate" value="{{ cate.id }}">{{ cate.name }}</label>
                                     {% endfor %}
                                     <label><input type="radio" class="cate-id-no-cate" name="cate" value="no-cate">기타</label>
                                 </div>
                                 <div class="select-todo-user">
+                                    <p>담당</p>
                                     {% for user in roomates %}
                                     <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}"/>
                                     <img src="{{ user.profile_img.url }}" style="width: 3rem; height: 3rem;" alt="">
 
                                     {% endfor %}
                                     <input type="radio" class="user-id-no-user" name="user" value="no-user"/>
-                                    <img src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg style="width: 3rem; height: 3rem;" alt=""y>
+                                    <img class="user-id-no-user" src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg style="width: 3rem; height: 3rem;" alt=""y>
                                 </div>
                                 <div class="select-todo-priority">
+                                    <p>우선순위</p>
                                     {% for priority in todo_priority %}
                                     <label><input type="radio" class="priority-id-{{ priority.id }}"  name="priority" value ="{{ priority.id }}"/>{{ priority.content }}</label>
                                     {% endfor %}

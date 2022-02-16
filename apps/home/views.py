@@ -167,26 +167,48 @@ def make_edit_form(request, date, todo_id):
 def edit_todo(request, date, todo_id):
     req = json.loads(request.body)
     todo = Todo.objects.get(id=req['todo_id'])
+    if todo.user is None :
+        current_user_id = 'no-user'
+        current_user = None
+    else:
+        current_user_id = todo.user.id;
+        current_user = get_object_or_404(User, id = current_user_id)
+    if todo.cate is None:
+        current_cate_id = 'no-cate'
+    else:
+        current_cate_id = todo.cate.id
 
     req = req['form_data']
 
     todo.content = req['content']
     todo.priority = TodoPriority.objects.get(id=int(req['priority']))
+
     if req['cate'] == 'no-cate':
         todo.cate = None
+        cate_name = '기타'
     else:
         todo.cate = TodoCate.objects.get(id = req['cate'])
+        cate_name = todo.cate.name
+    
     if req['user'] == 'no-user':
         todo.user = None
+        profile_img_url = None
     else:
         todo.user = User.objects.get(id = req['user'])
+        profile_img_url = todo.user.profile_img.url
     todo.save()
 
     return JsonResponse({
+        'current_user_id' : current_user_id,
+        'current_cate_id' : current_cate_id,
         'user_id' : req['user'],
+        'user_profile_url' : profile_img_url,
         'todo_id' : todo.id,
+        'cate_id' : req['cate'],
+        'cate_name' : cate_name,
         'content' : todo.content,
         'priority_num' : todo.priority.priority_num,
+        'priority_content' : todo.priority.content,
     })
 
 @csrf_exempt

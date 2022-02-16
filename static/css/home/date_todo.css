@@ -121,7 +121,7 @@ p span {
 .todo-bottom {
     display: flex;
     align-items: flex-end;
-    justify-content: end;
+    justify-content: space-between
 }
 
 .com-user-todo {
