@@ -88,7 +88,10 @@ a {
 }
 
 .side-nav a:hover {
-    /*background-color: #fbdb67;*/
+    border-bottom: #fbdb67 2px solid;
+}
+
+.side-nav a:active {
     border-bottom: #fbdb67 2px solid;
 }
 
