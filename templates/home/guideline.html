@@ -1,8 +1,145 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% load static %}
 
-    </br>
-    가이드라인 페이지~~
-</div>
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home/guideline.css' %}?after %}">
+<section>
+    <h1>가이드라인</h1>
+
+    <form action="">
+        <div class="guideline_q">
+            <h3>1. 최대한 조용히 해야 하는 시간</h3>
+            <div>
+                <div>
+                    <input type="radio" id="ten" name="silenttime" value="ten" >
+                    <label for="ten">오후 10시부터</label>
+
+                </div>
+
+                <div>
+                    <input type="radio" id="twelve" name="silenttime" value="twelve" >
+                    <label for="twelve">오후 12시부터</label>
+                </div>
+
+                <div>
+                    <input type="radio" id="two" name="silenttime" value="two" >
+                    <label for="two">오전 2시부터</label>
+                </div>
+            </div>
+            </br>
+        </div>
+
+        <div class="guideline_q">
+            <h3>2. 전화와 알람에 대해서는 항상 서로 미리 말해주기</h3>
+            <div>
+                <div>
+                    <input type="radio" id="yes" name="alarm" value="yes" >
+                    <label for="yes">O</label>
+                </div>
+                <div>
+                    <input type="radio" id="no" name="alarm" value="no" >
+                    <label for="no">X</label>
+                </div>
+            </div>
+            </br>
+        </div>
+
+        <div class="guideline_q">
+            <h3>3. 룸메와 활발한 친목하기</h3>
+            <div>
+                <div>
+                    <input type="radio" id="yes" name="friendship" value="yes" >
+                    <label for="yes">O</label>
+                </div>
+                <div>
+                    <input type="radio" id="no" name="friendship" value="no" >
+                    <label for="no">X</label>
+                </div>
+            </div>
+            </br>
+        </div>
+
+        <div class="guideline_q">
+            <h3>4. 공과금 및 월세 지출 방식 </h3>
+            <div>
+                <div>
+                    <input type="radio" id="yes" name="" value="yes" >
+                    <label for="yes">한 달에 한 번 모아서</label>
+                </div>
+                <div>
+                    <input type="radio" id="no" name="" value="no" >
+                    <label for="no">그때그때 모아서</label>
+                </div>
+            </div>
+            </br>
+        </div>
+
+        <div class="guideline_q">
+            <h3>5. 공유 품목 </h3>
+            <div>
+                <div>
+                    <input type="checkbox" id="food" name="share" value="식품" >
+                    <label for="food">식품</label>
+                 </div>
+                 <div>
+                    <input type="checkbox" id="appliance" name="share" value="가전제품">
+                    <label for="appliance">가전제품</label>
+                 </div>
+                 <div>
+                    <input type="checkbox" id="cloth" name="share" value="옷">
+                    <label for="cloth">옷</label>
+                 </div>
+                 <div>
+                    <input type="checkbox" id="towel" name="share" value="수건">
+                    <label for="towel">수건</label>
+                 </div>
+            </div>
+            </br>
+        </div>
+
+        <div class="guideline_q">
+            <h3>6. 다른 사람 초대가 가능한지 </h3>
+            <div>
+                <div>
+                    <input type="radio" id="huey" name="invite" value="no_roommate" >
+                    <label for="huey">룸메가 없을 때 초대가능 </label>
+                </div>
+
+                <div>
+                    <input type="radio" id="huey" name="invite" value="huey" >
+                    <label for="huey">룸메가 있어도 초대가능 </label>
+                </div>
+
+                <div>
+                    <input type="radio" id="huey" name="invite" value="huey" >
+                    <label for="huey">절대 불가능</label>
+                </div>
+            </div>
+            </br>
+        </div>
+
+        <div class="guideline_q">
+            <h3>7. 다른 사람 숙박이 가능한지  </h3>
+            <div>
+                <div>
+                    <input type="radio" id="huey" name="drone" value="huey" >
+                    <label for="huey">룸메가 없을 때 숙박가능 </label>
+                </div>
+
+                <div>
+                    <input type="radio" id="huey" name="drone" value="huey" >
+                    <label for="huey">룸메가 있어도 숙박가능 </label>
+                </div>
+
+                <div>
+                    <input type="radio" id="huey" name="drone" value="huey" >
+                    <label for="huey">절대 불가능</label>
+                </div>
+            </div>
+            </br>
+        </div>
+        <button id="submit" class="btn btn-primary" >저장</button>
+    </form>
+</section>
 {% endblock %}
