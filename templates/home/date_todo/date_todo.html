@@ -136,7 +136,9 @@
                         {% endif%}
                     </div>
                     <div class="todo-cnt">
-                        <button class="todo-plus-btn" onclick="editBtn()"><i class="fa-solid fa-user-plus"></i></button>
+                        <button class="todo-plus-btn" onclick="setAddUserBtn(this, '{{ todo.id }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </button>
                         <p class="all-todo-text">{{ todo.content }}</p>
                     </div>
                     <div class="todo-bottom">
@@ -173,8 +175,6 @@
                         </div>
                         <p class="all-todo-text">{{ todo.content }}</p>
                    </div>
-                    <div class="todo-bottom">
-                    </div>
                 </div>
                 {% endif %}
             {% endfor %}
@@ -333,6 +333,35 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" onclick="closeEdit()" data-bs-dismiss="modal">닫기</button>
                     </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addUserModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">담당자 설정하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="edit-todo">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <div class="select-todo-user">
+                            {% for user in roomates %}
+                            <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}"/>
+                            <img src="{{ user.profile_img.url }}" style="width: 3rem; height: 3rem;" alt="">
+
+                            {% endfor %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="accept-add-user-btn btn btn-light" onclick="addUserBtn()" data-bs-dismiss="modal">담당 설정 완료</button>
+                <button type="button" class="btn btn-secondary" onclick="closeEdit()" data-bs-dismiss="modal">닫기</button>
+            </div>
         </div>
     </div>
 </div>
