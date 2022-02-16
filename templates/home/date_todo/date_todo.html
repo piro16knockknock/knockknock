@@ -73,34 +73,36 @@
             </div>
         </div>
         {% endfor %}
-        <div class="etc-cate cate">
+        <div class="etc-cate  cate" id ="cate-id-no-cate">
             <p class="cate-name">기타</p>
             {% if user_todos.count is not 0 %}
-            {% for user_todo in no_cate_user_todos %}
-            {% if user_todo.is_done is False%}
-            <div class="todo-box todo-id-{{ user_todo.id }}">
-                <div class="user-todo-head">
-                    {% if user_todo.priority is None %}
-                        <p>아무때나</p>
-                        <i class="fa-solid fa-fire text-secondary"></i>
-                    {% else %}
-                        <p>{{ user_todo.priority.content }}</p>
-                        <i class="fa-solid fa-fire priority-{{ user_todo.priority.priority_num }}"></i>
-                    {% endif%}
+            <div class="user-todos">
+                {% for user_todo in no_cate_user_todos %}
+                {% if user_todo.is_done is False%}
+                <div class="todo-box todo-id-{{ user_todo.id }}">
+                    <div class="user-todo-head">
+                        {% if user_todo.priority is None %}
+                            <p>아무때나</p>
+                            <i class="fa-solid fa-fire text-secondary"></i>
+                        {% else %}
+                            <p>{{ user_todo.priority.content }}</p>
+                            <i class="fa-solid fa-fire priority-{{ user_todo.priority.priority_num }}"></i>
+                        {% endif%}
+                    </div>
+                    <div class="todo-cnt">
+                        <button class="todo-check-btn" onclick="isDoneBtn(this, '{{ select_date }}', '{{ user_todo.id }}')"><i class="fa-regular fa-circle"></i></button>
+                        <p class="todo-text">{{ user_todo.content }}</p>
+                    </div>
+                    <div class="todo-bottom">
+                        <button type="button" class="edit-btn {{user_todo.id}} btn date-edit-btn" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
+                        <i class="fa-solid fa-ellipsis"></i></button>
+                    </div>
                 </div>
-                <div class="todo-cnt">
-                    <button class="todo-check-btn" onclick="isDoneBtn(this, '{{ select_date }}', '{{ user_todo.id }}')"><i class="fa-regular fa-circle"></i></button>
-                    <p class="todo-text">{{ user_todo.content }}</p>
+                {% endif %}
+                {% endfor %}
+                <div class="add-todo todo">
+                    <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')"  href="#addToDoModal"> + 할 일 등록</a>
                 </div>
-                <div class="todo-bottom">
-                    <button type="button" class="edit-btn {{user_todo.id}} btn date-edit-btn" onclick="setEditBtn(this, '{{ user_todo.content }}', '{{ user_todo.user.username }}', '{{ user_todo.cate.name }}', '{{ select_date }}')" data-bs-toggle="modal" data-bs-target="#setToDoModal">
-                    <i class="fa-solid fa-ellipsis"></i></button>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-            <div class="add-todo todo">
-                <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')"  href="#addToDoModal"> + 할 일 등록</a>
             </div>
             {% endif %}
         </div>    
@@ -160,7 +162,7 @@
                         <p>{{ todo.priority.content }}</p>
                         <i class="fa-solid fa-fire priority-{{ todo.priority.priority_num }}"></i>
                     </div>
-                    <div class="all-todo-cnt">
+                    <div class="all-todo-cnt todo-cnt">
                         <div class="todo-profile-box">
                             <img class="cal-profile-img" src={% if user.profile_img %}"{{todo.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
                         </div>

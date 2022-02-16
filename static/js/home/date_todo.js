@@ -270,7 +270,7 @@ reqEditTodo.onreadystatechange = () => {
 const editHandleResponse = () => {
     if (reqEditTodo.status < 400) {
         console.log('response is coming');
-        const {current_user_id, current_cate_id, user_id, todo_id, cate_id, content, priority_num} = JSON.parse(requestDelete.response);
+        const {current_user_id, current_cate_id, user_id, user_profile_url, todo_id, cate_id, content, priority_num, priority_content} = JSON.parse(reqEditTodo.response);
         // 1. user가 바뀌는 경우
         // 2. cate가 바뀌는 경우
         // 3. 동일 카테고리 내에서 내용만 바뀜
@@ -278,36 +278,46 @@ const editHandleResponse = () => {
             // 담당없음 내에서만 기능
         }
         else {
-            // 유저 할 일 페이지에서 기능
-            const current_user_todo_div = document.querySelector(`.todo-id-${todo_id}`); 
-            const current_doing_todo_div = document.querySelector(`.doing-cate .todo-id-${todo_id}`);
+            var current_user_todo_div = document.querySelector(`.todo-id-${todo_id}`); 
+            var current_doing_todo_div = document.querySelector(`.doing-cate .todo-id-${todo_id}`);
+
+            current_user_todo_div = editTodoContentDiv(current_user_todo_div, content, priority_num, priority_content);
+            current_doing_todo_div = editTodoContentDiv(current_doing_todo_div, content, priority_num, priority_content);
 
             if (current_user_id != user_id) {
-                // 원래 있었던 거 없애고 진행중으로 옮기기 & 전체 탭 활성화 
+                current_user_todo_div.remove();
+                if (user_profile_url == null) {
+                    current_doing_todo_div.querySelector('.todo-profile-box img').setAttribute('src', "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80");
+                }
+                else {
+                    current_doing_todo_div.querySelector('.todo-profile-box img').setAttribute('src', `${user_profile_url}` );
+                    console.log(current_doing_todo_div.querySelector('.todo-profile-box img'));
+                    console.log(user_profile_url);
+                }
             }
             else if (current_cate_id != cate_id) {
-                // 원래 있었던 거 없애고 다른 카테고리에다가 넣기
-            }
-            else {
-                // 동일 카테고리 내에서 내용만 바뀜
+                console.log(cate_id)
+                const cate_user_todos_div = document.querySelector(`#cate-id-${cate_id} div.user-todos`);
+                cate_user_todos_div.prepend(current_user_todo_div);
             }
         }
-
-        // const {todo_id, content, priority_num} = JSON.parse(reqEditTodo.response);
-        // console.log(todo_id);
-
-        // const edit_content = edit_todo_div.querySelector('div p');
-        // edit_content.innerHTML = priority_num;
-        // console.log(edit_todo_div);
-        // closeEdit();
+        closeEdit();
     }
 };
 
-requestDelete.onreadystatechange = () => {
-    if (requestDelete.readyState === XMLHttpRequest.DONE) {
-        deleteHandleResponse();
-    }
-};
+function editTodoContentDiv(current_content_div, content, priority_num, priority_content) {
+    const priority_content_p = current_content_div.querySelector(`.user-todo-head p`);
+    const priority_icon = current_content_div.querySelector('.user-todo-head i');
+
+    priority_content_p.innerHTML = priority_content;
+    priority_icon.setAttribute('class', `fa-solid fa-fire priority-${priority_num}`);
+
+    const contentP = current_content_div.querySelector(`.todo-cnt p`);
+    contentP.innerHTML = content;
+
+    return current_content_div;
+}
+
 
 
 // Utils
