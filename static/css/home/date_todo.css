@@ -121,7 +121,7 @@ p span {
 .todo-bottom {
     display: flex;
     align-items: flex-end;
-    justify-content: space-between
+    justify-content: space-between;
 }
 
 .com-user-todo {
@@ -194,7 +194,15 @@ p span {
     font-size: 1.2rem;
     margin-bottom: 1rem;
 }
+.cate-head {
+    display: flex;
+    justify-content: space-between;
+}
 
+.cate-head button {
+    margin-bottom: 1.6rem;
+    padding: 0;
+}
 .cate-name {
     margin-bottom: 1.6rem;
     font-weight: 600;

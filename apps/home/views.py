@@ -337,6 +337,22 @@ def add_cate(request):
     TodoCate.objects.create(home=request.user.home, name = new_catename)
     return redirect('home:date_todo', date=select_date)
 
+
+# 카테고리 삭제 관련
+@csrf_exempt
+@login_required
+def delete_cate(request):
+    req = json.loads(request.body)
+    cate_id = req['cate_id']
+
+    cate = get_object_or_404(TodoCate, id = int(cate_id))
+    cate.delete()
+    return JsonResponse({
+
+    })
+
+
+
 # 생활수칙관련
 def living_rules(request):
     cates = LivingRuleCate.objects.all()

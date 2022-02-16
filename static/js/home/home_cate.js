@@ -105,3 +105,29 @@ const checkCateNameHandleResponse = (exist_catename) => {
         check_cate_btn.after(check_content);
     }
 }
+
+// 카테고리 삭제하기
+function cateDeleteBtn(event, cate_id, cate_name) {
+    if (confirm(`${cate_name} 카테고리 삭제 후 할 일은 기타 카테고리로 이동합니다`) == true){    //확인
+        cateDelete(cate_id);
+    }else{
+        return false;
+    }
+};
+
+const cateDelete = async(cate_id) => {
+    const url = "/home/todo/delete_cate/"
+    console.log(url);
+    const res = await fetch(url,{
+        method : 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'cate_id' : cate_id,
+        })
+    })
+    const {
+    } = await res.json()
+    window.location.reload();
+};

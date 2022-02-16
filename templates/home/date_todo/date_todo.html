@@ -40,7 +40,10 @@
 
         {% for cate, user_todos in user_todo_dict.items %}
         <div id="cate-id-{{ cate.id }}" class="cate user-todo">
-            <p class="cate-name">{{cate.name}}</p>
+            <div class="cate-head">
+                <p class="cate-name">{{cate.name}}</p>
+                <button class="cate-delete-btn btn" onclick="cateDeleteBtn(this, '{{ cate.id }}', '{{ cate.name }}')">카테고리 삭제</button>
+            </div>  
             <div class="user-todos">
                 {% if user_todos.count is not 0 %}
                     {% for user_todo in user_todos %}
@@ -74,7 +77,9 @@
         </div>
         {% endfor %}
         <div class="etc-cate  cate" id ="cate-id-no-cate">
-            <p class="cate-name">기타</p>
+            <div class="cate-head">
+                <p class="cate-name">기타</p>
+            </div>  
             {% if user_todos.count is not 0 %}
             <div class="user-todos">
                 {% for user_todo in no_cate_user_todos %}
