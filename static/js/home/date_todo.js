@@ -46,7 +46,10 @@ function setEditBtn (event, content, user_name, cate_name, select_date) {
     }
     edit_btn.classList.add(event.classList[1]);
     delete_btn.classList.add(event.classList[1]);
-    postpone_btn.setAttribute('href', `/${select_date}/${event.classList[1]}/postpone/`);
+    if (user_name !='no-user') {
+        edit_div.querySelector('.select-todo-user').style.display = "None"
+    }
+    postpone_btn.setAttribute('href', `/home/todo/${select_date}/${event.classList[1]}/postpone/`);
     console.log(postpone_btn)
 };
 

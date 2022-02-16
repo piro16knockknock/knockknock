@@ -255,6 +255,7 @@
                             <button type="button" class="check-cate-name-btn btn btn-light"  onclick="checkCateName(this, '{{ select_date }}')">중복확인 하기</button>
                         </div>
                         <div class="cate-list" style="display: none;">
+                            <p> 현재 사용중인 카테고리</p>
                             {% for cate in cates %}
                             <p class="cate">{{ cate.name }}</p>
                             {% endfor %}
@@ -287,14 +288,18 @@
                         <div class="edit-todo" style="display: none;">
                             <form method="POST" action="">
                                 {% csrf_token %}
-                                <input type="text" name="content" placeholder="할 일을 입력하세요"/>
+                                <div class="todo-input-txt">
+                                    <input type="text" name="content" placeholder="할 일을 입력하세요"/>
+                                </div>
                                 <div class="select-todo-cate">
+                                    <p>카테고리</p>
                                     {% for cate in cates %}
                                     <label><input type="radio" class="cate-id-{{ cate.id }}" name="cate" value="{{ cate.id }}">{{ cate.name }}</label>
                                     {% endfor %}
                                     <label><input type="radio" class="cate-id-no-cate" name="cate" value="no-cate">기타</label>
                                 </div>
                                 <div class="select-todo-user">
+                                    <p>담당</p>
                                     {% for user in roomates %}
                                     <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}"/>
                                     <img src="{{ user.profile_img.url }}" style="width: 3rem; height: 3rem;" alt="">
@@ -304,6 +309,7 @@
                                     <img src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg style="width: 3rem; height: 3rem;" alt=""y>
                                 </div>
                                 <div class="select-todo-priority">
+                                    <p>우선순위</p>
                                     {% for priority in todo_priority %}
                                     <label><input type="radio" class="priority-id-{{ priority.id }}"  name="priority" value ="{{ priority.id }}"/>{{ priority.content }}</label>
                                     {% endfor %}
