@@ -1,6 +1,7 @@
 import json
 from locale import currency
 from select import select
+from turtle import Turtle
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -133,7 +134,7 @@ def add_todo(request, date):
 @csrf_exempt
 @login_required
 def delete_todo(request, date, todo_id):
-    delete_todo = Todo.objects.get(id = todo_id)
+    delete_todo = get_object_or_404(Todo, id = todo_id)
     delete_todo.delete()
     return JsonResponse({
         'todo_id' : todo_id,
@@ -164,22 +165,31 @@ def make_edit_form(request, date, todo_id):
 @csrf_exempt
 @login_required
 def edit_todo(request, date, todo_id):
-    todo = Todo.objects.get(id=todo_id)
-    req = json.loads(request.body)['form_data']
+    req = json.loads(request.body)
+    todo = Todo.objects.get(id=req['todo_id'])
+
+    req = req['form_data']
 
     todo.content = req['content']
     todo.priority = TodoPriority.objects.get(id=int(req['priority']))
-    todo.cate = TodoCate.objects.get(id = req['cate'])
-    print(todo)
+    if req['cate'] == 'no-cate':
+        todo.cate = None
+    else:
+        todo.cate = TodoCate.objects.get(id = req['cate'])
+    if req['user'] == 'no-user':
+        todo.user = None
+    else:
+        todo.user = User.objects.get(id = req['user'])
     todo.save()
 
     return JsonResponse({
+        'user_id' : req['user'],
         'todo_id' : todo.id,
         'content' : todo.content,
         'priority_num' : todo.priority.priority_num,
     })
 
-
+@csrf_exempt
 @login_required
 def postpone_todo(request, date, todo_id):
     todo = Todo.objects.get(id = todo_id)
@@ -192,6 +202,23 @@ def postpone_todo(request, date, todo_id):
 
     return redirect('home:date_todo', date=date)
 
+@csrf_exempt
+@login_required
+def done_todo(request, date, todo_id):
+    req = json.loads(request.body)
+    todo = get_object_or_404(Todo, id = req['todo_id'])
+    todo.is_done = True
+    todo.is_done_date = datetime.now()
+    print(todo.is_done_date)
+    todo.save()
+
+    return JsonResponse({
+        'todo_id' : todo.id,
+        'todo_content' : todo.content,
+        'todo_is_done_date' : todo.is_done_date,
+        'todo_is_postpne' : todo.is_postpone,
+    })
+ 
 @login_required
 def date_todo(request, date):
     current_user = request.user
@@ -232,7 +259,6 @@ def date_todo(request, date):
     }
 
     return render(request, 'home/date_todo/date_todo.html', context=ctx)
-
 
 def prev_date_todo(request, date):
     current_user = request.user
@@ -284,12 +310,9 @@ def check_catename(request):
 def add_cate(request):
     req = json.loads(request.body)
     new_catename = req['new_catename']
-    new_cate = TodoCate.objects.create(home=request.user.home, name = new_catename)
-    return JsonResponse({
-        'user_id' : request.user.id,
-        'cate_id' : new_cate.id,
-        'new_catename' : new_cate.name,
-    })
+    select_date = req['select_date']
+    TodoCate.objects.create(home=request.user.home, name = new_catename)
+    return redirect('home:date_todo', date=select_date)
 
 # 생활수칙관련
 def living_rules(request):
