@@ -270,12 +270,15 @@ reqEditTodo.onreadystatechange = () => {
 const editHandleResponse = () => {
     if (reqEditTodo.status < 400) {
         console.log('response is coming');
-        const {current_user_id, current_cate_id, user_id, user_profile_url, todo_id, cate_id, content, priority_num, priority_content} = JSON.parse(reqEditTodo.response);
+        const {current_user_id, current_cate_id, user_id, user_profile_url, todo_id, cate_id, cate_name, content, priority_num, priority_content} = JSON.parse(reqEditTodo.response);
         // 1. user가 바뀌는 경우
         // 2. cate가 바뀌는 경우
         // 3. 동일 카테고리 내에서 내용만 바뀜
         if (current_user_id == 'no-user') {
             // 담당없음 내에서만 기능
+            var current_todo_div = document.querySelector(`.todo-id-${todo_id}`); 
+            current_todo_div = editTodoContentDiv(current_todo_div, content, priority_num, priority_content);
+            current_todo_div.querySelector('.todo-bottom p').innerHTML = cate_name;
         }
         else {
             var current_user_todo_div = document.querySelector(`.todo-id-${todo_id}`); 

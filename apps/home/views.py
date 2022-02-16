@@ -185,8 +185,10 @@ def edit_todo(request, date, todo_id):
 
     if req['cate'] == 'no-cate':
         todo.cate = None
+        cate_name = '기타'
     else:
         todo.cate = TodoCate.objects.get(id = req['cate'])
+        cate_name = todo.cate.name
     
     if req['user'] == 'no-user':
         todo.user = None
@@ -203,6 +205,7 @@ def edit_todo(request, date, todo_id):
         'user_profile_url' : profile_img_url,
         'todo_id' : todo.id,
         'cate_id' : req['cate'],
+        'cate_name' : cate_name,
         'content' : todo.content,
         'priority_num' : todo.priority.priority_num,
         'priority_content' : todo.priority.content,
