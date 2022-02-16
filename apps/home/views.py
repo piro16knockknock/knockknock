@@ -108,7 +108,8 @@ def date_todo(request, date):
         # 'form' : form,
         'cates' : cates,
         'todo_priority' : todo_priority,
-        'roomates' : roommates
+        'roomates' : roommates,
+        'utility_list' : close_utility(request)
     }
 
     return render(request, 'home/date_todo/date_todo.html', context=ctx)
@@ -287,13 +288,17 @@ def prev_date_todo(request, date):
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     complete_total_todos = total_todos.filter(is_done=True)
-    complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True)
+    no_complete_todos = total_todos.filter(is_done = False)
  
     roommates = User.objects.filter(home=request.user.home)
 
+    today = datetime.now()
+    today_string = f'{today.year}-{today.month}-{today.day}'
+
     ctx = {
+        'today' : today_string,
         'select_date' : date,
-        'complete_user_todos' : complete_user_todos,
+        'no_complete_todos' : no_complete_todos,
         'complete_total_todos' : complete_total_todos,
         'username' : current_user.username,
         # 'form' : form,
