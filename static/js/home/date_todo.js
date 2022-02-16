@@ -259,7 +259,7 @@ function editTodoBtn(event, select_date) {
         todo_id : todo_id,
         form_data : form_data,
     }));
-}
+};
 
 reqEditTodo.onreadystatechange = () => {
     if (reqEditTodo.readyState === XMLHttpRequest.DONE) {
@@ -360,9 +360,64 @@ async function isDoneBtn(event, select_date, id) {
         todo_is_postpone :todo_is_postpone,
     } = await res.json()
     doneTodoHandleResponse(todo_id, todo_content, todo_is_done_date, todo_is_postpone);
-}
+};
 
 const doneTodoHandleResponse = (todo_id, todo_content, todo_is_done_date, todo_is_postpone) =>{
     console.log('response is coming');
     window.location.reload();
-}
+};
+
+// 담당자 추가하기
+function setAddUserBtn(event, todo_id, select_date) {
+    const accpet_add_user_btn = document.querySelector('.accept-add-user-btn');
+    accpet_add_user_btn.setAttribute('onclick', `addUserBtn(this, '${todo_id}', '${select_date}')`);
+};
+
+
+async function addUserBtn(event, todo_id, select_date) {
+    const form = new FormData(document.querySelector('#addUserModal form'));
+    var form_data = serialize(form);
+    const url = `/home/todo/${select_date}/${todo_id}/add_user/`
+    const res = await fetch(url,{
+        method : 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'todo_id' : todo_id,
+            'form_data' : form_data,
+        })
+    })
+    const {
+        current_user_id : current_user_id,
+        todo_id : current_todo_id,
+        user_profile_url : user_profile_url,
+        user_id : user_id,
+    } = await res.json()
+    addUserHandleResponse(current_user_id, current_todo_id, user_profile_url, user_id);
+};
+
+function addUserHandleResponse(current_user_id, todo_id, user_profile_url, user_id) {
+
+    if (current_user_id ==  user_id) {
+        window.location.reload();
+    }
+    else {
+        const current_todo_div = document.querySelector(`.no-user-cate .todo-id-${todo_id}`);
+        current_todo_div.querySelector('.todo-bottom').remove();
+
+        const todo_profile_div = document.createElement('div');
+        todo_profile_div.classList = 'todo-profile-box';
+
+        const profile_img = document.createElement('img');
+        profile_img.setAttribute('class', "cal-profile-img");
+        profile_img.setAttribute('src', `${user_profile_url}`);
+
+        todo_profile_div.appendChild(profile_img);
+        current_todo_div.querySelector('.todo-plus-btn').remove();
+        current_todo_div.querySelector('.todo-cnt').prepend(todo_profile_div);
+
+        const doing_cate_div = document.querySelector('.doing-cate');
+        doing_cate_div.querySelector('p.cate-name').after(current_todo_div);
+    }
+};
