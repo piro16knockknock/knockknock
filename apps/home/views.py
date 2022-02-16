@@ -72,6 +72,48 @@ def next_month(d):
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
 
+@login_required
+def date_todo(request, date):
+    current_user = request.user
+    total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
+    complete_total_todos = total_todos.filter(is_done=True)
+    user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=False)
+    complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True).order_by('-is_done_date')
+ 
+    current_home = Home.objects.filter(user = current_user)[0]
+    roommates = User.objects.filter(home=request.user.home)
+    cates = TodoCate.objects.filter(home = current_home)
+
+    user_todo_dict = make_todo_with_cate_dict(user_todos, cates)
+    total_todo_dict = make_todo_with_cate_dict(total_todos, cates)
+    no_user_todos = total_todos.filter(user=None)
+    no_cate_user_todos = user_todos.filter(cate=None)
+    doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
+    todo_priority = TodoPriority.objects.all()
+
+    today = datetime.now()
+    today_string = f'{today.year}-{today.month}-{today.day}'
+
+    ctx = {
+        'today' : today_string,
+        'select_date' : date,
+        'total_todo_dict' : total_todo_dict,
+        'user_todo_dict' : user_todo_dict,
+        'complete_user_todos' : complete_user_todos,
+        'complete_total_todos' : complete_total_todos,
+        'no_user_todos' : no_user_todos,
+        'no_cate_user_todos' : no_cate_user_todos,
+        'doing_todos' : doing_todos,
+        'username' : current_user.username,
+        # 'form' : form,
+        'cates' : cates,
+        'todo_priority' : todo_priority,
+        'roomates' : roommates
+    }
+
+    return render(request, 'home/date_todo/date_todo.html', context=ctx)
+
+
 # add_todo_ajax
 @csrf_exempt
 @login_required
@@ -240,47 +282,6 @@ def done_todo(request, date, todo_id):
         'todo_is_done_date' : todo.is_done_date,
         'todo_is_postpne' : todo.is_postpone,
     })
- 
-@login_required
-def date_todo(request, date):
-    current_user = request.user
-    total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
-    complete_total_todos = total_todos.filter(is_done=True)
-    user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=False)
-    complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True)
- 
-    current_home = Home.objects.filter(user = current_user)[0]
-    roommates = User.objects.filter(home=request.user.home)
-    cates = TodoCate.objects.filter(home = current_home)
-
-    user_todo_dict = make_todo_with_cate_dict(user_todos, cates)
-    total_todo_dict = make_todo_with_cate_dict(total_todos, cates)
-    no_user_todos = total_todos.filter(user=None)
-    no_cate_user_todos = user_todos.filter(cate=None)
-    doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
-    todo_priority = TodoPriority.objects.all()
-
-    today = datetime.now()
-    today_string = f'{today.year}-{today.month}-{today.day}'
-
-    ctx = {
-        'today' : today_string,
-        'select_date' : date,
-        'total_todo_dict' : total_todo_dict,
-        'user_todo_dict' : user_todo_dict,
-        'complete_user_todos' : complete_user_todos,
-        'complete_total_todos' : complete_total_todos,
-        'no_user_todos' : no_user_todos,
-        'no_cate_user_todos' : no_cate_user_todos,
-        'doing_todos' : doing_todos,
-        'username' : current_user.username,
-        # 'form' : form,
-        'cates' : cates,
-        'todo_priority' : todo_priority,
-        'roomates' : roommates
-    }
-
-    return render(request, 'home/date_todo/date_todo.html', context=ctx)
 
 def prev_date_todo(request, date):
     current_user = request.user

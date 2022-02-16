@@ -363,53 +363,6 @@ async function isDoneBtn(event, select_date, id) {
 }
 
 const doneTodoHandleResponse = (todo_id, todo_content, todo_is_done_date, todo_is_postpone) =>{
-    console.log('response is coming')
-    
-    // const todo_div = document.querySelector(`.todo-id-${todo_id}`);
-    // const doing_todo_div = document.querySelector(`.doing-cate .todo-id-${todo_id}`);
-    // todo_div.remove()
-    // doing_todo_div.remove()
-
-    // const user_complete_cate_div = document.querySelector('.complete-user-todos');
-    // const total_complete_cate_div = document.querySelector('.total-cate-container');
-
-    // var complete_todo_div = document.createElement('div');
-    // complete_todo_div.setAttribute('class', 'complete-total-todo');
-
-    // const complete_todo_head_div = document.createElement('div');
-    // complete_todo_head_div.setAttribute('class', 'com-todo-head d-flex align-items-baseline justify-content-between');
-
-    // const notDoneBtn = document.createElement('button');
-    // notDoneBtn.setAttribute('class', 'btn');
-    // notDoneBtn.setAttribute('onclick', 'notDoneBtn()');
-    // notDoneBtn.innerHTML = '<i class="fa-solid fa-check-circle text-secondary"></i>';
-
-    // const contentP = document.createElement('p');
-    // contentP.innerHTML = todo_content;
-
-    // const feedbackBtn = document.createElement('div');
-    // feedbackBtn.setAttribute('class', 'btn');
-    // feedbackBtn.innerHTML = '<i class="fas fa-heart"></i>';
-
-    // const com_todo_text_div = document.createElement('div');
-    // com_todo_text_div.setAttribute('class', 'com-todo-text');
-    // if (todo_is_postpone) {
-    //     com_todo_text_div.innerHTML = `<p>${todo_is_done_date}</p><p>잊지 않고 해냈어요!</p>`;
-    // } else {
-    //     com_todo_text_div.innerHTML = `<p>${todo_is_done_date}</p><p>미루지 않고 해냈어요!</p>`;
-    // }
-    // console.log(com_todo_text_div);
-    
-    // complete_todo_head_div.appendChild(notDoneBtn);
-    // complete_todo_head_div.appendChild(contentP);
-    // complete_todo_head_div.appendChild(feedbackBtn);
-
-    // complete_todo_div = complete_todo_div.appendChild(complete_todo_head_div);
-    // complete_todo_div.appendChild(com_todo_text_div);
-
-    // const users = complete_todo_div;
-    // const totals = complete_todo_div;
-
-    // user_complete_cate_div.appendChild(users);
-    // total_complete_cate_div.appendChild(totals);
+    console.log('response is coming');
+    window.location.reload();
 }
