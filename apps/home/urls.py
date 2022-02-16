@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.CalendarView.as_view(), name='calendar'),
     path('todo/check_catename/', views.check_catename, name='check_catename'),
     path('todo/add_cate/', views.add_cate, name='add_cate'),
+    path('todo/delete_cate/', views.delete_cate, name='delete_cate'),
 
     path('prev_todo/<date>/', views.prev_date_todo, name='prev_date_todo'),
 

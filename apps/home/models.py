@@ -19,7 +19,7 @@ class TodoPriority(models.Model):
 class Todo(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name= 'todo')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='todo')
-    cate = models.ForeignKey(TodoCate, on_delete=models.SET_NULL, null=True, blank=True, related_name='todo')
+    cate = models.ForeignKey(TodoCate, on_delete=models.CASCADE, null=True, blank=True, related_name='todo')
     content = models.CharField(max_length=100)
     date = models.DateField()
     # TodoPriority 중 오늘 안에에 해당하는 중요도를 연결해주려면 id로 연결해야함!
@@ -28,6 +28,10 @@ class Todo(models.Model):
     is_postpone = models.BooleanField(default=False)
     is_done_date = models.DateTimeField(null=True, blank=True)
     is_done = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.home.name + '의 '+ self.content
+
 
 class TodoReaction(models.Model):
     todo = models.ForeignKey(Todo, on_delete=models.CASCADE, related_name='reaction')

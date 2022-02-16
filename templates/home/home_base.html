@@ -39,6 +39,7 @@
                 </div>
             </div>
             <div id="cal-house-info" class="cal-side-box">
+                <p style="padding-bottom: 1rem;">{{ today }}</p>
                 {% if request.user.home.is_rent %}
                 <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}일</span></p>
                 {% endif %}

@@ -1,0 +1,9 @@
+.chart-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+} 
+p{
+    font-weight: 900;
+}
