@@ -5,7 +5,7 @@
  <!-- user가 로그인 했을 때 && 유저가 집 없는 경우 OR 집 있는 경우-->
 {% if request.user.is_authenticated %} 
 <div class="intro-main " style="background-color: #FFF9E2; height: 100vh;">
-   <div id="intro-main-cnt" class="intro-main-cnt position-relative">
+   <div id="intro-main-cnt" class="intro-main-cnt position-relative cnt-padding">
         {% if request.user.home == None %} <!-- 유저가 집이 없는 경우 -->        
             <div class="mt-5">
                 <h2>🖐️<br>{{ user.nick_name }}님</h2>
@@ -16,12 +16,11 @@
                 룸메이트 등록과 집 설정을 먼저 해주세요!</p>
             </div>
             <div class="mt-5">
-                <!-- 초대확인 링크 넣어주기 -->
-                <button class="btn btn-lg btn-outline-dark rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'login:mypage' %}">초대 확인</a></button>
                 <button class="btn btn-lg btn-outline-dark rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_register' %}">집 등록</a></button>
+                <button class="btn btn-lg btn-outline-dark rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'login:mypage' %}">초대 확인</a></button>
             </div>
         {% else %} <!-- 유저가 집이 있는 경우 -->
-            <div class="mt-5" style="max-width: 50rem;">
+            <div class="mt-5" style="max-width: 46rem;">
                 <h2>🏡</h2>
                 <p>{{user.nick_name}}네 집</p>
                 <h2>{{ user.home.name }}</h2>
@@ -31,16 +30,17 @@
                 간편하게 평화로운 생활을 즐겨보아요! </p>
             </div>
             <div class="mt-5">
-                <button class="btn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_detail' %}">룸메이트 초대</a></button>
                 <button class="btn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_detail' %}">집 입장</a></button>
+                <button class="btn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_detail' %}">룸메이트 초대</a></button>   
             </div>
             <div class="mt-3">
                 <button class="btn btn-lg btn-warning rounded-pill px-4 py-2 "><a href="{{ today_date_url }}">생활 관리</a></button>
             </div>
 
-            <div id="intro-main-todo" class="text-center">
-                <!-- 누르면 오늘 date todo로 넘어가게! -->
-                <p>오늘 {{ today_date }}의 할 일</p>
+            <a href="{{ today_date_url }}">
+                <div id="intro-main-todo" class="text-center">
+                <h6>{{ today_date }}</h6>
+                <h5>오늘의 할 일</h5>
                 
                 {% if user_todos.count is 0 %}
                     <p>현재 할 일이 없어요~!</p>
@@ -51,7 +51,7 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-            </div>
+            </div></a>
         {% endif %}
     </div>
 </div>
@@ -59,8 +59,8 @@
 
 <!-- user가 로그인 하지 않은 상태의 메인 서비스 소개 페이지-->
 {% else %}
-<div class="intro-main-notlog" style="height: 100vh; background-color: lightgray;">
-    <div id="intro-main-notlog-cnt" class="intro-main-cnt">
+<div class="intro-main-notlog" style="height: 100vh; background-color: #FFF9E2;">
+    <div id="intro-main-notlog-cnt" class="intro-main-cnt cnt-padding">
         <h5>룸메이트와의 쾌적하고 편안한 생활 지킴이</h5>
         <div>
             <h1>Knock/Knock</h1>
@@ -72,7 +72,7 @@
                 지금 <span>노크노크</span>를 시작해보세요!</p>
         </div>
         <div>
-            <button class="btn btn-lg btn-dark rounded-pill px-4 py-2">시작하기</button>
+            <button class="btn btn-lg btn-dark rounded-pill px-4 py-2"><a href="{% url 'login:login' %}">시작하기</a></button>
         </div>
     </div>
 </div>
@@ -104,7 +104,7 @@
 </div>
 
 <div id="intro-service" style="background-color: #eee;">
-    <div id="intro-service-text" class="text-center">
+    <div id="intro-service-text" class="text-center ">
         <h5>이제는 간편하고 평화롭게!</h5>
         <h6><span>노크노크</span>와 함께라면 할 수 있어요!</h6>
         <p>생활 수칙, 공유 캘린더, 오늘의 할 일 체크 등 <span>노크노크</span>의 다양한 기능들과<br>

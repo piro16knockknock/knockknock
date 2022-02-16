@@ -14,16 +14,22 @@ class User(AbstractUser):
         ('남성', '남성'),
         ('그외', '그외'),
     )
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
 
 class Title(models.Model): #User's title
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'title')
     title_num = models.IntegerField()
     content = models.CharField(max_length=20)
-    emoji = models.ImageField()
+    emoji = models.ImageField(null=True, blank=True)
+    
+    def __str__(self):
+        return "[" + self.user.username + "]" + self.content
 
 class Notice(models.Model):
     receive_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'notice')
     content = models.CharField(max_length=50)
     link = models.CharField(max_length = 200, null=True)
     create_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return "[" + self.receive_user.username + "]" + self.content

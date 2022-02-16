@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="form-container">
+    <div class="form">
+        <h2 class="form-title">생활수칙 추가</h2>
+        <hr/>
+        <form method="POST" class="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+
+            <p>
+                <label>카테고리 선택: </label> 
+                <span>{{form.cate}}</span>
+            </p>
+            <p>
+                <label>생활수칙: </label> 
+                <span>{{form.content}}</span>
+            </p>
+            <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

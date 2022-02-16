@@ -1,0 +1,65 @@
+{% extends 'home/date_todo/date_todo_base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/home/date_todo.css' %}?after %}">
+{% endblock %}
+
+{% block script %}
+<script defer src="{% static 'js/home/move_date.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block data_todo %}
+<div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
+    <div class="user-cate-container cate-container d-flex align-items-baseline">
+        <div class="cate complete-cate">
+            <p class="cate-name">완료</p>
+            <div class="complete-user-todo"></div>
+            {% for todo in complete_user_todos %}
+                <div class="complete-user-todo">
+                    <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle text-secondary"></i></button>
+                    <p>{{ todo.content }}</p>
+                    <button class="btn" onclick="feedbackBtn()"><i class="fas fa-heart"></i></button>
+                    <p>{{ todo.is_done_date }} 완료!</p>
+                    {% if todo.is_postpon is True %}
+                    <p>잊지 않고 해냈어요~!</p>
+                    {% else %}
+                    <p>미루지 않고 해냈어요!</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
+    <div class="cate-container d-flex align-items-baseline">
+        <div class="cate complete-cate">
+            <p class="cate-name">완료</p>
+            {% for todo in complete_total_todos %}
+                <div class="complete-total-todo">
+                    <div class="com-todo-head d-flex align-items-baseline justify-content-between">
+                        <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle"></i></button>
+                        <p>{{ todo.content }}</p>
+                        <div class="btn" oncanplay="feedbackBtn()">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="com-todo-text">
+                        <p>{{ todo.is_done_date }} 완료!</p>
+                        {% if todo.is_postpon is True %}
+                        <p>잊지 않고 해냈어요~!</p>
+                        {% else %}
+                        <p>미루지 않고 해냈어요!</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block date_todo_modal %}
+{% endblock %}
+
