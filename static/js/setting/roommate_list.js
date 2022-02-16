@@ -51,13 +51,13 @@ const inviteCancelHandleResponse = (id) => {
     element.remove();
 
     //초대중인 유저 0명이 되면
-    const invite_users_ul = document.querySelectorAll('.roommate-list__container')[1];
-    if(invite_users_ul.children.length==0){
-        const carousel = document.querySelectorAll('.roommate-list__carousel')[1];
+    const invite_users_ul = document.querySelectorAll('.roommate-list__container');
+    if(invite_users_ul[invite_users_ul.length-1].children.length==0){
+        const carousel = document.querySelectorAll('.roommate-list__carousel');
         const p = document.createElement('p');
         p.className="roommate-list__empty";
         p.innerHTML="초대중인 유저가 없습니다.";
-        carousel.after(p);
-        carousel.remove();
+        carousel[carousel.length-1].after(p);
+        carousel[carousel.length-1].remove();
     }
 }

@@ -10,6 +10,7 @@ class Home(models.Model):
     rent_date = models.IntegerField(default=1, null=True, blank=True)
     rent_month = models.IntegerField(default=1, null=True, blank=True)
     is_rent = models.BooleanField(default=False, null=True, blank=True)
+    invite_link = models.CharField(max_length=13, null=True, blank=True)
     
     def __str__(self):
         return self.name
@@ -41,10 +42,19 @@ class PreRoommates(models.Model):
         return "[거주 기록: " + self.live_in.home.name + "] " + self.user.nick_name
 
 class Invite(models.Model):
-    receive_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    receive_user = models.ForeignKey(User, on_delete=models.CASCADE)
     home = models.ForeignKey(Home, on_delete=models.CASCADE)
     is_accepted = models.BooleanField(default=False)
     invited_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return "(user)" + self.receive_user.nick_name + "에게 (home)" + self.home.name + "으로부터 온 초대"
+    
+class Knock(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    receive_home = models.ForeignKey(Home, on_delete=models.CASCADE)
+    is_accepted = models.BooleanField(default=False)
+    knock_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return "(user)" + self.user.username + "이 (home)" + self.receive_home.name + "에 노크"

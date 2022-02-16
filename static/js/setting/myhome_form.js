@@ -1,4 +1,72 @@
+/**집 노크하기(검색하기) */
+/*집 검색창 - ajax*/
+const search_input = document.querySelector('#myhome-register__search-input');
+if(search_input){
+    search_input.addEventListener("keyup", (e) => {
+        if (search_input.value == "") return;
+        onSearchHomeList(search_input.value);
+    });    
+}
 
+const onSearchHomeList = async (value) => {
+    const url = "../../myhome/search_home/";
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'search_word': value
+        })
+    });
+    const {
+        home_list: home_list
+    } = await res.json()
+    searchHomeListHandleResponse(home_list);
+}
+
+const searchHomeListHandleResponse = (home_list) => {
+    //list 보여줌
+    const div = document.querySelector('.form-check');
+    div.innerHTML = "";
+    for (let i = 0; i < home_list.length; i++) {
+        const li = document.createElement('div');
+        li.classList.add('myhome-register__home-list');
+
+        li.innerHTML = `<input class="form-radio-input" type="radio" name="homename" value="${home_list[i]['homename']}">
+                    <i class="fas fa-home"></i>
+                    <p>${home_list[i]['homename']}</p>`;
+        div.appendChild(li);
+    }
+}
+
+
+const onClickKnockHome = async() => {
+    const input = document.querySelector('.form-radio-input');
+    if(!input) return;
+    const url = "../../myhome/knock_home/";
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'homename': input.value
+        })
+    });
+    window.location.href = "/";
+}
+
+
+
+
+
+
+
+
+
+
+/**집 등록하기 */
 const home_name = document.getElementById('myhome-register-name');
 const rent_month = document.getElementById('myhome-register-rent-month');
 const rent_date = document.getElementById('myhome-register-rent-date');
