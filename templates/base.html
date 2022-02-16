@@ -35,22 +35,31 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    생활관리
-                    </a>
-                    <ul class="dropdown-menu main-drop-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="{%url 'home:calendar' %}">캘린더</a></li>
-                    <li><a class="dropdown-item" href="{%url 'home:living_rules' %}">생활수칙</a></li>
-                    <li><a class="dropdown-item" href="#">가이드라인</a></li>
-                    </ul>
-                </li>
+                {% if request.user.is_authenticated %}
+                    {% if request.user.home != None %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        생활관리
+                        </a>
+                        <ul class="dropdown-menu main-drop-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{%url 'home:calendar' %}">캘린더</a></li>
+                        <li><a class="dropdown-item" href="{%url 'home:living_rules' %}">생활수칙</a></li>
+                        <li><a class="dropdown-item" href="#">가이드라인</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'setting:myhome_register' %}">집 등록</a>
+                    </li>
+                    {% endif %}
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="#">성향테스트</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">커뮤니티</a>
                 </li>
+                
                 {% if request.user.home != None %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

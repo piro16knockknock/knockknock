@@ -52,9 +52,11 @@
                                     <div class="roommate-list__modal-title">
                                         <p>칭호</p>
                                         <hr />
-                                        <span class="cal-profile-title border rounded-pill px-3 py-1">
-                                            🏅킹갓
+                                        {% for title in roommate_titles|get_item:roommate.nick_name %}
+                                        <span class="cal-profile-title border rounded-pill px-3 py-1 mx-1">
+                                            🏅{{ title.content }}
                                         </span>
+                                        {% endfor %}
                                     </div>
                                     <div class="roommate-list__modal-title">
                                         <p>달성률</p>

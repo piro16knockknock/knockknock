@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.safestring import mark_safe
 from django.views import generic
-
+from setting.models import *
 from .models import Todo, Home, TodoCate, TodoPriority
 from login.models import User
 # from .forms import TodoForm
@@ -33,8 +33,25 @@ class CalendarView(generic.ListView):
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
         context['month'] = str(d.month)
-        context['year'] = str(d.year)
+        context['year'] = str(d.year) 
+        context['utility_list'] = close_utility(self.request)
         return context
+
+#공과금
+def close_utility(request):
+    current_home = request.user.home
+    utility_list = Utility.objects.filter(home=current_home)
+    today = int(datetime.now().strftime("%d"))
+    utility_list = sorted(utility_list, key=lambda x: x.date)
+    
+    for i in range(len(utility_list)):
+        if utility_list[0].date >= today:
+            break
+        else:
+            utility_list.append(utility_list[0])
+            del utility_list[0]
+    return utility_list[:3]
+
 
 def get_date(req_month):
     if req_month:
@@ -54,6 +71,104 @@ def next_month(d):
     next_month = last + timedelta(days=1)
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
+
+@login_required
+def date_todo(request, date):
+    current_user = request.user
+    total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
+    complete_total_todos = total_todos.filter(is_done=True)
+    user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=False)
+    complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True).order_by('-is_done_date')
+ 
+    current_home = Home.objects.filter(user = current_user)[0]
+    roommates = User.objects.filter(home=request.user.home)
+    cates = TodoCate.objects.filter(home = current_home)
+
+    user_todo_dict = make_todo_with_cate_dict(user_todos, cates)
+    total_todo_dict = make_todo_with_cate_dict(total_todos, cates)
+    no_user_todos = total_todos.filter(user=None)
+    no_cate_user_todos = user_todos.filter(cate=None)
+    doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
+    todo_priority = TodoPriority.objects.all()
+
+    today = datetime.now()
+    today_string = f'{today.year}-{today.month}-{today.day}'
+
+    ctx = {
+        'today' : today_string,
+        'select_date' : date,
+        'total_todo_dict' : total_todo_dict,
+        'user_todo_dict' : user_todo_dict,
+        'complete_user_todos' : complete_user_todos,
+        'complete_total_todos' : complete_total_todos,
+        'no_user_todos' : no_user_todos,
+        'no_cate_user_todos' : no_cate_user_todos,
+        'doing_todos' : doing_todos,
+        'username' : current_user.username,
+        # 'form' : form,
+        'cates' : cates,
+        'todo_priority' : todo_priority,
+        'roomates' : roommates,
+        'utility_list' : close_utility(request)
+    }
+
+    return render(request, 'home/date_todo/date_todo.html', context=ctx)
+
+
+def prev_date_todo(request, date):
+    current_user = request.user
+    total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
+    complete_total_todos = total_todos.filter(is_done=True)
+    no_complete_todos = total_todos.filter(is_done = False)
+
+    user_todos = total_todos.filter(user=current_user)
+    no_complete_user_todos = total_todos.filter(is_done = False, user=current_user)
+ 
+    roommates = User.objects.filter(home=request.user.home)
+
+    today = datetime.now()
+    today_string = f'{today.year}-{today.month}-{today.day}'
+
+    if user_todos.count() is 0:
+        user_compelete_ratio = 0
+    else:
+        user_compelete_ratio = no_complete_user_todos.count() / user_todos.count()
+
+    if total_todos.count() is 0:
+        total_compelete_ratio = 0
+    else:
+        total_compelete_ratio = no_complete_todos.count() / total_todos.count()
+
+    print(user_compelete_ratio)
+    print(total_compelete_ratio)
+    ctx = {
+        'today' : today_string,
+        'select_date' : date,
+        'no_complete_todos' : no_complete_todos,
+        'complete_todo_dict' : make_todo_with_user_dict(complete_total_todos, roommates),
+        'username' : current_user.username,
+        'user_complete_ratio' : int(user_compelete_ratio * 100),
+        'total_complete_ratio' : int(total_compelete_ratio * 100),
+        'roomates' : roommates,
+        'utility_list' : close_utility(request)
+    }
+
+    return render(request, 'home/date_todo/prev_date_todo.html', context=ctx)
+
+
+
+def make_todo_with_cate_dict(todos, cates):
+    todo_dict= {}
+    for cate in cates:
+        todo_dict[cate] = todos.filter(cate=cate)
+    return todo_dict
+
+
+def make_todo_with_user_dict(todos, users):
+    todo_dict = {}
+    for user in users:
+        todo_dict[user] = todos.filter(user = user)
+    return todo_dict
 
 # add_todo_ajax
 @csrf_exempt
@@ -117,7 +232,7 @@ def add_todo(request, date):
 @csrf_exempt
 @login_required
 def delete_todo(request, date, todo_id):
-    delete_todo = Todo.objects.get(id = todo_id)
+    delete_todo = get_object_or_404(Todo, id = todo_id)
     delete_todo.delete()
     return JsonResponse({
         'todo_id' : todo_id,
@@ -148,33 +263,51 @@ def make_edit_form(request, date, todo_id):
 @csrf_exempt
 @login_required
 def edit_todo(request, date, todo_id):
-    todo = Todo.objects.get(id=todo_id)
-    req = json.loads(request.body)['form_data']
+    req = json.loads(request.body)
+    todo = Todo.objects.get(id=req['todo_id'])
+    if todo.user is None :
+        current_user_id = 'no-user'
+        current_user = None
+    else:
+        current_user_id = todo.user.id;
+        current_user = get_object_or_404(User, id = current_user_id)
+    if todo.cate is None:
+        current_cate_id = 'no-cate'
+    else:
+        current_cate_id = todo.cate.id
+
+    req = req['form_data']
 
     todo.content = req['content']
     todo.priority = TodoPriority.objects.get(id=int(req['priority']))
-    todo.cate = TodoCate.objects.get(id = req['cate'])
-    print(todo)
+
+    if req['cate'] == 'no-cate':
+        todo.cate = None
+        cate_name = '기타'
+    else:
+        todo.cate = TodoCate.objects.get(id = req['cate'])
+        cate_name = todo.cate.name
+    
+    if req['user'] == 'no-user':
+        todo.user = None
+        profile_img_url = None
+    else:
+        todo.user = User.objects.get(id = req['user'])
+        profile_img_url = todo.user.profile_img.url
     todo.save()
 
     return JsonResponse({
+        'current_user_id' : current_user_id,
+        'current_cate_id' : current_cate_id,
+        'user_id' : req['user'],
+        'user_profile_url' : profile_img_url,
         'todo_id' : todo.id,
+        'cate_id' : req['cate'],
+        'cate_name' : cate_name,
         'content' : todo.content,
         'priority_num' : todo.priority.priority_num,
+        'priority_content' : todo.priority.content,
     })
-
-@csrf_exempt
-@login_required
-def postpone_todo(request, date, todo_id):
-    todo = Todo.objects.get(id = todo_id)
-    todo.is_postpone = True
-    nextdate = datetime.strptime(date, "%Y-%m-%d")
-    nextdate = nextdate + timedelta(days=1)
-    
-    todo.date = nextdate
-    todo.save()
-
-    return redirect('home:date_todo', date=date)
 
 @csrf_exempt
 @login_required
@@ -192,75 +325,20 @@ def done_todo(request, date, todo_id):
         'todo_is_done_date' : todo.is_done_date,
         'todo_is_postpne' : todo.is_postpone,
     })
- 
+
+@csrf_exempt
 @login_required
-def date_todo(request, date):
-    current_user = request.user
-    total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
-    complete_total_todos = total_todos.filter(is_done=True)
-    user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=False)
-    complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True)
- 
-    current_home = Home.objects.filter(user = current_user)[0]
-    roommates = User.objects.filter(home=request.user.home)
-    cates = TodoCate.objects.filter(home = current_home)
+def postpone_todo(request, date, todo_id):
+    todo = Todo.objects.get(id = todo_id)
+    todo.is_postpone = True
+    nextdate = datetime.strptime(date, "%Y-%m-%d")
+    nextdate = nextdate + timedelta(days=1)
+    
+    todo.date = nextdate
+    todo.save()
 
-    user_todo_dict = make_todo_with_cate_dict(user_todos, cates)
-    total_todo_dict = make_todo_with_cate_dict(total_todos, cates)
-    no_user_todos = total_todos.filter(user=None)
-    no_cate_user_todos = user_todos.filter(cate=None)
-    doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
-    todo_priority = TodoPriority.objects.all()
+    return redirect('home:date_todo', date=date)
 
-    today = datetime.now()
-    today_string = f'{today.year}-{today.month}-{today.day}'
-
-    ctx = {
-        'today' : today_string,
-        'select_date' : date,
-        'total_todo_dict' : total_todo_dict,
-        'user_todo_dict' : user_todo_dict,
-        'complete_user_todos' : complete_user_todos,
-        'complete_total_todos' : complete_total_todos,
-        'no_user_todos' : no_user_todos,
-        'no_cate_user_todos' : no_cate_user_todos,
-        'doing_todos' : doing_todos,
-        'username' : current_user.username,
-        # 'form' : form,
-        'cates' : cates,
-        'todo_priority' : todo_priority,
-        'roomates' : roommates
-    }
-
-    return render(request, 'home/date_todo/date_todo.html', context=ctx)
-
-
-# 오늘 이전 날짜 페이지 보기
-def prev_date_todo(request, date):
-    current_user = request.user
-    total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
-    complete_total_todos = total_todos.filter(is_done=True)
-    complete_user_todos = total_todos.filter(user__username = current_user.username, date = date, is_done=True)
- 
-    roommates = User.objects.filter(home=request.user.home)
-
-    ctx = {
-        'select_date' : date,
-        'complete_user_todos' : complete_user_todos,
-        'complete_total_todos' : complete_total_todos,
-        'username' : current_user.username,
-        # 'form' : form,
-        'roomates' : roommates
-    }
-
-    return render(request, 'home/date_todo/prev_date_todo.html', context=ctx)
-
-
-def make_todo_with_cate_dict(todos, cates):
-    todo_dict= {}
-    for cate in cates:
-        todo_dict[cate] = todos.filter(cate=cate)
-    return todo_dict
     
 
 # 카테고리 추가 관련
@@ -285,12 +363,25 @@ def check_catename(request):
 def add_cate(request):
     req = json.loads(request.body)
     new_catename = req['new_catename']
-    new_cate = TodoCate.objects.create(home=request.user.home, name = new_catename)
+    select_date = req['select_date']
+    TodoCate.objects.create(home=request.user.home, name = new_catename)
+    return redirect('home:date_todo', date=select_date)
+
+
+# 카테고리 삭제 관련
+@csrf_exempt
+@login_required
+def delete_cate(request):
+    req = json.loads(request.body)
+    cate_id = req['cate_id']
+
+    cate = get_object_or_404(TodoCate, id = int(cate_id))
+    cate.delete()
     return JsonResponse({
-        'user_id' : request.user.id,
-        'cate_id' : new_cate.id,
-        'new_catename' : new_cate.name,
+
     })
+
+
 
 # 생활수칙관련
 def living_rules(request):
@@ -348,3 +439,4 @@ def living_rule_delete(request, pk):
 
 def guideline(request):
     return render(request, 'home/guideline.html')
+

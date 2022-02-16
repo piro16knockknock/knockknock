@@ -45,7 +45,19 @@ const onClickInviteCancel = async (id) => {
     inviteCancelHandleResponse(userId);
 }
 
+
 const inviteCancelHandleResponse = (id) => {
     const element = document.querySelector(`.roommate-id-${id}`);
     element.remove();
+
+    //초대중인 유저 0명이 되면
+    const invite_users_ul = document.querySelectorAll('.roommate-list__container')[1];
+    if(invite_users_ul.children.length==0){
+        const carousel = document.querySelectorAll('.roommate-list__carousel')[1];
+        const p = document.createElement('p');
+        p.className="roommate-list__empty";
+        p.innerHTML="초대중인 유저가 없습니다.";
+        carousel.after(p);
+        carousel.remove();
+    }
 }
