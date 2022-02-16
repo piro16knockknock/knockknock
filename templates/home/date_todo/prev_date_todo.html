@@ -64,9 +64,10 @@
                             {% endif %}
                         </div>
                 
-                        <div class="cate complete-cate total-cate-container">
-                            <p class="cate-name">완료</p>
-                            {% for todo in complete_total_todos %}
+                        {% for user, todos in complete_todo_dict.items %}
+                        <div class="cate complete-cate">
+                            <p class="cate-name">{{ user.username }}님이 완료한 일</p>
+                            {% for todo in todos%}
                                 <div class="com-total-todo complete-total-todo">
                                     <div class="com-todo-head">
                                         <button class="btn"><i class="fa-solid fa-check-circle"></i></button>
@@ -86,6 +87,7 @@
                                 </div>
                             {% endfor %}
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

@@ -115,6 +115,45 @@ def date_todo(request, date):
     return render(request, 'home/date_todo/date_todo.html', context=ctx)
 
 
+def prev_date_todo(request, date):
+    current_user = request.user
+    total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
+    complete_total_todos = total_todos.filter(is_done=True)
+    no_complete_todos = total_todos.filter(is_done = False)
+ 
+    roommates = User.objects.filter(home=request.user.home)
+
+    today = datetime.now()
+    today_string = f'{today.year}-{today.month}-{today.day}'
+
+    ctx = {
+        'today' : today_string,
+        'select_date' : date,
+        'no_complete_todos' : no_complete_todos,
+        'complete_todo_dict' : make_todo_with_user_dict(complete_total_todos, roommates),
+        'username' : current_user.username,
+        # 'form' : form,
+        'roomates' : roommates,
+        'utility_list' : close_utility(request)
+    }
+
+    return render(request, 'home/date_todo/prev_date_todo.html', context=ctx)
+
+
+
+def make_todo_with_cate_dict(todos, cates):
+    todo_dict= {}
+    for cate in cates:
+        todo_dict[cate] = todos.filter(cate=cate)
+    return todo_dict
+
+
+def make_todo_with_user_dict(todos, users):
+    todo_dict = {}
+    for user in users:
+        todo_dict[user] = todos.filter(user = user)
+    return todo_dict
+
 # add_todo_ajax
 @csrf_exempt
 @login_required
@@ -256,19 +295,6 @@ def edit_todo(request, date, todo_id):
 
 @csrf_exempt
 @login_required
-def postpone_todo(request, date, todo_id):
-    todo = Todo.objects.get(id = todo_id)
-    todo.is_postpone = True
-    nextdate = datetime.strptime(date, "%Y-%m-%d")
-    nextdate = nextdate + timedelta(days=1)
-    
-    todo.date = nextdate
-    todo.save()
-
-    return redirect('home:date_todo', date=date)
-
-@csrf_exempt
-@login_required
 def done_todo(request, date, todo_id):
     req = json.loads(request.body)
     todo = get_object_or_404(Todo, id = req['todo_id'])
@@ -284,36 +310,19 @@ def done_todo(request, date, todo_id):
         'todo_is_postpne' : todo.is_postpone,
     })
 
-def prev_date_todo(request, date):
-    current_user = request.user
-    total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
-    complete_total_todos = total_todos.filter(is_done=True)
-    no_complete_todos = total_todos.filter(is_done = False)
- 
-    roommates = User.objects.filter(home=request.user.home)
+@csrf_exempt
+@login_required
+def postpone_todo(request, date, todo_id):
+    todo = Todo.objects.get(id = todo_id)
+    todo.is_postpone = True
+    nextdate = datetime.strptime(date, "%Y-%m-%d")
+    nextdate = nextdate + timedelta(days=1)
+    
+    todo.date = nextdate
+    todo.save()
 
-    today = datetime.now()
-    today_string = f'{today.year}-{today.month}-{today.day}'
+    return redirect('home:date_todo', date=date)
 
-    ctx = {
-        'today' : today_string,
-        'select_date' : date,
-        'no_complete_todos' : no_complete_todos,
-        'complete_total_todos' : complete_total_todos,
-        'username' : current_user.username,
-        # 'form' : form,
-        'roomates' : roommates,
-        'utility_list' : close_utility(request)
-    }
-
-    return render(request, 'home/date_todo/prev_date_todo.html', context=ctx)
-
-
-def make_todo_with_cate_dict(todos, cates):
-    todo_dict= {}
-    for cate in cates:
-        todo_dict[cate] = todos.filter(cate=cate)
-    return todo_dict
     
 
 # 카테고리 추가 관련
