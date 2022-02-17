@@ -137,7 +137,7 @@ requestAdd.onreadystatechange = () => {
         AddHandleResponse();
     }
 };
-//  add_todo_안에 내용 채우기 ($$$$$선영 언니 도움!)
+//  add_todo_안에 내용 채우기
 const AddHandleResponse = () => {
     if (requestAdd.status < 400) {
         const {todo_id, todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name}= JSON.parse(requestAdd.response);
@@ -159,17 +159,35 @@ const AddHandleResponse = () => {
             new_todo.classList = `user-todo todo-box todo-id-${todo_id}`;
         }
 
+        // 상단 priority 부분
         const todo_align = document.createElement('div');
-        todo_align.classList = "user-todo-head"; //d-flex align-items-center
-
+        todo_align.classList = "user-todo-head";
+        // 할 일 중간 텍스트와 체크버튼
+        const todo_middle = document.createElement('div');
+        todo_middle.classList = "todo-cnt";
+        // 할 일 아래 edit 버튼
+        const todo_bottom = document.createElement('div');
+        todo_bottom.classList = "todo-bottom";
+        // 우선순위 타입 텍스트
         const priority_contentP = document.createElement('p');
-        priority_contentP.innerHTML = todo_priority_content
+        priority_contentP.innerHTML = todo_priority_content;
         // 우선순위에 따른 아이콘 부여하는 부분
-        //const priority_icon = document.createElement('p');
-        //priority_icon.innerHTML = todo_priority_num;
         const priority_icon = document.createElement('i');
         priority_icon.classList = `fa-solid fa-fire priority-${ todo_priority_num }`;
+        // 할일 완료 버튼
+        const todo_check_btn = document.createElement('button');
+        todo_check_btn.classList = "todo-check-btn";
+        todo_check_btn.setAttribute('onclick', `isDoneBtn(this, 'select_date', '${todo_id}')`); 
+        todo_check_btn.innerHTML = "<i class='fa-regular fa-circle'></i>";
 
+        // 담당없음의 경우 카테고리 이름 & 담당 추가 버튼
+        const no_user_cate = document.createElement('p');
+        no_user_cate.innerHTML = `${cate_name}`;  // ***아직 담당없음에서 cate_name이 안 보이는 건가? 다른 거 선택해도 기타(no_cate)만 뜸!
+        const todo_plus_btn = document.createElement('button');
+        todo_plus_btn.classList = "todo-plus-btn";  // ***아직 onclick 이벤트 없어서 이렇게 둠!
+        todo_plus_btn.innerHTML = "<i class='fa-solid fa-user-plus'></i>";
+
+        // 할일 edit 버튼
         const todo_edit_btn = document.createElement('button');
         todo_edit_btn.classList = `edit-btn ${todo_id} btn date-edit-btn`;
         todo_edit_btn.type = "button";
@@ -178,15 +196,29 @@ const AddHandleResponse = () => {
         todo_edit_btn.setAttribute('data-bs-target',"#setToDoModal");
         todo_edit_btn.innerHTML = "<i class='fa-solid fa-ellipsis'></i>";
 
+        // 할일 내용 텍스트
         const todo_contentP = document.createElement('p');
+        if (user_name === 'no-user') {
+            todo_contentP.classList = "all-todo-text";
+            todo_middle.appendChild(todo_plus_btn);
+            todo_bottom.appendChild(no_user_cate);
+        }
+        else {
+            todo_contentP.classList = "todo-text";
+            todo_middle.appendChild(todo_check_btn);
+        }
         todo_contentP.innerHTML = todo_content;
         
         todo_align.appendChild(priority_contentP);
         todo_align.appendChild(priority_icon);
-        todo_align.appendChild(todo_edit_btn);
-        todo_align.appendChild(todo_contentP);
+
+        todo_middle.appendChild(todo_contentP);
+        todo_bottom.appendChild(todo_edit_btn);
 
         new_todo.appendChild(todo_align);
+        new_todo.appendChild(todo_middle);
+        new_todo.appendChild(todo_bottom);
+
         todos.before(new_todo);
 
         addModalReset();

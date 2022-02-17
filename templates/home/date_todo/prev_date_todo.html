@@ -24,18 +24,21 @@
 
         <div class="com-ratio">
             <div class="com-ratio-head">
-                <p>{{ request.user.username }}님의 달성률</p>
+                <h5>할 일 달성률</h5>
+                <p>우리집의 이 날 하루 달성률은 얼마일까요?</p>
             </div>
-            <div class="chart-container ">
+            <div class="chart-container">
                 <div class="user-ratio">
                     <div class="chart" data-percent="{{ user_complete_ratio }}" data-bar-color="#ff4241">
-                        <span class="percent" data-after="%">{{ user_complete_ratio }}</span>
+                        <span class="percent" data-after="%">{{ user_complete_ratio }}%</span>
                     </div>
+                    <p>{{ request.user.nick_name }}</p>
                 </div>
                 <div class="total-ratio">
                     <div class="chart" data-percent="{{ total_complete_ratio }}" data-bar-color="#ff4241">
-                        <span class="percent" data-after="%">{{ total_complete_ratio }}</span>
+                        <span class="percent" data-after="%">{{ total_complete_ratio }}%</span>
                     </div>
+                    <p>우리집</p>
                 </div>
             </div>
         </div>
@@ -84,7 +87,7 @@
                 
                         {% for user, todos in complete_todo_dict.items %}
                         <div class="cate complete-cate">
-                            <p class="cate-name">{{ user.username }}님이 완료한 일</p>
+                            <p class="cate-name">{{ user.nick_name }}님이 완료한 일</p>
                             {% for todo in todos%}
                                 <div class="com-total-todo complete-total-todo">
                                     <div class="com-todo-head">
