@@ -81,7 +81,7 @@ const checkCateNameHandleResponse = (exist_catename) => {
 
 // 카테고리 삭제하기
 function cateDeleteBtn(event, cate_id, cate_name) {
-    if (confirm(`${cate_name} 카테고리 삭제 후 할 일은 기타 카테고리로 이동합니다`) == true){    //확인
+    if (confirm(`${cate_name} 카테고리 삭제 후 할 일은 모두 삭제됩니다!`) == true){    //확인
         cateDelete(cate_id);
     }else{
         return false;
