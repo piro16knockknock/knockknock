@@ -20,7 +20,7 @@
             {% for todo in complete_user_todos %}
             <div class="com-user-todo complete-user-todo">
                 <div class="com-todo-head">
-                    <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle"></i></button>
+                    <a class="btn" href="/home/todo/{{ select_date }}/{{ todo.id }}/not_done/"><i class="fa-solid fa-check-circle"></i></a>
                     <p>{{ todo.content }}</p>
                     <div class="btn" oncanplay="feedbackBtn()">
                         <i class="fas fa-heart"></i>
@@ -186,7 +186,7 @@
             {% for todo in complete_total_todos %}
                 <div class="com-total-todo complete-total-todo">
                     <div class="com-todo-head">
-                        <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle"></i></button>
+                        <div class="btn"><i class="fa-solid fa-check-circle"></i></div>
                         <p>{{ todo.content }}</p>
                         <div class="btn" oncanplay="feedbackBtn()">
                             <i class="fas fa-heart"></i>

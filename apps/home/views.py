@@ -337,6 +337,16 @@ def done_todo(request, date, todo_id):
 
 @csrf_exempt
 @login_required
+def not_done_todo(request, date, todo_id):
+    todo = get_object_or_404(Todo, id = todo_id)
+    todo.is_done = False
+    todo.is_done_date = None
+    todo.save()
+
+    return redirect(f'/home/todo/'+date +'/')
+
+@csrf_exempt
+@login_required
 def postpone_todo(request, date, todo_id):
     todo = Todo.objects.get(id = todo_id)
     todo.is_postpone = True
