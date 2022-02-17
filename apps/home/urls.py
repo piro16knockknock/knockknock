@@ -20,6 +20,7 @@ urlpatterns = [
     path('todo/<date>/<todo_id>/postpone/', views.postpone_todo, name='postpone_todo'),
     path('todo/<date>/<todo_id>/done/', views.done_todo, name='done_todo'),
     path('todo/<date>/<todo_id>/add_user/', views.add_user, name='add_user'),
+    path('todo/<date>/<todo_id>/not_done/', views.not_done_todo, name='not_done_todo'),
 
     path('living_rules/', views.living_rules, name='living_rules'),
     path('living_rule_new/', views.living_rule_new, name='living_rule_new'),

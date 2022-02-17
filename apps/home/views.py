@@ -123,8 +123,9 @@ def prev_date_todo(request, date):
     no_complete_todos = total_todos.filter(is_done = False)
 
     user_todos = total_todos.filter(user=current_user)
+    complete_user_todos = total_todos.filter(is_done = True, user=current_user)
     no_complete_user_todos = total_todos.filter(is_done = False, user=current_user)
- 
+
     roommates = User.objects.filter(home=request.user.home)
 
     today = datetime.now()
@@ -133,12 +134,12 @@ def prev_date_todo(request, date):
     if user_todos.count() is 0:
         user_compelete_ratio = 0
     else:
-        user_compelete_ratio = no_complete_user_todos.count() / user_todos.count()
+        user_compelete_ratio = complete_user_todos.count() / user_todos.count()
 
     if total_todos.count() is 0:
         total_compelete_ratio = 0
     else:
-        total_compelete_ratio = no_complete_todos.count() / total_todos.count()
+        total_compelete_ratio = complete_total_todos.count() / total_todos.count()
 
     print(user_compelete_ratio)
     print(total_compelete_ratio)
@@ -188,6 +189,10 @@ def add_todo(request, date):
         print("내꺼 기타말고")
         todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate), user = User.objects.get(id = user), 
         priority = TodoPriority.objects.get(id = priority), date = date)
+        if todo.user.profile_img is None:
+            user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
+        else:
+            user_profile_url = todo.user.profile_img.url
         res = JsonResponse({
             'todo_id' : todo.id,
             'todo_content' : todo.content,
@@ -197,6 +202,7 @@ def add_todo(request, date):
             'cate_name' : TodoCate.objects.get(id=cate).name,
             'user_name' : User.objects.get(id = user).username,
             'select_date' : date,
+            'user_profile_url' : user_profile_url
         })
 
     # 내 할 일 페이지에서 기타 카테고리
@@ -332,14 +338,24 @@ def done_todo(request, date, todo_id):
 
 @csrf_exempt
 @login_required
+def not_done_todo(request, date, todo_id):
+    todo = get_object_or_404(Todo, id = todo_id)
+    todo.is_done = False
+    todo.is_done_date = None
+    todo.save()
+
+    return redirect(f'/home/todo/'+date +'/')
+
+@csrf_exempt
+@login_required
 def postpone_todo(request, date, todo_id):
     todo = Todo.objects.get(id = todo_id)
     todo.is_postpone = True
     nextdate = datetime.strptime(date, "%Y-%m-%d")
     nextdate = nextdate + timedelta(days=1)
-    
     todo.date = nextdate
     todo.save()
+
 
     return redirect('home:date_todo', date=date)
 
