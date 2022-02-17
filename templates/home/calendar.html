@@ -8,8 +8,8 @@
     <div class="side-nav">
         <ul class="d-flex">
             <li>생활관리&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
-            <li><a href="{%url 'home:calendar' %}">캘린더</a></li>
-            <li><a href="">생활수칙</a></li>
+            <li><a href="{%url 'home:calendar' %}" style="border-bottom: #fbdb67 2px solid;">캘린더</a></li>
+            <li><a href="{%url 'home:living_rules' %}">생활수칙</a></li>
             <li><a href="">가이드라인</a></li>
         </ul>
     </div>
@@ -54,12 +54,12 @@
         <div id="calendar">
                 <div class="calendar-nav text-center">
                     <div class="ym-wrapper mb-4">
-                        <a class="nav-btn go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"><i class="fa-solid fa-square-caret-left"></i></a>
+                        <a class="nav-btn go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"><i class="fa-solid fa-circle-chevron-left"></i></a>
                         <a> 
                             <span class="year">{{ year }}</span>년
                             <span class="month">{{ month }}</span>월
                         </a>
-                        <a class="nav-btn gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"><i class="fa-solid fa-square-caret-right"></i></a>
+                        <a class="nav-btn gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"><i class="fa-solid fa-circle-chevron-right"></i></a>
                     </div>
                     
                 </div>
