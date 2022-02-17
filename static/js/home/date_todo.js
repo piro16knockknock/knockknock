@@ -36,7 +36,7 @@ function setAddBtn(event, cate_id, cate_name, user_id) {
 
 // 어떤 todo를 선택했냐에 따른 설정 모달 내 할 일 수정, 삭제 url setup
 function setEditBtn (event, content, user_name, cate_name, select_date) {
-    console.log(event);
+    console.log(select_date);
     for (var i=0, l=edit_btn.classList.length; i<l; ++i) {
         if(/todo-id-.*/.test(edit_btn.classList[i])) {
             edit_btn.classList.replace(edit_btn.classList[i], event.classList[1]);
@@ -140,7 +140,7 @@ requestAdd.onreadystatechange = () => {
 //  add_todo_안에 내용 채우기
 const AddHandleResponse = () => {
     if (requestAdd.status < 400) {
-        const {todo_id, todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name}= JSON.parse(requestAdd.response);
+        const {todo_id, todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name, select_date}= JSON.parse(requestAdd.response);
         var todos = null;
         const new_todo = document.createElement('div');
         // 담당없음
@@ -191,7 +191,7 @@ const AddHandleResponse = () => {
         const todo_edit_btn = document.createElement('button');
         todo_edit_btn.classList = `edit-btn ${todo_id} btn date-edit-btn`;
         todo_edit_btn.type = "button";
-        todo_edit_btn.setAttribute('onclick', `setEditBtn(this, '${todo_content}', '${user_name }', '${cate_name}')`); 
+        todo_edit_btn.setAttribute('onclick', `setEditBtn(this, '${todo_content}', '${user_name }', '${cate_name}', '${select_date}')`); 
         todo_edit_btn.setAttribute('data-bs-toggle',"modal");
         todo_edit_btn.setAttribute('data-bs-target',"#setToDoModal");
         todo_edit_btn.innerHTML = "<i class='fa-solid fa-ellipsis'></i>";

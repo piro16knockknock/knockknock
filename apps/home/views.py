@@ -189,13 +189,14 @@ def add_todo(request, date):
         todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate), user = User.objects.get(id = user), 
         priority = TodoPriority.objects.get(id = priority), date = date)
         res = JsonResponse({
-        'todo_id' : todo.id,
-        'todo_content' : todo.content,
-        'todo_priority_content' : todo.priority.content,
-        'todo_priority_num' : todo.priority.priority_num,
-        'cate_id' : cate,
-        'cate_name' : TodoCate.objects.get(id=cate).name,
-        'user_name' : User.objects.get(id = user).username,
+            'todo_id' : todo.id,
+            'todo_content' : todo.content,
+            'todo_priority_content' : todo.priority.content,
+            'todo_priority_num' : todo.priority.priority_num,
+            'cate_id' : cate,
+            'cate_name' : TodoCate.objects.get(id=cate).name,
+            'user_name' : User.objects.get(id = user).username,
+            'select_date' : date,
         })
 
     # 내 할 일 페이지에서 기타 카테고리
@@ -211,6 +212,7 @@ def add_todo(request, date):
         'cate_id' : 'no-cate',
         'cate_name' : '기타',
         'user_name' : User.objects.get(id = user).username,
+        'select_date' : date,
         })
 
     # 전체 할 일 페이지에서 담당없음 카테고리
@@ -226,6 +228,7 @@ def add_todo(request, date):
         'cate_id' : cate,
         'cate_name' : todo.cate.name,
         'user_name' : 'no-user',
+        'select_date' : date,
         })
     
     return res
