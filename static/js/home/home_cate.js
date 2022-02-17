@@ -27,35 +27,8 @@ function addCateBtn(event, select_date) {
             })
         })
         window.location.reload()
-        // addCateNameHandleResponse(user_id, cate_id, new_catename);
     }
 }
-
-// const addCateNameHandleResponse = (user_id, cate_id, new_catename) => {   
-    // 기타 카테고리 앞에 새로운 카테고리 넣기
-//     const etc_cate = cates_div.querySelector('.etc-cate');
-//     const add_todo_div = etc_cate.querySelector('.add-todo');
-
-//     const user_todos = document.createElement('div');
-//     user_todos.setAttribute('class', 'user-todos');
-
-//     const new_cate_div = document.createElement('div');
-//     new_cate_div.setAttribute('id', `cate-id-${cate_id}`);
-//     new_cate_div.setAttribute('class', 'cate user-todo');
-
-//     const new_cate_name = document.createElement('p');
-//     new_cate_name.innerHTML = new_catename;
-//     new_cate_name.setAttribute('class', 'cate-name');
-//     var new_add_todo_div = document.createElement('div');
-//     new_add_todo_div = add_todo_div.cloneNode(true);
-//     new_add_todo_div.querySelector('a').setAttribute('onclick', `setAddBtn(this, ${cate_id}, '${new_catename}', ${user_id})`);
-
-//     user_todos.appendChild(new_add_todo_div);
-//     new_cate_div.appendChild(new_cate_name);
-//     new_cate_div.appendChild(user_todos);
-
-//     etc_cate.before(new_cate_div)
-// }
 
 var is_change_input = true;
 function checkInputChange() {
@@ -105,3 +78,29 @@ const checkCateNameHandleResponse = (exist_catename) => {
         check_cate_btn.after(check_content);
     }
 }
+
+// 카테고리 삭제하기
+function cateDeleteBtn(event, cate_id, cate_name) {
+    if (confirm(`${cate_name} 카테고리 삭제 후 할 일은 기타 카테고리로 이동합니다`) == true){    //확인
+        cateDelete(cate_id);
+    }else{
+        return false;
+    }
+};
+
+const cateDelete = async(cate_id) => {
+    const url = "/home/todo/delete_cate/"
+    console.log(url);
+    const res = await fetch(url,{
+        method : 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'cate_id' : cate_id,
+        })
+    })
+    const {
+    } = await res.json()
+    window.location.reload();
+};

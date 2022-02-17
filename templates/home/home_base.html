@@ -4,8 +4,8 @@
     <div class="side-nav">
 		<ul class="d-flex">
 			<li>생활관리&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
-			<li><a href="{%url 'home:calendar' %}">캘린더</a></li>
-			<li><a href="">생활수칙</a></li>
+			<li><a href="{%url 'home:calendar' %}" style="border-bottom: #fbdb67 2px solid;">캘린더</a></li>
+			<li><a href="{%url 'home:living_rules' %}">생활수칙</a></li>
 			<li><a href="">가이드라인</a></li>
 		</ul>
 	</div>
@@ -39,6 +39,7 @@
                 </div>
             </div>
             <div id="cal-house-info" class="cal-side-box">
+                <p style="padding-bottom: 1rem;">{{ today }}</p>
                 {% if request.user.home.is_rent %}
                 <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}일</span></p>
                 {% endif %}

@@ -69,6 +69,17 @@ a {
 
 .main-drop-menu li {
     font: 1.4rem black;
+    display: flex;
+    justify-content: space-around;
+}
+
+.main-drop-menu h3{
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+}
+.btn-default{
+    font-size: 1.2rem;
+    width: 8rem;
 }
 
 .cnt-padding{
@@ -89,7 +100,10 @@ a {
 }
 
 .side-nav a:hover {
-    /*background-color: #fbdb67;*/
+    border-bottom: #fbdb67 2px solid;
+}
+
+.side-nav a:active {
     border-bottom: #fbdb67 2px solid;
 }
 

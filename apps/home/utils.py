@@ -20,7 +20,7 @@ class Calendar(HTMLCalendar):
 		if (year==self.today.year) and (month == self.today.month) and (day == self.today.day):
 			date_content += '<p style="font-weight: bold">오늘<p>'
 		if (year < self.today.year) or (month < self.today.month) or (day < self.today.day):
-			date_content += "<a href=\"/home/prev_todo/" + f"{date}" + "\"> 할 일 <i class=\"fa-solid fa-square\"></i></a>"
+			date_content += "<a href=\"/home/prev_todo/" + f"{date}" + "\"> 할 일 <i class=\"fa-solid fa-certificate\"></i></a>"
 		else:
 			date_content += "<a href=\"/home/todo/" + f"{date}" + "\"> 할 일 <i class=\"fa-solid fa-circle-plus\"></i></a>"
 		if day != 0:

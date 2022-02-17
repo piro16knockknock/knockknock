@@ -77,7 +77,7 @@ p span {
 
 .all-todo-cnt {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-start !important;
 }
 
 .cate-container {
@@ -110,7 +110,7 @@ p span {
 }
 
 .todo-check-btn {
-    margin-right: 2rem;
+    margin-right: 1rem;
 }
 
 .todo-cnt {
@@ -120,8 +120,14 @@ p span {
 
 .todo-bottom {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: end;
+}
+
+.todo-bottom p {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    color: #606060;
 }
 
 .com-user-todo {
@@ -194,7 +200,15 @@ p span {
     font-size: 1.2rem;
     margin-bottom: 1rem;
 }
+.cate-head {
+    display: flex;
+    justify-content: space-between;
+}
 
+.cate-head button {
+    margin-bottom: 1.6rem;
+    padding: 0;
+}
 .cate-name {
     margin-bottom: 1.6rem;
     font-weight: 600;

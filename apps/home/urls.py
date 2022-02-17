@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.CalendarView.as_view(), name='calendar'),
     path('todo/check_catename/', views.check_catename, name='check_catename'),
     path('todo/add_cate/', views.add_cate, name='add_cate'),
+    path('todo/delete_cate/', views.delete_cate, name='delete_cate'),
 
     path('prev_todo/<date>/', views.prev_date_todo, name='prev_date_todo'),
 
@@ -18,6 +19,7 @@ urlpatterns = [
     path('todo/<date>/<todo_id>/edit/', views.edit_todo, name='edit_todo'),
     path('todo/<date>/<todo_id>/postpone/', views.postpone_todo, name='postpone_todo'),
     path('todo/<date>/<todo_id>/done/', views.done_todo, name='done_todo'),
+    path('todo/<date>/<todo_id>/add_user/', views.add_user, name='add_user'),
 
     path('living_rules/', views.living_rules, name='living_rules'),
     path('living_rule_new/', views.living_rule_new, name='living_rule_new'),

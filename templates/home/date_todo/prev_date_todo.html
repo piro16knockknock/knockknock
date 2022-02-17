@@ -1,65 +1,125 @@
-{% extends 'home/date_todo/date_todo_base.html' %}
+{% extends 'home/home_base.html' %}
 {% load static %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/home/date_todo.css' %}?after %}">
+<link rel="stylesheet" href="{% static 'css/home/pie_chart.css' %}">
 {% endblock %}
 
 {% block script %}
 <script defer src="{% static 'js/home/move_date.js' %}" type="text/javascript"></script>
+<script defer src="{% static 'js/pie_chart.js' %}" type="text/javascript"></script>
+<script defer src="{% static 'js/home/pie_chart.js' %}" type="text/javascript"></script>
 {% endblock %}
 
-{% block data_todo %}
-<div class="tab-pane fade show active" id="mytodo" role="tabpanel" aria-labelledby="mytodo-tab">
-    <div class="user-cate-container cate-container d-flex align-items-baseline">
-        <div class="cate complete-cate">
-            <p class="cate-name">완료</p>
-            <div class="complete-user-todo"></div>
-            {% for todo in complete_user_todos %}
-                <div class="complete-user-todo">
-                    <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle text-secondary"></i></button>
-                    <p>{{ todo.content }}</p>
-                    <button class="btn" onclick="feedbackBtn()"><i class="fas fa-heart"></i></button>
-                    <p>{{ todo.is_done_date }} 완료!</p>
-                    {% if todo.is_postpon is True %}
-                    <p>잊지 않고 해냈어요~!</p>
-                    {% else %}
-                    <p>미루지 않고 해냈어요!</p>
-                    {% endif %}
-                </div>
-            {% endfor %}
+
+
+{% block content %}
+<div class="todo-main">
+    <div id="todo">
+        <div id="todo-date-header" class="text-center d-flex align-items-center justify-content-center">
+            <div class="btn prev-date-btn"><a onclick="prevDate('{{ select_date }}')" class="d-flex align-items-center"><i class="fa-solid fa-circle-chevron-left"></i></a></div>
+            <h5>{{select_date}}</h5>
+            <div class="btn next-date-btn "><a onclick="nextDate('{{ select_date }}')" class="d-flex align-items-center" ><i class="fa-solid fa-circle-chevron-right"></i></a></div>
         </div>
-    </div>
-</div>
-<div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
-    <div class="cate-container d-flex align-items-baseline">
-        <div class="cate complete-cate">
-            <p class="cate-name">완료</p>
-            {% for todo in complete_total_todos %}
-                <div class="complete-total-todo">
-                    <div class="com-todo-head d-flex align-items-baseline justify-content-between">
-                        <button class="btn" onclick="notDoneBtn()"><i class="fa-solid fa-check-circle"></i></button>
-                        <p>{{ todo.content }}</p>
-                        <div class="btn" oncanplay="feedbackBtn()">
-                            <i class="fas fa-heart"></i>
+
+        <div class="com-ratio">
+            <div class="com-ratio-head">
+                <h5>할 일 달성률</h5>
+                <p>우리집의 이 날 하루 달성률은 얼마일까요?</p>
+            </div>
+            <div class="chart-container">
+                <div class="user-ratio">
+                    <div class="chart" data-percent="{{ user_complete_ratio }}" data-bar-color="#ff4241">
+                        <span class="percent" data-after="%">{{ user_complete_ratio }}%</span>
+                    </div>
+                    <p>{{ request.user.nick_name }}</p>
+                </div>
+                <div class="total-ratio">
+                    <div class="chart" data-percent="{{ total_complete_ratio }}" data-bar-color="#ff4241">
+                        <span class="percent" data-after="%">{{ total_complete_ratio }}%</span>
+                    </div>
+                    <p>우리집</p>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end mb-2">
+            <button class="btn btn-outline-dark"><a href="{%url 'home:calendar' %}"><i class="fa-solid fa-calendar-days">&nbsp;캘린더 보기</i></a></button>
+        </div>
+        <div>
+            <ul class="nav nav-pills justify-content-between" id="myTab" role="tablist">
+                <li class="tab-nav-item" role="presentation">
+                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">전체</button>
+                </li>
+                <li class="me-auto ms-auto">
+                    미완료 된 일이 {안 한 일 만큼} 있습니다
+                </li>
+                <li style="margin-left: 4rem;" >
+                    <button id="add-rpt-todo-btn"><i class="fa-solid fa-plus text-secondary fa-sm me-1"></i>반복 일정 추가</button>
+                </li>
+            </ul>
+            <div class="tab-content " id="myTabContent">
+                <div class="tab-pane show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                    <div class="cate-container">
+                        <div class="cate doing-cate">
+                            <p class="cate-name">미완료</p>
+                            {% if no_complete_todos.count is not 0 %}
+                            {% for todo in no_complete_todos %}
+                                {% if todo.is_done is False%}
+                                <div class="no-user-todo todo-id-{{ todo.id }} todo-box">
+                                    <div class="user-todo-head">
+                                        <p>{{ todo.priority.content }}</p>
+                                        <i class="fa-solid fa-fire priority-{{ todo.priority.priority_num }}"></i>
+                                    </div>
+                                    <div class="all-todo-cnt todo-cnt">
+                                        <div class="todo-profile-box">
+                                            <img class="cal-profile-img" src={% if user.profile_img %}"{{todo.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                                        </div>
+                                        <p class="all-todo-text">{{ todo.content }}</p>
+                                   </div>
+                                    <div class="todo-bottom">
+                                        <a class="postpone-btn btn btn-light" href="">내일 하기</a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% endif %}
                         </div>
-                    </div>
-                    <div class="com-todo-text">
-                        <p>{{ todo.is_done_date }} 완료!</p>
-                        {% if todo.is_postpon is True %}
-                        <p>잊지 않고 해냈어요~!</p>
-                        {% else %}
-                        <p>미루지 않고 해냈어요!</p>
-                        {% endif %}
+                
+                        {% for user, todos in complete_todo_dict.items %}
+                        <div class="cate complete-cate">
+                            <p class="cate-name">{{ user.nick_name }}님이 완료한 일</p>
+                            {% for todo in todos%}
+                                <div class="com-total-todo complete-total-todo">
+                                    <div class="com-todo-head">
+                                        <button class="btn"><i class="fa-solid fa-check-circle"></i></button>
+                                        <p>{{ todo.content }}</p>
+                                        <div class="btn" oncanplay="feedbackBtn()">
+                                            <i class="fas fa-heart"></i>
+                                        </div>
+                                    </div>
+                                    <div class="com-todo-text">
+                                        <p>{{ todo.is_done_date }} 완료!</p>
+                                        {% if todo.is_postpon is True %}
+                                        <p>잊지 않고 해냈어요!</p>
+                                        {% else %}
+                                        <p>미루지 않고 해냈어요!</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+            </div>
+
         </div>
-    </div>
+        
+    </div> <!-- todo-->
+
 </div>
 {% endblock %}
 
 
-{% block date_todo_modal %}
-{% endblock %}
 
