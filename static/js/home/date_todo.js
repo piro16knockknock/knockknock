@@ -140,7 +140,7 @@ requestAdd.onreadystatechange = () => {
 //  add_todo_안에 내용 채우기
 const AddHandleResponse = () => {
     if (requestAdd.status < 400) {
-        const {todo_id, todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name, select_date}= JSON.parse(requestAdd.response);
+        const {todo_id, todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name, select_date, user_profile_url}= JSON.parse(requestAdd.response);
         var todos = null;
         const new_todo = document.createElement('div');
         // 담당없음
@@ -159,7 +159,6 @@ const AddHandleResponse = () => {
             new_todo.classList = `user-todo todo-box todo-id-${todo_id}`;
         }
 
-        
 
         // 상단 priority 부분
         const todo_align = document.createElement('div');
@@ -224,6 +223,26 @@ const AddHandleResponse = () => {
         new_todo.appendChild(todo_middle);
         new_todo.appendChild(todo_bottom);
 
+
+        const doing_todo = new_todo.cloneNode(true);
+        doing_todo.querySelector('.todo-bottom').remove();
+        doing_todo.querySelector('.todo-cnt .todo-check-btn').remove();
+
+        const profile_box = document.createElement('div');
+        profile_box.classList = 'todo-profile-box';
+        
+        const profile_img = document.createElement('img');
+        profile_img.classList = 'cal-profile-img';
+        profile_img.setAttribute('src', `${user_profile_url}`);
+        profile_box.appendChild(profile_img);
+
+        doing_todo.querySelector('.todo-cnt').classList = 'all-todo-cnt todo-cnt';
+        doing_todo.querySelector('.todo-cnt p').classList ='all-todo-text';
+        doing_todo.querySelector('.todo-cnt').prepend(profile_box);
+        console.log(doing_todo);
+
+        const doing_cate_div = document.querySelector('.doing-cate');
+        doing_cate_div.appendChild(doing_todo);
         todos.before(new_todo);
 
         addModalReset();
