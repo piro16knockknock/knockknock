@@ -30,3 +30,6 @@ class Notice(models.Model):
     content = models.CharField(max_length=50)
     link = models.CharField(max_length = 200, null=True)
     create_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return "[" + self.receive_user.username + "]" + self.content

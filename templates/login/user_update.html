@@ -6,18 +6,7 @@
 
     <form method="POST" action="{% url 'login:user_update' %}">
         {% csrf_token %}
-        아이디:
-        <br>
-        <input name="username" type="text">
-        <br>
-        비밀번호:
-        <br>
-        <input name="password" type="password">
-        <br>
-        비밀번호 확인:
-        <br>
-        <input name="password2" type="password">
-        <br>
+        
         성별:
         <br>
         <select name="gender" id="GENDER_CHOICES">

@@ -5,7 +5,7 @@ from datetime import datetime
 from django.utils.dateformat import DateFormat
 from home.models import Todo, LivingRule, LivingRuleCate
 from django.shortcuts import get_object_or_404
-
+from django.contrib import messages
 from multiprocessing import context
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
@@ -151,7 +151,8 @@ def login_user(request):
             login(request, user)
             return redirect('login:intro')
         else:
-            return redirect('login:intro')
+            messages.warning(request, "존재하지 않는 아이디입니다.")
+            return redirect('login:login')
 
 def logoutUser(request):
     logout(request)
@@ -166,7 +167,6 @@ def user_update(request):
             form.save()
             return redirect('login:mypage')
     else:
-        print("닉네임이 중복되었습니다.")
         form = UserUpdateForm(instance=request.user)
     context = {
         'form': form

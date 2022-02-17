@@ -12,6 +12,13 @@
     <a href="{% url 'setting:myhome_register' %}" class="myhome-setting__empty-btn">집 등록하러 가기</a>
 </div>
 {% else %}
+<div class="side-nav">
+    <ul class="d-flex">
+        <li>설정&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
+        <li><a href="{%url 'setting:myhome_detail' %}">집 관리</a></li>
+        <li><a href="{%url 'setting:roommate_list' %}">룸메이트 관리</a></li>
+    </ul>
+</div>
 <section class="roommate-list">
     <!--룸메이트-->
     <p class="roommate-list__title">룸메이트 관리</p>
