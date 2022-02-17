@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .forms import UserUpdateForm
-from setting.models import LiveIn, Home, PreRoommates
+from setting.models import LiveIn, Home, PreRoommates, Invite
 from home.models import Todo
 import json
 from django.http import JsonResponse
@@ -112,11 +112,30 @@ def leave_home(request):
 
 #mypage
 def mypage(request):
+    roommates = User.objects.filter(home=request.user.home)
+    roommates = roommates.exclude(nick_name=request.user.nick_name)
+    invites = Invite.objects.filter(home=request.user.home)
+    
+    invite_users = []
+    for invite in invites:
+        if invite.is_accepted is False:
+            invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
+            
+    roommate_titles = {}
+    for roommate in roommates:
+        roommate_titles[roommate.nick_name] = Title.objects.filter(user=roommate)
+    
     prehomes, prehome_dict, preroommates_dict = prehome_list(request)
     
-    ctx = {'prehomes' : prehomes,
-           'prehome_dict' : prehome_dict,
-           'preroommates_dict': preroommates_dict }
+    ctx = {
+            'roommates' : roommates,
+            'invite_users' : invite_users,
+            'roommate_titles' : roommate_titles,
+            
+            'prehomes' : prehomes,
+            'prehome_dict' : prehome_dict,
+            'preroommates_dict': preroommates_dict ,
+    }
     return render(request, 'login/mypage.html', ctx)
 
 #로그인 기능
