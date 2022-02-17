@@ -257,26 +257,35 @@ const AddHandleResponse = () => {
         new_todo.appendChild(todo_middle);
         new_todo.appendChild(todo_bottom);
 
+        if (user_name != 'no-user') {
+            const doing_todo = new_todo.cloneNode(true);
+            doing_todo.querySelector('.todo-bottom').remove();
+            console.log(doing_todo);
+            doing_todo.querySelector('.todo-cnt .todo-check-btn').remove();
 
-        const doing_todo = new_todo.cloneNode(true);
-        doing_todo.querySelector('.todo-bottom').remove();
-        doing_todo.querySelector('.todo-cnt .todo-check-btn').remove();
+            const profile_box = document.createElement('div');
+            profile_box.classList = 'todo-profile-box';
+            
+            const profile_img = document.createElement('img');
+            profile_img.classList = 'cal-profile-img';
+            profile_img.setAttribute('src', `${user_profile_url}`);
+            profile_box.appendChild(profile_img);
 
-        const profile_box = document.createElement('div');
-        profile_box.classList = 'todo-profile-box';
-        
-        const profile_img = document.createElement('img');
-        profile_img.classList = 'cal-profile-img';
-        profile_img.setAttribute('src', `${user_profile_url}`);
-        profile_box.appendChild(profile_img);
+            doing_todo.querySelector('.todo-cnt').classList = 'all-todo-cnt todo-cnt';
+            doing_todo.querySelector('.todo-cnt p').classList ='all-todo-text';
+            doing_todo.querySelector('.todo-cnt').prepend(profile_box);
+            console.log(doing_todo);
 
-        doing_todo.querySelector('.todo-cnt').classList = 'all-todo-cnt todo-cnt';
-        doing_todo.querySelector('.todo-cnt p').classList ='all-todo-text';
-        doing_todo.querySelector('.todo-cnt').prepend(profile_box);
-        console.log(doing_todo);
-
-        const doing_cate_div = document.querySelector('.doing-cate');
-        doing_cate_div.appendChild(doing_todo);
+            const doing_cate_div = document.querySelector('.doing-cate');
+            doing_cate_div.appendChild(doing_todo);
+        }
+        else {
+            const today_no_user_text = document.querySelector('li.today-no-user-text span');
+            console.log(today_no_user_text);
+            if (today_no_user_text != null) {
+                today_no_user_text.innerHTML = `${parseInt(today_no_user_text.innerHTML) + 1}`;
+            }
+        }
         todos.before(new_todo);
 
         addModalReset();
@@ -328,6 +337,11 @@ const deleteHandleResponse = () => {
         }
         // 담당 없는 일 삭제
         else {
+            const today_no_user_text = document.querySelector('li.today-no-user-text span');
+            console.log(today_no_user_text);
+            if (today_no_user_text != null) {
+                today_no_user_text.innerHTML = `${parseInt(today_no_user_text.innerHTML) - 1}`;
+            }
             no_user_todo_div.remove();
         }
         closeEdit()
