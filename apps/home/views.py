@@ -2,6 +2,7 @@ import json
 from locale import currency
 from select import select
 from turtle import Turtle
+from urllib import request
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -215,15 +216,15 @@ def add_todo(request, date):
     # 전체 할 일 페이지에서 담당없음 카테고리
     else:
         print("전체")
-        todo = Todo.objects.create(home=request.user.home, content=content,
+        todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate),
         priority = TodoPriority.objects.get(id = priority), date = date)
         res = JsonResponse({
         'todo_id' : todo.id,
         'todo_content' : todo.content,
         'todo_priority_content' : todo.priority.content,
         'todo_priority_num' : todo.priority.priority_num,
-        'cate_id' : 'no-cate',
-        'cate_name' : 'no-cate',
+        'cate_id' : cate,
+        'cate_name' : todo.cate.name,
         'user_name' : 'no-user',
         })
     
@@ -339,7 +340,28 @@ def postpone_todo(request, date, todo_id):
 
     return redirect('home:date_todo', date=date)
 
-    
+@csrf_exempt
+@login_required
+def add_user(request, date, todo_id):
+    req = json.loads(request.body)
+    todo = get_object_or_404(Todo, id = int(req['todo_id']))
+    todo.user = get_object_or_404(User, id =int(req['form_data']['user']))
+    todo.save()
+
+    if todo.user.profile_img is None:
+        user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
+    else:
+        user_profile_url = todo.user.profile_img.url
+        
+    return JsonResponse({
+        'current_user_id' : request.user.id,
+        'todo_id' : todo.id,
+        'user_profile_url' : user_profile_url,
+        'user_id' : todo.user.id,
+    })
+
+
+
 
 # 카테고리 추가 관련
 @csrf_exempt
