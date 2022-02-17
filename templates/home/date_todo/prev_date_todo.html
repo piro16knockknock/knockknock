@@ -8,6 +8,7 @@
 
 {% block script %}
 <script defer src="{% static 'js/home/move_date.js' %}" type="text/javascript"></script>
+<script defer src="{% static 'js/home/date_todo.js' %}" type="text/javascript"></script>
 <script defer src="{% static 'js/pie_chart.js' %}" type="text/javascript"></script>
 <script defer src="{% static 'js/home/pie_chart.js' %}" type="text/javascript"></script>
 {% endblock %}
@@ -52,7 +53,7 @@
                     <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">전체</button>
                 </li>
                 <li class="me-auto ms-auto">
-                    미완료 된 일이 {안 한 일 만큼} 있습니다
+                    미완료 된 일이 {{ no_complete_todos.count }}개 있습니다
                 </li>
                 <li style="margin-left: 4rem;" >
                     <button id="add-rpt-todo-btn"><i class="fa-solid fa-plus text-secondary fa-sm me-1"></i>반복 일정 추가</button>
@@ -78,7 +79,7 @@
                                         <p class="all-todo-text">{{ todo.content }}</p>
                                    </div>
                                     <div class="todo-bottom">
-                                        <a class="postpone-btn btn btn-light" href="">내일 하기</a>
+                                        <a class="postpone-btn btn btn-light" onclick="isDoneBtn(this, '{{ select_date }}', '{{ todo.id }}')">오늘 하기</a>
                                     </div>
                                 </div>
                                 {% endif %}

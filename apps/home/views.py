@@ -123,8 +123,9 @@ def prev_date_todo(request, date):
     no_complete_todos = total_todos.filter(is_done = False)
 
     user_todos = total_todos.filter(user=current_user)
+    complete_user_todos = total_todos.filter(is_done = True, user=current_user)
     no_complete_user_todos = total_todos.filter(is_done = False, user=current_user)
- 
+
     roommates = User.objects.filter(home=request.user.home)
 
     today = datetime.now()
@@ -133,12 +134,12 @@ def prev_date_todo(request, date):
     if user_todos.count() is 0:
         user_compelete_ratio = 0
     else:
-        user_compelete_ratio = no_complete_user_todos.count() / user_todos.count()
+        user_compelete_ratio = complete_user_todos.count() / user_todos.count()
 
     if total_todos.count() is 0:
         total_compelete_ratio = 0
     else:
-        total_compelete_ratio = no_complete_todos.count() / total_todos.count()
+        total_compelete_ratio = complete_total_todos.count() / total_todos.count()
 
     print(user_compelete_ratio)
     print(total_compelete_ratio)
@@ -352,9 +353,9 @@ def postpone_todo(request, date, todo_id):
     todo.is_postpone = True
     nextdate = datetime.strptime(date, "%Y-%m-%d")
     nextdate = nextdate + timedelta(days=1)
-    
     todo.date = nextdate
     todo.save()
+
 
     return redirect('home:date_todo', date=date)
 
