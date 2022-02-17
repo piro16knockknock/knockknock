@@ -104,18 +104,25 @@
     font-size: 1.4rem;
 }
 
+
+
+
 .past-record tr:nth-child(1){
+    width: 70rem;
     padding: 1rem;
-    padding-right: 9.5rem;
+    padding-right: 5.5rem;
 
     display: flex;
     justify-content: space-around;
 }
 
-.past-record tr:nth-child(2){
+.past-record tr{
+    width: 70rem;
     display: flex;
     justify-content: space-between;
 }
+
+
 
 
 /*이전집 기록 보기, 이사하기, 생활수칙보기*/
