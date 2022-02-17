@@ -353,6 +353,8 @@
   
   }));
 
+
+// 우리가 잡아서 쓰는 부분
 var user_ratio_element = document.querySelector('.user-ratio .chart');
 var total_ratio_element = document.querySelector('.total-ratio .chart');
 

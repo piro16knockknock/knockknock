@@ -209,7 +209,7 @@ def add_todo(request, date):
         'todo_priority_content' : todo.priority.content,
         'todo_priority_num' : todo.priority.priority_num,
         'cate_id' : 'no-cate',
-        'cate_name' : 'no-cate',
+        'cate_name' : '기타',
         'user_name' : User.objects.get(id = user).username,
         })
 
