@@ -159,6 +159,8 @@ const AddHandleResponse = () => {
             new_todo.classList = `user-todo todo-box todo-id-${todo_id}`;
         }
 
+        
+
         // 상단 priority 부분
         const todo_align = document.createElement('div');
         todo_align.classList = "user-todo-head";
@@ -186,6 +188,9 @@ const AddHandleResponse = () => {
         const todo_plus_btn = document.createElement('button');
         todo_plus_btn.classList = "todo-plus-btn";  // ***아직 onclick 이벤트 없어서 이렇게 둠!
         todo_plus_btn.innerHTML = "<i class='fa-solid fa-user-plus'></i>";
+        todo_plus_btn.setAttribute('onclick', `setAddUserBtn(this, '${todo_id}', '${select_date}')`);
+        todo_plus_btn.setAttribute('data-bs-toggle', 'modal');
+        todo_plus_btn.setAttribute('data-bs-target', '#addUserModal');
 
         // 할일 edit 버튼
         const todo_edit_btn = document.createElement('button');
