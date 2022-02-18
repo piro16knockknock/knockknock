@@ -32,13 +32,19 @@ class CalendarView(generic.ListView):
         d = get_date(self.request.GET.get('month', None))
         cal = Calendar(d.year, d.month)
         html_cal = cal.formatmonth(withyear=True)
+        today = datetime.now()
+        today_string = f'{today.year}-{today.month}-{today.day}'
+        user_todos = Todo.objects.filter(user__username = self.request.user.username, date = today, is_done=False)[:5]
+
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
         context['month'] = str(d.month)
         context['year'] = str(d.year) 
         context['utility_list'] = close_utility(self.request)
-        return context
+        context['today_date'] = today_string
+        context['user_todos'] = user_todos
+        return context  
 
 #공과금
 def close_utility(request):
