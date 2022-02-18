@@ -19,6 +19,7 @@ from home.models import Todo
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 #template custom (dictionary)
 from django.template.defaulttags import register
 
@@ -179,7 +180,7 @@ def user_update(request):
     }
     return render(request, 'login/user_update.html', context)
 
-@csrf_exempt
+@method_decorator(csrf_exempt, name="dispatch")
 def check_username(request):
     req = json.loads(request.body)
     username = req['user_name']
