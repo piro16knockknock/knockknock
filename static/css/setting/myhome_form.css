@@ -1,3 +1,64 @@
+/* 집 검색 */
+.myhome-register__search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#myhome-register__search-input {
+    font-size: 1.3rem;
+    width: 80%;
+    padding: 1rem 2rem;
+    border-radius: .2rem;
+    background-color: rgba(1, 1, 1, 0.05);
+    border: .2rem solid rgb(137, 186, 159);
+}
+
+.myhome-register__home-list > .form-radio-input{
+    border: 1px solid black;
+    cursor: pointer;
+
+}
+.myhome-register__home-list > .form-radio-input:checked {
+	background-color: rgb(137, 186, 159);
+    color: rgb(137, 186, 159);
+}
+
+.myhome-register__search-container a {
+    margin-left: .5rem;
+    padding: .85rem 2rem;
+    font-size: 1.4rem;
+    transition: all .2s ease-in-out;
+    background-color: rgb(255, 197, 109);
+}
+
+.myhome-register__search-container a:hover {
+    background-color: tomato;
+}
+
+.myhome-register__empty{
+    padding-top: 3rem;
+    font-size: 1.6rem;
+}
+
+/*검색 결과*/
+.myhome-register__home-list {
+    display: flex;
+    align-items: center;
+}
+.myhome-register__home-list i {
+    margin: 1rem;
+    font-size: 3rem;
+}
+.myhome-register__home-list input {
+    padding: 1rem;
+}
+
+.myhome-register__home-list p {
+    font-size: 1.3rem;
+}
+
+/* 집 직접 등록 */
 .myhome-register {
     display: flex;
     justify-content: center;

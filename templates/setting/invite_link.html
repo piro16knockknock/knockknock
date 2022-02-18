@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block script %}
+<script>
+    const inviteLinkAlert = (home_name) =>{
+        alert(`${home_name}에 노크했습니다. 수락을 기다려주세요.`);
+        onLinkKnockHome(home_name);
+    }
+
+    const onLinkKnockHome = async (home_name) => {
+        const url = "../../../../myhome/link_knock/";
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+                'home_name': home_name
+            })
+        });
+    }
+
+</script>
+{% endblock %}
+{% block content %}
+<section class="invite-link">
+    <div class="invite-link__exist">
+        <div class="invite-link__list">
+            <h1>🏡 {{ home.name }}</h1>
+            <div class="invite-link__list__row">
+                <div class="invite-link__list__column">
+                    <i class="fas fa-home"></i>
+                </div>
+            </div>
+            {% if request.user.is_authenticated %}
+                {% if request.user.home %}
+                <div class="invite-link__not-login">
+                    <p>집이 있는 상태에서는 노크할 수 없습니다.</p>
+                </div>
+                {% elif knock %}
+                <div class="invite-link__not-login">
+                    <p>현재 다른 집에 노크 중입니다.</p>
+                </div>
+                {% else %}
+                    <div class="invite-link__enter">
+                        <a href="#" onclick="inviteLinkAlert('{{home.name}}')" class="invite-link__enter__btn"><i class="fas fa-door-open"></i> 노크하기</a>
+                    </div>
+                {% endif %}
+            {% else %}
+            <div class="invite-link__not-login">
+                <p>서비스를 이용하려면 로그인이 필요합니다.</p>
+                <a href="{% url 'login:login' %}" class="invite-link__not-login-btn">로그인</a>
+                <a href="{% url 'login:sign_up' %}" class="invite-link__not-login-btn">회원가입</a>
+            </div>
+            {% endif %}
+        </div>
+</section>
+{% endblock %}
