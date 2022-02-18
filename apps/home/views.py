@@ -1,6 +1,7 @@
 import json
 from locale import currency
 from select import select
+from tkinter.tix import Tree
 from turtle import Turtle
 from urllib import request
 from django.http import JsonResponse
@@ -140,7 +141,7 @@ def prev_date_todo(request, date):
         total_compelete_ratio = 0
     else:
         total_compelete_ratio = complete_total_todos.count() / total_todos.count()
-
+    print(no_complete_todos)
     print(user_compelete_ratio)
     print(total_compelete_ratio)
     ctx = {
@@ -381,6 +382,22 @@ def postpone_todo(request, date, todo_id):
 
 
     return redirect('home:date_todo', date=date)
+
+def postpone_today_todo(request, date, todo_id):
+    todo = get_object_or_404(Todo, id = todo_id)
+    todo.is_not_done_today = True
+    todo.save()
+    
+    today_todo = todo
+    today_todo.id = None;
+    today_todo.is_not_done_today = False
+    today_todo.is_postpone = True
+    today_todo.date = datetime.now()
+    print(today_todo.date)
+
+    today_todo.save()
+
+    return redirect('/home/prev_todo/'+date)
 
 @csrf_exempt
 @login_required
