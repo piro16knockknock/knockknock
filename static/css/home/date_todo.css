@@ -91,9 +91,40 @@ p span {
 
 .cate {
     display: inline-block;
-    margin-left: 1rem;
     margin-right: 1rem;
     padding-top: 2rem;
+    flex: none;
+    height: 50rem;
+    width: 28rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* 카테고리별 스크롤바 커스텀 */
+.cate::-webkit-scrollbar {
+    width: 1rem;
+}
+
+.cate::-webkit-scrollbar-thumb {
+    border-radius: 10rem;
+    background-color: #f3f3f3 ;
+    box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+}
+
+.user-cate-container::-webkit-scrollbar, .cate-container::-webkit-scrollbar {
+    width: 1.2rem;
+}
+
+.user-cate-container::-webkit-scrollbar-track, .cate-container::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+    border-radius: 10rem;
+}
+
+.user-cate-container::-webkit-scrollbar-thumb, .cate-container::-webkit-scrollbar-thumb {
+    border-radius: 10rem;
+    border: #f5f5f5 3px solid;
+    background-color: #c7c7c7;
+    box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
 }
 
 .todo-box {
@@ -352,4 +383,8 @@ input {
 
 .select-todo-priority {
     font-size: 1.4rem;
+}
+
+.is_not_done_today {
+    border : 0.3rem solid #979797;
 }

@@ -29,9 +29,10 @@ class Todo(models.Model):
     is_postpone = models.BooleanField(default=False)
     is_done_date = models.DateTimeField(null=True, blank=True)
     is_done = models.BooleanField(default=False)
+    is_not_done_today = models.BooleanField(default=False)
     
     def __str__(self):
-        return self.home.name + '의 '+ self.content
+        return str(self.id) + self.home.name + '의 '+ self.content
 
 
 class TodoReaction(models.Model):

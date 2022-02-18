@@ -2,6 +2,7 @@ import json
 from locale import currency
 from select import select
 from time import sleep
+from tkinter.tix import Tree
 from turtle import Turtle
 from urllib import request
 from django.http import JsonResponse
@@ -124,8 +125,9 @@ def prev_date_todo(request, date):
     no_complete_todos = total_todos.filter(is_done = False)
 
     user_todos = total_todos.filter(user=current_user)
+    complete_user_todos = total_todos.filter(is_done = True, user=current_user)
     no_complete_user_todos = total_todos.filter(is_done = False, user=current_user)
- 
+
     roommates = User.objects.filter(home=request.user.home)
 
     today = datetime.now()
@@ -134,13 +136,13 @@ def prev_date_todo(request, date):
     if user_todos.count() is 0:
         user_compelete_ratio = 0
     else:
-        user_compelete_ratio = no_complete_user_todos.count() / user_todos.count()
+        user_compelete_ratio = complete_user_todos.count() / user_todos.count()
 
     if total_todos.count() is 0:
         total_compelete_ratio = 0
     else:
-        total_compelete_ratio = no_complete_todos.count() / total_todos.count()
-
+        total_compelete_ratio = complete_total_todos.count() / total_todos.count()
+    print(no_complete_todos)
     print(user_compelete_ratio)
     print(total_compelete_ratio)
     ctx = {
@@ -181,14 +183,26 @@ def add_todo(request, date):
     print(data)
     content = data['content']
     priority = data['priority']
-    cate = data['cate']
-    user = data['user']
+
+    if data['cate'] == 'no-cate':
+        cate = 'no-cate'
+    else:
+        cate = data['cate']
+    
+    if data['user'] == 'no-user':
+        user = 'no-user'
+    else:
+        user = data['user']
 
     # 내 할 일 페이지에서 기타 카테고리가 아닌 카테고리
     if cate != 'no-cate' and user != 'no-user':
         print("내꺼 기타말고")
         todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate), user = User.objects.get(id = user), 
         priority = TodoPriority.objects.get(id = priority), date = date)
+        if todo.user.profile_img is None:
+            user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
+        else:
+            user_profile_url = todo.user.profile_img.url
         res = JsonResponse({
             'todo_id' : todo.id,
             'todo_content' : todo.content,
@@ -198,6 +212,7 @@ def add_todo(request, date):
             'cate_name' : TodoCate.objects.get(id=cate).name,
             'user_name' : User.objects.get(id = user).username,
             'select_date' : date,
+            'user_profile_url' : user_profile_url
         })
 
     # 내 할 일 페이지에서 기타 카테고리
@@ -217,7 +232,21 @@ def add_todo(request, date):
         })
 
     # 전체 할 일 페이지에서 담당없음 카테고리
-    else:
+    elif cate == 'no-cate' and user == 'no-user':
+        print("전체 기타")
+        todo = Todo.objects.create(home=request.user.home, content=content,
+        priority = TodoPriority.objects.get(id = priority), date = date)
+        res = JsonResponse({
+        'todo_id' : todo.id,
+        'todo_content' : todo.content,
+        'todo_priority_content' : todo.priority.content,
+        'todo_priority_num' : todo.priority.priority_num,
+        'cate_id' : 'np-cate',
+        'cate_name' : '기타',
+        'user_name' : 'no-user',
+        'select_date' : date,
+        })
+    else :
         print("전체")
         todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate),
         priority = TodoPriority.objects.get(id = priority), date = date)
@@ -231,6 +260,7 @@ def add_todo(request, date):
         'user_name' : 'no-user',
         'select_date' : date,
         })
+
     
     return res
 
@@ -333,16 +363,42 @@ def done_todo(request, date, todo_id):
 
 @csrf_exempt
 @login_required
+def not_done_todo(request, date, todo_id):
+    todo = get_object_or_404(Todo, id = todo_id)
+    todo.is_done = False
+    todo.is_done_date = None
+    todo.save()
+
+    return redirect(f'/home/todo/'+date +'/')
+
+@csrf_exempt
+@login_required
 def postpone_todo(request, date, todo_id):
     todo = Todo.objects.get(id = todo_id)
     todo.is_postpone = True
     nextdate = datetime.strptime(date, "%Y-%m-%d")
     nextdate = nextdate + timedelta(days=1)
-    
     todo.date = nextdate
     todo.save()
 
+
     return redirect('home:date_todo', date=date)
+
+def postpone_today_todo(request, date, todo_id):
+    todo = get_object_or_404(Todo, id = todo_id)
+    todo.is_not_done_today = True
+    todo.save()
+    
+    today_todo = todo
+    today_todo.id = None;
+    today_todo.is_not_done_today = False
+    today_todo.is_postpone = True
+    today_todo.date = datetime.now()
+    print(today_todo.date)
+
+    today_todo.save()
+
+    return redirect('/home/prev_todo/'+date)
 
 @csrf_exempt
 @login_required
