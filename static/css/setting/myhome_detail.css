@@ -146,11 +146,17 @@
     margin-right: 2rem;
 }
 
-.myhome-roommate__column>img {
+.myhome-roommate__column>a>img {
     border-radius: 50%;
     width: 10rem;
     height: 10rem;
+    transition: all 0.2s ease-in-out;
 }
+
+.myhome-roommate__column>a>img:hover {
+    opacity: 0.7;
+}
+
 
 .myhome-roommate__column i {
     font-size: 10rem;

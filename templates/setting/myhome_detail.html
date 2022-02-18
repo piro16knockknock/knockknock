@@ -84,7 +84,8 @@
             <div class="myhome-roommate__row">
                 {% for roommate in roommates %}
                 <div class="myhome-roommate__column">
-                    <img class="cal-profile-img" src={% if roommate.profile_img %}"{{roommate.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                    <a href="{% url 'setting:roommate_list' %}"><img class="cal-profile-img" src={% if roommate.profile_img %}"{{roommate.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}></a>
+                    
                     {% comment %}
                     {% if roommate.profile_img %}
                     <img src="{{ roommate.profile_img.url }}" height="220" width="220" />
