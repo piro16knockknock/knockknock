@@ -124,7 +124,7 @@ def mypage(request):
            'preroommates_dict': preroommates_dict }
     return render(request, 'login/mypage.html', ctx)
 
-#로그인 기능
+#회원가입 기능
 def sign_up(request):
     if request.method == "POST":
         if request.POST["password"] == request.POST["password2"]:
@@ -132,12 +132,13 @@ def sign_up(request):
             user = User.objects.create_user(
                 username=request.POST.get("username"),
                 password=request.POST.get("password"),
+                email=request.POST.get("email"),
                 nick_name=request.POST.get("nick_name"),
                 gender=request.POST.get("gender"),
             )            
             login(request, user)
-
             return redirect('/')
+        messages.warning(request, "비밀번호 두 개가 다릅니다.")
         return render(request, 'login/sign_up.html')
     return render(request, 'login/sign_up.html')
 
@@ -177,3 +178,12 @@ def user_update(request):
         'form': form
     }
     return render(request, 'login/user_update.html', context)
+
+@csrf_exempt
+def check_username(request):
+    req = json.loads(request.body)
+    username = req['username']
+    if( User.objects.filter(username=username).exists() ):
+        return JsonResponse({'is_available' : False, 'input_name': username })
+    else:
+        return JsonResponse({'is_available' : True, 'input_name': username })
