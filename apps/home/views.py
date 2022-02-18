@@ -499,9 +499,10 @@ def guideline(request):
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = expense_answer, is_guideline=True)
 
         # 5. 공유 품목
-        
-        share = request.POST.get('share')
-        share_answer = '공유 품목 '+share
+        share = {}
+        share = request.POST.getlist('share[]')
+        share_answer = '공유 품목 '+ "  ".join(share)
+
         LivingRuleCate.objects.get_or_create(name = '생필품', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="생필품")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = share_answer, is_guideline=True)
