@@ -180,6 +180,18 @@ def user_update(request):
     }
     return render(request, 'login/user_update.html', context)
 
+def profile_update(request):
+    if request.method == 'POST':
+        request.user.profile_img = request.FILES['represent']
+        request.user.save()
+        return redirect('login:mypage')
+    else:
+        form = UserUpdateForm(instance=request.user)
+    context = {
+        'form': form
+    }
+    return render(request, 'login/profile_update.html', context)
+
 @method_decorator(csrf_exempt, name="dispatch")
 def check_username(request):
     req = json.loads(request.body)
