@@ -130,11 +130,14 @@
                                                 <div class="past-record__preroommates">
                                                 {% for preroommate in preroommates_dict|get_item:prehome.home.name %}
                                                     <div class="past-record__preroommates-profile">
+                                                    <img class="cal-profile-img" src={% if preroommate.user.profile_img %}"{{preroommate.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                                                    {% comment %}
                                                     {% if preroommate.user.profile_img %}
                                                     <img src="{{ preroommate.user.profile_img.url }}" />
                                                     {% else %}
                                                     <i class="fas fa-user-circle"></i>
                                                     {% endif %}
+                                                    {% endcomment %}
                                                     <p>{{ preroommate.user.nick_name }}</p>
                                                     </div>
                                                 {% endfor %}

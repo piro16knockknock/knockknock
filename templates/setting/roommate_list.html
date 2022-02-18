@@ -36,11 +36,15 @@
             <ul class="roommate-list__container">
                 {% for roommate in roommates %}
                 <li class="roommate-list__user">
+                    <img class="cal-profile-img" src={% if roommate.profile_img %}"{{roommate.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                    {% comment %}
                     {% if roommate.profile_img %}
                     <img src="{{ roommate.profile_img.url }}" />
                     {% else %}
                     <i class="fas fa-user-circle"></i>
                     {% endif %}
+                    {% endcomment %}
+
                     <p class="roommate-list__user__name">{{ roommate.nick_name }}</p>
                     <a data-bs-toggle="modal" data-bs-target="#roommateProfileModal-{{ roommate.pk }}"
                         class="roommate-list__btn">프로필 보기</a>
@@ -56,11 +60,16 @@
                                 </div>
                                 <div class="modal-body roommate-list__modal">
                                     <div class="roommate-list__modal-profile text-center">
+                        
+                                        <img class="cal-profile-img" src={% if roommate.profile_img %}"{{roommate.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                                        {% comment %}
                                         {% if roommate.profile_img %}
                                         <img src="{{ roommate.profile_img.url }}" />
                                         {% else %}
                                         <i class="fas fa-user-circle"></i>
                                         {% endif %}
+                                        {% endcomment %}
+
                                         <p>{{ roommate.nick_name }}</p>
                                     </div>
                                     <div class="roommate-list__modal-title">
@@ -112,11 +121,15 @@
             <ul class="roommate-list__container">
                 {% for invite_user in invite_users %}
                 <li class="roommate-list__user roommate-id-{{ invite_user.pk }}">
+                    <img class="cal-profile-img" src={% if invite_user.profile_img %}"{{invite_user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                    {% comment %}
                     {% if invite_user.profile_img %}
                     <img src="{{ invite_user.profile_img.url }}" height="220" width="220" />
                     {% else %}
                     <i class="fas fa-user-circle"></i>
                     {% endif %}
+                    {% endcomment %}
+                    
                     <p class="roommate-list__user__name">{{ invite_user.nick_name }}</p>
                     <p style="text-align: center;">룸메이트가 아직 초대에 수락하지 않았습니다.</p>
                     <button type="button" onclick="onClickInviteCancel({{ invite_user.pk }})"
