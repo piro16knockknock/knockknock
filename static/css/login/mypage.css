@@ -104,19 +104,6 @@
     font-size: 1.4rem;
 }
 
-.past-record tr:nth-child(1){
-    padding: 1rem;
-    padding-right: 9.5rem;
-
-    display: flex;
-    justify-content: space-around;
-}
-
-.past-record tr:nth-child(2){
-    display: flex;
-    justify-content: space-between;
-}
-
 
 /*이전집 기록 보기, 이사하기, 생활수칙보기*/
 #moveHomeModal {
