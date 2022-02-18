@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import HomeForm, UtilityForm
 from login.models import User, Notice, Title
@@ -31,14 +32,16 @@ def invite_link(request, link, pk):
 
 #룸메이트 취소
 @csrf_exempt
+@login_required
 def invite_cancel(request):
     req = json.loads(request.body)
     user_id = req['invite_cancel_id']
-    recieve_user = User.objects.get(pk=user_id)
-    Invite.objects.filter(receive_user=recieve_user, home=request.user.home).delete()
+    receive_user = User.objects.get(pk=user_id)
+    Invite.objects.filter(receive_user=receive_user, home=request.user.home).delete()
     return JsonResponse({'id': user_id })
     
 #룸메이트 목록
+@login_required
 def roommate_list(request):
     roommates = User.objects.filter(home=request.user.home)
     roommates = roommates.exclude(nick_name=request.user.nick_name)
@@ -62,6 +65,7 @@ def roommate_list(request):
 
 #집 등록
 @csrf_exempt
+@login_required
 def check_homename(request):
     req = json.loads(request.body)
     home_name = req['home_name']
@@ -75,6 +79,7 @@ def create_invite_link():
     link = base64.urlsafe_b64encode(link).decode()[:13]
     return link
 
+@login_required
 def myhome_register(request):
     if request.method == 'POST':
         home_form = HomeForm(request.POST)
@@ -129,6 +134,7 @@ def myhome_register(request):
         return render(request, 'setting/myhome_form.html')
 
 # 집 디테일
+@login_required
 def myhome_detail(request):
     current_user = request.user
     current_home = current_user.home
@@ -148,6 +154,7 @@ def myhome_detail(request):
 
 #집 업데이트
 @csrf_exempt
+@login_required
 def myhome_update(request):
     req = json.loads(request.body)
     home_name = req['home_name']
@@ -175,6 +182,7 @@ def myhome_update(request):
 
 #노크 승낙
 @csrf_exempt
+@login_required
 def accept_knock(request):
     req = json.loads(request.body)
     user_id = req['user_id']
@@ -196,6 +204,7 @@ def accept_knock(request):
 
 #노크 거절
 @csrf_exempt
+@login_required
 def reject_knock(request):
     req = json.loads(request.body)
     user_id = req['user_id']
@@ -207,6 +216,7 @@ def reject_knock(request):
 
 
 #(유저가)노크 취소하기
+@login_required
 def knock_cancel(request):
     Knock.objects.filter(user=request.user).delete()
     
@@ -214,6 +224,7 @@ def knock_cancel(request):
 
 #노크하기
 @csrf_exempt
+@login_required
 def knock_home(request):
     req = json.loads(request.body)
     homename = req['homename']
@@ -231,6 +242,7 @@ def knock_home(request):
 
 #초대링크로 노크
 @csrf_exempt
+@login_required
 def link_knock(request):
     req = json.loads(request.body)
     homename = req['home_name']
@@ -242,6 +254,7 @@ def link_knock(request):
 
 #집 검색하기
 @csrf_exempt
+@login_required
 def search_home(request):
     req = json.loads(request.body)
     search_word = req['search_word']
@@ -257,6 +270,7 @@ def search_home(request):
 
 #초대하기
 @csrf_exempt
+@login_required
 def invite_roommate(request):
     req = json.loads(request.body)
     invite_list = req['invite_list']
@@ -272,6 +286,7 @@ def invite_roommate(request):
 
 #초대 검색
 @csrf_exempt
+@login_required
 def search_user(request):
     req = json.loads(request.body)
     search_word = req['search_word']
@@ -297,6 +312,7 @@ def search_user(request):
     return JsonResponse( { "user_list" : search_list } )
 
 #초대 수락하기
+@login_required
 def accept_invite(request):
     user = request.user
     user.invite.is_accepted = True
