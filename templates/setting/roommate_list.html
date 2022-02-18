@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/home/pie_chart.css' %}">
+{% endblock %}
+
 {% block script %}
 <script defer src="{% static 'js/setting/roommate_list.js' %}" type="text/javascript"></script>
+<script defer src="{% static 'js/pie_chart.js' %}" type="text/javascript"></script>
+<script defer src="{% static 'js/setting/pie_chart.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
@@ -68,6 +74,20 @@
                                     <div class="roommate-list__modal-title">
                                         <p>달성률</p>
                                         <hr />
+                                        <div class="chart-container">
+                                            <div class="user-ratio px-3">
+                                                <div class="chart" data-percent="{{ roommate_ratio|get_item:roommate.nick_name }}" data-bar-color="#ff4241">
+                                                    <span class="percent" data-after="%">{{ roommate_ratio|get_item:roommate.nick_name }}%</span>
+                                                </div>
+                                                <p>{{ roommate.nick_name }}</p>
+                                            </div>
+                                            <div class="total-ratio px-3">
+                                                <div class="chart" data-percent="{{ total_complete_ratio }}" data-bar-color="#ff4241">
+                                                    <span class="percent" data-after="%">{{ total_complete_ratio }}%</span>
+                                                </div>
+                                                <p>우리집</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

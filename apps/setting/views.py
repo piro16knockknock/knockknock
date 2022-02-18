@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import HomeForm, UtilityForm
-from login.models import User, Notice, Title
-from home.models import TodoCate
+from login.models import *
+from home.models import *
 from .models import *
+from datetime import datetime
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -53,13 +54,37 @@ def roommate_list(request):
             invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
             
     roommate_titles = {}
+    
+    roommate_ratio = {}
+    today = datetime.now()
+    #전체 달성률
+    today_string = f'{today.year}-{today.month}-{today.day}'
+    total_todos = Todo.objects.filter(home = request.user.home, date = today_string)
+    complete_total_todos = total_todos.filter(is_done=True)
+    if total_todos.count() == 0:
+        total_compelete_ratio = 0
+    else:
+        total_compelete_ratio = complete_total_todos.count() / total_todos.count()
+        
     for roommate in roommates:
         roommate_titles[roommate.nick_name] = Title.objects.filter(user=roommate)
+    
+        #룸메이트 달성률
+        user_todos = total_todos.filter(user=roommate)
+        complete_user_todos = total_todos.filter(is_done = True, user=roommate)
+        if user_todos.count() == 0:
+            user_compelete_ratio = 0
+        else:
+            user_compelete_ratio = complete_user_todos.count() / user_todos.count()
+            
+        roommate_ratio[roommate.nick_name] = int(user_compelete_ratio * 100)
     
     ctx = {
         'roommates' : roommates,
         'invite_users' : invite_users,
         'roommate_titles' : roommate_titles,
+        'roommate_ratio' : roommate_ratio,
+        'total_complete_ratio' : int(total_compelete_ratio * 100),
     }
     return render(request, 'setting/roommate_list.html', context=ctx)
 
