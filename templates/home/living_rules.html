@@ -24,7 +24,7 @@
         <div class="living-rule">
             <button type="button" class="category"  >
                 <h3 class="category-name">
-                    <a href="{% url 'home:living_rule_new' %}">{{ cate.name }}</a>
+                    <a href="{% url 'home:living_rule_new' cate.pk %}">{{ cate.name }}</a>
                     <i class="fa-solid fa-plus"></i>  
                 </h3>
     

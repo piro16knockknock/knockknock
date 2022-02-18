@@ -411,11 +411,12 @@ def delete_cate(request):
 
 # 생활수칙관련
 def living_rules(request):
-    cates = LivingRuleCate.objects.all()
+    cates = LivingRuleCate.objects.filter(home=request.user.home)
     order_rules = {}
-    for c in cates:
-        rules = LivingRule.objects.filter(cate=c)
-        order_rules[c] = rules
+    for cate in cates:
+        rules = LivingRule.objects.filter(home=request.user.home, cate=cate)
+        order_rules[cate] = rules
+        
     ctx = {
         'order_rules': order_rules,
     }
@@ -423,12 +424,12 @@ def living_rules(request):
 
 
 
-def living_rule_new(request):
+def living_rule_new(request, pk):
     if request.method == "POST":
         form = LivingRuleForm(request.POST)
         if form.is_valid():
-            print("here")
             rule = form.save()
+            rule.cate = get_object_or_404(LivingRuleCate, id=pk)
             rule.home = request.user.home
             rule.save()
             return redirect('home:living_rules')
@@ -442,20 +443,17 @@ def living_rule_new(request):
 
 
 def living_rule_edit(request, pk):
-    print('edit')
     
     rule = get_object_or_404(LivingRule, pk=pk)
+    print(rule.cate)
     if request.method == "POST":
-        form = LivingRuleForm(request.POST, instance=rule)
-        if form.is_valid():
-            print(form)
-            rule = form.save()
-            cate = rule.cate
-            return redirect('home:living_rules')
-    else:
-        form = LivingRuleForm(instance=rule)
+        print(request.POST.get('content'))
+        rule.content = request.POST.get('content')
+        rule.save()
+        return redirect('home:living_rules')
+ 
     ctx = {
-        'form': form
+        'value': rule.content
     }
     return render(request, 'home/living_rules_form.html', context=ctx)
 
