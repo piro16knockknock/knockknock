@@ -8,6 +8,7 @@ urlpatterns = [
     path('myhome/register/', views.myhome_register, name='myhome_register'),
     path('myhome/detail/', views.myhome_detail, name='myhome_detail'),
     
+    path('myhome/knock_link_search/', views.knock_link_search, name='knock_link_search'),
     path('myhome/search_home/', views.search_home, name='search_home'),
     path('myhome/knock_home/', views.knock_home, name='knock_home'),
     path('myhome/knock_cancel/', views.knock_cancel, name='knock_cancel'),
