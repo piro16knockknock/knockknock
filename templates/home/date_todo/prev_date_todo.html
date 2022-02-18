@@ -66,7 +66,23 @@
                             <p class="cate-name">미완료</p>
                             {% if no_complete_todos.count is not 0 %}
                             {% for todo in no_complete_todos %}
-                                {% if todo.is_done is False%}
+                                {% if todo.is_not_done_today %}
+                                <div class="no-user-todo is_not_done_today todo-id-{{ todo.id }} todo-box">
+                                    <div class="user-todo-head">
+                                        <p>{{ todo.priority.content }}</p>
+                                        <i class="fa-solid fa-fire priority-{{ todo.priority.priority_num }}"></i>
+                                    </div>
+                                    <div class="all-todo-cnt todo-cnt">
+                                        <div class="todo-profile-box">
+                                            <img class="cal-profile-img" src={% if user.profile_img %}"{{todo.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                                        </div>
+                                        <p class="all-todo-text">{{ todo.content }}</p>
+                                   </div>
+                                    <div class="todo-bottom">
+                                        <p class="btn">오늘로 미뤄짐</p>
+                                    </div>
+                                </div>
+                                {% else %}
                                 <div class="no-user-todo todo-id-{{ todo.id }} todo-box">
                                     <div class="user-todo-head">
                                         <p>{{ todo.priority.content }}</p>
@@ -79,7 +95,7 @@
                                         <p class="all-todo-text">{{ todo.content }}</p>
                                    </div>
                                     <div class="todo-bottom">
-                                        <a class="postpone-btn btn btn-light" onclick="isDoneBtn(this, '{{ select_date }}', '{{ todo.id }}')">오늘 하기</a>
+                                        <a class="postpone-btn btn btn-light" href="/home/todo/{{ select_date }}/{{ todo.id }}/postpone_today">오늘 하기</a>
                                     </div>
                                 </div>
                                 {% endif %}
