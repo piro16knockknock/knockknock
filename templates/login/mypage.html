@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login/mypage.css' %}?after %}">
+{% endblock %}
+
 {% block script %}
 <script defer src="{% static 'js/login/mypage.js' %}" type="text/javascript"></script>
 {% endblock %}
