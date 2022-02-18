@@ -1,4 +1,5 @@
 const user_name = document.getElementById('signup-register-name');
+const email = document.getElementById('signup-register-email');
 
 const search_input = document.querySelector('#signup-register__search-input');
 if(search_input){
@@ -7,10 +8,10 @@ if(search_input){
         onSearchHomeList(search_input.value);
     });    
 }
-
+let check_name = ""
 const onClickCheckUserName = async() => {
   if(user_name.value == "") return;
-  const url = "../../sign_up/check_username/";
+  const url = "check_username/";
   const res = await fetch(url, {
       method: 'POST',
       headers: {
@@ -40,4 +41,19 @@ const checkUserNameHandleResponse = (is_available, input_name) => {
   }
   // 중복임 =>경고
   user_name.value = "";
+}
+
+const userRegisterHandleSubmit = (event) => {
+  
+  if (user_name.value == "") {
+      alert('입력하지 않은 항목이 있습니다.');
+      event.preventDefault();
+      return;
+  }
+  
+  if (user_name.value != check_name ){
+      alert("아이디 중복 확인을 먼저 해주세요.");
+      event.preventDefault();
+      return;
+  }
 }

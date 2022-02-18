@@ -136,7 +136,7 @@ def sign_up(request):
                 nick_name=request.POST.get("nick_name"),
                 gender=request.POST.get("gender"),
             )            
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/')
         messages.warning(request, "비밀번호 두 개가 다릅니다.")
         return render(request, 'login/sign_up.html')
@@ -182,8 +182,17 @@ def user_update(request):
 @csrf_exempt
 def check_username(request):
     req = json.loads(request.body)
-    username = req['username']
+    username = req['user_name']
     if( User.objects.filter(username=username).exists() ):
         return JsonResponse({'is_available' : False, 'input_name': username })
     else:
         return JsonResponse({'is_available' : True, 'input_name': username })
+    
+@csrf_exempt
+def check_email(request):
+    req = json.loads(request.body)
+    email = req['email']
+    if( User.objects.filter(email=email).exists() ):
+        return JsonResponse({'is_available' : False, 'input_name': email })
+    else:
+        return JsonResponse({'is_available' : True, 'input_name': email })
