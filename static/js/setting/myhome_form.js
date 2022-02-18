@@ -1,3 +1,39 @@
+/*초대 링크 */
+const link_input = document.getElementById('myhome-register__link-input');
+link_input.addEventListener('keyup', function(event){ //엔터시에도
+    console.log("here");
+    if (event.code === "Enter") {
+        onClickKnockLinkSearch();
+    }  
+});
+
+const onClickKnockLinkSearch = async() => {
+    const url = "../../myhome/knock_link_search/";
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'link_input': link_input.value
+        })
+    });
+    const {
+        is_exist : is_exist
+    } = await res.json()
+    knockLinkHandleResponse(is_exist);
+}
+
+const knockLinkHandleResponse = (is_exist) => {
+    if(is_exist){
+        location.href = link_input.value;
+    }else{
+        alert("없는 초대링크 입니다.");
+    }
+
+}
+
+
 /**집 노크하기(검색하기) */
 /*집 검색창 - ajax*/
 const search_input = document.querySelector('#myhome-register__search-input');

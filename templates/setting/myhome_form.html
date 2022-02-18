@@ -9,17 +9,41 @@
 <script defer src="{% static 'js/setting/myhome_form.js' %}" type="text/javascript"></script>
 {% endblock %}
 {% block content %}
-<ul class="nav nav-tabs my-3 mx-5">
-    <li class="nav-item">
-      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#myhome-register-form" type="button">집 등록하기</button>
+<ul class="nav nav-pills my-5 mx-5">
+    <li class="tab-nav-item">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#myhome-register-search" type="button">집 검색하기</button>
     </li>
-    <li class="nav-item">
-      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#myhome-register-search" type="button">집 검색하기</button>
+    <li class="tab-nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#myhome-register-link" type="button">초대링크 입력하기</button>
     </li>
+    <li class="tab-nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#myhome-register-form" type="button">집 등록하기</button>
+    </li>
+
 </ul>
 
 <div class="myhome-register tab-content">
-    <div id="myhome-register-form" class="myhome-info tab-pane fade show active">
+    <div id="myhome-register-search" class="tab-pane fade show active">
+        <p class="myhome-register__title">집 검색</p>
+        <hr/>
+        {% if knock %}
+        <div class="myhome-register__search-container mb-5">
+            <p class="myhome-register__empty">현재 {{ knock.receive_home.name }}의 노크 수락을 기다리고 있습니다.</p>
+        </div>
+        <div class="myhome-register__search-container">
+            <a href="{% url 'setting:knock_cancel' %}" type="button" class="btn">노크 취소하기</a>
+        </div>        
+        {% else %}
+        <div class="myhome-register__search-container">
+            <input type="text" id="myhome-register__search-input" placeholder="노크할 집을 검색하세요." />
+            <a onclick="onClickKnockHome()" type="button" class="btn">노크하기</a>
+        </div>
+        <div class="form-check">
+            <!--집 검색 결과 리스트가 나타날 곳-->
+        </div>
+        {% endif %}
+    </div>
+    <div id="myhome-register-form" class="myhome-info tab-pane fade">
         <p class="myhome-register__title">집 정보</p>
         <hr/>
         <form action="" onsubmit="homeRegisterHandleSubmit(event)" method="POST" enctype="multipart/form-data">
@@ -66,26 +90,15 @@
             <button type="submit" onclick="" id="myhome-register__register-btn" class="myhome-register__btn">집 등록</button>
         </form>
     </div>
-    <div id="myhome-register-search" class="tab-pane fade">
-        <p class="myhome-register__title">집 검색</p>
+    <div id="myhome-register-link" class="tab-pane fade">
+        <p class="myhome-register__title">초대링크 입력하기</p>
         <hr/>
-        {% if knock %}
-        <div class="myhome-register__search-container mb-5">
-            <p class="myhome-register__empty">현재 {{ knock.receive_home.name }}의 노크 수락을 기다리고 있습니다.</p>
+        <div class="myhome-register__link-container">
+            <input type="text" id="myhome-register__link-input" placeholder="초대링크를 입력하세요." />
+            <a onclick="onClickKnockLinkSearch()" type="button" class="btn">노크하러 가기</a>
         </div>
-        <div class="myhome-register__search-container">
-            <a href="{% url 'setting:knock_cancel' %}" type="button" class="btn">노크 취소하기</a>
-        </div>        
-        {% else %}
-        <div class="myhome-register__search-container">
-            <input type="text" id="myhome-register__search-input" placeholder="노크할 집을 검색하세요." />
-            <a onclick="onClickKnockHome()" type="button" class="btn">노크하기</a>
-        </div>
-        <div class="form-check">
-            <!--집 검색 결과 리스트가 나타날 곳-->
-        </div>
-        {% endif %}
     </div>
+    
 </div>
 
 
