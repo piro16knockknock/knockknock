@@ -46,6 +46,14 @@
     <div id="myhome-register-form" class="myhome-info tab-pane fade">
         <p class="myhome-register__title">집 정보</p>
         <hr/>
+        {% if knock %}
+        <div class="myhome-register__search-container mb-5">
+            <p class="myhome-register__empty">현재 {{ knock.receive_home.name }}의 노크 수락을 기다리고 있습니다.</p>
+        </div>
+        <div class="myhome-register__search-container">
+            <a href="{% url 'setting:knock_cancel' %}" type="button" class="btn">노크 취소하기</a>
+        </div>        
+        {% else %}
         <form action="" onsubmit="homeRegisterHandleSubmit(event)" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <p class="myhome-register__row">
@@ -89,14 +97,24 @@
             </p>
             <button type="submit" onclick="" id="myhome-register__register-btn" class="myhome-register__btn">집 등록</button>
         </form>
+        {% endif %}
     </div>
     <div id="myhome-register-link" class="tab-pane fade">
         <p class="myhome-register__title">초대링크 입력하기</p>
         <hr/>
+        {% if knock %}
+        <div class="myhome-register__search-container mb-5">
+            <p class="myhome-register__empty">현재 {{ knock.receive_home.name }}의 노크 수락을 기다리고 있습니다.</p>
+        </div>
+        <div class="myhome-register__search-container">
+            <a href="{% url 'setting:knock_cancel' %}" type="button" class="btn">노크 취소하기</a>
+        </div>        
+        {% else %}
         <div class="myhome-register__link-container">
             <input type="text" id="myhome-register__link-input" placeholder="초대링크를 입력하세요." />
             <a onclick="onClickKnockLinkSearch()" type="button" class="btn">노크하러 가기</a>
         </div>
+        {% endif %}
     </div>
     
 </div>
