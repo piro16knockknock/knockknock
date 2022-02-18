@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -30,7 +31,7 @@ def intro(request):
     if request.user.is_authenticated :
         today = DateFormat(datetime.now()).format('Y-m-d')
         today_url = '/home/todo/' + str(today)
-        user_todos = Todo.objects.filter(user=request.user)[:2]
+        user_todos = Todo.objects.filter(user=request.user, date = datetime.now(), is_done=False)[:3]
         ctx = {
             'username' : request.user.username,
             'today_date' : today,
@@ -43,6 +44,7 @@ def intro(request):
 
 #이전집 생활수칙 가져오기
 @csrf_exempt
+@login_required
 def take_prelivingrule(request):
     current_home = request.user.home
     req = json.loads(request.body)
@@ -57,6 +59,7 @@ def take_prelivingrule(request):
     return redirect('login:mypage')
 
 #이전집 기록 보기
+@login_required
 def prehome_list(request):
     prehome_infos = LiveIn.objects.filter(user=request.user)
     prehome_infos = prehome_infos.filter(end_date__isnull=False)
@@ -92,6 +95,7 @@ def prehome_list(request):
     return prehome_infos, prehome_dict, preroommates_dict
 
 #이사하기
+@login_required
 def leave_home(request):
     current_user = request.user
     #end_date 저장
@@ -111,6 +115,7 @@ def leave_home(request):
     return redirect('login:mypage')
 
 #mypage
+@login_required
 def mypage(request):
     prehomes, prehome_dict, preroommates_dict = prehome_list(request)
     

@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login/mypage.css' %}?after %}">
+{% endblock %}
+
 {% block script %}
 <script defer src="{% static 'js/login/mypage.js' %}" type="text/javascript"></script>
 {% endblock %}
@@ -50,7 +55,7 @@
                             <p>등록된 집이 없습니다.</p>
                         {% endif %}
                         {% if request.user.home %}
-                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#moveHomeModal">이사하기</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#moveHomeModal">이사하기</button>
                         {% endif %}
                         {% if request.user.invite and request.user.invite.is_accepted is False %}
                             <p>초대가 왔어요!</p>
@@ -107,7 +112,7 @@
                             <tr>
                                 <td>{{prehome.start_date}} ~ {{prehome.end_date}}</td>
                                 <td>{{prehome.home.name}}</td>
-                                <td><a class="btn btn-outline-primary" data-bs-toggle="modal"
+                                <td><a class="btn btn-green" data-bs-toggle="modal"
                                         data-bs-target="#prehomeRuleModal-{{prehome.pk}}">생활수칙
                                         보기</a></td>
                 
@@ -125,11 +130,14 @@
                                                 <div class="past-record__preroommates">
                                                 {% for preroommate in preroommates_dict|get_item:prehome.home.name %}
                                                     <div class="past-record__preroommates-profile">
+                                                    <img class="cal-profile-img" src={% if preroommate.user.profile_img %}"{{preroommate.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                                                    {% comment %}
                                                     {% if preroommate.user.profile_img %}
                                                     <img src="{{ preroommate.user.profile_img.url }}" />
                                                     {% else %}
                                                     <i class="fas fa-user-circle"></i>
                                                     {% endif %}
+                                                    {% endcomment %}
                                                     <p>{{ preroommate.user.nick_name }}</p>
                                                     </div>
                                                 {% endfor %}
@@ -153,10 +161,10 @@
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                                 {% if request.user.home %}
                                                 <a href="#" onclick="takePrehomeRecord({{prehome.pk}})"
-                                                    id="past-record__take-btn-{{prehome.pk}}" class="btn btn-outline-primary">생활수칙
+                                                    id="past-record__take-btn-{{prehome.pk}}" class="btn btn-green">생활수칙
                                                     가져오기</a>
                                                 <a onclick="savePrehomeRecord({{prehome.pk}})" id="past-record__save-btn-{{prehome.pk}}"
-                                                    class="btn btn-outline-danger past-record__display-none">저장하기</a>
+                                                    class="btn btn-danger past-record__display-none">저장하기</a>
                                                 {% endif %}
                                             </div>
                                         </div>
