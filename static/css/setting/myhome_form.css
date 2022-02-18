@@ -14,6 +14,10 @@
     border: .2rem solid rgb(137, 186, 159);
 }
 
+.myhome-register__home-list {
+    margin: 0 4rem;
+}
+
 .myhome-register__home-list > .form-radio-input{
     border: 1px solid black;
     cursor: pointer;
@@ -106,10 +110,6 @@
     padding: .3rem;
 }
 
-.myhome-register__row__homename>input {
-    width: 40rem;
-}
-
 /*전세 월세 버튼*/
 .myhome-info__rent-or-utility {
     display: flex;
@@ -183,6 +183,12 @@
     padding: .5rem 1.5rem;
     color: rgb(255, 197, 109);
     border-radius: 5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.myhome-register__btn:hover {
+    background-color: rgb(255, 197, 109);
+    color: white;
 }
 
 /*공과금*/
@@ -200,4 +206,9 @@
 .myhome-register__row__add-utility {
     margin: 1rem 0;
     font-size: 3rem;
+    transition: all 0.2s ease-in-out;
+}
+.myhome-register__row__add-utility:hover {
+    cursor: pointer;
+    color: rgb(137, 186, 159);
 }

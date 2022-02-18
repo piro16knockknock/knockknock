@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/setting/invite_link.css' %}?after %}">
+{% endblock %}
+
 {% block script %}
 <script>
     const inviteLinkAlert = (home_name) =>{

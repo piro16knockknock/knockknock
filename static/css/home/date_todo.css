@@ -384,3 +384,7 @@ input {
 .select-todo-priority {
     font-size: 1.4rem;
 }
+
+.is_not_done_today {
+    border : 0.3rem solid #979797;
+}
