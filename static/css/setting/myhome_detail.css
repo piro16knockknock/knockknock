@@ -1,3 +1,18 @@
+.nav-pills {
+    justify-content: start;
+    align-items: center;
+    font-size: 1.4rem;
+    border-bottom: 0.3px solid #ddd;
+}
+
+.nav-pills .nav-link.active{
+    background-color: #3d3d3d;
+}
+
+.nav-pills .nav-link {
+    color: black;
+}
+
 .myhome-detail {
     display: flex;
     justify-content: center;
@@ -146,11 +161,17 @@
     margin-right: 2rem;
 }
 
-.myhome-roommate__column>img {
+.myhome-roommate__column>a>img {
     border-radius: 50%;
     width: 10rem;
     height: 10rem;
+    transition: all 0.2s ease-in-out;
 }
+
+.myhome-roommate__column>a>img:hover {
+    opacity: 0.7;
+}
+
 
 .myhome-roommate__column i {
     font-size: 10rem;
