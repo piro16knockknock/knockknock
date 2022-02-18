@@ -49,7 +49,7 @@ class LivingRuleCate(models.Model):
         return "[" + self.home.name + "]" + self.name
     
 class LivingRule(models.Model):
-    cate = models.ForeignKey(LivingRuleCate, on_delete=models.CASCADE, related_name='living_rule')
+    cate = models.ForeignKey(LivingRuleCate, on_delete=models.CASCADE, related_name='living_rule', blank=True, null=True)
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name='living_rule', blank=True, null=True)
     content = models.CharField(max_length=50)
     create_at = models.DateTimeField(auto_now_add=True)

@@ -1,42 +1,90 @@
 
 
-.living-rules{
-    font-family: "ptsans", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+.living-rules-container{
     text-align: center;
     font-size: 2rem;
     margin: auto;
     position: absolute;
     left: 50%;
-    top: 30%;
+    top: 55%;
     transform: translate(-50%, -50%);
 }
 
-.title{
-    font-size: 2.5rem;
+.living-rule{
+    width: 51rem;
+    padding-bottom: 3rem;
+}
+
+
+
+.living-rules-container h2{
+    font-size: 2.2rem;
     padding: 3rem;
+}
+
+.living-rules{
+    padding-top: 5rem;
+    padding-left: 7rem;
 }
 
 .category{
     text-align: left;
-    padding: 1.2rem 3rem;
+    padding: 0.6rem 3.5rem 0.6rem 1.3rem;
     display: flex;
     justify-content: flex-start;
+    background-color: #dddddd;
+    border-radius: 0.5rem;
 
 }
 
-.category > a > span{
-    position: absolute;
+.category-name i{
+    color: #454545;
+    padding-left: 0.8rem;
 
-    transform: translate(10%, -20%);
+    position: absolute;
+    transform: translate(10%, 0%);
 }
 
 .category-name{
+    font-size: 1.8rem;
     display: inline;
     text-align: left;
 }
 
+.living-rule li{
+    font-size: 1.8rem;
+    text-align: left;
+    padding: 1rem;
+
+}
+
+.rule-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.rule-content button{
+    font-size: 1.2rem;
+    padding: 0.3rem 0.6rem;
+    margin: 0.3rem;
+    border-radius: 2.5rem;
+}
+
+.edit-btn{
+    outline: solid 1.5px #363636;
+}
+
+.del-btn{
+    color: #FF6745;
+    outline: solid 1.5px #FF6745;
+}
 
 
+
+
+.living-rules ul{
+    align-items: center
+}
 
 
 

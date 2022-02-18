@@ -2,31 +2,54 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/home/living_rules.css' %}">
-<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#guidelinemodal">가이드라인 모달</button>
-<div class="living-rules">
-    <div class="title">생활수칙</div>
-    {% for cate, rules in order_rules.items %}
-    <button type="button" class="category"  >
-        <h3 class="category-name"><a href="{% url 'home:living_rules' %}">{{ cate.name }}</a></h3>
-        <a href="{% url 'home:living_rule_new' %}">
-            <span class="material-icons-outlined">add_circle_outline</span>
-        </a>
-    </button>
 
-
-
-    <ul>
-        {% for m in rules %}
-            <li>
-                {{ m.content }}
-                <a href="{% url 'home:living_rule_edit' pk=m.pk %}">수정</a>
-                <a href="{% url 'home:living_rule_delete' pk=m.pk %}">삭제</a>
-            </li>
-
-        {% endfor %}
+<div class="side-nav">
+    <ul class="d-flex">
+        <li>생활관리&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
+        <li><a href="{%url 'home:calendar' %}" >캘린더</a></li>
+        <li><a href="{%url 'home:living_rules' %}" style="border-bottom: #fbdb67 2px solid;">생활수칙</a></li>
+        <li><a href="">가이드라인</a></li>
     </ul>
+</div>
 
-    {% endfor %}
+<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#guidelinemodal">가이드라인 모달</button>
+
+
+<div class="living-rules-container">
+
+
+    <h2>생활수칙</h2>
+    <div class="living-rules">
+        {% for cate, rules in order_rules.items %}
+        <div class="living-rule">
+            <button type="button" class="category"  >
+                <h3 class="category-name">
+                    <a href="{% url 'home:living_rule_new' %}">{{ cate.name }}</a>
+                    <i class="fa-solid fa-plus"></i>  
+                </h3>
+    
+            </button>
+        
+            <ul>
+                {% for m in rules %}
+                    <li class="rule-content">
+                        <p>{{ m.content }}</p>
+                        <div class="content-btns">
+                            <button class="edit-btn"><a href="{% url 'home:living_rule_edit' pk=m.pk %}">수정</a></button>
+                            <button class="del-btn"><a href="{% url 'home:living_rule_delete' pk=m.pk %}">삭제</a></button>
+    
+                        </div>
+                    </li>
+        
+                {% endfor %}
+            </ul>
+        </div>
+    
+    
+        {% endfor %}
+    </div>
+
+
 </div>
 
 

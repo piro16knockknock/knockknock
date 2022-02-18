@@ -442,10 +442,13 @@ def living_rule_new(request):
 
 
 def living_rule_edit(request, pk):
+    print('edit')
+    
     rule = get_object_or_404(LivingRule, pk=pk)
     if request.method == "POST":
         form = LivingRuleForm(request.POST, instance=rule)
         if form.is_valid():
+            print(form)
             rule = form.save()
             cate = rule.cate
             return redirect('home:living_rules')
@@ -458,6 +461,7 @@ def living_rule_edit(request, pk):
 
 
 def living_rule_delete(request, pk):
+    print('delete')
     rule = get_object_or_404(LivingRule, pk=pk)
     rule.delete()
     return (redirect('home:living_rules'))
@@ -493,7 +497,7 @@ def guideline(request):
        
         # 4. 공과금 및 월세 지출 방식
         expense = request.POST.get('expense')
-        expense_answer = '공과금 및 월세 지출 방식 '+expense
+        expense_answer = '공과금 및 월세 지출은 '+expense
         LivingRuleCate.objects.get_or_create(name = '돈', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="돈")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = expense_answer, is_guideline=True)
