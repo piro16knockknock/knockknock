@@ -148,6 +148,14 @@ def myhome_register(request):
             #기본 ToDo 카테고리
             TodoCate.objects.create(home = current_home, name="빨래")
             TodoCate.objects.create(home = current_home, name="청소")
+            
+            #기본 생활수칙 카테고리
+            LivingRuleCate.objects.create(home = current_home, name = "생활패턴")
+            LivingRuleCate.objects.create(home = current_home, name = "돈")
+            LivingRuleCate.objects.create(home = current_home, name = "생필품")
+            LivingRuleCate.objects.create(home = current_home, name = "다른 사람 초대")
+            LivingRuleCate.objects.create(home = current_home, name = "기타")
+            
             return redirect('setting:myhome_detail')
     else: #get
         print("get")
