@@ -53,7 +53,6 @@ class Invite(models.Model):
 class Knock(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     receive_home = models.ForeignKey(Home, on_delete=models.CASCADE)
-    is_accepted = models.BooleanField(default=False)
     knock_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
