@@ -22,11 +22,11 @@
                 <label>현재 집이름</label>
                 <span id="myhome-info__current-home-name">{{ home_name }}</span>
             </p>
-            <p class="myhome-detail__row myhome-detail__row__homename">
+            <p class="myhome-detail__row">
                 <label>집이름 변경</label>
                 <input type="text" id="new-home-name" placeholder="변경할 집 이름을 입력하세요." maxlength="20" />
-                <button type="button" onclick="onClickCheckHomeName()" class="myhome-detail__btn">중복 확인</button>
-                <span id="myhome-detail-alert"></span>
+                <button type="button" onclick="onClickCheckHomeName()" class="myhome-detail__btn ms-2">중복 확인</button>
+                <span id="myhome-detail-alert" class="ms-2"></span>
             </p>
             <p class="myhome-detail__row">
                 <div class="myhome-detail__row__flex_row">
@@ -105,8 +105,8 @@
                             </div>
                             <nav>
                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                  <button class="nav-link active fs-4" data-bs-toggle="tab" data-bs-target="#roommate-search-tab" type="button" aria-selected="true">직접 검색</button>
-                                  <button class="nav-link fs-4" data-bs-toggle="tab" data-bs-target="#roommate-link-tab" type="button" aria-selected="false">초대 링크</button>
+                                  <button class="nav-link active fs-4 text-dark" data-bs-toggle="tab" data-bs-target="#roommate-search-tab" type="button" aria-selected="true">직접 검색</button>
+                                  <button class="nav-link fs-4 text-dark" data-bs-toggle="tab" data-bs-target="#roommate-link-tab" type="button" aria-selected="false">초대 링크</button>
                                 </div>
                             </nav>
                               <div class="tab-content">
@@ -121,7 +121,7 @@
                                         <button type="button" class="btn btn-secondary myhome-roommate__modal-font"
                                             data-bs-dismiss="modal">닫기</button>
                                         <button type="button" onclick="onClickInvite()"
-                                            class="btn btn-primary myhome-roommate__modal-font" data-bs-dismiss="modal">룸메이트
+                                            class="btn-green btn myhome-roommate__modal-font" data-bs-dismiss="modal">룸메이트
                                             초대</button>
                                         <!--ajax로 초대 구현-->
                                     </div>

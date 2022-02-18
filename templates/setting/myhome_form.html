@@ -22,9 +22,9 @@
             {% csrf_token %}
             <p class="myhome-register__row">
                 <label>집 이름 </label>  
-                <input class="form-input" id="myhome-register-name" name="name" type="text" maxlength="30"/>
-                <button type="button" onclick="onClickCheckHomeName()" class="myhome-register__btn">중복 확인</button>
-                <span id="myhome-register-alert"></span>
+                <input class="form-input" id="myhome-register-name" name="name" type="text" maxlength="20"/>
+                <button type="button" onclick="onClickCheckHomeName()" class="ms-2 myhome-register__btn">중복 확인</button>
+                <span id="myhome-register-alert" class="ms-2"></span>
             </p>
             <p class="myhome-register__row">
                 <div class="myhome-register__row__flex_row">
