@@ -25,7 +25,7 @@ class Calendar(HTMLCalendar):
 			date_content += "<a href=\"/home/todo/" + f"{date}" + "\"> 할 일 <i class=\"fa-solid fa-circle-plus\"></i></a>"
 		if day != 0:
 			return f"<td>{date_content}</td>"
-		return '<td></td>'
+		return '<td class=\"cal-ratio-bg\"></td>'
 
 	# formats a week as a tr
 	def formatweek(self, theweek, events, year, month):

@@ -33,6 +33,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -41,7 +42,14 @@ INSTALLED_APPS = [
     'home',
     'setting',
     'typetest',
-    'community'
+    'community',
+    
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    #provider #추가
+    'allauth.socialaccount.providers.google',
 ]
 
 
@@ -141,3 +149,16 @@ AUTH_USER_MODEL = "login.User"
 if DEBUG:
     import mimetypes
     mimetypes.add_type("application/javascript", ".js", True)
+    
+    
+AUTHENTICATION_BACKENDS = (
+    # 'allauth' specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+    #Needed to login by username in Django admin, regardless of 'allauth'
+    'django.contrib.auth.backends.ModelBackend',
+    
+)
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'

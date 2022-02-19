@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -18,6 +19,7 @@ from home.models import Todo
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 #template custom (dictionary)
 from django.template.defaulttags import register
 
@@ -30,7 +32,7 @@ def intro(request):
     if request.user.is_authenticated :
         today = DateFormat(datetime.now()).format('Y-m-d')
         today_url = '/home/todo/' + str(today)
-        user_todos = Todo.objects.filter(user=request.user)[:2]
+        user_todos = Todo.objects.filter(user=request.user, date = datetime.now(), is_done=False)[:3]
         ctx = {
             'username' : request.user.username,
             'today_date' : today,
@@ -43,6 +45,7 @@ def intro(request):
 
 #이전집 생활수칙 가져오기
 @csrf_exempt
+@login_required
 def take_prelivingrule(request):
     current_home = request.user.home
     req = json.loads(request.body)
@@ -57,6 +60,7 @@ def take_prelivingrule(request):
     return redirect('login:mypage')
 
 #이전집 기록 보기
+@login_required
 def prehome_list(request):
     prehome_infos = LiveIn.objects.filter(user=request.user)
     prehome_infos = prehome_infos.filter(end_date__isnull=False)
@@ -92,6 +96,7 @@ def prehome_list(request):
     return prehome_infos, prehome_dict, preroommates_dict
 
 #이사하기
+@login_required
 def leave_home(request):
     current_user = request.user
     #end_date 저장
@@ -111,6 +116,7 @@ def leave_home(request):
     return redirect('login:mypage')
 
 #mypage
+@login_required
 def mypage(request):
     prehomes, prehome_dict, preroommates_dict = prehome_list(request)
     
@@ -119,7 +125,7 @@ def mypage(request):
            'preroommates_dict': preroommates_dict }
     return render(request, 'login/mypage.html', ctx)
 
-#로그인 기능
+#회원가입 기능
 def sign_up(request):
     if request.method == "POST":
         if request.POST["password"] == request.POST["password2"]:
@@ -127,12 +133,13 @@ def sign_up(request):
             user = User.objects.create_user(
                 username=request.POST.get("username"),
                 password=request.POST.get("password"),
+                email=request.POST.get("email"),
                 nick_name=request.POST.get("nick_name"),
                 gender=request.POST.get("gender"),
             )            
-            login(request, user)
-
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/')
+        messages.warning(request, "비밀번호 두 개가 다릅니다.")
         return render(request, 'login/sign_up.html')
     return render(request, 'login/sign_up.html')
 
@@ -172,3 +179,33 @@ def user_update(request):
         'form': form
     }
     return render(request, 'login/user_update.html', context)
+
+def profile_update(request):
+    if request.method == 'POST':
+        request.user.profile_img = request.FILES['represent']
+        request.user.save()
+        return redirect('login:mypage')
+    else:
+        form = UserUpdateForm(instance=request.user)
+    context = {
+        'form': form
+    }
+    return render(request, 'login/profile_update.html', context)
+
+@method_decorator(csrf_exempt, name="dispatch")
+def check_username(request):
+    req = json.loads(request.body)
+    username = req['user_name']
+    if( User.objects.filter(username=username).exists() ):
+        return JsonResponse({'is_available' : False, 'input_name': username })
+    else:
+        return JsonResponse({'is_available' : True, 'input_name': username })
+    
+@csrf_exempt
+def check_email(request):
+    req = json.loads(request.body)
+    email = req['email']
+    if( User.objects.filter(email=email).exists() ):
+        return JsonResponse({'is_available' : False, 'input_name': email })
+    else:
+        return JsonResponse({'is_available' : True, 'input_name': email })

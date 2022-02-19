@@ -116,20 +116,52 @@ function closeEdit() {
     edit_btn.classList.remove(todo_id);
 };
 
+
+
 // 할 일 추가 ajax 
+var not_valid_string = '';
+function validate_add_form(form) {
+    console.log(form);
+    if(form['content'] == '') {
+        not_valid_string += '할 일 내용 ';
+    }
+    if (form['cate'] == null) {
+        not_valid_string += '카테고리 ';
+    }
+    if (form['priority'] == null) {
+        not_valid_string += '우선순위 ';
+    }
+    return not_valid_string
+}
+
 const requestAdd = new XMLHttpRequest();   
 function addTodoBtn(event, select_date) {
+
+    if (addTodoModal.querySelector('.modal-body p') != null) {
+        addTodoModal.querySelector('.modal-body p').remove();
+    }
+
     const url = `/home/todo/${select_date}/add/`;
     const form = new FormData(document.querySelector('#addToDoModal form'));
     var form_data = serialize(form);
-    requestAdd.open("POST", url, true);
-    requestAdd.setRequestHeader(
-        "Content-Type",
-        "application/x-www-form-urlencoded",
-    );
-    requestAdd.send(JSON.stringify({
-        form_data : form_data,
-    }));
+    not_valid_string = validate_add_form(form_data);
+    if (not_valid_string == '') {
+        requestAdd.open("POST", url, true);
+        requestAdd.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded",
+        );
+        requestAdd.send(JSON.stringify({
+            form_data : form_data,
+        }));
+        not_valid_string = '';
+    }
+    else {
+        const alert_p = document.createElement('p');
+        alert_p.innerHTML = '채워지지 않은 항목이 존재합니다! : ' + `${not_valid_string}`;
+        not_valid_string = '';
+        addTodoModal.querySelector('.modal-body').appendChild(alert_p);
+    }
 };
 
 requestAdd.onreadystatechange = () => {
@@ -140,7 +172,9 @@ requestAdd.onreadystatechange = () => {
 //  add_todo_안에 내용 채우기
 const AddHandleResponse = () => {
     if (requestAdd.status < 400) {
-        const {todo_id, todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name, select_date}= JSON.parse(requestAdd.response);
+        var modal = bootstrap.Modal.getInstance(addTodoModal);
+        modal.hide();
+        const {todo_id, todo_content, todo_priority_content, todo_priority_num, cate_id, cate_name, user_name, select_date, user_profile_url}= JSON.parse(requestAdd.response);
         var todos = null;
         const new_todo = document.createElement('div');
         // 담당없음
@@ -159,7 +193,6 @@ const AddHandleResponse = () => {
             new_todo.classList = `user-todo todo-box todo-id-${todo_id}`;
         }
 
-        
 
         // 상단 priority 부분
         const todo_align = document.createElement('div');
@@ -224,6 +257,35 @@ const AddHandleResponse = () => {
         new_todo.appendChild(todo_middle);
         new_todo.appendChild(todo_bottom);
 
+        if (user_name != 'no-user') {
+            const doing_todo = new_todo.cloneNode(true);
+            doing_todo.querySelector('.todo-bottom').remove();
+            console.log(doing_todo);
+            doing_todo.querySelector('.todo-cnt .todo-check-btn').remove();
+
+            const profile_box = document.createElement('div');
+            profile_box.classList = 'todo-profile-box';
+            
+            const profile_img = document.createElement('img');
+            profile_img.classList = 'cal-profile-img';
+            profile_img.setAttribute('src', `${user_profile_url}`);
+            profile_box.appendChild(profile_img);
+
+            doing_todo.querySelector('.todo-cnt').classList = 'all-todo-cnt todo-cnt';
+            doing_todo.querySelector('.todo-cnt p').classList ='all-todo-text';
+            doing_todo.querySelector('.todo-cnt').prepend(profile_box);
+            console.log(doing_todo);
+
+            const doing_cate_div = document.querySelector('.doing-cate');
+            doing_cate_div.appendChild(doing_todo);
+        }
+        else {
+            const today_no_user_text = document.querySelector('li.today-no-user-text span');
+            console.log(today_no_user_text);
+            if (today_no_user_text != null) {
+                today_no_user_text.innerHTML = `${parseInt(today_no_user_text.innerHTML) + 1}`;
+            }
+        }
         todos.before(new_todo);
 
         addModalReset();
@@ -233,6 +295,9 @@ const AddHandleResponse = () => {
 function addModalReset() {
     filled_addToDoModal = document.querySelector('#addToDoModal');
     filled_addToDoModal.innerHTML = addTodoModal.innerHTML;
+    if (addTodoModal.querySelector('.modal-body p') != null) {
+        addTodoModal.querySelector('.modal-body p').remove();
+    }
 }
 
 // 할 일 삭제 ajax 
@@ -272,6 +337,11 @@ const deleteHandleResponse = () => {
         }
         // 담당 없는 일 삭제
         else {
+            const today_no_user_text = document.querySelector('li.today-no-user-text span');
+            console.log(today_no_user_text);
+            if (today_no_user_text != null) {
+                today_no_user_text.innerHTML = `${parseInt(today_no_user_text.innerHTML) - 1}`;
+            }
             no_user_todo_div.remove();
         }
         closeEdit()
