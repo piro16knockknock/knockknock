@@ -50,6 +50,8 @@ INSTALLED_APPS = [
 
     #provider #추가
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.naver',
+    'allauth.socialaccount.providers.kakao',
 ]
 
 

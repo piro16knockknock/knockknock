@@ -136,7 +136,9 @@ def sign_up(request):
                 email=request.POST.get("email"),
                 nick_name=request.POST.get("nick_name"),
                 gender=request.POST.get("gender"),
-            )            
+                profile_img=request.FILES['represent'],
+            )
+            print(request.FILES)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/')
         messages.warning(request, "비밀번호 두 개가 다릅니다.")
@@ -166,7 +168,7 @@ def logoutUser(request):
     return redirect('login:intro')
 
 
-
+# 유저정보 업데이트
 def user_update(request):
     if request.method == 'POST':
         form = UserUpdateForm(request.POST, instance=request.user)
@@ -180,6 +182,7 @@ def user_update(request):
     }
     return render(request, 'login/user_update.html', context)
 
+# 프로필 업데이트
 def profile_update(request):
     if request.method == 'POST':
         request.user.profile_img = request.FILES['represent']
@@ -192,6 +195,7 @@ def profile_update(request):
     }
     return render(request, 'login/profile_update.html', context)
 
+# 아이디 중복확인
 @method_decorator(csrf_exempt, name="dispatch")
 def check_username(request):
     req = json.loads(request.body)
@@ -200,12 +204,23 @@ def check_username(request):
         return JsonResponse({'is_available' : False, 'input_name': username })
     else:
         return JsonResponse({'is_available' : True, 'input_name': username })
-    
-@csrf_exempt
+
+# 이메일 중복확인
+@method_decorator(csrf_exempt, name="dispatch")
 def check_email(request):
     req = json.loads(request.body)
     email = req['email']
     if( User.objects.filter(email=email).exists() ):
-        return JsonResponse({'is_available' : False, 'input_name': email })
+        return JsonResponse({'is_available' : False, 'input_email': email })
     else:
-        return JsonResponse({'is_available' : True, 'input_name': email })
+        return JsonResponse({'is_available' : True, 'input_email': email })
+
+# 닉네임 중복확인
+@method_decorator(csrf_exempt, name="dispatch")
+def check_nick_name(request):
+    req = json.loads(request.body)
+    nick_name = req['nick_name']
+    if( User.objects.filter(nick_name=nick_name).exists() ):
+        return JsonResponse({'is_available' : False, 'input_nick_name': nick_name })
+    else:
+        return JsonResponse({'is_available' : True, 'input_nick_name': nick_name })
