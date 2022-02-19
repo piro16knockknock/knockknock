@@ -136,8 +136,7 @@ def sign_up(request):
                 email=request.POST.get("email"),
                 nick_name=request.POST.get("nick_name"),
                 gender=request.POST.get("gender"),
-                profile_img=request.FILES['represent'],
-            )
+            )            
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/')
         messages.warning(request, "비밀번호 두 개가 다릅니다.")
@@ -167,13 +166,13 @@ def logoutUser(request):
     return redirect('login:intro')
 
 
-# 유저정보 업데이트
+
 def user_update(request):
     if request.method == 'POST':
-        request.user.nick_name = request.POST.get['nick_name']
-        request.user.gender = request.POST.get['gender']
-        request.user.save()
-        return redirect('login:mypage')
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('login:mypage')
     else:
         form = UserUpdateForm(instance=request.user)
     context = {
@@ -181,7 +180,6 @@ def user_update(request):
     }
     return render(request, 'login/user_update.html', context)
 
-# 프로필 업데이트
 def profile_update(request):
     if request.method == 'POST':
         request.user.profile_img = request.FILES['represent']
@@ -194,7 +192,6 @@ def profile_update(request):
     }
     return render(request, 'login/profile_update.html', context)
 
-# 아이디 중복확인
 @method_decorator(csrf_exempt, name="dispatch")
 def check_username(request):
     req = json.loads(request.body)
@@ -203,9 +200,8 @@ def check_username(request):
         return JsonResponse({'is_available' : False, 'input_name': username })
     else:
         return JsonResponse({'is_available' : True, 'input_name': username })
-
-# 이메일 중복확인
-@method_decorator(csrf_exempt, name="dispatch")
+    
+@csrf_exempt
 def check_email(request):
     req = json.loads(request.body)
     email = req['email']
@@ -213,9 +209,8 @@ def check_email(request):
         return JsonResponse({'is_available' : False, 'input_email': email })
     else:
         return JsonResponse({'is_available' : True, 'input_email': email })
-
-# 닉네임 중복확인
-@method_decorator(csrf_exempt, name="dispatch")
+    
+@csrf_exempt
 def check_nick_name(request):
     req = json.loads(request.body)
     nick_name = req['nick_name']
