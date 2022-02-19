@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.naver',
     'allauth.socialaccount.providers.kakao',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 
@@ -159,8 +160,10 @@ AUTHENTICATION_BACKENDS = (
 
     #Needed to login by username in Django admin, regardless of 'allauth'
     'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
     
 )
+SOCIAL_AUTH_FACEBOOK_KEY = '1203556813511332'
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
