@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
+
+{% block css %}
 <link rel="stylesheet" href="{% static 'css/home/living_rules.css' %}">
+{% endblock %}
 
 {% block script %}
+<script defer type="text/javascript">
+    const is_show_modal = {{show_modal}};
+</script>
 <script defer src="{% static 'js/home/living_rules.js' %}" type="text/javascript"></script>
 {% endblock %}
 
-
+{% block content %}
 <section>
     <div class="side-nav">
         <ul class="d-flex">

@@ -1,12 +1,10 @@
-// Modal
 
-var is_true = '{{show_modal}}';
-
-if (is_true){
-    var myModal = new bootstrap.Modal(document.getElementById('guidelinemodal'));
-    myModal.show();
+var myGuidlineModal = document.getElementById('guidelinemodal');
+var myGuidlineModalContainer = new bootstrap.Modal(myGuidlineModal);
+if (is_show_modal){
+    myGuidlineModalContainer.show();
 }
 
-function skipButton() {
-    document.querySelector('.modal-backdrop').stlyle.opacity=0;
-}
+myGuidlineModal.addEventListener('hidden.bs.modal', () => {
+    myGuidlineModalContainer.hide();
+})

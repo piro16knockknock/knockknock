@@ -508,12 +508,12 @@ def living_rules(request):
         rules = LivingRule.objects.filter(home=request.user.home, cate=cate)
         order_rules[cate] = rules
     
-    show_modal = False
+    show_modal = 'true'
 
-    if LivingRule.objects.filter(home=request.user.home).exists()    :
-        show_modal = True
+    if LivingRule.objects.filter(home=request.user.home).exists() :
+        show_modal = 'false'
         print('비어있음')
-
+    
     ctx = {
         'order_rules': order_rules,
         'show_modal' : show_modal,
