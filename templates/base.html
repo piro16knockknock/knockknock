@@ -44,7 +44,8 @@
                         <ul class="dropdown-menu main-drop-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{%url 'home:calendar' %}">캘린더</a></li>
                         <li><a class="dropdown-item" href="{%url 'home:living_rules' %}">생활수칙</a></li>
-                        <li><a class="dropdown-item" href="{%url 'home:guideline' %}">가이드라인</a></li>
+
+                        <li><a class="dropdown-item" href="{% url 'home:guideline' %}">가이드라인</a></li>
                         </ul>
                     </li>
                     {% else %}

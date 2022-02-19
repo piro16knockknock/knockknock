@@ -1,3 +1,18 @@
+.nav-pills {
+    justify-content: start;
+    align-items: center;
+    font-size: 1.4rem;
+    border-bottom: 0.3px solid #ddd;
+}
+
+.nav-pills .nav-link.active{
+    background-color: #3d3d3d;
+}
+
+.nav-pills .nav-link {
+    color: black;
+}
+
 .myhome-detail {
     display: flex;
     justify-content: center;
@@ -44,10 +59,6 @@
     border-radius: .5rem;
     font-size: 1.3rem;
     padding: .3rem;
-}
-
-.myhome-detail__row__homename>input {
-    width: 40rem;
 }
 
 /*전세 월세 버튼*/
@@ -132,6 +143,12 @@
     padding: .5rem 1.5rem;
     color: rgb(255, 197, 109);
     border-radius: 5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.myhome-detail__btn:hover {
+    background-color: rgb(255, 197, 109);
+    color: white;
 }
 
 /*roommate*/
@@ -144,11 +161,17 @@
     margin-right: 2rem;
 }
 
-.myhome-roommate__column>img {
+.myhome-roommate__column>a>img {
     border-radius: 50%;
     width: 10rem;
     height: 10rem;
+    transition: all 0.2s ease-in-out;
 }
+
+.myhome-roommate__column>a>img:hover {
+    opacity: 0.7;
+}
+
 
 .myhome-roommate__column i {
     font-size: 10rem;
@@ -165,6 +188,12 @@
 .myhome-roommate__invite a i {
     font-size: 5rem;
     color: rgba(1, 1, 1, .2);
+    transition: color 0.2s ease-in-out;
+}
+
+.myhome-roommate__invite a i:hover {
+    cursor: pointer;
+    color: rgb(137, 186, 159);
 }
 
 /*movehome*/
@@ -221,6 +250,12 @@
 .myhome-detail__row__add-utility {
     margin: 1rem 0;
     font-size: 3rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.myhome-detail__row__add-utility:hover {
+    cursor: pointer;
+    color: rgb(137, 186, 159);
 }
 
 /*초대 링크*/
@@ -266,4 +301,17 @@
     padding-top: .5rem;
     text-align: center;
 
+}
+
+/*룸메이트 초대 버튼*/
+.btn-green {
+    background-color: rgb(137, 186, 159);
+    border: 1px solid rgb(137, 186, 159);
+    color: white !important;
+    transition: all 0.2s ease-in-out;
+}
+.btn-green:hover {
+    color: white;
+    background-color: rgb(90, 153, 118);
+    border: 1px solid rgb(90, 153, 118);
 }
