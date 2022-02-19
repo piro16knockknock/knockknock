@@ -151,6 +151,7 @@ function addTodoBtn(event, select_date) {
             "Content-Type",
             "application/x-www-form-urlencoded",
         );
+        console.log(requestAdd);
         requestAdd.send(JSON.stringify({
             form_data : form_data,
         }));
@@ -158,7 +159,7 @@ function addTodoBtn(event, select_date) {
     }
     else {
         const alert_p = document.createElement('p');
-        alert_p.innerHTML = '채워지지 않은 항목이 존재합니다! : ' + `${not_valid_string}`;
+        alert_p.innerHTML  = '채워지지 않은 항목이 존재합니다! : ' + `${not_valid_string}`;
         not_valid_string = '';
         addTodoModal.querySelector('.modal-body').appendChild(alert_p);
     }

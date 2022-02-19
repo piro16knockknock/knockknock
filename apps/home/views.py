@@ -198,10 +198,7 @@ def add_todo(request, date):
         print("내꺼 기타말고")
         todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate), user = User.objects.get(id = user), 
         priority = TodoPriority.objects.get(id = priority), date = date)
-        if todo.user.profile_img is None:
-            user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
-        else:
-            user_profile_url = todo.user.profile_img.url
+        
         res = JsonResponse({
             'todo_id' : todo.id,
             'todo_content' : todo.content,
@@ -211,7 +208,6 @@ def add_todo(request, date):
             'cate_name' : TodoCate.objects.get(id=cate).name,
             'user_name' : User.objects.get(id = user).username,
             'select_date' : date,
-            'user_profile_url' : user_profile_url
         })
 
     # 내 할 일 페이지에서 기타 카테고리
