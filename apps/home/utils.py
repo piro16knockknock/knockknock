@@ -3,9 +3,10 @@ from calendar import HTMLCalendar
 from .models import Todo
 
 class Calendar(HTMLCalendar):
-	def __init__(self, year=None, month=None):
+	def __init__(self, year=None, month=None, home=None):
 		self.year = year
 		self.month = month
+		self.home = home
 		self.today = datetime.now()
 		super(Calendar, self).__init__()
 
@@ -37,7 +38,7 @@ class Calendar(HTMLCalendar):
 	# formats a month as a table
 	# filter events by year and month
 	def formatmonth(self, withyear=True):
-		events = Todo.objects.filter(date__year=self.year, date__month=self.month)
+		events = Todo.objects.filter(date__year=self.year, date__month=self.month, home=self.home)
 
 		cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
 		cal += f'{self.formatweekheader()}\n'

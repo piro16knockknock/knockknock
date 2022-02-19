@@ -1,45 +1,151 @@
+.lr-form-container{
+    width: 60rem;
+    height: auto;
+    text-align: center;
+    font-size: 2.2rem;
+    margin: auto;
+    outline: solid 1px #ffdd94;
+    border-radius: 3rem;
+}
+
+.lr-form-container input {
+    width: 50rem;
+    height: 3.5rem;
+    font-size: 1.6rem;
+    border: 0;
+    border-radius: 1.5rem;
+    outline: none;
+    padding-left: 1.5rem;
+    background-color: #eee;
+    margin-bottom: 5rem;
+
+}
+
+.lr-content{
+    word-wrap: break-word;
+}
+
+.lr-form-container form{
+    padding-top: 10rem;
+
+}
+
+.lr-form-container label{
+    display: block;
+    padding-bottom: 5rem;
+}
 
 
-.living-rules{
-    font-family: "ptsans", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+.living-rules-container{
+    width: 63rem;
+    height: auto;
     text-align: center;
     font-size: 2rem;
     margin: auto;
-    position: absolute;
-    left: 50%;
-    top: 30%;
-    transform: translate(-50%, -50%);
+    outline: solid 1px #ffdd94;
+    border-radius: 3rem;
 }
 
-.title{
-    font-size: 2.5rem;
-    padding: 3rem;
+.lr-form-container button{
+    font-size: 2rem;
+    font-weight: 300;
+    outline: solid 1.5px #ffdd94;
+    padding-top: 5rem;
+    margin: 2rem;
+}
+
+
+.lr-form-container button:hover{
+    color: #fff ;    
+    font-weight: 400;
+}
+
+.living-rule{
+    width: 51rem;
+    padding-bottom: 4rem;
+}
+
+.living-rules-container h2{
+    font-size: 2.2rem;
+    padding-top: 6rem;
+}
+
+.living-rules{
+    display: inline-block;
+    padding-top: 8rem;
+    padding-left: 3rem;
 }
 
 .category{
     text-align: left;
-    padding: 1.2rem 3rem;
+    padding: 0.6rem 3.5rem 0.6rem 1.3rem;
     display: flex;
     justify-content: flex-start;
+    background-color: #eeeeee;
+    border-radius: 0.5rem;
 
 }
 
-.category > a > span{
-    position: absolute;
+.category-name i{
+    color: #454545;
+    padding-left: 0.8rem;
 
-    transform: translate(10%, -20%);
+    position: absolute;
+    transform: translate(10%, 0%);
 }
 
 .category-name{
-    display: inline;
+    font-size: 1.8rem;
+    font-weight: 500;
+    display: flex;
     text-align: left;
 }
 
+.living-rule li{
+
+    font-size: 1.8rem;
+    text-align: left;
+    padding: 1rem;
+
+}
+
+.rule-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.rule-content button{
+    font-size: 1.2rem;
+    padding: 0.3rem 0.6rem;
+    margin: 0.3rem;
+    border-radius: 2rem;
+}
+
+.edit-btn{
+    color: #696969;
+    outline: solid 1.5px #696969;
+}
+.edit-btn:hover, .edit-btn a:hover{
+    color: #fff;
+    background-color:#696969;
+    font-weight: 500;
+}
 
 
+.del-btn{
+    color: #FF6745;
+    outline: solid 1.5px #FF6745;
+}
 
+.del-btn:hover, .del-btn a:hover{
+    color: #fff;
+    background-color:#FF6745;
+    font-weight: 500;
+}
 
-
+.living-rules ul{
+    align-items: center
+}
 
 /* Modal css */
 .modal-dialog{

@@ -1,10 +1,4 @@
 import json
-from locale import currency
-from select import select
-from time import sleep
-from tkinter.tix import Tree
-from turtle import Turtle
-from urllib import request
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -30,7 +24,7 @@ class CalendarView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
-        cal = Calendar(d.year, d.month)
+        cal = Calendar(d.year, d.month, self.request.user.home)
         html_cal = cal.formatmonth(withyear=True)
         today = datetime.now()
         today_string = f'{today.year}-{today.month}-{today.day}'
@@ -83,6 +77,10 @@ def next_month(d):
 
 @login_required
 def date_todo(request, date):
+
+    today = datetime.now()
+    today_string = f'{today.year}-{today.month}-{today.day}'
+
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     complete_total_todos = total_todos.filter(is_done=True)
@@ -100,8 +98,6 @@ def date_todo(request, date):
     doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
     todo_priority = TodoPriority.objects.all()
 
-    today = datetime.now()
-    today_string = f'{today.year}-{today.month}-{today.day}'
 
     ctx = {
         'today' : today_string,
@@ -125,10 +121,11 @@ def date_todo(request, date):
 
 
 def prev_date_todo(request, date):
+    
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     complete_total_todos = total_todos.filter(is_done=True)
-    no_complete_todos = total_todos.filter(is_done = False)
+    no_complete_todos = total_todos.filter(is_done = False).order_by('is_not_done_today')
 
     user_todos = total_todos.filter(user=current_user)
     complete_user_todos = total_todos.filter(is_done = True, user=current_user)
@@ -139,12 +136,12 @@ def prev_date_todo(request, date):
     today = datetime.now()
     today_string = f'{today.year}-{today.month}-{today.day}'
 
-    if user_todos.count() is 0:
+    if user_todos.count() == 0:
         user_compelete_ratio = 0
     else:
         user_compelete_ratio = complete_user_todos.count() / user_todos.count()
 
-    if total_todos.count() is 0:
+    if total_todos.count() == 0:
         total_compelete_ratio = 0
     else:
         total_compelete_ratio = complete_total_todos.count() / total_todos.count()
@@ -209,6 +206,7 @@ def add_todo(request, date):
             user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
         else:
             user_profile_url = todo.user.profile_img.url
+
         res = JsonResponse({
             'todo_id' : todo.id,
             'todo_content' : todo.content,
@@ -226,15 +224,21 @@ def add_todo(request, date):
         print("내꺼 기타")
         todo = Todo.objects.create(home=request.user.home, content=content, user = User.objects.get(id = user), 
         priority = TodoPriority.objects.get(id = priority), date = date)
+        if todo.user.profile_img is None:
+            user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
+        else:
+            user_profile_url = todo.user.profile_img.url
+
         res = JsonResponse({
-        'todo_id' : todo.id,
-        'todo_content' : todo.content,
-        'todo_priority_content' : todo.priority.content,
-        'todo_priority_num' : todo.priority.priority_num,
-        'cate_id' : 'no-cate',
-        'cate_name' : '기타',
-        'user_name' : User.objects.get(id = user).username,
-        'select_date' : date,
+            'todo_id' : todo.id,
+            'todo_content' : todo.content,
+            'todo_priority_content' : todo.priority.content,
+            'todo_priority_num' : todo.priority.priority_num,
+            'cate_id' : 'no-cate',
+            'cate_name' : '기타',
+            'user_name' : User.objects.get(id = user).username,
+            'select_date' : date,
+            'user_profile_url' : user_profile_url
         })
 
     # 전체 할 일 페이지에서 담당없음 카테고리
@@ -242,29 +246,38 @@ def add_todo(request, date):
         print("전체 기타")
         todo = Todo.objects.create(home=request.user.home, content=content,
         priority = TodoPriority.objects.get(id = priority), date = date)
+
+        if todo.user is None:
+            user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
+        else:
+            user_profile_url = todo.user.profile_img.url
+
+
         res = JsonResponse({
-        'todo_id' : todo.id,
-        'todo_content' : todo.content,
-        'todo_priority_content' : todo.priority.content,
-        'todo_priority_num' : todo.priority.priority_num,
-        'cate_id' : 'np-cate',
-        'cate_name' : '기타',
-        'user_name' : 'no-user',
-        'select_date' : date,
+            'todo_id' : todo.id,
+            'todo_content' : todo.content,
+            'todo_priority_content' : todo.priority.content,
+            'todo_priority_num' : todo.priority.priority_num,
+            'cate_id' : 'np-cate',
+            'cate_name' : '기타',
+            'user_name' : 'no-user',
+            'select_date' : date,
+            'user_profile_url' : user_profile_url
         })
     else :
         print("전체")
         todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate),
         priority = TodoPriority.objects.get(id = priority), date = date)
+
         res = JsonResponse({
-        'todo_id' : todo.id,
-        'todo_content' : todo.content,
-        'todo_priority_content' : todo.priority.content,
-        'todo_priority_num' : todo.priority.priority_num,
-        'cate_id' : cate,
-        'cate_name' : todo.cate.name,
-        'user_name' : 'no-user',
-        'select_date' : date,
+            'todo_id' : todo.id,
+            'todo_content' : todo.content,
+            'todo_priority_content' : todo.priority.content,
+            'todo_priority_num' : todo.priority.priority_num,
+            'cate_id' : cate,
+            'cate_name' : todo.cate.name,
+            'user_name' : 'no-user',
+            'select_date' : date,
         })
 
     
@@ -292,6 +305,7 @@ def make_edit_form(request, date, todo_id):
         user_id = 'no-user'
     else:
         user_id= todo.user.id
+    todo.save()
 
     priority_id = todo.priority.id
     return JsonResponse({
@@ -329,18 +343,23 @@ def edit_todo(request, date, todo_id):
         todo.cate = TodoCate.objects.get(id = req['cate'])
         cate_name = todo.cate.name
     
-    if req['user'] == 'no-user':
+    if req['todo-user'] == 'no-user':
         todo.user = None
+        
+    else:
+        todo.user = User.objects.get(id = req['todo-user'])
+
+    if todo.user is None or todo.user.profile_img == '' or todo.user.profile_img == None:
         profile_img_url = None
     else:
-        todo.user = User.objects.get(id = req['user'])
         profile_img_url = todo.user.profile_img.url
+
     todo.save()
 
     return JsonResponse({
         'current_user_id' : current_user_id,
         'current_cate_id' : current_cate_id,
-        'user_id' : req['user'],
+        'user_id' : req['todo-user'],
         'user_profile_url' : profile_img_url,
         'todo_id' : todo.id,
         'cate_id' : req['cate'],
@@ -357,7 +376,6 @@ def done_todo(request, date, todo_id):
     todo = get_object_or_404(Todo, id = req['todo_id'])
     todo.is_done = True
     todo.is_done_date = datetime.now()
-    print(todo.is_done_date)
     todo.save()
 
     return JsonResponse({
@@ -404,17 +422,18 @@ def postpone_today_todo(request, date, todo_id):
 
     today_todo.save()
 
-    return redirect('/home/prev_todo/'+date)
+    return redirect('/home/prev_todo/'+date+'/')
 
 @csrf_exempt
 @login_required
 def add_user(request, date, todo_id):
     req = json.loads(request.body)
     todo = get_object_or_404(Todo, id = int(req['todo_id']))
-    todo.user = get_object_or_404(User, id =int(req['form_data']['user']))
+    user = get_object_or_404(User, id =int(req['form_data']['user']))
+    todo.user = user
     todo.save()
 
-    if todo.user.profile_img is None:
+    if todo.user.profile_img == None or todo.user.profile_img == '':
         user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
     else:
         user_profile_url = todo.user.profile_img.url
@@ -473,24 +492,32 @@ def delete_cate(request):
 
 # 생활수칙관련
 def living_rules(request):
-    cates = LivingRuleCate.objects.all()
+    cates = LivingRuleCate.objects.filter(home=request.user.home)
     order_rules = {}
-    for c in cates:
-        rules = LivingRule.objects.filter(cate=c)
-        order_rules[c] = rules
+    for cate in cates:
+        rules = LivingRule.objects.filter(home=request.user.home, cate=cate)
+        order_rules[cate] = rules
+    
+    show_modal = 'true'
+
+    if LivingRule.objects.filter(home=request.user.home).exists() :
+        show_modal = 'false'
+        print('비어있음')
+    
     ctx = {
         'order_rules': order_rules,
+        'show_modal' : show_modal,
     }
     return render(request, 'home/living_rules.html', context=ctx)
 
 
 
-def living_rule_new(request):
+def living_rule_new(request, pk):
     if request.method == "POST":
         form = LivingRuleForm(request.POST)
         if form.is_valid():
-            print("here")
             rule = form.save()
+            rule.cate = get_object_or_404(LivingRuleCate, id=pk)
             rule.home = request.user.home
             rule.save()
             return redirect('home:living_rules')
@@ -504,25 +531,29 @@ def living_rule_new(request):
 
 
 def living_rule_edit(request, pk):
+    
     rule = get_object_or_404(LivingRule, pk=pk)
+    print(rule.cate)
     if request.method == "POST":
-        form = LivingRuleForm(request.POST, instance=rule)
-        if form.is_valid():
-            rule = form.save()
-            cate = rule.cate
-            return redirect('home:living_rules')
-    else:
-        form = LivingRuleForm(instance=rule)
+        print(request.POST.get('content'))
+        rule.content = request.POST.get('content')
+        rule.save()
+        return redirect('home:living_rules')
+ 
     ctx = {
-        'form': form
+        'value': rule.content
     }
     return render(request, 'home/living_rules_form.html', context=ctx)
 
 
 def living_rule_delete(request, pk):
+    print('delete')
     rule = get_object_or_404(LivingRule, pk=pk)
     rule.delete()
     return (redirect('home:living_rules'))
+
+
+
 
 
 def guideline(request):
@@ -541,21 +572,21 @@ def guideline(request):
 
         # 2. 전화와 알람에 대해서는 항상 서로 미리 말해주기
         alarm = request.POST.get('alarm')
-        alarm_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+alarm
+        alarm_answer = '전화와 알람에 대해서 '+alarm
         LivingRuleCate.objects.get_or_create(name = '생활패턴', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="생활패턴")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = alarm_answer, is_guideline=True)
 
         # 3. 룸메와 활발한 친목하기
         friendship = request.POST.get('friendship')
-        friendship_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+friendship
+        friendship_answer = '룸메와의 활발한 친목 '+friendship
         LivingRuleCate.objects.get_or_create(name = '생활패턴', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="생활패턴")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = friendship_answer, is_guideline=True)
        
         # 4. 공과금 및 월세 지출 방식
         expense = request.POST.get('expense')
-        expense_answer = '공과금 및 월세 지출 방식 '+expense
+        expense_answer = '공과금 및 월세 지출은 '+expense
         LivingRuleCate.objects.get_or_create(name = '돈', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="돈")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = expense_answer, is_guideline=True)
@@ -563,7 +594,7 @@ def guideline(request):
         # 5. 공유 품목
         share = {}
         share = request.POST.getlist('share[]')
-        share_answer = '공유 품목 '+ "  ".join(share)
+        share_answer = '공유 품목: '+ ",  ".join(share)
 
         LivingRuleCate.objects.get_or_create(name = '생필품', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="생필품")
@@ -571,14 +602,14 @@ def guideline(request):
 
         # 6. 다른 사람 초대가 가능한지
         invite = request.POST.get('invite')
-        invite_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+invite
+        invite_answer = invite
         LivingRuleCate.objects.get_or_create(name = '다른 사람 초대', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="다른 사람 초대")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = invite_answer, is_guideline=True)
 
         # 7. 다른 사람 숙박이 가능한지
         sleep = request.POST.get('sleep')
-        sleep_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+sleep
+        sleep_answer = sleep
         LivingRuleCate.objects.get_or_create(name = '다른 사람 초대', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="다른 사람 초대")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = sleep_answer, is_guideline=True)

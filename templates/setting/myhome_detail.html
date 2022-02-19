@@ -13,7 +13,7 @@
 <div class="side-nav">
     <ul class="d-flex">
         <li>설정&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
-        <li><a href="{%url 'setting:myhome_detail' %}">집 관리</a></li>
+        <li><a style="border-bottom: #fbdb67 2px solid;" href="{%url 'setting:myhome_detail' %}">집 관리</a></li>
         <li><a href="{%url 'setting:roommate_list' %}">룸메이트 관리</a></li>
     </ul>
 </div>
@@ -84,7 +84,8 @@
             <div class="myhome-roommate__row">
                 {% for roommate in roommates %}
                 <div class="myhome-roommate__column">
-                    <img class="cal-profile-img" src={% if roommate.profile_img %}"{{roommate.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                    <a href="{% url 'setting:roommate_list' %}"><img class="cal-profile-img" src={% if roommate.profile_img %}"{{roommate.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}></a>
+                    
                     {% comment %}
                     {% if roommate.profile_img %}
                     <img src="{{ roommate.profile_img.url }}" height="220" width="220" />
@@ -112,10 +113,14 @@
                                     aria-label="Close"></button>
                             </div>
                             <nav>
-                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                  <button class="nav-link active fs-4 text-dark" data-bs-toggle="tab" data-bs-target="#roommate-search-tab" type="button" aria-selected="true">직접 검색</button>
-                                  <button class="nav-link fs-4 text-dark" data-bs-toggle="tab" data-bs-target="#roommate-link-tab" type="button" aria-selected="false">초대 링크</button>
-                                </div>
+                                <ul class="nav nav-pills" id="nav-tab" role="tablist">
+                                    <li class="tab-nav-item ms-3">
+                                    <button class="nav-link active fs-4" data-bs-toggle="tab" data-bs-target="#roommate-search-tab" type="button" aria-selected="true">직접 검색</button>
+                                    </li>
+                                    <li class="tab-nav-item">
+                                    <button class="nav-link fs-4" data-bs-toggle="tab" data-bs-target="#roommate-link-tab" type="button" aria-selected="false">초대 링크</button>
+                                    </li>
+                                </ul>
                             </nav>
                               <div class="tab-content">
                                 <div id="roommate-search-tab" class="modal-body tab-pane fade show active">

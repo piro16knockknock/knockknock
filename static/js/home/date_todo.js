@@ -4,6 +4,7 @@ var postpone_btn = document.querySelector('.postpone-btn')
 var edit_div = document.querySelector('.edit-todo');
 var form = document.querySelector('#setToDoModal form');
 const addTodoModal = document.querySelector('#addToDoModal');
+const select_user_div = edit_div.querySelector('.select-todo-user');
 console.log(addTodoModal);
 
 // 어떤 cate의 할일 추가하기를 선택했냐에 따른 설정 모달 내 보여주는 내용 수정
@@ -12,14 +13,14 @@ function setAddBtn(event, cate_id, cate_name, user_id) {
     const add_form_user_div = document.querySelector('#addToDoModal form .select-todo-user');
     const add_form_cate_div = document.querySelector('#addToDoModal form .select-todo-cate');
 
-    if (user_id != undefined && cate_id == '') {
+    if (user_id != 'no-user' && cate_name == 'no-cate') {
         add_modal_title.innerHTML = "기타 카테고리에 할 일 추가하기";
         add_form_user_div.style.display = 'None';
         add_form_cate_div.style.display = 'None';
         add_form_user_div.querySelector(`.user-id-${user_id}`).checked = true;
         add_form_cate_div.querySelector(`.cate-id-no-cate`).checked = true;
     }
-    else if(cate_name != undefined ) {
+    else if(user_id != 'no-user' && cate_name !='no-cate' ) {
         add_modal_title.innerHTML = cate_name + " 카테고리에 할 일 추가하기";
         add_form_user_div.style.display = 'None';
         add_form_cate_div.style.display = 'None';
@@ -29,6 +30,7 @@ function setAddBtn(event, cate_id, cate_name, user_id) {
     else {
         add_modal_title.innerHTML = "할 일 추가하기";
         add_form_user_div.style.display = 'None';
+        add_form_cate_div.style.display = 'block';
         add_form_user_div.querySelector(`.user-id-no-user`).checked = true;
     }
 };
@@ -50,7 +52,6 @@ function setEditBtn (event, content, user_name, cate_name, select_date) {
     //     edit_div.querySelector('.select-todo-user').style.display = "None"
     // }
     postpone_btn.setAttribute('href', `/home/todo/${select_date}/${event.classList[1]}/postpone/`);
-    console.log(postpone_btn)
 };
 
 
@@ -82,7 +83,7 @@ const  makeEditFormHandleResponse = () => {
         const {content, cate_id, user_id, priority_id} = JSON.parse(reqMakeEditForm.response);
         
         const edit_todo_form = document.querySelector('.edit-todo form');
-        const content_input = edit_todo_form.querySelector('input[name="content"]')
+        const content_input = edit_todo_form.querySelector('input[name="content"]');
         const select_cate_input = edit_todo_form.querySelector(`div.select-todo-cate input.cate-id-${cate_id}`);
         const select_user_input = edit_todo_form.querySelector(`div.select-todo-user input.user-id-${user_id}`);
         const select_priority_input = edit_todo_form.querySelector(`div.select-todo-priority input.priority-id-${priority_id}`);
@@ -102,12 +103,33 @@ const  makeEditFormHandleResponse = () => {
         select_cate_input.setAttribute('checked', true);
         select_user_input.setAttribute('checked', true);
         select_priority_input.setAttribute('checked', true);
-        
+    }
+}
+
+
+function resetInput(inputs) {
+    console.log(inputs);
+    for (var i=0 ; i < inputs.length; i ++) {
+        var input = inputs.item(i);
+        input.removeAttribute('checked');
     }
 }
 
 
 function closeEdit() {
+    const edit_todo_form = document.querySelector('.edit-todo form');
+    const select_cate_inputs = edit_todo_form.querySelectorAll(`div.select-todo-cate input`);
+    const select_user_inputs = edit_todo_form.querySelectorAll(`div.select-todo-user input`);
+    const select_priority_inputs = edit_todo_form.querySelectorAll(`div.select-todo-priority input`);
+
+    resetInput(select_cate_inputs);
+    resetInput(select_user_inputs);
+    resetInput(select_priority_inputs);
+
+    console.log(select_user_div);
+    var filled_select_user_div = edit_todo_form.querySelector('.select-todo-user');
+    filled_select_user_div = select_user_div;
+
     delete_btn.style.display = 'inline-block';
     edit_div.style.display = 'None';
     todo_id = delete_btn.classList[3];
@@ -137,8 +159,8 @@ function validate_add_form(form) {
 const requestAdd = new XMLHttpRequest();   
 function addTodoBtn(event, select_date) {
 
-    if (addTodoModal.querySelector('.modal-body p') != null) {
-        addTodoModal.querySelector('.modal-body p').remove();
+    if (addTodoModal.querySelector('.modal-body p.alert') != null) {
+        addTodoModal.querySelector('.modal-body p.alert').remove();
     }
 
     const url = `/home/todo/${select_date}/add/`;
@@ -151,6 +173,7 @@ function addTodoBtn(event, select_date) {
             "Content-Type",
             "application/x-www-form-urlencoded",
         );
+        console.log(requestAdd);
         requestAdd.send(JSON.stringify({
             form_data : form_data,
         }));
@@ -158,9 +181,10 @@ function addTodoBtn(event, select_date) {
     }
     else {
         const alert_p = document.createElement('p');
-        alert_p.innerHTML = '채워지지 않은 항목이 존재합니다! : ' + `${not_valid_string}`;
+        alert_p.innerHTML  = '채워지지 않은 항목이 존재합니다! : ' + `${not_valid_string}`;
+        alert_p.setAttribute('class', 'alert');
         not_valid_string = '';
-        addTodoModal.querySelector('.modal-body').appendChild(alert_p);
+        addTodoModal.querySelector('.modal-body .select-todo-priority').after(alert_p);
     }
 };
 
@@ -293,10 +317,11 @@ const AddHandleResponse = () => {
 };
 
 function addModalReset() {
-    filled_addToDoModal = document.querySelector('#addToDoModal');
+    const filled_addToDoModal = document.querySelector('#addToDoModal');
+    console.log(filled_addToDoModal);
     filled_addToDoModal.innerHTML = addTodoModal.innerHTML;
-    if (addTodoModal.querySelector('.modal-body p') != null) {
-        addTodoModal.querySelector('.modal-body p').remove();
+    if (addTodoModal.querySelector('.modal-body p.alert') != null) {
+        addTodoModal.querySelector('.modal-body p.alert').remove();
     }
 }
 
@@ -344,7 +369,7 @@ const deleteHandleResponse = () => {
             }
             no_user_todo_div.remove();
         }
-        closeEdit()
+        closeEdit();
     }
 };
 
@@ -355,6 +380,7 @@ function editTodoBtn(event, select_date) {
     todo_id = edit_btn.classList[3];
     const form = new FormData(document.querySelector('#setToDoModal form'));
     var form_data = serialize(form);
+    console.log(form_data);
 
     const url = `/home/todo/${select_date}/${todo_id}/edit/`;
     reqEditTodo.open("POST", url, true);
