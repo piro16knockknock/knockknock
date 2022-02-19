@@ -275,7 +275,6 @@ def add_todo(request, date):
         todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate),
         priority = TodoPriority.objects.get(id = priority), date = date)
 
-
         res = JsonResponse({
             'todo_id' : todo.id,
             'todo_content' : todo.content,
