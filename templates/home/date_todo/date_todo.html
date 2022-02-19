@@ -315,13 +315,18 @@
                                 <div class="select-todo-user">
                                     <p>담당</p>
                                     {% for user in roomates %}
-                                    <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}"/>
-                                    <div class="todo-profile-box">
-                                        <img class="cal-profile-img" src={% if user.profile_img %}"{{ user.profile_img.url }}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %} alt="">
-                                    </div>
+                                    <label>
+                                        <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}"/>
+                                        <div class="todo-profile-box">
+                                            <img class="cal-profile-img" src={% if user.profile_img %}"{{ user.profile_img.url }}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %} alt="">
+                                        </div>
+                                    </label>
+
                                     {% endfor %}
-                                    <input type="radio" class="user-id-no-user" name="user" value="no-user"/>
-                                    <img class="user-id-no-user" src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg" style="width: 3rem; height: 3rem;" alt="">
+                                    <label>
+                                        <input type="radio" class="user-id-no-user" name="user" value="no-user"/>
+                                        <img class="user-id-no-user" src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg" style="width: 3rem; height: 3rem;" alt="">
+                                    </label>
                                 </div>
                                 <div class="select-todo-priority">
                                     <p>우선순위</p>

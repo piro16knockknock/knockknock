@@ -99,6 +99,14 @@ const  makeEditFormHandleResponse = () => {
             select_no_user_img.style.display = 'None';
             select_no_user_input.style.display = 'None';
         }
+
+        const select_cate_inputs = edit_todo_form.querySelectorAll(`div.select-todo-cate input`);
+        const select_user_inputs = edit_todo_form.querySelectorAll(`div.select-todo-user input`);
+        const select_priority_inputs = edit_todo_form.querySelectorAll(`div.select-todo-priority input`);
+    
+        resetInput(select_cate_inputs);
+        resetInput(select_user_inputs);
+        resetInput(select_priority_inputs);
         content_input.value = content;
         select_cate_input.setAttribute('checked', true);
         select_user_input.setAttribute('checked', true);
@@ -117,15 +125,6 @@ function resetInput(inputs) {
 
 
 function closeEdit() {
-    const edit_todo_form = document.querySelector('.edit-todo form');
-    const select_cate_inputs = edit_todo_form.querySelectorAll(`div.select-todo-cate input`);
-    const select_user_inputs = edit_todo_form.querySelectorAll(`div.select-todo-user input`);
-    const select_priority_inputs = edit_todo_form.querySelectorAll(`div.select-todo-priority input`);
-
-    resetInput(select_cate_inputs);
-    resetInput(select_user_inputs);
-    resetInput(select_priority_inputs);
-
     delete_btn.style.display = 'inline-block';
     edit_div.style.display = 'None';
     todo_id = delete_btn.classList[3];
