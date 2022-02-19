@@ -1,3 +1,109 @@
 input{
     appearance: button;
 }
+
+.guideline-form{
+    height: 120rem;
+}
+
+
+.guideline-container{
+    color: #363636;
+    width: 60rem;
+    text-align: center;
+    font-size: 1.8rem;
+    padding-top: 2.5rem;
+    margin: auto;
+    margin-bottom: 30rem;
+    outline: solid 1px #ffdd94;
+    border-radius: 3rem;
+}
+
+.guideline-container h2{
+    font-size: 2.2rem;
+    padding: 3rem;
+}
+
+.guideline-container h3{
+    padding-bottom: 2rem;
+    font-weight: 500;
+}
+
+.guideline-container button{
+    font-size: 2rem;
+    font-weight: 300;
+    outline: solid 1.5px #ffdd94;
+    margin: 2rem;
+}
+
+.guideline-container button:hover{
+    color: #fff ;    
+    font-weight: 400;
+}
+
+.questions{
+    text-align: left;
+    padding: 2rem;
+    padding-left: 19rem;
+}
+
+.choices{
+    padding-left: 1.5rem;
+}
+
+.choice{
+    align-items: center;
+}
+
+.choices label{
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+}
+
+/* 라디오버튼 디자인 */
+input[type="radio"] {
+    appearance: none;
+    background: #fff;
+    border-radius: 5rem;
+    cursor: pointer;
+    height: 1.2rem;
+    outline: solid 1.5px #fcd683;
+    width: 1.2rem;
+}
+
+  input[type="radio"]:checked {
+    background: #ffdd94;
+}
+
+  input[type="radio"]:checked::after {
+    display: block;
+}
+
+/* 체크박스 디자인 */
+input[type="checkbox"] {
+    appearance: none;
+    background: #fff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    height: 1.6rem;
+    outline: solid 1.5px #ffdd94;
+    width: 1.6rem;
+}
+
+  input[type="checkbox"]::after {
+    border-width: 0 2px 2px 0;
+    content: '✔';
+    display: none;
+    position: relative;
+    left: 5%;
+    bottom: 2%  ;
+    color: #fff;
+}
+
+  input[type="checkbox"]:checked {
+    background: #ffdd94;
+}
+
+  input[type="checkbox"]:checked::after {
+    display: block;
+}

@@ -24,7 +24,7 @@ urlpatterns = [
     path('todo/<date>/<todo_id>/not_done/', views.not_done_todo, name='not_done_todo'),
 
     path('living_rules/', views.living_rules, name='living_rules'),
-    path('living_rule_new/', views.living_rule_new, name='living_rule_new'),
+    path('living_rule_new/<int:pk>/', views.living_rule_new, name='living_rule_new'),
     path('<int:pk>/living_rule_edit/', views.living_rule_edit, name='living_rule_edit'),
     path('<int:pk>/living_rule_delete/', views.living_rule_delete, name='living_rule_delete'),
     path('guideline/', views.guideline, name='guideline'),

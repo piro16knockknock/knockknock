@@ -502,24 +502,32 @@ def delete_cate(request):
 
 # 생활수칙관련
 def living_rules(request):
-    cates = LivingRuleCate.objects.all()
+    cates = LivingRuleCate.objects.filter(home=request.user.home)
     order_rules = {}
-    for c in cates:
-        rules = LivingRule.objects.filter(cate=c)
-        order_rules[c] = rules
+    for cate in cates:
+        rules = LivingRule.objects.filter(home=request.user.home, cate=cate)
+        order_rules[cate] = rules
+    
+    show_modal = False
+
+    if LivingRule.objects.filter(home=request.user.home).exists()    :
+        show_modal = True
+        print('비어있음')
+
     ctx = {
         'order_rules': order_rules,
+        'show_modal' : show_modal,
     }
     return render(request, 'home/living_rules.html', context=ctx)
 
 
 
-def living_rule_new(request):
+def living_rule_new(request, pk):
     if request.method == "POST":
         form = LivingRuleForm(request.POST)
         if form.is_valid():
-            print("here")
             rule = form.save()
+            rule.cate = get_object_or_404(LivingRuleCate, id=pk)
             rule.home = request.user.home
             rule.save()
             return redirect('home:living_rules')
@@ -533,25 +541,29 @@ def living_rule_new(request):
 
 
 def living_rule_edit(request, pk):
+    
     rule = get_object_or_404(LivingRule, pk=pk)
+    print(rule.cate)
     if request.method == "POST":
-        form = LivingRuleForm(request.POST, instance=rule)
-        if form.is_valid():
-            rule = form.save()
-            cate = rule.cate
-            return redirect('home:living_rules')
-    else:
-        form = LivingRuleForm(instance=rule)
+        print(request.POST.get('content'))
+        rule.content = request.POST.get('content')
+        rule.save()
+        return redirect('home:living_rules')
+ 
     ctx = {
-        'form': form
+        'value': rule.content
     }
     return render(request, 'home/living_rules_form.html', context=ctx)
 
 
 def living_rule_delete(request, pk):
+    print('delete')
     rule = get_object_or_404(LivingRule, pk=pk)
     rule.delete()
     return (redirect('home:living_rules'))
+
+
+
 
 
 def guideline(request):
@@ -570,21 +582,21 @@ def guideline(request):
 
         # 2. 전화와 알람에 대해서는 항상 서로 미리 말해주기
         alarm = request.POST.get('alarm')
-        alarm_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+alarm
+        alarm_answer = '전화와 알람에 대해서 '+alarm
         LivingRuleCate.objects.get_or_create(name = '생활패턴', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="생활패턴")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = alarm_answer, is_guideline=True)
 
         # 3. 룸메와 활발한 친목하기
         friendship = request.POST.get('friendship')
-        friendship_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+friendship
+        friendship_answer = '룸메와의 활발한 친목 '+friendship
         LivingRuleCate.objects.get_or_create(name = '생활패턴', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="생활패턴")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = friendship_answer, is_guideline=True)
        
         # 4. 공과금 및 월세 지출 방식
         expense = request.POST.get('expense')
-        expense_answer = '공과금 및 월세 지출 방식 '+expense
+        expense_answer = '공과금 및 월세 지출은 '+expense
         LivingRuleCate.objects.get_or_create(name = '돈', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="돈")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = expense_answer, is_guideline=True)
@@ -592,7 +604,7 @@ def guideline(request):
         # 5. 공유 품목
         share = {}
         share = request.POST.getlist('share[]')
-        share_answer = '공유 품목 '+ "  ".join(share)
+        share_answer = '공유 품목: '+ ",  ".join(share)
 
         LivingRuleCate.objects.get_or_create(name = '생필품', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="생필품")
@@ -600,14 +612,14 @@ def guideline(request):
 
         # 6. 다른 사람 초대가 가능한지
         invite = request.POST.get('invite')
-        invite_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+invite
+        invite_answer = invite
         LivingRuleCate.objects.get_or_create(name = '다른 사람 초대', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="다른 사람 초대")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = invite_answer, is_guideline=True)
 
         # 7. 다른 사람 숙박이 가능한지
         sleep = request.POST.get('sleep')
-        sleep_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+sleep
+        sleep_answer = sleep
         LivingRuleCate.objects.get_or_create(name = '다른 사람 초대', home = request.user.home)
         living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="다른 사람 초대")
         LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = sleep_answer, is_guideline=True)
