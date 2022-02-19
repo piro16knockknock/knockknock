@@ -1,6 +1,6 @@
 .lr-form-container{
     width: 60rem;
-    height: 40rem;
+    height: auto;
     text-align: center;
     font-size: 2.2rem;
     margin: auto;
@@ -38,7 +38,7 @@
 
 .living-rules-container{
     width: 63rem;
-    height: 75rem;
+    height: auto;
     text-align: center;
     font-size: 2rem;
     margin: auto;
@@ -71,11 +71,9 @@
 }
 
 .living-rules{
+    display: inline-block;
     padding-top: 8rem;
     padding-left: 3rem;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0%);
 }
 
 .category{
@@ -99,11 +97,12 @@
 .category-name{
     font-size: 1.8rem;
     font-weight: 500;
-    display: inline;
+    display: flex;
     text-align: left;
 }
 
 .living-rule li{
+
     font-size: 1.8rem;
     text-align: left;
     padding: 1rem;

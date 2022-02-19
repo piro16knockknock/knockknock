@@ -416,9 +416,16 @@ def living_rules(request):
     for cate in cates:
         rules = LivingRule.objects.filter(home=request.user.home, cate=cate)
         order_rules[cate] = rules
-        
+    
+    show_modal = False
+
+    if LivingRule.objects.filter(home=request.user.home).exists()    :
+        show_modal = True
+        print('비어있음')
+
     ctx = {
         'order_rules': order_rules,
+        'show_modal' : show_modal,
     }
     return render(request, 'home/living_rules.html', context=ctx)
 
