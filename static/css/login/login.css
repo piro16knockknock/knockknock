@@ -1,0 +1,115 @@
+
+.login {
+    display: flex;
+    justify-content: center;
+}
+
+.login>div {
+    margin: 3rem 20rem;
+    width: 90rem;
+}
+
+.container__title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 3rem;
+}
+
+.container__error{
+    font-weight: 600;
+    color: tomato;
+    font-size: 1.5rem;
+}
+
+.container__label {
+    font-size: 1.5rem;
+    width: 15rem;
+    font-weight: 500;
+    color: slategray;
+}
+
+.login__row {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.login__row > span {
+    font-size: 1.3rem;
+}
+
+.login__row > input{
+    border: 1px solid slategray;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+    padding: .3rem;
+}
+
+.login__btn-row{
+    padding-top: 3rem;
+}
+.login__btn-row .sign-up-btn {
+    font-size: 1.5rem;
+    border: 0.2rem solid rgb(255, 197, 109);
+    padding: .3rem 1.5rem;
+    color: rgb(255, 197, 109);
+    border-radius: 5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.login__btn-row .sign-up-btn:hover {
+    background-color: rgb(255, 197, 109);
+    color: white;
+}
+
+.login__btn-row .login-btn {
+    font-size: 1.5rem;
+    padding: .5rem 1.5rem;
+    border: 0.2rem solid rgb(255, 197, 109);
+    background-color: rgb(255, 197, 109);
+    color: white;
+    border-radius: 5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.login__btn-row .login-btn:hover {
+    box-sizing: content-box;
+    border: 0.2rem solid rgb(255, 197, 109);
+    color: rgb(255, 197, 109);
+    background-color: white;
+}
+
+.social-login #google{
+    font-size: 1.5rem;
+    border-radius: 1rem;
+    width: 20rem;
+    height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border: 1px solid slategray;
+}
+
+.social-login #naver {
+    font-size: 1.5rem;
+    border-radius: 1rem;
+    width: 20rem;
+    height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background-color: #2DB400;
+    color: white;
+}
+
+.social-login #kakao{
+    font-size: 1.5rem;
+    border-radius: 1rem;
+    width: 20rem;
+    height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background-color: #E7E600;
+    color: black;
+}
