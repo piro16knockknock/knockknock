@@ -113,3 +113,15 @@
     background-color: #E7E600;
     color: black;
 }
+
+.social-login #facebook{
+    font-size: 1.5rem;
+    border-radius: 1rem;
+    width: 20rem;
+    height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background-color: #006ce7;
+    color: white;
+}
