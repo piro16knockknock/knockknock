@@ -1,15 +1,6 @@
 // 아이디 중복확인 시작
 const user_name = document.getElementById('signup-register-name');
 
-const search_input = document.querySelector('#signup-register__search-input');
-if(search_input){
-    search_input.addEventListener("keyup", (e) => {
-        if (search_input.value == "") return;
-        onSearchHomeList(search_input.value);
-    });    
-}
-
-
 let check_name = ""
 const onClickCheckUserName = async() => {
   if(user_name.value == "") return;
@@ -58,21 +49,14 @@ const userRegisterHandleSubmit = (event) => {
       event.preventDefault();
       return;
   }
+  emailRegisterHandleSubmit(event);
+  nicknameRegisterHandleSubmit(event);
 }
 // 아이디 중복확인 끝
 
 
 // 이메일 중복확인 시작
 const email = document.getElementById('signup-register-email');
-
-const search_input2 = document.querySelector('#signup-register__search-input');
-if(search_input2){
-    search_input2.addEventListener("keyup", (e) => {
-        if (search_input2.value == "") return;
-        onSearchHomeList(search_input2.value);
-    });    
-}
-
 
 let check_email = ""
 const onClickCheckUserEmail = async() => {
@@ -128,15 +112,6 @@ const emailRegisterHandleSubmit = (event) => {
 // 닉네임 중복확인 시작
 const nick_name = document.getElementById('signup-register-nick_name');
 
-const search_input3 = document.querySelector('#signup-register__search-input');
-if(search_input3){
-    search_input3.addEventListener("keyup", (e) => {
-        if (search_input3.value == "") return;
-        onSearchHomeList(search_input3.value);
-    });    
-}
-
-
 let check_nick_name = ""
 const onClickCheckNickName = async() => {
   if(nick_name.value == "") return;
@@ -160,7 +135,7 @@ const checkUserNickNameHandleResponse = (is_available, input_nick_name) => {
   if(is_available){
       alert.innerHTML=" 사용할 수 있는 닉네임입니다. ";
       alert.style.color="green";
-      check_name = input_nick_name;
+      check_nick_name = input_nick_name;
       
       return;
   }

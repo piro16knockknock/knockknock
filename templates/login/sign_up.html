@@ -15,7 +15,7 @@
         {% csrf_token %}
         아이디:
         <br>
-        <input class="form-input" id="signup-register-name" name="username" type="text" maxlength="30" required>
+        <input id="signup-register-name" name="username" type="text" maxlength="30" required>
         <button type="button" onclick="onClickCheckUserName()" class="signup-register__btn">중복 확인</button>
         <span id="signup-register-alert"></span>
         <br>
@@ -29,7 +29,7 @@
         <br>
         이메일: 
         <br>
-        <input class="form-input2" id="signup-register-email" name="email" type="text" maxlength="30" required>
+        <input id="signup-register-email" name="email" type="text" maxlength="30" required>
         <button type="button" onclick="onClickCheckUserEmail()" class="signup-register__btn">중복 확인</button>
         <span id="signup-register-alert2"></span>
         <br>
@@ -42,11 +42,11 @@
         </select>
         <br>
         프로필 이미지:
-        <input class="" name="represent" type="file" maxlength="255" value="">
+        <input name="represent" type="file" maxlength="255" value="">
         <br>
         닉네임:
         <br>
-        <input class="form-input3" id="signup-register-nick_name" name="nick_name" type="text" maxlength="30" required>
+        <input id="signup-register-nick_name" name="nick_name" type="text" maxlength="30" required>
         <button type="button" onclick="onClickCheckNickName()" class="signup-register__btn">중복 확인</button>
         <span id="signup-register-alert3"></span>
         <br>
