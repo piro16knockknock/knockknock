@@ -32,7 +32,7 @@ def intro(request):
     if request.user.is_authenticated :
         today = DateFormat(datetime.now()).format('Y-m-d')
         today_url = '/home/todo/' + str(today)
-        user_todos = Todo.objects.filter(user=request.user)[:2]
+        user_todos = Todo.objects.filter(user=request.user, date = datetime.now(), is_done=False)[:3]
         ctx = {
             'username' : request.user.username,
             'today_date' : today,

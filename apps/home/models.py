@@ -24,7 +24,7 @@ class Todo(models.Model):
     content = models.CharField(max_length=100)
     date = models.DateField()
     # TodoPriority 중 오늘 안에에 해당하는 중요도를 연결해주려면 id로 연결해야함!
-    # priority = models.ForeignKey(TodoPriority, on_delete=models.SET_DEFAULT, default=TodoPriority.objects.get(priority_num=2).pk, related_name='todo')
+    priority = models.ForeignKey(TodoPriority, on_delete=models.SET_DEFAULT, default=TodoPriority.objects.get(priority_num=2).pk, related_name='todo')
     #0 - 상관없음 1-조금 급함 2-당장 해줘
     is_postpone = models.BooleanField(default=False)
     is_done_date = models.DateTimeField(null=True, blank=True)
