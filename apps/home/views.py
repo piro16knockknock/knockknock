@@ -1,10 +1,4 @@
 import json
-from locale import currency
-from select import select
-from time import sleep
-from tkinter.tix import Tree
-from turtle import Turtle
-from urllib import request
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -131,7 +125,7 @@ def prev_date_todo(request, date):
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     complete_total_todos = total_todos.filter(is_done=True)
-    no_complete_todos = total_todos.filter(is_done = False)
+    no_complete_todos = total_todos.filter(is_done = False).order_by('is_not_done_today')
 
     user_todos = total_todos.filter(user=current_user)
     complete_user_todos = total_todos.filter(is_done = True, user=current_user)
