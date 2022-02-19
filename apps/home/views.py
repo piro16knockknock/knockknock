@@ -30,7 +30,7 @@ class CalendarView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
-        cal = Calendar(d.year, d.month)
+        cal = Calendar(d.year, d.month, self.request.user.home)
         html_cal = cal.formatmonth(withyear=True)
         today = datetime.now()
         today_string = f'{today.year}-{today.month}-{today.day}'
@@ -83,6 +83,10 @@ def next_month(d):
 
 @login_required
 def date_todo(request, date):
+
+    today = datetime.now()
+    today_string = f'{today.year}-{today.month}-{today.day}'
+
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     complete_total_todos = total_todos.filter(is_done=True)
@@ -100,8 +104,6 @@ def date_todo(request, date):
     doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
     todo_priority = TodoPriority.objects.all()
 
-    today = datetime.now()
-    today_string = f'{today.year}-{today.month}-{today.day}'
 
     ctx = {
         'today' : today_string,
@@ -125,6 +127,7 @@ def date_todo(request, date):
 
 
 def prev_date_todo(request, date):
+    
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     complete_total_todos = total_todos.filter(is_done=True)
@@ -353,10 +356,15 @@ def edit_todo(request, date, todo_id):
     
     if req['user'] == 'no-user':
         todo.user = None
-        profile_img_url = None
+        
     else:
         todo.user = User.objects.get(id = req['user'])
+
+    if todo.user.profile_img is None:
+        profile_img_url = None
+    else:
         profile_img_url = todo.user.profile_img.url
+
     todo.save()
 
     return JsonResponse({
@@ -379,7 +387,6 @@ def done_todo(request, date, todo_id):
     todo = get_object_or_404(Todo, id = req['todo_id'])
     todo.is_done = True
     todo.is_done_date = datetime.now()
-    print(todo.is_done_date)
     todo.save()
 
     return JsonResponse({
@@ -426,7 +433,7 @@ def postpone_today_todo(request, date, todo_id):
 
     today_todo.save()
 
-    return redirect('/home/prev_todo/'+date)
+    return redirect('/home/prev_todo/'+date+'/')
 
 @csrf_exempt
 @login_required
