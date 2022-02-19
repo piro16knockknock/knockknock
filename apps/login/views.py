@@ -192,6 +192,7 @@ def profile_update(request):
     }
     return render(request, 'login/profile_update.html', context)
 
+# 아이디 중복확인
 @method_decorator(csrf_exempt, name="dispatch")
 def check_username(request):
     req = json.loads(request.body)
@@ -200,12 +201,23 @@ def check_username(request):
         return JsonResponse({'is_available' : False, 'input_name': username })
     else:
         return JsonResponse({'is_available' : True, 'input_name': username })
-    
-@csrf_exempt
+
+# 이메일 중복확인
+@method_decorator(csrf_exempt, name="dispatch")
 def check_email(request):
     req = json.loads(request.body)
     email = req['email']
     if( User.objects.filter(email=email).exists() ):
-        return JsonResponse({'is_available' : False, 'input_name': email })
+        return JsonResponse({'is_available' : False, 'input_email': email })
     else:
-        return JsonResponse({'is_available' : True, 'input_name': email })
+        return JsonResponse({'is_available' : True, 'input_email': email })
+
+# 닉네임 중복확인
+@method_decorator(csrf_exempt, name="dispatch")
+def check_nick_name(request):
+    req = json.loads(request.body)
+    nick_name = req['nick_name']
+    if( User.objects.filter(nick_name=nick_name).exists() ):
+        return JsonResponse({'is_available' : False, 'input_nick_name': nick_name })
+    else:
+        return JsonResponse({'is_available' : True, 'input_nick_name': nick_name })

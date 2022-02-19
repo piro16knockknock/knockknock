@@ -22,4 +22,5 @@ urlpatterns = [
     path('profile_update/', views.profile_update, name='profile_update'),
     path('signup/check_username/', views.check_username, name='check_username'),
     path('signup/check_email/', views.check_email, name='check_email'),
+    path('signup/check_nick_name/', views.check_nick_name, name='check_nick_name'),
 ]
