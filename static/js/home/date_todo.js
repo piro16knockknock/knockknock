@@ -313,9 +313,9 @@ const AddHandleResponse = () => {
 };
 
 function addModalReset() {
-    // const filled_addToDoModal = document.querySelector('#addToDoModal');
-    // console.log(filled_addToDoModal);
-    // filled_addToDoModal.innerHTML = addTodoModal.innerHTML;
+    const filled_addToDoModal = document.querySelector('#addToDoModal');
+    console.log(filled_addToDoModal);
+    filled_addToDoModal.innerHTML = addTodoModal.innerHTML;
     if (addTodoModal.querySelector('.modal-body p.alert') != null) {
         addTodoModal.querySelector('.modal-body p.alert').remove();
     }
