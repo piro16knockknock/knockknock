@@ -139,12 +139,12 @@ def prev_date_todo(request, date):
     today = datetime.now()
     today_string = f'{today.year}-{today.month}-{today.day}'
 
-    if user_todos.count() is 0:
+    if user_todos.count() == 0:
         user_compelete_ratio = 0
     else:
         user_compelete_ratio = complete_user_todos.count() / user_todos.count()
 
-    if total_todos.count() is 0:
+    if total_todos.count() == 0:
         total_compelete_ratio = 0
     else:
         total_compelete_ratio = complete_total_todos.count() / total_todos.count()
