@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block script %}
+<script defer src="{% static 'js/login/profile_update.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>프로필 이미지 수정</h1>
+    <form method="post" action="{% url 'login:profile_update' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>사진: </label>
+        <input class="" name="represent" type="file" maxlength="255" value="{% if user.profile_img %}{{user.profile_img.url}}{% endif %}">
+        <input type="submit" value="다음">
+    </form>
+
+</div>
+
+{% endblock %}

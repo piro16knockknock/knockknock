@@ -94,7 +94,7 @@ p span {
     margin-right: 1rem;
     padding-top: 2rem;
     flex: none;
-    height: 50rem;
+    height: 70vh;
     width: 28rem;
     overflow-x: hidden;
     overflow-y: auto;
@@ -338,7 +338,7 @@ input {
 }
 
 .todo-profile-box {
-    min-width: 3rem;
+    width: 3rem;
     height: 3rem;
     border-radius: 50%;
     overflow: hidden;
@@ -387,4 +387,13 @@ input {
 
 .is_not_done_today {
     border : 0.3rem solid #979797;
+}
+
+.select-todo-user {
+    display: flex;
+    align-items: center;
+}
+
+.select-todo-user div {
+    margin-right: 1rem;
 }
