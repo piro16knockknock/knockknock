@@ -215,6 +215,7 @@ def add_todo(request, date):
             'cate_name' : TodoCate.objects.get(id=cate).name,
             'user_name' : User.objects.get(id = user).username,
             'select_date' : date,
+            # 'user_profile_url' : to
         })
 
     # 내 할 일 페이지에서 기타 카테고리
