@@ -1,10 +1,4 @@
 import json
-from locale import currency
-from select import select
-from time import sleep
-from tkinter.tix import Tree
-from turtle import Turtle
-from urllib import request
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -131,7 +125,7 @@ def prev_date_todo(request, date):
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     complete_total_todos = total_todos.filter(is_done=True)
-    no_complete_todos = total_todos.filter(is_done = False)
+    no_complete_todos = total_todos.filter(is_done = False).order_by('is_not_done_today')
 
     user_todos = total_todos.filter(user=current_user)
     complete_user_todos = total_todos.filter(is_done = True, user=current_user)
@@ -275,7 +269,6 @@ def add_todo(request, date):
         todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate),
         priority = TodoPriority.objects.get(id = priority), date = date)
 
-
         res = JsonResponse({
             'todo_id' : todo.id,
             'todo_content' : todo.content,
@@ -312,6 +305,7 @@ def make_edit_form(request, date, todo_id):
         user_id = 'no-user'
     else:
         user_id= todo.user.id
+    todo.save()
 
     priority_id = todo.priority.id
     return JsonResponse({
@@ -349,11 +343,11 @@ def edit_todo(request, date, todo_id):
         todo.cate = TodoCate.objects.get(id = req['cate'])
         cate_name = todo.cate.name
     
-    if req['user'] == 'no-user':
+    if req['todo-user'] == 'no-user':
         todo.user = None
         
     else:
-        todo.user = User.objects.get(id = req['user'])
+        todo.user = User.objects.get(id = req['todo-user'])
 
     if todo.user is None or todo.user.profile_img == '' or todo.user.profile_img == None:
         profile_img_url = None
@@ -365,7 +359,7 @@ def edit_todo(request, date, todo_id):
     return JsonResponse({
         'current_user_id' : current_user_id,
         'current_cate_id' : current_cate_id,
-        'user_id' : req['user'],
+        'user_id' : req['todo-user'],
         'user_profile_url' : profile_img_url,
         'todo_id' : todo.id,
         'cate_id' : req['cate'],
