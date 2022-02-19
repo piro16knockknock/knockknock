@@ -355,7 +355,7 @@ def edit_todo(request, date, todo_id):
     else:
         todo.user = User.objects.get(id = req['user'])
 
-    if todo.user is None or todo.user.profile_img is None:
+    if todo.user is None or todo.user.profile_img == '' or todo.user.profile_img == None:
         profile_img_url = None
     else:
         profile_img_url = todo.user.profile_img.url

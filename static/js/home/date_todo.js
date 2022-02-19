@@ -83,7 +83,7 @@ const  makeEditFormHandleResponse = () => {
         const {content, cate_id, user_id, priority_id} = JSON.parse(reqMakeEditForm.response);
         
         const edit_todo_form = document.querySelector('.edit-todo form');
-        const content_input = edit_todo_form.querySelector('input[name="content"]')
+        const content_input = edit_todo_form.querySelector('input[name="content"]');
         const select_cate_input = edit_todo_form.querySelector(`div.select-todo-cate input.cate-id-${cate_id}`);
         const select_user_input = edit_todo_form.querySelector(`div.select-todo-user input.user-id-${user_id}`);
         const select_priority_input = edit_todo_form.querySelector(`div.select-todo-priority input.priority-id-${priority_id}`);
@@ -103,12 +103,29 @@ const  makeEditFormHandleResponse = () => {
         select_cate_input.setAttribute('checked', true);
         select_user_input.setAttribute('checked', true);
         select_priority_input.setAttribute('checked', true);
-        
+    }
+}
+
+
+function resetInput(inputs) {
+    console.log(inputs);
+    for (var i=0 ; i < inputs.length; i ++) {
+        var input = inputs.item(i);
+        input.removeAttribute('checked');
     }
 }
 
 
 function closeEdit() {
+    const edit_todo_form = document.querySelector('.edit-todo form');
+    const select_cate_inputs = edit_todo_form.querySelectorAll(`div.select-todo-cate input`);
+    const select_user_inputs = edit_todo_form.querySelectorAll(`div.select-todo-user input`);
+    const select_priority_inputs = edit_todo_form.querySelectorAll(`div.select-todo-priority input`);
+
+    resetInput(select_cate_inputs);
+    resetInput(select_user_inputs);
+    resetInput(select_priority_inputs);
+
     delete_btn.style.display = 'inline-block';
     edit_div.style.display = 'None';
     todo_id = delete_btn.classList[3];
