@@ -18,7 +18,23 @@ import base64
 def get_item(dictionary, key):
     return dictionary.get(key)
 
-#초대 링크
+#집 등록 form - 초대 링크 검색
+@csrf_exempt
+@login_required
+def knock_link_search(request):
+    req = json.loads(request.body)
+    link_input = req['link_input']
+    link_input = link_input.split('/')
+    code = link_input[-1] 
+    home_pk = link_input[-2]
+    
+    if(Home.objects.filter(id=home_pk, invite_link=code).exists()):
+        is_exist = True
+    else:
+        is_exist = False
+    return JsonResponse({'is_exist': is_exist })
+    
+#초대 링크 페이지
 def invite_link(request, link, pk):
     home = get_object_or_404(Home, invite_link=link, id=pk)
     if request.user.is_authenticated:
@@ -148,6 +164,14 @@ def myhome_register(request):
             #기본 ToDo 카테고리
             TodoCate.objects.create(home = current_home, name="빨래")
             TodoCate.objects.create(home = current_home, name="청소")
+            
+            #기본 생활수칙 카테고리
+            LivingRuleCate.objects.create(home = current_home, name = "생활패턴")
+            LivingRuleCate.objects.create(home = current_home, name = "돈")
+            LivingRuleCate.objects.create(home = current_home, name = "생필품")
+            LivingRuleCate.objects.create(home = current_home, name = "다른 사람 초대")
+            LivingRuleCate.objects.create(home = current_home, name = "기타")
+            
             return redirect('setting:myhome_detail')
     else: #get
         print("get")

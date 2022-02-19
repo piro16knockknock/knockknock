@@ -1,6 +1,7 @@
 import json
 from locale import currency
 from select import select
+from time import sleep
 from tkinter.tix import Tree
 from turtle import Turtle
 from urllib import request
@@ -31,13 +32,19 @@ class CalendarView(generic.ListView):
         d = get_date(self.request.GET.get('month', None))
         cal = Calendar(d.year, d.month)
         html_cal = cal.formatmonth(withyear=True)
+        today = datetime.now()
+        today_string = f'{today.year}-{today.month}-{today.day}'
+        user_todos = Todo.objects.filter(user__username = self.request.user.username, date = today, is_done=False)[:5]
+
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
         context['month'] = str(d.month)
         context['year'] = str(d.year) 
         context['utility_list'] = close_utility(self.request)
-        return context
+        context['today_date'] = today_string
+        context['user_todos'] = user_todos
+        return context  
 
 #공과금
 def close_utility(request):
@@ -515,5 +522,66 @@ def living_rule_delete(request, pk):
 
 
 def guideline(request):
+    if request.method == "POST":
+        # print(request.POST)
+        # print(request.POST.get('silenttime'))
+
+        LivingRule.objects.filter( home = request.user.home, is_guideline=True).delete()
+
+        # 1. 최대한 조용히 해야 하는 시간
+        silenttime = request.POST.get('silenttime')
+        silenttime_answer = silenttime + ' 최대한 조용히 해야함'
+        LivingRuleCate.objects.get_or_create(name = '생활패턴', home = request.user.home)
+        living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="생활패턴")
+        LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = silenttime_answer, is_guideline=True)
+
+        # 2. 전화와 알람에 대해서는 항상 서로 미리 말해주기
+        alarm = request.POST.get('alarm')
+        alarm_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+alarm
+        LivingRuleCate.objects.get_or_create(name = '생활패턴', home = request.user.home)
+        living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="생활패턴")
+        LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = alarm_answer, is_guideline=True)
+
+        # 3. 룸메와 활발한 친목하기
+        friendship = request.POST.get('friendship')
+        friendship_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+friendship
+        LivingRuleCate.objects.get_or_create(name = '생활패턴', home = request.user.home)
+        living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="생활패턴")
+        LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = friendship_answer, is_guideline=True)
+       
+        # 4. 공과금 및 월세 지출 방식
+        expense = request.POST.get('expense')
+        expense_answer = '공과금 및 월세 지출 방식 '+expense
+        LivingRuleCate.objects.get_or_create(name = '돈', home = request.user.home)
+        living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="돈")
+        LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = expense_answer, is_guideline=True)
+
+        # 5. 공유 품목
+        share = {}
+        share = request.POST.getlist('share[]')
+        share_answer = '공유 품목 '+ "  ".join(share)
+
+        LivingRuleCate.objects.get_or_create(name = '생필품', home = request.user.home)
+        living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="생필품")
+        LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = share_answer, is_guideline=True)
+
+        # 6. 다른 사람 초대가 가능한지
+        invite = request.POST.get('invite')
+        invite_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+invite
+        LivingRuleCate.objects.get_or_create(name = '다른 사람 초대', home = request.user.home)
+        living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="다른 사람 초대")
+        LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = invite_answer, is_guideline=True)
+
+        # 7. 다른 사람 숙박이 가능한지
+        sleep = request.POST.get('sleep')
+        sleep_answer = '전화와 알람에 대해서는 항상 서로 미리 말해주기 '+sleep
+        LivingRuleCate.objects.get_or_create(name = '다른 사람 초대', home = request.user.home)
+        living_pattern = LivingRuleCate.objects.get(home = request.user.home, name="다른 사람 초대")
+        LivingRule.objects.get_or_create(cate = living_pattern, home = request.user.home, content = sleep_answer, is_guideline=True)
+
+
+        return redirect('home:living_rules')
+
+
     return render(request, 'home/guideline.html')
 
