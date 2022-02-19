@@ -435,10 +435,11 @@ def postpone_today_todo(request, date, todo_id):
 def add_user(request, date, todo_id):
     req = json.loads(request.body)
     todo = get_object_or_404(Todo, id = int(req['todo_id']))
-    todo.user = get_object_or_404(User, id =int(req['form_data']['user']))
+    user = get_object_or_404(User, id =int(req['form_data']['user']))
+    todo.user = user
     todo.save()
 
-    if todo.user.profile_img is None:
+    if todo.user.profile_img == None or todo.user.profile_img == '':
         user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
     else:
         user_profile_url = todo.user.profile_img.url
