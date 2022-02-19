@@ -155,8 +155,8 @@ function validate_add_form(form) {
 const requestAdd = new XMLHttpRequest();   
 function addTodoBtn(event, select_date) {
 
-    if (addTodoModal.querySelector('.modal-body p') != null) {
-        addTodoModal.querySelector('.modal-body p').remove();
+    if (addTodoModal.querySelector('.modal-body p.alert') != null) {
+        addTodoModal.querySelector('.modal-body p.alert').remove();
     }
 
     const url = `/home/todo/${select_date}/add/`;
@@ -178,8 +178,9 @@ function addTodoBtn(event, select_date) {
     else {
         const alert_p = document.createElement('p');
         alert_p.innerHTML  = '채워지지 않은 항목이 존재합니다! : ' + `${not_valid_string}`;
+        alert_p.setAttribute('class', 'alert');
         not_valid_string = '';
-        addTodoModal.querySelector('.modal-body').appendChild(alert_p);
+        addTodoModal.querySelector('.modal-body .select-todo-priority').after(alert_p);
     }
 };
 
@@ -312,10 +313,11 @@ const AddHandleResponse = () => {
 };
 
 function addModalReset() {
-    filled_addToDoModal = document.querySelector('#addToDoModal');
-    filled_addToDoModal.innerHTML = addTodoModal.innerHTML;
-    if (addTodoModal.querySelector('.modal-body p') != null) {
-        addTodoModal.querySelector('.modal-body p').remove();
+    // const filled_addToDoModal = document.querySelector('#addToDoModal');
+    // console.log(filled_addToDoModal);
+    // filled_addToDoModal.innerHTML = addTodoModal.innerHTML;
+    if (addTodoModal.querySelector('.modal-body p.alert') != null) {
+        addTodoModal.querySelector('.modal-body p.alert').remove();
     }
 }
 
