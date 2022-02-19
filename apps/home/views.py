@@ -311,6 +311,7 @@ def make_edit_form(request, date, todo_id):
         user_id = 'no-user'
     else:
         user_id= todo.user.id
+    todo.save()
 
     priority_id = todo.priority.id
     return JsonResponse({
@@ -348,11 +349,11 @@ def edit_todo(request, date, todo_id):
         todo.cate = TodoCate.objects.get(id = req['cate'])
         cate_name = todo.cate.name
     
-    if req['user'] == 'no-user':
+    if req['todo-user'] == 'no-user':
         todo.user = None
         
     else:
-        todo.user = User.objects.get(id = req['user'])
+        todo.user = User.objects.get(id = req['todo-user'])
 
     if todo.user is None or todo.user.profile_img == '' or todo.user.profile_img == None:
         profile_img_url = None
@@ -364,7 +365,7 @@ def edit_todo(request, date, todo_id):
     return JsonResponse({
         'current_user_id' : current_user_id,
         'current_cate_id' : current_cate_id,
-        'user_id' : req['user'],
+        'user_id' : req['todo-user'],
         'user_profile_url' : profile_img_url,
         'todo_id' : todo.id,
         'cate_id' : req['cate'],
