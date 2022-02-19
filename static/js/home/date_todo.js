@@ -12,14 +12,14 @@ function setAddBtn(event, cate_id, cate_name, user_id) {
     const add_form_user_div = document.querySelector('#addToDoModal form .select-todo-user');
     const add_form_cate_div = document.querySelector('#addToDoModal form .select-todo-cate');
 
-    if (user_id != undefined && cate_id == '') {
+    if (user_id != 'no-user' && cate_name == 'no-cate') {
         add_modal_title.innerHTML = "기타 카테고리에 할 일 추가하기";
         add_form_user_div.style.display = 'None';
         add_form_cate_div.style.display = 'None';
         add_form_user_div.querySelector(`.user-id-${user_id}`).checked = true;
         add_form_cate_div.querySelector(`.cate-id-no-cate`).checked = true;
     }
-    else if(cate_name != undefined ) {
+    else if(user_id != 'no-user' && cate_name !='no-cate' ) {
         add_modal_title.innerHTML = cate_name + " 카테고리에 할 일 추가하기";
         add_form_user_div.style.display = 'None';
         add_form_cate_div.style.display = 'None';
@@ -29,6 +29,7 @@ function setAddBtn(event, cate_id, cate_name, user_id) {
     else {
         add_modal_title.innerHTML = "할 일 추가하기";
         add_form_user_div.style.display = 'None';
+        add_form_cate_div.style.display = 'block';
         add_form_user_div.querySelector(`.user-id-no-user`).checked = true;
     }
 };
@@ -151,6 +152,7 @@ function addTodoBtn(event, select_date) {
             "Content-Type",
             "application/x-www-form-urlencoded",
         );
+        console.log(requestAdd);
         requestAdd.send(JSON.stringify({
             form_data : form_data,
         }));
@@ -158,7 +160,7 @@ function addTodoBtn(event, select_date) {
     }
     else {
         const alert_p = document.createElement('p');
-        alert_p.innerHTML = '채워지지 않은 항목이 존재합니다! : ' + `${not_valid_string}`;
+        alert_p.innerHTML  = '채워지지 않은 항목이 존재합니다! : ' + `${not_valid_string}`;
         not_valid_string = '';
         addTodoModal.querySelector('.modal-body').appendChild(alert_p);
     }

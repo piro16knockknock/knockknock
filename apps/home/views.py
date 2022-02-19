@@ -30,7 +30,7 @@ class CalendarView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
-        cal = Calendar(d.year, d.month)
+        cal = Calendar(d.year, d.month, self.request.user.home)
         html_cal = cal.formatmonth(withyear=True)
         today = datetime.now()
         today_string = f'{today.year}-{today.month}-{today.day}'
@@ -83,6 +83,10 @@ def next_month(d):
 
 @login_required
 def date_todo(request, date):
+
+    today = datetime.now()
+    today_string = f'{today.year}-{today.month}-{today.day}'
+
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     complete_total_todos = total_todos.filter(is_done=True)
@@ -100,8 +104,6 @@ def date_todo(request, date):
     doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
     todo_priority = TodoPriority.objects.all()
 
-    today = datetime.now()
-    today_string = f'{today.year}-{today.month}-{today.day}'
 
     ctx = {
         'today' : today_string,
@@ -125,6 +127,7 @@ def date_todo(request, date):
 
 
 def prev_date_todo(request, date):
+    
     current_user = request.user
     total_todos = Todo.objects.filter(home__name = current_user.home.name, date = date)
     complete_total_todos = total_todos.filter(is_done=True)
@@ -139,12 +142,12 @@ def prev_date_todo(request, date):
     today = datetime.now()
     today_string = f'{today.year}-{today.month}-{today.day}'
 
-    if user_todos.count() is 0:
+    if user_todos.count() == 0:
         user_compelete_ratio = 0
     else:
         user_compelete_ratio = complete_user_todos.count() / user_todos.count()
 
-    if total_todos.count() is 0:
+    if total_todos.count() == 0:
         total_compelete_ratio = 0
     else:
         total_compelete_ratio = complete_total_todos.count() / total_todos.count()
@@ -209,6 +212,7 @@ def add_todo(request, date):
             user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
         else:
             user_profile_url = todo.user.profile_img.url
+
         res = JsonResponse({
             'todo_id' : todo.id,
             'todo_content' : todo.content,
@@ -226,15 +230,21 @@ def add_todo(request, date):
         print("내꺼 기타")
         todo = Todo.objects.create(home=request.user.home, content=content, user = User.objects.get(id = user), 
         priority = TodoPriority.objects.get(id = priority), date = date)
+        if todo.user.profile_img is None:
+            user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
+        else:
+            user_profile_url = todo.user.profile_img.url
+
         res = JsonResponse({
-        'todo_id' : todo.id,
-        'todo_content' : todo.content,
-        'todo_priority_content' : todo.priority.content,
-        'todo_priority_num' : todo.priority.priority_num,
-        'cate_id' : 'no-cate',
-        'cate_name' : '기타',
-        'user_name' : User.objects.get(id = user).username,
-        'select_date' : date,
+            'todo_id' : todo.id,
+            'todo_content' : todo.content,
+            'todo_priority_content' : todo.priority.content,
+            'todo_priority_num' : todo.priority.priority_num,
+            'cate_id' : 'no-cate',
+            'cate_name' : '기타',
+            'user_name' : User.objects.get(id = user).username,
+            'select_date' : date,
+            'user_profile_url' : user_profile_url
         })
 
     # 전체 할 일 페이지에서 담당없음 카테고리
@@ -242,29 +252,44 @@ def add_todo(request, date):
         print("전체 기타")
         todo = Todo.objects.create(home=request.user.home, content=content,
         priority = TodoPriority.objects.get(id = priority), date = date)
+
+        if todo.user.profile_img is None:
+            user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
+        else:
+            user_profile_url = todo.user.profile_img.url
+
+
         res = JsonResponse({
-        'todo_id' : todo.id,
-        'todo_content' : todo.content,
-        'todo_priority_content' : todo.priority.content,
-        'todo_priority_num' : todo.priority.priority_num,
-        'cate_id' : 'np-cate',
-        'cate_name' : '기타',
-        'user_name' : 'no-user',
-        'select_date' : date,
+            'todo_id' : todo.id,
+            'todo_content' : todo.content,
+            'todo_priority_content' : todo.priority.content,
+            'todo_priority_num' : todo.priority.priority_num,
+            'cate_id' : 'np-cate',
+            'cate_name' : '기타',
+            'user_name' : 'no-user',
+            'select_date' : date,
+            'user_profile_url' : user_profile_url
         })
     else :
         print("전체")
         todo = Todo.objects.create(home=request.user.home, content=content, cate=TodoCate.objects.get(id = cate),
         priority = TodoPriority.objects.get(id = priority), date = date)
+
+        if todo.user.profile_img is None:
+            user_profile_url = "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"
+        else:
+            user_profile_url = todo.user.profile_img.url
+
         res = JsonResponse({
-        'todo_id' : todo.id,
-        'todo_content' : todo.content,
-        'todo_priority_content' : todo.priority.content,
-        'todo_priority_num' : todo.priority.priority_num,
-        'cate_id' : cate,
-        'cate_name' : todo.cate.name,
-        'user_name' : 'no-user',
-        'select_date' : date,
+            'todo_id' : todo.id,
+            'todo_content' : todo.content,
+            'todo_priority_content' : todo.priority.content,
+            'todo_priority_num' : todo.priority.priority_num,
+            'cate_id' : cate,
+            'cate_name' : todo.cate.name,
+            'user_name' : 'no-user',
+            'select_date' : date,
+            'user_profile_url' : user_profile_url
         })
 
     
@@ -331,10 +356,15 @@ def edit_todo(request, date, todo_id):
     
     if req['user'] == 'no-user':
         todo.user = None
-        profile_img_url = None
+        
     else:
         todo.user = User.objects.get(id = req['user'])
+
+    if todo.user.profile_img is None:
+        profile_img_url = None
+    else:
         profile_img_url = todo.user.profile_img.url
+
     todo.save()
 
     return JsonResponse({
@@ -357,7 +387,6 @@ def done_todo(request, date, todo_id):
     todo = get_object_or_404(Todo, id = req['todo_id'])
     todo.is_done = True
     todo.is_done_date = datetime.now()
-    print(todo.is_done_date)
     todo.save()
 
     return JsonResponse({
@@ -404,7 +433,7 @@ def postpone_today_todo(request, date, todo_id):
 
     today_todo.save()
 
-    return redirect('/home/prev_todo/'+date)
+    return redirect('/home/prev_todo/'+date+'/')
 
 @csrf_exempt
 @login_required
@@ -478,9 +507,16 @@ def living_rules(request):
     for cate in cates:
         rules = LivingRule.objects.filter(home=request.user.home, cate=cate)
         order_rules[cate] = rules
-        
+    
+    show_modal = 'true'
+
+    if LivingRule.objects.filter(home=request.user.home).exists() :
+        show_modal = 'false'
+        print('비어있음')
+    
     ctx = {
         'order_rules': order_rules,
+        'show_modal' : show_modal,
     }
     return render(request, 'home/living_rules.html', context=ctx)
 

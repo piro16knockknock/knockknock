@@ -106,7 +106,7 @@
                 {% endif %}
                 {% endfor %}
                 <div class="add-todo todo">
-                    <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', '{{ cate.name }}', '{{ request.user.id }}')"  href="#addToDoModal"> + 할 일 등록</a>
+                    <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, '{{ cate.id }}', 'no-cate', '{{ request.user.id }}')"  href="#addToDoModal"> + 할 일 등록</a>
                 </div>
             </div>
             {% endif %}
@@ -155,7 +155,7 @@
             {% endfor %}
             {% endif %}
             <div class="add-todo todo">
-                <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, null, null, null)" href="#addToDoModal"> + 할 일 등록</a>
+                <a type="button" class="add-btn" data-bs-toggle="modal" onclick="setAddBtn(this, null, 'no-cate', 'no-user')" href="#addToDoModal"> + 할 일 등록</a>
             </div>
         </div>
 
@@ -331,7 +331,6 @@
                                 </div>
                             </form>
                             <button class="edit-back-btn btn btn-light" onclick="editTodoBtn(this, '{{ select_date }}' )" data-bs-dismiss="modal">완료</button>
-                            <a class="edit-back-btn btn btn-light" onclick="closeEdit()">돌아가기</a>
                         </div>
 
                     </div>

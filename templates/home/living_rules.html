@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
+
+{% block css %}
 <link rel="stylesheet" href="{% static 'css/home/living_rules.css' %}">
+{% endblock %}
+
+{% block script %}
+<script defer type="text/javascript">
+    const is_show_modal = {{show_modal}};
+</script>
+<script defer src="{% static 'js/home/living_rules.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
 
 <section>
     <div class="side-nav">
@@ -13,12 +24,10 @@
         </ul>
     </div>
     
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#guidelinemodal">가이드라인 모달</button>
+    <!-- <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#guidelinemodal">가이드라인 모달</button> -->
     
     
-    <div class="living-rules-container">
-    
-    
+    <div class="living-rules-container">    
         <h2>생활수칙</h2>
         <div class="living-rules">
             {% for cate, rules in order_rules.items %}
@@ -51,7 +60,6 @@
             {% endfor %}
         </div>
     
-    
     </div>
 </section>
 
@@ -59,6 +67,8 @@
 
 
 <!-- Modal -->
+
+
 <div class="modal fade" id="guidelinemodal" tabindex="-1" aria-labelledby="guidelineModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -74,9 +84,12 @@
                 <button type="button" class="skip_btn" data-bs-dismiss="modal">건너뛰기</button>
                 <a href="{%url 'home:guideline' %}" class="movetoguideline">보기</a>
             </div>
-            </div>
         </div>
     </div>
+</div>
 
 {% endblock %}
+
+
+
 
