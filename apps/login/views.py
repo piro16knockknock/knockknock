@@ -136,7 +136,9 @@ def sign_up(request):
                 email=request.POST.get("email"),
                 nick_name=request.POST.get("nick_name"),
                 gender=request.POST.get("gender"),
-            )            
+                profile_img=request.FILES['represent'],
+            )
+            print(request.FILES)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/')
         messages.warning(request, "비밀번호 두 개가 다릅니다.")
@@ -166,7 +168,7 @@ def logoutUser(request):
     return redirect('login:intro')
 
 
-
+# 유저정보 업데이트
 def user_update(request):
     if request.method == 'POST':
         form = UserUpdateForm(request.POST, instance=request.user)
@@ -180,6 +182,7 @@ def user_update(request):
     }
     return render(request, 'login/user_update.html', context)
 
+# 프로필 업데이트
 def profile_update(request):
     if request.method == 'POST':
         request.user.profile_img = request.FILES['represent']
