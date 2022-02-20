@@ -325,7 +325,7 @@ def knock_home(request):
 
     for user in User.objects.filter(home=home):
         content = home.name + "에 노크가 들어왔습니다."
-        Notice.objects.get_or_create(receive_user=user, content=content, link="/setting/myhome/detail/")
+        Notice.objects.create(receive_user=user, content=content, link="/setting/myhome/detail/")
 
     return JsonResponse({'success':True})
 
