@@ -94,13 +94,15 @@
                     <ul class="dropdown-menu main-drop-menu" aria-labelledby="navbarDropdown" style="position: absolute; transform: translate(-85%, 0%);">
                         <h3 class="notice-title">알림</h3>       
 
-                        <li style="width: 25rem; display: flex; justify-content: flex-start; padding-left: 1rem; position: relative;"><a class="dropdown-item" href="#" style="position: absolute;" >
+                        <li style="width: 27rem; display: flex; justify-content: flex-start; padding-left: 1rem; position: relative;"><a class="dropdown-item" href="#" style="position: absolute;" >
 
 
                             {% if notices %}
+                            <div class="d-flex flex-column">
                             {% for notice in notices %}
                             <a href="{{notice.link}}" >{{ notice.content }}</a>
                             {% endfor %}
+                            </div>
                             {% endif %}
                         </a></li>
                      
