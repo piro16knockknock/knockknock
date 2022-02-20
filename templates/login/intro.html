@@ -4,7 +4,7 @@
 {% block content %}
  <!-- user가 로그인 했을 때 && 유저가 집 없는 경우 OR 집 있는 경우-->
 {% if request.user.is_authenticated %} 
-<div class="intro-main " style="background-color: #fcda91; height: 100vh;">
+<div id="intro-main                                 " class="intro-main" style="background-color: #fcda91; height: 100vh;">
    <div id="intro-main-cnt" class="intro-main-cnt position-relative cnt-padding">
         {% if request.user.home == None %} <!-- 유저가 집이 없는 경우 -->        
             <div class="mt-5">
@@ -62,7 +62,7 @@
 
 <!-- user가 로그인 하지 않은 상태의 메인 서비스 소개 페이지-->
 {% else %}
-<div class="intro-main-notlog" style="height: 100vh; background-color: #FDF4E8;">
+<div id="intro-main-notlog"  class="intro-main-notlog" style="height: 100vh; background-color: #FDF4E8;">
     <div id="intro-main-notlog-cnt" class="intro-main-cnt cnt-padding">
         <div style="z-index: 3; position: relative;">
             <h5>룸메이트와의 쾌적하고 편안한 생활 지킴이</h5>
@@ -218,32 +218,36 @@
 <footer>
     <div class="footer-content" style="display: flex;">
         <div class="footer-1" style="margin-right: 5rem; display: flex; flex-direction: column; justify-content: center;">
-            <a class="footer-title" href="">Knock/Knock</a>
+            {% if request.user.is_authenticated %} 
+            <a class="list-group-item-action footer-title" href="#intro-main">Knock/Knock</a>
+            {% else %}
+            <a class="list-group-item-action footer-title" href="#intro-main-notlog">Knock/Knock</a>
+            {% endif%}
             <p class="footer-subtitle">룸메이트와의 쾌적하고 편안한 생활 지킴이</p>
         </div>
-        <div class="footer-li">
+        <div class="footer-li list-group">
             <div class="footer-2">
-                <h5><a href="">서비스 소개</a></h5>
+                <h5><a class="list-group-item-action" href="#intro-persona">서비스 소개</a></h5>
                 <ul>
-                    <li class="footer-index"><a href="">룸메이트 관리</a></li>
-                    <li class="footer-index"><a href="">생활수칙 관리</a></li>
-                    <li class="footer-index"><a href="">캘린더 공유</a></li>
-                    <li class="footer-index"><a href="">할 일 체크</a></li>
+                    <li class="footer-index"><a class="list-group-item-action" href="#intro-feat1">룸메이트 관리</a></li>
+                    <li class="footer-index"><a class="list-group-item-action" href="#intro-feat2">생활수칙 관리</a></li>
+                    <li class="footer-index"><a class="list-group-item-action" href="#intro-feat3">캘린더 공유</a></li>
+                    <li class="footer-index"><a class="list-group-item-action" href="#intro-feat4">할 일 체크</a></li>
                 </ul>
             </div>
             <div class="footer-3">
-                <h5><a href="">커뮤니티</a></h5>
+                <h5><a class="list-group-item-action" href="#intro-feat5">커뮤니티</a></h5>
                 <ul>
-                    <li class="footer-index"><a href="">공지사항</a></li>
-                    <li class="footer-index"><a href="">자유게시판</a></li>
-                    <li class="footer-index"><a href="">성향테스트</a></li>
+                    <li class="footer-index">공지사항</li>
+                    <li class="footer-index">자유게시판</li>
+                    <li class="footer-index">성향테스트</li>
                 </ul>
             </div>
             <div class="footer-4">
                 <h5><a href="">ABOUT US</a></h5>
                 <ul>
-                    <li class="footer-index"><a href="">서비스 소개</a></li>
-                    <li class="footer-index"><a href="">CONTACT US</a></li>
+                    <li class="footer-index">서비스 소개</li>
+                    <li class="footer-index">CONTACT US</li>
                 </ul>
             </div>
         </div>

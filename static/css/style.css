@@ -431,19 +431,20 @@ a {
 }
 
 .footer-content {
-    height: 30rem;
+    height: 20rem;
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
 }
 
 .footer-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 600;
     margin-right: 5rem;
     margin-left: 5rem;
 }
 .footer-subtitle {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     margin-left: 5rem;
 }
 
@@ -452,11 +453,11 @@ a {
 }
 .footer-li {
     display: flex;
-    margin-top: 11rem;
+    flex-direction: row;
 }
 
 .footer-li h5 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 600;
     padding-bottom: 0.5rem;
 }
