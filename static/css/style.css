@@ -49,6 +49,11 @@ a {
     margin-right: 5rem;
 }
 
+.navbar-brand  img {
+    width: 1.4rem;
+    margin-right: 0.6rem;
+}
+
 .navbar a:hover {
     font-weight: 600;
 }
@@ -645,20 +650,3 @@ a {
         transform: translate(0rem, 0);
     }
 }
-/*
-#intro-ment {
-    animation-duration: 1.2s;
-    animation-name: slidein-up;
-}
-
-@keyframes slidein-up {
-    from {
-        opacity: 0;
-        transform: translate(40rem, 0);
-    }
-
-    to {
-        opacity: 100;
-        transform: translate(0rem, 0);
-    }
-}*/
