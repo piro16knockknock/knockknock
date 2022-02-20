@@ -7,7 +7,7 @@ from django.utils.safestring import mark_safe
 from django.views import generic
 from setting.models import *
 from .models import Todo, Home, TodoCate, TodoPriority
-from login.models import User
+from login.models import User, Notice
 # from .forms import TodoForm
 from .models import Todo, Home, LivingRuleCate, LivingRule
 from .forms import LivingRuleForm
@@ -15,6 +15,13 @@ from .utils import Calendar
 from datetime import datetime, timedelta, date
 import calendar
 from django.conf import settings
+
+def nav_notice(request):
+    current_user = request.user
+    notice_cnt = Notice.objects.filter(receive_user=current_user).count()
+    print(notice_cnt)
+    notices = Notice.objects.filter(receive_user=current_user)
+    return notice_cnt, notices 
 
 
 # Create your views here.
@@ -31,6 +38,8 @@ class CalendarView(generic.ListView):
         today_string = f'{today.year}-{today.month}-{today.day}'
         user_todos = Todo.objects.filter(user__username = self.request.user.username, date = today, is_done=False)[:5]
 
+        notice_cnt, notices = nav_notice(self.request)
+
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
@@ -39,6 +48,8 @@ class CalendarView(generic.ListView):
         context['utility_list'] = close_utility(self.request)
         context['today_date'] = today_string
         context['user_todos'] = user_todos
+        context['notice_cnt'] = notice_cnt
+        context['notices'] = notices
         return context  
 
 #공과금
@@ -99,6 +110,8 @@ def date_todo(request, date):
     doing_todos = total_todos.exclude(user=None).exclude(is_done=True)
     todo_priority = TodoPriority.objects.all()
 
+    notice_cnt, notices = nav_notice(request)
+
 
     ctx = {
         'today' : today_string,
@@ -115,7 +128,10 @@ def date_todo(request, date):
         'cates' : cates,
         'todo_priority' : todo_priority,
         'roomates' : roommates,
-        'utility_list' : close_utility(request)
+        'utility_list' : close_utility(request),
+        'notice_cnt' : notice_cnt,
+        'notices' : notices,
+
     }
 
     return render(request, 'home/date_todo/date_todo.html', context=ctx)
@@ -149,6 +165,7 @@ def prev_date_todo(request, date):
     print(no_complete_todos)
     print(user_compelete_ratio)
     print(total_compelete_ratio)
+    notice_cnt, notices = nav_notice(request)
     ctx = {
         'today' : today_string,
         'select_date' : date,
@@ -158,7 +175,10 @@ def prev_date_todo(request, date):
         'user_complete_ratio' : int(user_compelete_ratio * 100),
         'total_complete_ratio' : int(total_compelete_ratio * 100),
         'roomates' : roommates,
-        'utility_list' : close_utility(request)
+        'utility_list' : close_utility(request),
+        'notice_cnt' : notice_cnt,
+        'notices' : notices,
+
     }
 
     return render(request, 'home/date_todo/prev_date_todo.html', context=ctx)
@@ -504,10 +524,14 @@ def living_rules(request):
     if LivingRule.objects.filter(home=request.user.home).exists() :
         show_modal = 'false'
         print('비어있음')
-    
+    notice_cnt, notices = nav_notice(request)
+
     ctx = {
         'order_rules': order_rules,
         'show_modal' : show_modal,
+        'notice_cnt' : notice_cnt,
+        'notices' : notices,
+
     }
     return render(request, 'home/living_rules.html', context=ctx)
 
@@ -524,8 +548,12 @@ def living_rule_new(request, pk):
             return redirect('home:living_rules')
     else:
         form = LivingRuleForm()
+    notice_cnt, notices = nav_notice(request)
+
     ctx = {
         'form': form,
+        'notice_cnt' : notice_cnt,
+        'notices' : notices,
     }
     return render(request, 'home/living_rules_form.html', context=ctx)
     
@@ -540,9 +568,11 @@ def living_rule_edit(request, pk):
         rule.content = request.POST.get('content')
         rule.save()
         return redirect('home:living_rules')
- 
+    notice_cnt, notices = nav_notice(request)
     ctx = {
-        'value': rule.content
+        'value': rule.content,
+        'notice_cnt' : notice_cnt,
+        'notices' : notices,
     }
     return render(request, 'home/living_rules_form.html', context=ctx)
 
@@ -618,5 +648,12 @@ def guideline(request):
 
         return redirect('home:living_rules')
 
+    notice_cnt, notices = nav_notice(request)
 
-    return render(request, 'home/guideline.html')
+    cnt = {
+        'notice_cnt' : notice_cnt,
+        'notices' : notices,
+
+    }
+
+    return render(request, 'home/guideline.html', cnt)
