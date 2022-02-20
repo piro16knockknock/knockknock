@@ -46,7 +46,7 @@ class CalendarView(generic.ListView):
         context['user_todos'] = user_todos
         context['notice_cnt'] = notice_cnt
         context['notices'] = notices
-        return context  
+        return context   
 
 #공과금
 def close_utility(request):
