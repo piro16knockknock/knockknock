@@ -30,7 +30,7 @@ function setAddBtn(event, cate_id, cate_name, user_id) {
     else {
         add_modal_title.innerHTML = "할 일 추가하기";
         add_form_user_div.style.display = 'None';
-        add_form_cate_div.style.display = 'block';
+        add_form_cate_div.style.display = 'flex';
         add_form_user_div.querySelector(`.user-id-no-user`).checked = true;
     }
 };

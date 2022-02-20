@@ -356,6 +356,8 @@ input {
 
 .modal-body label {
     margin-right: 1.6rem;
+    display: flex;
+    align-items: center;
 }
 
 .todo-input-txt {
@@ -377,23 +379,39 @@ input {
     border: 1px solid #FFC163;
 }
 
-.select-todo-cate {
-    font-size: 1.4rem;
-}
-
-.select-todo-priority {
-    font-size: 1.4rem;
-}
-
 .is_not_done_today {
     border : 0.3rem solid #979797;
 }
 
-.select-todo-user {
+.select-todo-user,
+.select-todo-cate,
+.select-todo-priority  {
     display: flex;
     align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
 }
 
-.select-todo-user div {
+.select-todo-user div,
+.select-todo-cate div,
+.select-todo-priority div {
     margin-right: 1rem;
+}
+
+.select-todo-user p,
+.select-todo-cate p,
+.select-todo-priority p {
+    margin-right: 3rem;
+}
+
+.edit-todo {
+    margin-top: 1rem;
+}
+
+.cate-alert {
+    margin-top: 0.5rem;
+}
+
+.duplicate-cate {
+    margin-left: 0.5rem;
 }

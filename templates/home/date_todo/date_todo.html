@@ -221,7 +221,8 @@
                         <div class="todo-input-txt">
                             <input type="text" name="content" placeholder="할 일을 입력하세요"/>
                         </div>
-                        <div class="select-todo-cate">
+                        <div class="select-todo-cate ">
+                            <p class="me-5">카테고리</p>
                             {% for cate in cates %}
                             <label><input type="radio" class="cate-id-{{ cate.id }}" name="cate" value="{{ cate.id }}">{{ cate.name }}</label>
                             {% endfor %}
@@ -229,15 +230,18 @@
                         </div>
                         <div class="select-todo-user">
                             {% for user in roomates %}
-                            <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}" />
-                            <div class="todo-profile-box">
-                                <img class="cal-profile-img" src={% if todo.user.profile_img %}"{{request.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %} alt="">
-                            </div>
+                            <label><input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}" />
+                                <div class="todo-profile-box">
+                                    <img class="cal-profile-img" src={% if todo.user.profile_img %}"{{request.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %} alt="">
+                                </div>
+                            </label>
                             {% endfor %}
-                            <input type="radio" class="user-id-no-user input" name="user" value="no-user"/>
-                            <div class="todo-profile-box">
-                                <img class="user-id-no-user img" src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg" style="width: 3rem; height: 3rem;" alt="">
-                            </div>
+                            <label>
+                                <input type="radio" class="user-id-no-user input" name="user" value="no-user"/>
+                                <div class="todo-profile-box">
+                                    <img class="user-id-no-user img" src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg" style="width: 3rem; height: 3rem;" alt="">
+                                </div>
+                            </label>
                         </div>
                         <div class="select-todo-priority d-flex align-items-center">
                             <p class="me-5">우선순위</p>
@@ -269,7 +273,7 @@
                             <button type="button" class="check-cate-name-btn btn btn-light"  onclick="checkCateName(this, '{{ select_date }}')">중복확인 하기</button>
                         </div>
                         <div class="cate-list" style="display: none;">
-                            <div class="duplicate-cates" style="display: flex;">
+                            <div class="duplicate-cates" style="display: flex; margin-top: -0.9rem;">
                                 <p> 현재 사용중인 카테고리 :</p>
                                 {% for cate in cates %}
                                 <p class="duplicate-cate">{{ cate.name }} </p>
@@ -315,7 +319,7 @@
                                     <label><input type="radio" class="cate-id-no-cate" name="cate" value="no-cate">기타</label>
                                 </div>
                                 <div class="select-todo-user">
-                                    <p>담당</p>
+                                    <p style="margin-right: 5.4rem;">담당</p>
                                     {% for user in roomates %}
                                     <label><input type="radio" class="user-id-{{ user.id}}" name="todo-user" value="{{ user.id }}"/>
                                         <div class="todo-profile-box">

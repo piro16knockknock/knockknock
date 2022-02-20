@@ -67,12 +67,14 @@ const checkCateNameHandleResponse = (exist_catename) => {
     if (exist_catename ) {
         is_checked = false;
         check_content.style.color = "red";
+        check_content.setAttribute('class', 'cate-alert');
         check_content.innerHTML = '이미 존재하는 카테고리 이름입니다'
         cate_list.style.display = 'block';
         check_cate_btn.after(check_content);
     } else {
         is_checked = true;
         check_content.style.color = "green";
+        check_content.setAttribute('class', 'cate-alert');
         check_content.innerHTML = '사용가능한 이름입니다'
         accpet_add_cate_btn.setAttribute('data-bs-dismiss', 'modal');
         check_cate_btn.after(check_content);
