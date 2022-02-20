@@ -199,7 +199,7 @@ def login_user(request):
             login(request, user)
             return redirect('login:intro')
         else:
-            messages.warning(request, "존재하지 않는 아이디입니다.")
+            messages.warning(request, "아이디 또는 비밀번호가 틀렸습니다. 다시 확인해주세요.")
             return redirect('login:login')
 def logoutUser(request):
     logout(request)
