@@ -19,7 +19,7 @@ class TodoPriority(models.Model):
 
 class Todo(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name= 'todo')
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='todo')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='todo')
     cate = models.ForeignKey(TodoCate, on_delete=models.CASCADE, null=True, blank=True, related_name='todo')
     content = models.CharField(max_length=100)
     date = models.DateField()
