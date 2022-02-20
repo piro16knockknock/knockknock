@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/login/profile_update.css' %}?after %}">
+<link rel="stylesheet" href="{% static 'css/login/profile_delete.css' %}?after %}">
 {% endblock %}
 
 {% block script %}
@@ -11,16 +11,17 @@
 {% endblock %}
 
 {% block content %}
-<section class="profile-update">
+<section class="profile-delete">
     <div>
-        <h1 class="container__title">프로필 이미지 수정</h1>
+        <h1 class="container__title">회원탈퇴</h1>
         <hr />
         <div class="container">
             <form method="POST" novalidate>
                 {% csrf_token %}
-                <p><strong>{{ user.user_id }}</strong> 회원님의 계정이 삭제됩니다.<br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다.
+                <label class="my-3">회원님의 계정이 삭제됩니다.</label><br>
+                <label class="my-3">탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다.</label>
                 <div>
-                    <label name="label_password" for="{{ password_form.password.id_for_label }}">{{ password_form.password.label }}</label>
+                    <label class="my-3" name="label_password" for="{{ password_form.password.id_for_label }}">{{ password_form.password.label }}</label>
                     {{ password_form.password }}
                     {% if password_form.password.errors %}
                     <script type="text/javascript">
@@ -28,11 +29,11 @@
                     </script>
                     {% endif %}
                     <small>
-                        본인인증을 위해 비밀번호를 입력해주세요.
+                        <label>본인인증을 위해 비밀번호를 입력해주세요.</label>
                     </small>
                 </div>
             
-                <button type="submit">탈퇴하기</button>
+                <button class = "container__btn mt-2"type="submit">탈퇴하기</button>
             </form>
             
             <script type="text/javascript">
