@@ -5,8 +5,13 @@
   padding-right: 8rem;
 }
 
+td {
+  box-shadow: 0 0 0 0.5px #fff inset;
+  padding: 0.4rem;
+}
+
 td i {
-  color: #FFC163;
+  color: #ffa723;
 }
 
 .left {
@@ -41,7 +46,7 @@ td i {
 }
 
 #calendar {
-  width: 95rem;
+  width: 85rem;
   font-size: 1.3rem;
   padding-left: 3rem;
   margin:auto;
@@ -142,13 +147,5 @@ td a:visited {
 
 td a:hover {
   text-decoration: none;
-  color: #FFC163;
+  color: #ffa723;
 }
-
-
-/* calendar decorate */
-/* week-info */
-.cal-ratio-bg {
-  /*todo*/
-}
- 
