@@ -57,19 +57,6 @@
                     </div>
                 {% endif %}
             {% endif %}
-
-            <div id="cal-todo" class="cal-side-box">
-                <p class="mb-3">오늘의 할 일</p>
-                {% if user_todos.count is 0 %}
-                    <p>현재 할 일이 없어요~!</p>
-                {% else %}
-                    {% for user_todo in user_todos %}
-                        <div class="user-todo">
-                            <p>{{user_todo.content}}</p>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
             
 		</div>
     {% endblock %}

@@ -28,7 +28,7 @@ class Calendar(HTMLCalendar):
 
 		if (year==self.today.year) and (month == self.today.month) and (day == self.today.day):
 			date_content += "<a href=\"/home/todo/" + f"{date}" + "\" class=\"go_todo_btn\"> 할 일 <i class=\"fa-solid fa-circle-plus\"></i></a>"
-			return f'<td style="background: linear-gradient(to bottom, white {dr}%, #ffefbc 0%"> {date_content}</td>'
+			return f'<td style="background: linear-gradient(to bottom, white {dr}%, #ffefbc 0%" class="cal-today-date"> {date_content}</td>'
 
 		if (year < self.today.year) or (month < self.today.month) or (day < self.today.day):
 			date_content += "<a href=\"/home/prev_todo/" + f"{date}" + "\" class=\"go_todo_btn\"> 할 일 <i class=\"fa-solid fa-certificate\"></i></a>"

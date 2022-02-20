@@ -39,6 +39,15 @@ td i {
   width: 100%;
 }
 
+.cal-today-date {
+  border: 0.16rem solid #ffd16d;
+}
+
+.cal-today-date span {
+  color : #ffa723;
+  font-weight: 600;
+}
+
 /* App styles */
 .title {
   text-align: center;

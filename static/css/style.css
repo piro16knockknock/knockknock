@@ -173,7 +173,7 @@ a {
 
 #intro-main-todo {
     position: absolute;
-    top: 60%;
+    top: 70%;
     right: 5%;
     width: 30rem;
     min-height: 18rem;
@@ -200,9 +200,10 @@ a {
     font-weight: 500;
 }
 
+
 #intro-main-cnt {
-    background: url("../img/knock_door.png");
-    background-size: 30%;
+    background: url("../img/intro-main2.png");
+    background-size: 50%;
     background-position-x: 50%;
     background-position-y: 65%;
     background-repeat: no-repeat;
@@ -211,29 +212,30 @@ a {
     height: 100%;
 
 }
-/*
-#intro-main-notlog-cnt {
-    background: url("../img/knock_door.png");
-    background-size: 30%;
-    background-position-x: 50%;
-    background-position-y: 65%;
-    background-repeat: no-repeat;
-    object-fit: contain;
-    width: 100%;
-    height: 100%;
-}*/
+
+.main-img-box {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 .door-img-box {
     position: absolute;
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
+    cursor: url("../img/knock_cursor.png") 32 37, auto;
 }
 
 .door-img-box:hover img {
     transform: scale(102%);
-    cursor: pointer;
+    cursor: url("../img/knock_cursor.png") 32 37, auto;
+    opacity: 0.8;
+}
+
+.door-img-box a {
+    cursor: url("../img/knock_cursor.png") 32 37, auto;
 }
 
 .intro-main-cnt h2 {
@@ -255,7 +257,7 @@ a {
 #intro-main-notlog-cnt h5 {
     font-size: 1.6rem;
     margin-top: 3rem;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
 }
 
 #intro-main-notlog-cnt h1 {
@@ -264,14 +266,16 @@ a {
     line-height: 5.3rem;
     margin-bottom: 6rem;
     color: #FFB649;
+    margin-left: -0.6rem;
 }
 
 #intro-main-notlog-cnt p {
     font-size: 1.6rem;
     line-height: 2.5rem;
-    margin-bottom: 5rem;
+    margin-bottom: 20rem;
     width: 40rem;
     word-break: keep-all;
+    margin-top: 7rem;
 }
 
 #intro-main-notlog-cnt span {
@@ -279,23 +283,86 @@ a {
     color: black;
 }
 
+#intro-ment {
+    padding: 10rem 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#intro-ment h4 {
+    font-weight: 700;
+    font-size: 5rem;
+    color: #9F8BBE;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+}
+
+#intro-ment h5 {
+    font-weight: 600;
+    font-size: 2rem;
+    color: #575757;
+}
 
 #intro-persona h5 {
     font-size: 2rem;
-    margin-top: 6rem;
+    margin-top: 4rem;
     margin-bottom: 2rem;
     color: black;
 }
 
-#intro-persona h6 {
+#intro-persona img {
+    height: 11rem;
+}
+
+#intro-persona-title {
+    margin-bottom: 2rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #535353;
+}
+
+.persona-box {
+    background: #BDDBFF;
+    border-radius: 1rem;
+    margin: 0 2rem;
+    padding: 2rem;
+    width: 36rem;
+}
+
+.persona-box h6 {
+    font-size: 1.4rem;
+    margin-bottom: 1.6rem;
+    font-weight: 500;
+}
+
+.persona-box p {
+    font-size: 1.3rem;
+    line-height: 1.8rem;
+    word-break: keep-all;
+}
+
+#intro-persona-title {
+    color: #3472AC;
     font-size: 1.6rem;
     line-height: 2.5rem;
 }
 
-#intro-persona-title {
-    margin-bottom: 12rem;
-    font-family: 'Noto Sans KR', sans-serif;
-    color: #535353;
+#intro-persona-title div {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(32, 32, 32);
+    border-radius: 5rem;
+    width: 10rem;
+    height: 3rem;
+    margin: auto;
+}
+
+#intro-persona-title p {
+    color: #fff;
+    font-size: 1.4rem;
 }
 
 #intro-persona-title span {
@@ -371,15 +438,17 @@ a {
 }
 
 .intro-service-circle {
+    display: flex;
     padding: 3rem;
+    flex-direction: column;
     margin: 6rem 0.5rem 10rem 0.5rem;
     overflow: hidden;
     background-color: white;
     border: #ddd 1px solid;
     border-radius: 50%;
-    width: 20rem;
-    height: 20rem;
-    /*box-shadow: 2px 3px 10px 1px rgba(82, 82, 82, 0.52);*/
+    width: 18rem;
+    height: 18rem;
+    justify-content: center;
 }
 
 .intro-service-circle span {
@@ -393,32 +462,104 @@ a {
     margin-bottom: 1rem;
 }
 
-.intro-service-circle p {
-    font-size: 1.1rem;
-    line-height: 1.8rem;
-    color: #535353;
+
+.intro-feature h6 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
 }
 
-#intro-feat1, 
-#intro-feat3, 
-#intro-feat5 {
+.intro-feature {
+    padding: 0 10rem;
+}
+
+.intro-feature p {
+    font-size: 1.8rem;
+}
+
+.intro-feature span {
+    font-size: 4.6rem;
+}
+
+#intro-cal-img {
+    width: 60rem;
+}
+
+#intro-roommate img {
+    width: 60rem;
+}
+
+#intro-living {
+    border-radius: 2rem;
+}
+
+#intro-living img {
+    width: 60rem;
+    border-radius: 1rem;
+}
+
+#intro-check img {
+    width: 70rem;
+}
+
+#intro-feat1 {
+    padding: 10rem 0;
+    background-color: #BDDBFF;
+}
+
+#intro-feat1 h6 {
+    color: #3472AC;
+}
+
+#intro-feat1 span {
+    color: #3472AC;
+}
+
+#intro-feat1 p {
+    margin-bottom: 2.4rem;
+}
+
+#intro-living {
+    margin-left: 12rem;
+}
+
+#intro-feat3 {
     padding-top: 15rem;
     background-color: #75AFF2;
 }
 
-#intro-feat2, 
 #intro-feat4 {
-    padding-top: 15rem;
-    background-color: #f2df75;
+    background-color: #C1DEBE;
+    padding-top: 10rem;
+    padding-bottom: 4rem;
 }
 
+#intro-feat4 span, #intro-feat4 h6 {
+    color: #363636;
+}
+
+#intro-check {
+    margin: 4rem 0;
+}
+
+#intro-feat2 {
+    padding-top: 15rem;
+    background-color: #e9e9e9;
+}
+
+#intro-feat2 span, #intro-feat2 h6 {
+    color: #7eac69;
+}
+
+
+/*
 #intro-feat1>div, 
 #intro-feat2>div, 
 #intro-feat3>div, 
 #intro-feat4>div, 
 #intro-feat5>div {
     margin-left: 15rem;
-}
+}*/
 
 #intro-achieve-img {
     top: 45%;
@@ -442,6 +583,7 @@ a {
     font-weight: 600;
     margin-right: 5rem;
     margin-left: 5rem;
+    margin-bottom: 1rem;
 }
 .footer-subtitle {
     font-size: 1.8rem;
@@ -456,10 +598,15 @@ a {
     flex-direction: row;
 }
 
+.footer-index {
+    margin-bottom: 0.4rem;
+}
+
 .footer-li h5 {
     font-size: 1.6rem;
     font-weight: 600;
     padding-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 .footer-li li.footer-index {
     padding-bottom: 0.3rem;
