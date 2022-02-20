@@ -23,6 +23,7 @@ def get_item(dictionary, key):
 
 def nav_notice(request):
     current_user = request.user
+    a = Notice.objects.filter(receive_user=current_user)
     notice_cnt = Notice.objects.filter(receive_user=current_user).count()
     print(notice_cnt)
     notices = Notice.objects.filter(receive_user=current_user)
