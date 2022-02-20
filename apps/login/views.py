@@ -27,6 +27,13 @@ from django.template.defaulttags import register
 def get_item(dictionary, key):
     return dictionary.get(key)
 
+def nav_notice(request):
+    current_user = request.user
+    notice_cnt = Notice.objects.filter(receive_user=current_user).count()
+    print(notice_cnt)
+    notices = Notice.objects.filter(receive_user=current_user)
+    return notice_cnt, notices 
+
 # Create your views here.
 def intro(request):
     if request.user.is_authenticated :
@@ -34,11 +41,7 @@ def intro(request):
         today_url = '/home/todo/' + str(today)
         user_todos = Todo.objects.filter(user=request.user, date = datetime.now(), is_done=False)[:3]
         
-        current_user = request.user
-        notice_cnt = Notice.objects.filter(receive_user=current_user).count()
-        
-        current_home = current_user.home
-        knocks = Knock.objects.filter(receive_home=current_home)
+        notice_cnt, notices = nav_notice(request)
 
         ctx = {
             'username' : request.user.username,
@@ -46,7 +49,7 @@ def intro(request):
             'today_date_url' : today_url,
             'user_todos' : user_todos,
             'notice_cnt' : notice_cnt,
-            'knocks' : knocks,
+            'notices' : notices,
         }
         return render(request, 'login/intro.html', context= ctx)
     else:
@@ -129,10 +132,14 @@ def leave_home(request):
 @login_required
 def mypage(request):
     prehomes, prehome_dict, preroommates_dict = prehome_list(request)
-    
+    notice_cnt, notices = nav_notice(request)
+
     ctx = {'prehomes' : prehomes,
            'prehome_dict' : prehome_dict,
-           'preroommates_dict': preroommates_dict }
+           'preroommates_dict': preroommates_dict, 
+            'notice_cnt' : notice_cnt,
+            'notices' : notices,
+    }
     return render(request, 'login/mypage.html', ctx)
 
 #회원가입 기능
@@ -176,7 +183,7 @@ def logoutUser(request):
     return redirect('login:intro')
 
 
-
+@login_required
 def user_update(request):
     if request.method == 'POST':
         form = UserUpdateForm(request.POST, instance=request.user)
@@ -185,11 +192,16 @@ def user_update(request):
             return redirect('login:mypage')
     else:
         form = UserUpdateForm(instance=request.user)
+
+    notice_cnt, notices = nav_notice(request)    
     context = {
-        'form': form
+        'form': form,
+        'notice_cnt' : notice_cnt,
+        'notices' : notices,
     }
     return render(request, 'login/user_update.html', context)
 
+@login_required
 def profile_update(request):
     if request.method == 'POST':
         request.user.profile_img = request.FILES['represent']
@@ -197,8 +209,11 @@ def profile_update(request):
         return redirect('login:mypage')
     else:
         form = UserUpdateForm(instance=request.user)
+    notice_cnt, notices = nav_notice(request)
     context = {
-        'form': form
+        'form': form,
+        'notice_cnt' : notice_cnt,
+        'notices' : notices,
     }
     return render(request, 'login/profile_update.html', context)
 

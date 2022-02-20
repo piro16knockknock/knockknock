@@ -14,9 +14,19 @@ import uuid
 import codecs
 import base64
 
+
+
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
+
+def nav_notice(request):
+    current_user = request.user
+    notice_cnt = Notice.objects.filter(receive_user=current_user).count()
+    print(notice_cnt)
+    notices = Notice.objects.filter(receive_user=current_user)
+    return notice_cnt, notices 
+
 
 #집 등록 form - 초대 링크 검색
 @csrf_exempt
@@ -41,10 +51,20 @@ def invite_link(request, link, pk):
         knock = Knock.objects.filter(user=request.user)
     else:
         knock = None
-    ctx = {
-        'home' : home,
-        'knock' : knock,
-    }
+    
+    if request.user.is_authenticated:
+        notice_cnt, notices = nav_notice(request)
+        ctx = {
+            'home' : home,
+            'knock' : knock,
+            'notice_cnt' : notice_cnt,
+            'notices' : notices,
+        }
+    else:
+        ctx = {
+            'home' : home,
+            'knock' : knock,
+        }
     return render(request, 'setting/invite_link.html', context=ctx)
 
 #룸메이트 취소
@@ -95,12 +115,15 @@ def roommate_list(request):
             
         roommate_ratio[roommate.nick_name] = int(user_compelete_ratio * 100)
     
+    notice_cnt, notices = nav_notice(request)
     ctx = {
         'roommates' : roommates,
         'invite_users' : invite_users,
         'roommate_titles' : roommate_titles,
         'roommate_ratio' : roommate_ratio,
         'total_complete_ratio' : int(total_compelete_ratio * 100),
+        'notice_cnt' : notice_cnt,
+        'notices' : notices,
     }
     return render(request, 'setting/roommate_list.html', context=ctx)
 
@@ -177,7 +200,12 @@ def myhome_register(request):
         print("get")
         if(Knock.objects.filter(user=request.user).exists()):
             knock =  Knock.objects.get(user=request.user)
-            ctx = {'knock' : knock}
+            notice_cnt, notices = nav_notice(request)
+            ctx = {
+                'knock' : knock,
+                'notice_cnt' : notice_cnt,
+                'notices' : notices,
+            }
             return render(request, 'setting/myhome_form.html', ctx)
         
         return render(request, 'setting/myhome_form.html')
@@ -190,6 +218,8 @@ def myhome_detail(request):
     utilities = Utility.objects.filter(home=current_home) # 본인 포함
     current_roommates = User.objects.filter(home=current_home) # 본인 포함
     knocks = Knock.objects.filter(receive_home=current_home)
+    notice_cnt, notices = nav_notice(request)
+
     ctx = {
         'home_name' : current_home.name,
         'is_rent' : current_home.is_rent,
@@ -197,7 +227,9 @@ def myhome_detail(request):
         'rent_month' : current_home.rent_month,
         'utilities' : utilities,
         'roommates' : current_roommates,
-        'knocks' : knocks
+        'knocks' : knocks,
+        'notice_cnt' : notice_cnt,
+        'notices' : notices,
     }
     return render(request, 'setting/myhome_detail.html', context=ctx)
 
@@ -285,7 +317,8 @@ def knock_home(request):
     #알림에 저장. 집 멤버들에게 모두 알림을 보냄
 
     for user in User.objects.filter(home=home):
-        Notice.objects.get_or_create(receive_user=user, content="집 노크")
+        content = home.name + "에 노크가 들어왔습니다."
+        Notice.objects.get_or_create(receive_user=user, content=content, link="/mypage/")
 
     return JsonResponse({'success':True})
 
@@ -327,8 +360,9 @@ def invite_roommate(request):
     for nickname in invite_list:
         user = User.objects.get(nick_name=nickname)
         Invite.objects.create(home=request.user.home, receive_user=user)
+        content = user.nick_name + "님에게 초대장이 도착했습니다."
         #알림에 저장
-        Notice.objects.create(receive_user=user, content="룸메이트 초대")
+        Notice.objects.create(receive_user=user, content=content, link="/mypage/")
         
         
     return JsonResponse({'success':True})
