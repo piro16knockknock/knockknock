@@ -1,0 +1,54 @@
+.chart-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.com-ratio-head {
+    text-align: center;
+}
+
+.com-ratio-head h5{
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.4rem;
+    margin-bottom: 1rem;
+}
+
+.com-ratio-head p {
+    font-size: 1.2rem;
+    color: #575757;
+}
+
+.chart-container {
+    margin: 4rem 0;
+}
+
+.chart {
+    position: relative;
+}
+
+.percent {
+    counter-reset: #575757;
+    text-align: center;
+    font-size: 1.3rem;
+    position: absolute;
+    top: 48%;
+    left: 46%;
+}
+
+.user-ratio p {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2rem;
+
+}
+
+.total-ratio p {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2rem;
+}

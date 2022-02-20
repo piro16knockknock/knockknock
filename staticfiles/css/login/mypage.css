@@ -1,0 +1,290 @@
+.mypage-container{
+    font-size: 1.6rem;
+    display: flex;    
+}
+
+#mypage-side{
+    padding-top: 5rem;
+    margin-left: 10rem;
+}
+
+.edit_info{
+    font-size: 1.2rem;
+}
+
+.edit_info button{
+    padding: 0.3rem 1.2rem;
+    outline: solid 1px #000;
+    border-radius: 2.5rem;
+}
+
+.mypage-info{
+    margin-left: 15rem;
+}
+
+#mypage-profile{
+    text-align: center;
+    align-items: center;
+
+}
+
+.edit-icon{
+    position: absolute;
+    transform: translate(120%, 270%);
+
+}
+.mypage-profile-box, .modal-roommmate-box{
+    position: relative;
+
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: auto;
+}
+.mypage-profile-img,
+.modal-roommmate-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mypage-profile-username {
+    font-weight: 500;
+    margin: 1.6rem 0;
+    font-size: 1.3rem;
+}
+
+.mypage-profile-username p {
+    color: #707070;
+    width: 30rem;
+    padding-right: 9rem;
+}
+
+.mypage-content{
+    
+    width: 90rem;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mypage-item{
+    width: 37rem;
+    margin: 10rem 0;
+    display: inline-block;
+}
+
+.my-home{
+    font-size: 1.6rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.mypage-titles{
+    padding: 1rem;
+}
+
+.mypage-titles button{
+    padding: 0 1rem;
+}
+
+.title-cate{
+    display: flex;
+    justify-content: space-between
+}
+
+.title-cate p{
+    font-size: 1.2rem;
+    color: #696969;
+    position: absolute;
+    transform: translate(125%, 50%);
+}
+
+.past-record{
+    width: 80rem;
+    margin: 5rem 0;
+}
+
+.table{
+    font-size: 1.4rem;
+}
+
+.mypage-user-ratio{
+    height: 30rem;
+}
+
+/* 룸메이트 보기 */
+/*프로필 li*/
+
+.mypage-roommate-list{
+    font-size: 1.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.mypage-roommmate-box{
+    position: relative;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    overflow: hidden;
+
+}
+
+.mypage-roommate-profile{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.mypage-roommate-profile p{
+    padding-left: 2rem;
+}
+
+
+
+
+.mypage-roommate-list__btn {
+    text-align: center;
+    border: 0.13rem solid rgb(165, 165, 165);
+    padding: .5rem 1rem;
+    border-radius: 5rem;
+    font-size: 1rem;
+}
+
+.mypage-roommate-list__btn:hover {
+    background-color: #fcd47e;
+    color: white;
+    cursor: pointer;
+    border-color: #fcd47e;
+}
+
+.mypage-roommate-list__btn-tomato {
+    border: 0.2rem solid tomato;
+    margin-top: 2rem;
+    color: tomato;
+    margin-bottom: 2rem;
+}
+
+.mypage-roommate-list__btn-tomato:hover {
+    background-color: tomato;
+    color: white;
+}
+
+
+
+
+
+/*이전집 기록 보기, 이사하기, 생활수칙보기*/
+#moveHomeModal {
+    font-size: 1.5rem;
+}
+
+#moveHomeModal .modal-body {
+    padding: 3rem 2rem;
+    line-height: 2rem;
+}
+
+#moveHomeModal .modal-footer button,
+#moveHomeModal .modal-footer a {
+    font-size: 1.5rem;
+}
+
+/*생활수칙 모달*/
+.past-record__modal-rule {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.past-record__modal-rule .modal-content {
+    padding: 4rem;
+}
+
+.past-record__modal-rule .modal-content .past-record__modal-rule-header {
+    font-weight: 600;
+    font-size: 1.7rem;
+}
+
+.past-record__modal-rule .modal-body {
+    text-align: left;
+    height: 50rem;
+    overflow: scroll;
+}
+
+.past-record__modal-rule .modal-body::-webkit-scrollbar {
+    display: none;
+}
+
+/*생활수칙 모달 - 룸메이트*/
+.past-record__preroommates {
+    display: flex;
+    align-items: center;
+    padding-bottom: 2rem;
+}
+.past-record__preroommates-profile{
+    text-align: center;
+    padding: 0 1rem;
+}
+.past-record__preroommates-profile img{
+    width: 5rem;
+    height: 5rem;
+    border-radius: 2.5rem;
+}
+.past-record__preroommates-profile i{
+    font-size: 5rem;
+}
+
+/*생활수칙 모달 - 생활수칙*/
+.past-record__modal-rule-cate {
+    background-color: rgb(255, 197, 109);
+    display: inline-block;
+    padding: 0.5rem .5rem;
+    border-radius: 1rem;
+    margin: 1rem 0 .5rem 0;
+}
+
+.past-record__modal-rule-content {
+    padding: .3rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 2.5rem;
+}
+
+.past-record__modal-rule .past-record__modal-rule-footer button,
+.past-record__modal-rule .past-record__modal-rule-footer a {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+}
+
+/*ajax*/
+.past-record__display-none {
+    display: none;
+}
+
+.past-record__checkbox {
+    border: 2px solid rgb(255, 197, 109);
+    padding: .8rem;
+    cursor: pointer;
+}
+
+.past-record__checkbox:checked {
+    background-color: rgb(255, 197, 109);
+}
+
+/*생활수칙 보기 버튼*/
+.btn-green {
+    background-color: rgb(137, 186, 159);
+    border: 1px solid rgb(137, 186, 159);
+    color: white !important;
+    transition: all 0.2s ease-in-out;
+}
+.btn-green:hover {
+    color: white;
+    background-color: rgb(90, 153, 118);
+    border: 1px solid rgb(90, 153, 118);
+}

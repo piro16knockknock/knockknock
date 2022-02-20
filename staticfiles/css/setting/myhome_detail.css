@@ -1,0 +1,317 @@
+.nav-pills {
+    justify-content: start;
+    align-items: center;
+    font-size: 1.4rem;
+    border-bottom: 0.3px solid #ddd;
+}
+
+.nav-pills .nav-link.active{
+    background-color: #3d3d3d;
+}
+
+.nav-pills .nav-link {
+    color: black;
+}
+
+.myhome-detail {
+    display: flex;
+    justify-content: center;
+}
+
+.myhome-detail>div {
+    margin: 3rem 20rem;
+    width: 90rem;
+}
+
+.myhome-detail__display-none {
+    display: none !important;
+
+}
+
+/*myhome-info*/
+.myhome-detail__title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 3rem;
+}
+
+.myhome-detail__row {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.myhome-detail__row label,
+.myhome-detail__row__flex_row>label {
+    font-size: 1.5rem;
+    width: 15rem;
+    font-weight: 500;
+    color: slategray;
+}
+
+.myhome-detail__row span {
+    font-size: 1.3rem;
+}
+
+.myhome-detail__row input,
+.myhome-detail__row__rent>input {
+    border: 1px solid slategray;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+    padding: .3rem;
+}
+
+/*전세 월세 버튼*/
+.myhome-info__rent-or-utility {
+    display: flex;
+    padding: 0 0 1rem 0;
+}
+
+.myhome-info__radio-btn input[type="radio"] {
+    display: none;
+}
+
+.myhome-info__radio-btn input[type="radio"]+span {
+    border: 0.2rem solid slategray;
+    padding: .5rem 1.5rem;
+    margin-right: 1rem;
+    border-radius: 5rem;
+    font-size: 1.3rem;
+}
+
+.myhome-info__radio-btn input[type="radio"]+span:hover {
+    cursor: pointer;
+}
+
+.myhome-info__radio-btn input[type="radio"]:checked+span {
+    background-color: slategray;
+    color: #fff;
+}
+
+
+/*월세 납부일*/
+.myhome-detail__row__rent {
+    font-size: 1.3rem;
+}
+
+.myhome-detail__row__rent>input {
+    width: 3.5rem;
+    margin-right: .5rem;
+}
+
+.myhome-detail__row__rent>span {
+    margin-right: .5rem;
+}
+
+/*공과금 종류*/
+.myhome-detail__row__utility-ul > li{
+    padding: 1rem 0;
+    border-bottom: .1rem solid rgba(1, 1, 1, .2);
+}
+
+.myhome-detail__row__utility-ul > li > i{
+    font-size: 1.5rem;
+    color: tomato;
+}
+
+.myhome-detail__row__rent-type {
+    display: flex;
+    align-items: center;
+    margin-bottom: .8rem;
+}
+
+.myhome-detail__row__rent-type > input{
+    border: 1px solid slategray;
+    width: 4rem;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+    padding: .3rem;
+}
+
+.myhome-detail__row__flex_row {
+    display: flex;
+    flex-direction: row;
+}
+
+.myhome-detail__row__rent-type span {
+    margin-right: .8rem;
+}
+
+.myhome-detail__btn {
+    font-size: 1.5rem;
+    border: 0.2rem solid rgb(255, 197, 109);
+    padding: .5rem 1.5rem;
+    color: rgb(255, 197, 109);
+    border-radius: 5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.myhome-detail__btn:hover {
+    background-color: rgb(255, 197, 109);
+    color: white;
+}
+
+/*roommate*/
+.myhome-roommate>div {
+    display: flex;
+    align-items: center;
+}
+
+.myhome-roommate__column {
+    margin-right: 2rem;
+}
+
+.myhome-roommate__column>a>img {
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.myhome-roommate__column>a>img:hover {
+    opacity: 0.7;
+}
+
+
+.myhome-roommate__column i {
+    font-size: 10rem;
+}
+
+.myhome-roommate__column>p {
+    font-size: 1.3rem;
+    color: slategray;
+    padding-top: .5rem;
+    text-align: center;
+
+}
+
+.myhome-roommate__invite a i {
+    font-size: 5rem;
+    color: rgba(1, 1, 1, .2);
+    transition: color 0.2s ease-in-out;
+}
+
+.myhome-roommate__invite a i:hover {
+    cursor: pointer;
+    color: rgb(137, 186, 159);
+}
+
+/*movehome*/
+.myhome-move hr {
+    margin-bottom: 2rem;
+}
+
+
+/*modal*/
+.myhome-roommate__modal-input {
+    display: flex;
+    align-items: center;
+}
+
+.myhome-roommate__modal-input input {
+    font-size: 1.3rem;
+    width: 100%;
+    padding: 1rem 2rem;
+    border-radius: .2rem;
+    background-color: rgba(1, 1, 1, 0.05);
+    border: .2rem solid rgb(137, 186, 159);
+}
+
+.myhome-roommate__modal-font {
+    font-size: 1.3rem;
+}
+
+.myhome-roommate__modal-user-list {
+    display: flex;
+    align-items: center;
+}
+
+.myhome-roommate__modal-user-list img {
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    margin: 1rem;
+}
+
+.myhome-roommate__modal-user-list i {
+    margin: 1rem;
+    font-size: 5rem;
+}
+
+.myhome-roommate__modal-user-list input {
+    padding: 1rem;
+}
+
+.myhome-roommate__modal-user-list p {
+    font-size: 1.3rem;
+}
+
+/*공과금 추가*/
+.myhome-detail__row__add-utility {
+    margin: 1rem 0;
+    font-size: 3rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.myhome-detail__row__add-utility:hover {
+    cursor: pointer;
+    color: rgb(137, 186, 159);
+}
+
+/*초대 링크*/
+#roommate-invite-url-copy{
+    font-size: 3rem;
+    margin-left: .5rem;
+    color: rgb(137, 186, 159);
+}
+
+#roommate-invite-url-copy:hover{
+    cursor: pointer;
+    color: tomato;
+}
+
+
+/*노크 중인 유저*/
+.myhome-knock__empty{
+    font-size: 1.4rem;
+}
+
+.myhome-knock__row{
+    display: flex;
+    align-items: center;
+}
+
+.myhome-knock__column {
+    margin-right: 2rem;
+}
+
+.myhome-knock__column>img {
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem;
+}
+
+.myhome-knock__column i {
+    font-size: 10rem;
+}
+
+.myhome-knock__column>p {
+    font-size: 1.3rem;
+    color: slategray;
+    padding-top: .5rem;
+    text-align: center;
+
+}
+
+/*룸메이트 초대 버튼*/
+.btn-green {
+    background-color: rgb(137, 186, 159);
+    border: 1px solid rgb(137, 186, 159);
+    color: white !important;
+    transition: all 0.2s ease-in-out;
+}
+.btn-green:hover {
+    color: white;
+    background-color: rgb(90, 153, 118);
+    border: 1px solid rgb(90, 153, 118);
+}
