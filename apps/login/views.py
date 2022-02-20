@@ -199,7 +199,6 @@ def profile_delete(request):
         if password_form.is_valid():
             request.user.delete()
             logout(request)
-            messages.success(request, "회원탈퇴가 완료되었습니다.")
             return redirect('login:intro')
     else:
         password_form = CheckPasswordForm(request.user)
