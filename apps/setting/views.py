@@ -339,6 +339,10 @@ def link_knock(request):
     home = get_object_or_404(Home, name=homename)
     Knock.objects.get_or_create(user=request.user, receive_home=home) #유저는 집 하나에만 노크할 수 있음
     
+    for user in User.objects.filter(home=home):
+        content = home.name + "에 노크가 들어왔습니다."
+        Notice.objects.create(receive_user=user, content=content, link="/setting/myhome/detail/")
+
     return JsonResponse({'success':True})
 
 #집 검색하기
