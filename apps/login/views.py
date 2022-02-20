@@ -225,7 +225,7 @@ def user_update(request):
 @login_required
 def profile_update(request):
     if request.method == 'POST':
-        request.user.profile_img = request.FILES['represent']
+        request.user.profile_img = request.FILES.get('represent')
         request.user.save()
         return redirect('login:mypage')
     else:
