@@ -399,12 +399,24 @@ a {
     color: #535353;
 }
 
-#intro-feat1 {
+#intro-feat1, 
+#intro-feat3, 
+#intro-feat5 {
     padding-top: 15rem;
     background-color: #75AFF2;
 }
 
-#intro-feat1>div {
+#intro-feat2, 
+#intro-feat4 {
+    padding-top: 15rem;
+    background-color: #f2df75;
+}
+
+#intro-feat1>div, 
+#intro-feat2>div, 
+#intro-feat3>div, 
+#intro-feat4>div, 
+#intro-feat5>div {
     margin-left: 15rem;
 }
 
@@ -416,4 +428,48 @@ a {
 #intro-achieve-img>img {
     box-shadow: 2px 4px 10px 0px rgb(82 82 82 / 30%);
     border-radius: 1.5rem;
+}
+
+.footer-content {
+    height: 30rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.footer-title {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-right: 5rem;
+    margin-left: 5rem;
+}
+.footer-subtitle {
+    font-size: 1.5rem;
+    margin-left: 5rem;
+}
+
+.footer-1 {
+    margin-right: 5rem;
+}
+.footer-li {
+    display: flex;
+    margin-top: 11rem;
+}
+
+.footer-li h5 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+}
+.footer-li li.footer-index {
+    padding-bottom: 0.3rem;
+}
+.footer-li li.footer-index a {
+    font-size: 1.2rem;
+    padding-bottom: 0.3rem;
+}
+.footer-2,
+.footer-3,
+.footer-4,
+.footer-5 {
+    margin-right: 5rem;
 }

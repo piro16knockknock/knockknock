@@ -160,8 +160,29 @@
         </div>
     </div>
 </div>
-
 <div id="intro-feat1" class="d-flex" >
+    <div id="intro-cal-img" class="position-relative">
+        <img  src="{% static 'img/intro-cal.png' %}">
+        <div id="intro-achieve-img" class="position-absolute">
+            <img src="{% static 'img/intro-cal2.png' %}">
+        </div>
+    </div>
+    <div>
+        <h6>룸메이트 관리</h6>
+    </div>
+</div>
+<div id="intro-feat2" class="d-flex" >
+    <div id="intro-cal-img" class="position-relative">
+        <img  src="{% static 'img/intro-cal.png' %}">
+        <div id="intro-achieve-img" class="position-absolute">
+            <img src="{% static 'img/intro-cal2.png' %}">
+        </div>
+    </div>
+    <div>
+        <h6>생활수칙 관리</h6>
+    </div>
+</div>
+<div id="intro-feat3" class="d-flex" >
     <div id="intro-cal-img" class="position-relative">
         <img  src="{% static 'img/intro-cal.png' %}">
         <div id="intro-achieve-img" class="position-absolute">
@@ -172,11 +193,61 @@
         <h6>캘린더 공유</h6>
     </div>
 </div>
+<div id="intro-feat4" class="d-flex" >
+    <div id="intro-cal-img" class="position-relative">
+        <img  src="{% static 'img/intro-cal.png' %}">
+        <div id="intro-achieve-img" class="position-absolute">
+            <img src="{% static 'img/intro-cal2.png' %}">
+        </div>
+    </div>
+    <div>
+        <h6>할 일 체크</h6>
+    </div>
+</div>
+<div id="intro-feat5" class="d-flex" >
+    <div id="intro-cal-img" class="position-relative">
+        <img  src="{% static 'img/intro-cal.png' %}">
+        <div id="intro-achieve-img" class="position-absolute">
+            <img src="{% static 'img/intro-cal2.png' %}">
+        </div>
+    </div>
+    <div>
+        <h6>커뮤니티</h6>
+    </div>
+</div>
 <footer>
-    <ul>
-        <li><a href="">contact</a></li>
-        <li>copyright</li>
-    </ul>
+    <div class="footer-content" style="display: flex;">
+        <div class="footer-1" style="margin-right: 5rem; display: flex; flex-direction: column; justify-content: center;">
+            <a class="footer-title" href="">Knock/Knock</a>
+            <p class="footer-subtitle">룸메이트와의 쾌적하고 편안한 생활 지킴이</p>
+        </div>
+        <div class="footer-li">
+            <div class="footer-2">
+                <h5><a href="">서비스 소개</a></h5>
+                <ul>
+                    <li class="footer-index"><a href="">룸메이트 관리</a></li>
+                    <li class="footer-index"><a href="">생활수칙 관리</a></li>
+                    <li class="footer-index"><a href="">캘린더 공유</a></li>
+                    <li class="footer-index"><a href="">할 일 체크</a></li>
+                </ul>
+            </div>
+            <div class="footer-3">
+                <h5><a href="">커뮤니티</a></h5>
+                <ul>
+                    <li class="footer-index"><a href="">공지사항</a></li>
+                    <li class="footer-index"><a href="">자유게시판</a></li>
+                    <li class="footer-index"><a href="">성향테스트</a></li>
+                </ul>
+            </div>
+            <div class="footer-4">
+                <h5><a href="">ABOUT US</a></h5>
+                <ul>
+                    <li class="footer-index"><a href="">서비스 소개</a></li>
+                    <li class="footer-index"><a href="">CONTACT US</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </footer>
 
 {% endblock%}
