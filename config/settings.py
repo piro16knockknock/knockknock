@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-awu#t2kvmq-8mpp6_ykip3m10%ht0)yzw^38ll0dhbgag$(#tc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['knockknock.tk']
 import sys
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
@@ -134,12 +134,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
-if DEBUG:
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static')
-    ]
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
 # Default primary key field type
