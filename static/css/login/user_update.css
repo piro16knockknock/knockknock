@@ -1,0 +1,60 @@
+.user-update {
+    display: flex;
+    justify-content: center;
+}
+
+.user-update>div {
+    margin: 3rem 20rem;
+    width: 90rem;
+}
+
+.container__title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 3rem;
+}
+
+.container__label {
+    font-size: 1.5rem;
+    width: 15rem;
+    font-weight: 500;
+    color: slategray;
+}
+
+.user-update__row {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.user-update__row > span {
+    font-size: 1.3rem;
+}
+
+.user-update__gender {
+    border: 1px solid slategray;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+    padding: .3rem;    
+}
+
+.form-input3 {
+    border: 1px solid slategray;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+    padding: .3rem;
+}
+
+.user-update__btn {
+    font-size: 1.5rem;
+    border: 0.2rem solid rgb(255, 197, 109);
+    padding: .5rem 1.5rem;
+    color: rgb(255, 197, 109);
+    border-radius: 5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.user-update__btn:hover {
+    background-color: rgb(255, 197, 109);
+    color: white;
+}

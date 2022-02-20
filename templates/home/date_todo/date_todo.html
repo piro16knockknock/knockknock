@@ -269,11 +269,13 @@
                             <button type="button" class="check-cate-name-btn btn btn-light"  onclick="checkCateName(this, '{{ select_date }}')">중복확인 하기</button>
                         </div>
                         <div class="cate-list" style="display: none;">
-                            <p> 현재 사용중인 카테고리</p>
-                            {% for cate in cates %}
-                            <p class="cate">{{ cate.name }}</p>
-                            {% endfor %}
-                            <p class="cate"> 기타 </p>
+                            <div class="duplicate-cates" style="display: flex;">
+                                <p> 현재 사용중인 카테고리 :</p>
+                                {% for cate in cates %}
+                                <p class="duplicate-cate">{{ cate.name }} </p>
+                                {% endfor %}
+                                <p class="duplicate-cate">기타 </p>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -315,17 +317,17 @@
                                 <div class="select-todo-user">
                                     <p>담당</p>
                                     {% for user in roomates %}
-                                    <label>
-                                        <input type="radio" class="user-id-{{ user.id}}"  name="user" value="{{ user.id }}"/>
+                                    <label><input type="radio" class="user-id-{{ user.id}}" name="todo-user" value="{{ user.id }}"/>
                                         <div class="todo-profile-box">
                                             <img class="cal-profile-img" src={% if user.profile_img %}"{{ user.profile_img.url }}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %} alt="">
                                         </div>
                                     </label>
-
                                     {% endfor %}
                                     <label>
-                                        <input type="radio" class="user-id-no-user" name="user" value="no-user"/>
-                                        <img class="user-id-no-user" src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg" style="width: 3rem; height: 3rem;" alt="">
+                                        <input type="radio" class="user-id-no-user" name="todo-user" value="no-user"/>
+                                        <div class="todo-profile-box">
+                                            <img class="user-id-no-user" src = "https://image.beansdrawer.com/short-hair/mackerel/n00-08.jpg" style="width: 3rem; height: 3rem;" alt="">
+                                        </div>
                                     </label>
                                 </div>
                                 <div class="select-todo-priority">

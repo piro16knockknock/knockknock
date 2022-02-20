@@ -18,15 +18,29 @@ class Calendar(HTMLCalendar):
 		d = ''
 		d += f'<a>{event_count}</a>'
 		date_content = f"<span>{day}</span><p> 할일 개수 :{d}</p>"
-		if (year==self.today.year) and (month == self.today.month) and (day == self.today.day):
-			date_content += '<p style="font-weight: bold">오늘<p>'
-		if (year < self.today.year) or (month < self.today.month) or (day < self.today.day):
-			date_content += "<a href=\"/home/prev_todo/" + f"{date}" + "\"> 할 일 <i class=\"fa-solid fa-certificate\"></i></a>"
+		# 달성한 개수
+		complete_todos = events.filter(date__day=day, is_done = True).count()
+		# 달성률
+		if complete_todos == 0:
+			dr = 100
 		else:
-			date_content += "<a href=\"/home/todo/" + f"{date}" + "\"> 할 일 <i class=\"fa-solid fa-circle-plus\"></i></a>"
+			dr = 100-int(round(complete_todos /event_count * 100))
+
+		if (year==self.today.year) and (month == self.today.month) and (day == self.today.day):
+			date_content += "<a href=\"/home/todo/" + f"{date}" + "\" class=\"go_todo_btn\"> 할 일 <i class=\"fa-solid fa-circle-plus\"></i></a>"
+			return f'<td style="background: linear-gradient(to bottom, white {dr}%, #ffefbc 0%"> {date_content}</td>'
+
+		if (year < self.today.year) or (month < self.today.month) or (day < self.today.day):
+			date_content += "<a href=\"/home/prev_todo/" + f"{date}" + "\" class=\"go_todo_btn\"> 할 일 <i class=\"fa-solid fa-certificate\"></i></a>"
+			
+		else:
+			date_content += "<a href=\"/home/todo/" + f"{date}" + "\" class=\"go_todo_btn\"> 할 일 <i class=\"fa-solid fa-circle-plus\"></i></a>"
+
 		if day != 0:
-			return f"<td>{date_content}</td>"
-		return '<td class=\"cal-ratio-bg\"></td>'
+			#return f"<td>{date_content}</td>"
+			return f'<td style="background: linear-gradient(to bottom, white {dr}%, #ddd 0%"> {date_content}</td>'
+			
+		return '<td></td>'
 
 	# formats a week as a tr
 	def formatweek(self, theweek, events, year, month):
