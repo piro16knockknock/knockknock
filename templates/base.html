@@ -95,9 +95,9 @@
                         <li style="width: 25rem; display: flex; justify-content: flex-start; padding-left: 1rem; position: relative;"><a class="dropdown-item" href="#" style="position: absolute;" >
 
 
-                            {% if knocks %}
-                            {% for knock in knocks %}
-                            <a href="{% url 'login:mypage' %}" >{{ knock.user.nick_name }} 이(가) 노크 중입니다!</a>
+                            {% if notices %}
+                            {% for notice in notices %}
+                            <a href="{{notice.link}}" >{{ notice.content }}</a>
                             {% endfor %}
                             {% endif %}
                         </a></li>
