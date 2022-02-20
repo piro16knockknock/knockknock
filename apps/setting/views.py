@@ -273,7 +273,9 @@ def accept_knock(request):
     user.save()
     
     Knock.objects.filter(user=user).delete()
-    
+    #알림 삭제
+    Notice.objects.filter(receive_user=request.user, link="/setting/myhome/detail/").delete()
+
     if user.profile_img :
         profile = user.profile_img.url
     else :
@@ -293,7 +295,9 @@ def reject_knock(request):
     user = get_object_or_404(User, id=user_id)
     
     Knock.objects.filter(user=user).delete()
-        
+    #알림 삭제
+    Notice.objects.filter(receive_user=request.user, link="/setting/myhome/detail/").delete()
+
     return JsonResponse({'success':True})
 
 
@@ -319,7 +323,7 @@ def knock_home(request):
 
     for user in User.objects.filter(home=home):
         content = home.name + "에 노크가 들어왔습니다."
-        Notice.objects.get_or_create(receive_user=user, content=content, link="/mypage/")
+        Notice.objects.get_or_create(receive_user=user, content=content, link="/setting/myhome/detail/")
 
     return JsonResponse({'success':True})
 
@@ -412,5 +416,8 @@ def accept_invite(request):
     #집이 생겼으므로 노크했던 건 삭제
     Knock.objects.filter(user=request.user).delete()
     Invite.objects.filter(receive_user=request.user).delete()
+
+    #알림 삭제
+    Notice.objects.filter(receive_user=request.user, link="/mypage/").delete()
 
     return redirect('login:intro')

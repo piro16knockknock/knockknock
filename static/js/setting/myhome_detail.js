@@ -364,6 +364,7 @@ const acceptKnockHandleResponse = (user_name, profile, user_id) => {
         knockRow.after(p);
         knockRow.remove();
     }
+    window.location.reload();
 
 }
 
@@ -403,4 +404,5 @@ const rejectKnockHandleResponse = (user_id) => {
         knockRow.after(p);
         knockRow.remove();
     }
+    window.location.reload();
 }
