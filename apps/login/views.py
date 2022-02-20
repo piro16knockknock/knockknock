@@ -33,14 +33,24 @@ def intro(request):
         today = DateFormat(datetime.now()).format('Y-m-d')
         today_url = '/home/todo/' + str(today)
         user_todos = Todo.objects.filter(user=request.user, date = datetime.now(), is_done=False)[:3]
+        
+        current_user = request.user
+        notice_cnt = Notice.objects.filter(receive_user=current_user).count()
+        
+        current_home = current_user.home
+        knocks = Knock.objects.filter(receive_home=current_home)
+
         ctx = {
             'username' : request.user.username,
             'today_date' : today,
             'today_date_url' : today_url,
             'user_todos' : user_todos,
+            'notice_cnt' : notice_cnt,
+            'knocks' : knocks,
         }
         return render(request, 'login/intro.html', context= ctx)
     else:
+
         return render(request, 'login/intro.html')
 
 #이전집 생활수칙 가져오기
@@ -186,10 +196,14 @@ def sign_up(request):
             user = User.objects.create_user(
                 username=request.POST.get("username"),
                 password=request.POST.get("password"),
+                profile_img = request.FILES.get('represent'),
                 email=request.POST.get("email"),
                 nick_name=request.POST.get("nick_name"),
                 gender=request.POST.get("gender"),
-            )            
+            )
+            #칭호 생성
+            Title.objects.create(user=user, content="🌱 노크노크 스타터")
+                
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/')
         messages.warning(request, "비밀번호 두 개가 다릅니다.")

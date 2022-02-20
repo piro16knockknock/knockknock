@@ -38,17 +38,39 @@
                     </div>
                 </div>
             </div>
-            <div id="cal-today-date" class="cal-side-box">
+            <div id="todo-today-date" class="cal-side-box">
                 {{ today }}
             </div>
-            <div id="cal-house-info" class="cal-side-box">
-                {% if request.user.home.is_rent %}
-                <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}일</span></p>
+            {% if request.user.home.is_rent %}
+                <div id="todo-achieve-rate" class="cal-side-box">
+                    <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}일</span></p>
+                        {% for utility in utility_list %}
+                            <p>{{utility.name}} 납부일<span class="ps-3">{{utility.date}}일</span></p>
+                        {% endfor %}
+                    </div>
+            {% else %}
+                {% if requse.user.utility_list > 0 %}
+                    <div id="todo-house-info" class="cal-side-box">
+                        {% for utility in utility_list %}
+                        <p>{{utility.name}} 납부일<span class="ps-3">{{utility.date}}일</span></p>
+                        {% endfor %}
+                    </div>
                 {% endif %}
-                {% for utility in utility_list %}
-                    <p>{{utility.name}} 납부일<span class="ps-3">{{utility.date}}일</span></p>
-                {% endfor %}
+            {% endif %}
+
+            <div id="cal-todo" class="cal-side-box">
+                <p class="mb-3">오늘의 할 일</p>
+                {% if user_todos.count is 0 %}
+                    <p>현재 할 일이 없어요~!</p>
+                {% else %}
+                    {% for user_todo in user_todos %}
+                        <div class="user-todo">
+                            <p>{{user_todo.content}}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
+            
 		</div>
     {% endblock %}
 </section>

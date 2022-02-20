@@ -4,7 +4,7 @@
 {% block content %}
  <!-- user가 로그인 했을 때 && 유저가 집 없는 경우 OR 집 있는 경우-->
 {% if request.user.is_authenticated %} 
-<div class="intro-main " style="background-color: #FFF9E2; height: 100vh;">
+<div class="intro-main " style="background-color: #fcda91; height: 100vh;">
    <div id="intro-main-cnt" class="intro-main-cnt position-relative cnt-padding">
         {% if request.user.home == None %} <!-- 유저가 집이 없는 경우 -->        
             <div class="mt-5">
@@ -30,8 +30,14 @@
                 간편하게 평화로운 생활을 즐겨보아요! </p>
             </div>
             <div class="mt-5">
+                {% if user.home.living_rule.count is 0 %}
+                <button class="btn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_detail' %}">집 관리</a></button> 
+                <button class="btn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white"><a href="{{ today_date_url }}">생활 관리</a></button> 
+                <button class="btn btn-lg btn-warning rounded-pill px-4 py-2 "><a href="{% url 'home:living_rules' %}">생활 수칙 만들기</a></button> 
+                {% else %}
                 <button class="btn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white "><a href="{% url 'setting:myhome_detail' %}">집 관리</a></button> 
                 <button class="btn btn-lg btn-warning rounded-pill px-4 py-2 "><a href="{{ today_date_url }}">생활 관리</a></button> 
+                {% endif %}
             </div>
 
             <a href="{{ today_date_url }}">
@@ -56,20 +62,25 @@
 
 <!-- user가 로그인 하지 않은 상태의 메인 서비스 소개 페이지-->
 {% else %}
-<div class="intro-main-notlog" style="height: 100vh; background-color: #FFF9E2;">
+<div class="intro-main-notlog" style="height: 100vh; background-color: #FDF4E8;">
     <div id="intro-main-notlog-cnt" class="intro-main-cnt cnt-padding">
-        <h5>룸메이트와의 쾌적하고 편안한 생활 지킴이</h5>
-        <div>
-            <h1>Knock/Knock</h1>
+        <div style="z-index: 3; position: relative;">
+            <h5>룸메이트와의 쾌적하고 편안한 생활 지킴이</h5>
+            <h1>KNOCK</h1>
         </div>
-        <div>
-            <p><span>노크노크</span>는 새로운 환경에서 함께 할 수 있는 낯선 사람을 
-                찾아주고<br>한 지붕 아래 함께 살아가는 사람들과의 안정적인 
-                거주 생활을 도와주기 위한 서비스입니다<br>
-                지금 <span>노크노크</span>를 시작해보세요!</p>
-        </div>
-        <div>
+
+        <p style="z-index: 3; position: relative;"><span>노크노크</span>는 한 지붕 아래 함께 살아가는 사람들과의 안정적인 
+            거주 생활을 도와주기 위한 서비스입니다<br>
+            지금 <span>노크노크</span>를 시작해보세요!</p>
+   
+        <div style="z-index: 3; position: relative;">
             <button class="btn btn-lg btn-dark rounded-pill px-4 py-2"><a href="{% url 'login:login' %}">시작하기</a></button>
+        </div>
+        <div class ="door-img-box" style="z-index: 2;">
+            <img src="{% static 'img/knock_door.png' %}" style="width: 50rem;">
+        </div>
+        <div class="text-end" style="z-index: 2;">
+            <h1>KNOCK</h1>
         </div>
     </div>
 </div>
@@ -149,8 +160,29 @@
         </div>
     </div>
 </div>
-
 <div id="intro-feat1" class="d-flex" >
+    <div id="intro-cal-img" class="position-relative">
+        <img  src="{% static 'img/intro-cal.png' %}">
+        <div id="intro-achieve-img" class="position-absolute">
+            <img src="{% static 'img/intro-cal2.png' %}">
+        </div>
+    </div>
+    <div>
+        <h6>룸메이트 관리</h6>
+    </div>
+</div>
+<div id="intro-feat2" class="d-flex" >
+    <div id="intro-cal-img" class="position-relative">
+        <img  src="{% static 'img/intro-cal.png' %}">
+        <div id="intro-achieve-img" class="position-absolute">
+            <img src="{% static 'img/intro-cal2.png' %}">
+        </div>
+    </div>
+    <div>
+        <h6>생활수칙 관리</h6>
+    </div>
+</div>
+<div id="intro-feat3" class="d-flex" >
     <div id="intro-cal-img" class="position-relative">
         <img  src="{% static 'img/intro-cal.png' %}">
         <div id="intro-achieve-img" class="position-absolute">
@@ -161,5 +193,61 @@
         <h6>캘린더 공유</h6>
     </div>
 </div>
+<div id="intro-feat4" class="d-flex" >
+    <div id="intro-cal-img" class="position-relative">
+        <img  src="{% static 'img/intro-cal.png' %}">
+        <div id="intro-achieve-img" class="position-absolute">
+            <img src="{% static 'img/intro-cal2.png' %}">
+        </div>
+    </div>
+    <div>
+        <h6>할 일 체크</h6>
+    </div>
+</div>
+<div id="intro-feat5" class="d-flex" >
+    <div id="intro-cal-img" class="position-relative">
+        <img  src="{% static 'img/intro-cal.png' %}">
+        <div id="intro-achieve-img" class="position-absolute">
+            <img src="{% static 'img/intro-cal2.png' %}">
+        </div>
+    </div>
+    <div>
+        <h6>커뮤니티</h6>
+    </div>
+</div>
+<footer>
+    <div class="footer-content" style="display: flex;">
+        <div class="footer-1" style="margin-right: 5rem; display: flex; flex-direction: column; justify-content: center;">
+            <a class="footer-title" href="">Knock/Knock</a>
+            <p class="footer-subtitle">룸메이트와의 쾌적하고 편안한 생활 지킴이</p>
+        </div>
+        <div class="footer-li">
+            <div class="footer-2">
+                <h5><a href="">서비스 소개</a></h5>
+                <ul>
+                    <li class="footer-index"><a href="">룸메이트 관리</a></li>
+                    <li class="footer-index"><a href="">생활수칙 관리</a></li>
+                    <li class="footer-index"><a href="">캘린더 공유</a></li>
+                    <li class="footer-index"><a href="">할 일 체크</a></li>
+                </ul>
+            </div>
+            <div class="footer-3">
+                <h5><a href="">커뮤니티</a></h5>
+                <ul>
+                    <li class="footer-index"><a href="">공지사항</a></li>
+                    <li class="footer-index"><a href="">자유게시판</a></li>
+                    <li class="footer-index"><a href="">성향테스트</a></li>
+                </ul>
+            </div>
+            <div class="footer-4">
+                <h5><a href="">ABOUT US</a></h5>
+                <ul>
+                    <li class="footer-index"><a href="">서비스 소개</a></li>
+                    <li class="footer-index"><a href="">CONTACT US</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
 
 {% endblock%}

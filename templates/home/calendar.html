@@ -15,7 +15,7 @@
         </ul>
     </div>
 
-    <div class="d-flex mt-4 plr-6">
+    <div class="d-flex mt-4 plr-10">
         <div id="calendar-side">
             
             <div id="cal-profile" class="text-center d-flex flex-column align-items-center pt-3">
@@ -52,7 +52,7 @@
                     </div>
             {% else %}
                 {% if requse.user.utility_list > 0 %}
-                    <div id="cal-achieve-rate" class="cal-side-box">
+                    <div id="cal-house-info" class="cal-side-box">
                         {% for utility in utility_list %}
                         <p>{{utility.name}} 납부일<span class="ps-3">{{utility.date}}일</span></p>
                         {% endfor %}
@@ -79,7 +79,7 @@
                 <div class="calendar-nav text-center">
                     <div class="ym-wrapper mb-4">
                         <a class="nav-btn go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"><i class="fa-solid fa-circle-chevron-left"></i></a>
-                        <a> 
+                        <a style="margin: 0 1rem;"> 
                             <span class="year">{{ year }}</span>년
                             <span class="month">{{ month }}</span>월
                         </a>
