@@ -81,7 +81,7 @@ const searchHomeListHandleResponse = (home_list) => {
 
 
 const onClickKnockHome = async() => {
-    const input = document.querySelector('.form-radio-input');
+    const input = document.querySelector('.form-radio-input:checked');
     if(!input) return;
     const url = "../../myhome/knock_home/";
     const res = await fetch(url, {
@@ -95,14 +95,6 @@ const onClickKnockHome = async() => {
     });
     window.location.href = "/";
 }
-
-
-
-
-
-
-
-
 
 
 /**집 등록하기 */
