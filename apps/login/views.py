@@ -133,10 +133,14 @@ def sign_up(request):
             user = User.objects.create_user(
                 username=request.POST.get("username"),
                 password=request.POST.get("password"),
+                profile_img = request.FILES.get('represent'),
                 email=request.POST.get("email"),
                 nick_name=request.POST.get("nick_name"),
                 gender=request.POST.get("gender"),
-            )            
+            )
+            #칭호 생성
+            Title.objects.create(user=user, content="🌱 노크노크 스타터")
+                
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/')
         messages.warning(request, "비밀번호 두 개가 다릅니다.")
