@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login/profile_update.css' %}?after %}">
+{% endblock %}
+
+{% block script %}
+<script defer type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+<section class="profile-update">
+    <div>
+        <h1 class="container__title">프로필 이미지 수정</h1>
+        <hr />
+        <div class="container">
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                <p><strong>{{ user.user_id }}</strong> 회원님의 계정이 삭제됩니다.<br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다.
+                <div>
+                    <label name="label_password" for="{{ password_form.password.id_for_label }}">{{ password_form.password.label }}</label>
+                    {{ password_form.password }}
+                    {% if password_form.password.errors %}
+                    <script type="text/javascript">
+                        document.getElementsByName('password')[0].setAttribute('class', 'form-control is-invalid')
+                    </script>
+                    {% endif %}
+                    <small>
+                        본인인증을 위해 비밀번호를 입력해주세요.
+                    </small>
+                </div>
+            
+                <button type="submit">탈퇴하기</button>
+            </form>
+            
+            <script type="text/javascript">
+                function checkDisable(form) {
+                    if (form.ck.checked == true) {
+                        form.bt.disabled = false;
+                    } else {
+                        form.bt.disabled = true;
+                    }
+                }
+            </script>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
