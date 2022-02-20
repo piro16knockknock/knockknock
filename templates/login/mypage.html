@@ -29,12 +29,18 @@
     
                 <div class="mypage-profile-box">
                     <img class="mypage-profile-img" src={% if request.user.profile_img %}"{{ request.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
-                    
                 </div>
+                <a href="{% url 'login:profile_update' %}" class="edit-icon"><img src="{% static 'img/edit_icon.png' %}" ></a>
+
                 <div class="mypage-profile-username" style="align-items: center;">
                     {{request.user.nick_name}}
                     <p style="margin: auto; padding: 0;">@{{ request.user.username}}</p>
                 </div>
+                <a href="{% url 'login:user_update' %}" class="edit_info"><button>회원정보 수정</button></a>
+                <!-- 이거 코멘트 지우고 회원탈퇴 연결해주세요 -->
+                {% comment %}
+                <a href="{% url 'login:profile_delete' %}" class="edit_info"><button>회원탈퇴</button></a>
+                {% endcomment%}
             </div>    
     
         </div>
