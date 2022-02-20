@@ -82,20 +82,26 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'login:mypage' %}">마이페이지</a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" style="position: relative;">
+
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" >
                         <span class="material-icons-round" style="font-size: 2rem;">notifications</span>
                     </a>
+                    <div class="notice_cnt" style="position: absolute; left: 35%; top: 5%; font-size: 1rem; padding: 0.05rem 0.35rem; border-radius: 50%; background-color: rgb(241, 106, 88);">{{notice_cnt}}</div>
+
                     <ul class="dropdown-menu main-drop-menu" aria-labelledby="navbarDropdown" style="position: absolute; transform: translate(-85%, 0%);">
                         <h3 class="notice-title">알림</h3>       
 
-                        <li><a class="dropdown-item" href="#">
-                            {% if request.user.invite and request.user.invite.is_accepted is False %}
-                            <p>{{request.user.invite.home.name}} 로부터 초대장이 도착하였습니다.</p>
-                            
-                            <a href="{% url 'setting:accept_invite' %}" class="btn btn-default">수락하기</a>
+                        <li style="width: 25rem; display: flex; justify-content: flex-start; padding-left: 1rem; position: relative;"><a class="dropdown-item" href="#" style="position: absolute;" >
+
+
+                            {% if knocks %}
+                            {% for knock in knocks %}
+                            <a href="{% url 'login:mypage' %}" >{{ knock.user.nick_name }} 이(가) 노크 중입니다!</a>
+                            {% endfor %}
                             {% endif %}
                         </a></li>
+                     
 
                     </ul>
 
