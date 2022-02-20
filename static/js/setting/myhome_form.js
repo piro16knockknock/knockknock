@@ -1,4 +1,111 @@
+/*초대 링크 */
+const link_input = document.getElementById('myhome-register__link-input');
+if(link_input){
+    link_input.addEventListener('keyup', function(event){ //엔터시에도
+        console.log("here");
+        if (event.code === "Enter") {
+            onClickKnockLinkSearch();
+        }  
+    });
+    
+}
 
+const onClickKnockLinkSearch = async() => {
+    const url = "../../myhome/knock_link_search/";
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'link_input': link_input.value
+        })
+    });
+    const {
+        is_exist : is_exist
+    } = await res.json()
+    knockLinkHandleResponse(is_exist);
+}
+
+const knockLinkHandleResponse = (is_exist) => {
+    if(is_exist){
+        location.href = link_input.value;
+    }else{
+        alert("없는 초대링크 입니다.");
+    }
+
+}
+
+
+/**집 노크하기(검색하기) */
+/*집 검색창 - ajax*/
+const search_input = document.querySelector('#myhome-register__search-input');
+if(search_input){
+    search_input.addEventListener("keyup", (e) => {
+        if (search_input.value == "") return;
+        onSearchHomeList(search_input.value);
+    });    
+}
+
+const onSearchHomeList = async (value) => {
+    const url = "../../myhome/search_home/";
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'search_word': value
+        })
+    });
+    const {
+        home_list: home_list
+    } = await res.json()
+    searchHomeListHandleResponse(home_list);
+}
+
+const searchHomeListHandleResponse = (home_list) => {
+    //list 보여줌
+    const div = document.querySelector('.form-check');
+    div.innerHTML = "";
+    for (let i = 0; i < home_list.length; i++) {
+        const li = document.createElement('div');
+        li.classList.add('myhome-register__home-list');
+
+        li.innerHTML = `<input class="form-radio-input" type="radio" name="homename" value="${home_list[i]['homename']}">
+                    <i class="fas fa-home"></i>
+                    <p>${home_list[i]['homename']}</p>`;
+        div.appendChild(li);
+    }
+}
+
+
+const onClickKnockHome = async() => {
+    const input = document.querySelector('.form-radio-input');
+    if(!input) return;
+    const url = "../../myhome/knock_home/";
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+            'homename': input.value
+        })
+    });
+    window.location.href = "/";
+}
+
+
+
+
+
+
+
+
+
+
+/**집 등록하기 */
 const home_name = document.getElementById('myhome-register-name');
 const rent_month = document.getElementById('myhome-register-rent-month');
 const rent_date = document.getElementById('myhome-register-rent-date');
@@ -9,7 +116,7 @@ let utility_count = 1;
 const deleteUtility = (tag) => {
     tag.parentElement.remove();
     utility_count--;
-    if(utility_count < 5){
+    if(utility_count < 10){
         const plusBtn = document.querySelector(".myhome-register__row__add-utility");
         plusBtn.classList.remove("myhome-register__display-none");
     }
@@ -30,7 +137,7 @@ const addUtility = (tag) => {
     ul.appendChild(li);
     utility_count++;
     utility_check(0, utility_count);
-    if(utility_count >= 5){
+    if(utility_count >= 10){
         tag.classList.add("myhome-register__display-none");
     }
 }
@@ -48,25 +155,31 @@ const onSelectUtilityOrRent = (event) => {
 /* input창 제한 걸기 */
 let replaceNotInt = /[^0-9]/gi; // 숫자 아닌 정규식
 let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
-home_name.addEventListener("keyup", (event) => {
-    home_name.value = home_name.value.replace(replaceChar, "")
-})
+if(home_name){
+    home_name.addEventListener("keyup", (event) => {
+        home_name.value = home_name.value.replace(replaceChar, "")
+    })
+    utility_check(0, 1);
+}
 
-rent_month.addEventListener("keyup", (event) => {
-    rent_month.value = rent_month.value.replace(replaceNotInt, "");
-    if( rent_month.value != "" && (rent_month.value > 12 || rent_month.value < 1)) {
-        rent_month.value = rent_month.value.slice(0, -1);
-    }
-})
+if(rent_month){
+    rent_month.addEventListener("keyup", (event) => {
+        rent_month.value = rent_month.value.replace(replaceNotInt, "");
+        if( rent_month.value != "" && (rent_month.value > 12 || rent_month.value < 1)) {
+            rent_month.value = rent_month.value.slice(0, -1);
+        }
+    })    
+}
 
-rent_date.addEventListener("keyup", (event) => {
-    rent_date.value = rent_date.value.replace(replaceNotInt, "");
-    if( rent_date.value != "" && (rent_date.value > 31 || rent_date.value < 1)) {
-        rent_date.value = rent_date.value.slice(0, -1);
-    }
-})
+if(rent_date){
+    rent_date.addEventListener("keyup", (event) => {
+        rent_date.value = rent_date.value.replace(replaceNotInt, "");
+        if( rent_date.value != "" && (rent_date.value > 31 || rent_date.value < 1)) {
+            rent_date.value = rent_date.value.slice(0, -1);
+        }
+    })    
+}
 
-utility_check(0, 1);
 function utility_check(start, end){
     const utility_name = document.querySelectorAll('.new-utility-name');
     const utility_month = document.querySelectorAll('.new-utility-month');

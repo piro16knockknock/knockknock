@@ -66,22 +66,68 @@ p span {
     font-weight: bold;
 }
 
+.user-cate-container {
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    display: flex;
+    align-items: baseline;
+}
+
+.all-todo-cnt {
+    display: flex;
+    align-items: flex-start !important;
+}
 
 .cate-container {
     width: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
+    display: flex;
+    align-items: baseline;
 }
 
 .cate {
     display: inline-block;
-    margin-left: 1rem;
     margin-right: 1rem;
     padding-top: 2rem;
+    flex: none;
+    height: 70vh;
+    width: 28rem;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.todo-cnt {
+/* 카테고리별 스크롤바 커스텀 */
+.cate::-webkit-scrollbar {
+    width: 1rem;
+}
+
+.cate::-webkit-scrollbar-thumb {
+    border-radius: 10rem;
+    background-color: #f3f3f3 ;
+    box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+}
+
+.user-cate-container::-webkit-scrollbar, .cate-container::-webkit-scrollbar {
+    width: 1.2rem;
+}
+
+.user-cate-container::-webkit-scrollbar-track, .cate-container::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+    border-radius: 10rem;
+}
+
+.user-cate-container::-webkit-scrollbar-thumb, .cate-container::-webkit-scrollbar-thumb {
+    border-radius: 10rem;
+    border: #f5f5f5 3px solid;
+    background-color: #c7c7c7;
+    box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+}
+
+.todo-box {
     border-radius: 1rem;
     width: 26rem;
     padding: 2rem;
@@ -90,11 +136,32 @@ p span {
     margin-bottom: 1.2rem;
 }
 
-.todo-cnt i {
+.todo-box i {
     font-size: 1.6rem;
 }
 
-.complete-total-todo {
+.todo-check-btn {
+    margin-right: 1rem;
+}
+
+.todo-cnt {
+    display: flex;
+    align-items: baseline;
+}
+
+.todo-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.todo-bottom p {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    color: #606060;
+}
+
+.com-user-todo {
     border-radius: 1rem;
     width: 26rem;
     padding: 2rem;
@@ -102,8 +169,32 @@ p span {
     margin-bottom: 1.2rem;
 }
 
-.complete-total-todo i {
+.com-user-todo i {
     font-size: 1.8rem;
+}
+
+.com-total-todo {
+    border-radius: 1rem;
+    width: 26rem;
+    padding: 2rem;
+    background-color: #ddd;
+    margin-bottom: 1.2rem;
+}
+
+.com-total-todo i {
+    font-size: 1.8rem;
+}
+
+.com-todo-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.user-todo-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
 }
 
 .user-todo-head p {
@@ -140,7 +231,15 @@ p span {
     font-size: 1.2rem;
     margin-bottom: 1rem;
 }
+.cate-head {
+    display: flex;
+    justify-content: space-between;
+}
 
+.cate-head button {
+    margin-bottom: 1.6rem;
+    padding: 0;
+}
 .cate-name {
     margin-bottom: 1.6rem;
     font-weight: 600;
@@ -214,13 +313,11 @@ p span {
     color: black;
 }
 
-.user-todo-cnt {
-    border-radius: 1rem;
-    width: 20rem;
-    padding: 2rem;
-    background-color: #ddd;
-    margin: 1.5rem;
+.add-cate i {
+    margin-right: 1rem;
 }
+
+
 
 input {
     appearance: radio!important;
@@ -241,7 +338,7 @@ input {
 }
 
 .todo-profile-box {
-    min-width: 3rem;
+    width: 3rem;
     height: 3rem;
     border-radius: 50%;
     overflow: hidden;
@@ -259,6 +356,8 @@ input {
 
 .modal-body label {
     margin-right: 1.6rem;
+    display: flex;
+    align-items: center;
 }
 
 .todo-input-txt {
@@ -280,10 +379,39 @@ input {
     border: 1px solid #FFC163;
 }
 
-.select-todo-cate {
+.is_not_done_today {
+    border : 0.3rem solid #979797;
+}
+
+.select-todo-user,
+.select-todo-cate,
+.select-todo-priority  {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
     font-size: 1.4rem;
 }
 
-.select-todo-priority {
-    font-size: 1.4rem;
+.select-todo-user div,
+.select-todo-cate div,
+.select-todo-priority div {
+    margin-right: 1rem;
+}
+
+.select-todo-user p,
+.select-todo-cate p,
+.select-todo-priority p {
+    margin-right: 3rem;
+}
+
+.edit-todo {
+    margin-top: 1rem;
+}
+
+.cate-alert {
+    margin-top: 0.5rem;
+}
+
+.duplicate-cate {
+    margin-left: 0.5rem;
 }

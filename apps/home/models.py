@@ -1,3 +1,4 @@
+from email.policy import default
 from xml.etree.ElementInclude import default_loader
 from django.db import models
 from django.forms import BooleanField
@@ -19,7 +20,7 @@ class TodoPriority(models.Model):
 class Todo(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name= 'todo')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='todo')
-    cate = models.ForeignKey(TodoCate, on_delete=models.SET_NULL, null=True, blank=True, related_name='todo')
+    cate = models.ForeignKey(TodoCate, on_delete=models.CASCADE, null=True, blank=True, related_name='todo')
     content = models.CharField(max_length=100)
     date = models.DateField()
     # TodoPriority 중 오늘 안에에 해당하는 중요도를 연결해주려면 id로 연결해야함!
@@ -28,6 +29,11 @@ class Todo(models.Model):
     is_postpone = models.BooleanField(default=False)
     is_done_date = models.DateTimeField(null=True, blank=True)
     is_done = models.BooleanField(default=False)
+    is_not_done_today = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return str(self.id) + self.home.name + '의 '+ self.content
+
 
 class TodoReaction(models.Model):
     todo = models.ForeignKey(Todo, on_delete=models.CASCADE, related_name='reaction')
@@ -44,28 +50,14 @@ class LivingRuleCate(models.Model):
         return "[" + self.home.name + "]" + self.name
     
 class LivingRule(models.Model):
-    cate = models.ForeignKey(LivingRuleCate, on_delete=models.CASCADE, related_name='living_rule')
+    cate = models.ForeignKey(LivingRuleCate, on_delete=models.CASCADE, related_name='living_rule', blank=True, null=True)
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name='living_rule', blank=True, null=True)
     content = models.CharField(max_length=50)
     create_at = models.DateTimeField(auto_now_add=True)
+    is_guideline = models.BooleanField(default=False, blank=True, null=True)
     
     def __str__(self):
         return "[" + self.home.name + "]" + "[" + self.cate.name + "] " + self.content
 
 
-# 3.Guideline
-class Guideline(models.Model):
-    home = models.OneToOneField(Home, on_delete=models.CASCADE, related_name='guideline')
-    is_done = models.BooleanField(default=False)
 
-class GuidelineQCate(models.Model):
-    name = models.CharField(max_length=10)
-
-class GuidelineQ(models.Model):
-    cate = models.ForeignKey(GuidelineQCate, on_delete=models.CASCADE, related_name='qna')
-    question = models.CharField(max_length=10)
-
-class GuidelineA(models.Model):
-    guideline = models.ForeignKey(Guideline, on_delete=models.CASCADE, related_name='question_cate')
-    question = models.ForeignKey(GuidelineQ, on_delete=models.CASCADE, related_name = 'answer')
-    content = models.CharField(max_length=200)

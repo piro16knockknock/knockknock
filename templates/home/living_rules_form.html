@@ -1,25 +1,40 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/home/living_rules.css' %}">
 
-<div class="form-container">
-    <div class="form">
-        <h2 class="form-title">생활수칙 추가</h2>
-        <hr/>
-        <form method="POST" class="post-form" enctype="multipart/form-data">
-            {% csrf_token %}
-
-
-            <p>
-                <label>카테고리 선택: </label> 
-                <span>{{form.cate}}</span>
-            </p>
-            <p>
-                <label>생활수칙: </label> 
-                <span>{{form.content}}</span>
-            </p>
-            <button type="submit" class="save btn btn-default">Save</button>
-        </form>
+<section>
+    <div class="side-nav">
+        <ul class="d-flex">
+            <li>생활관리&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
+            <li><a href="{%url 'home:calendar' %}" >캘린더</a></li>
+            <li><a href="{%url 'home:living_rules' %}" style="border-bottom: #fbdb67 2px solid;">생활수칙</a></li>
+            <li><a href="{%url 'home:guideline' %}">가이드라인</a></li>
+        </ul>
     </div>
-</div>
+
+    <div class="lr-form-container">
+        <div class="form">
+            <form method="POST" class="lr-post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+    
+    
+                <!-- <p>
+                    <label>카테고리 선택: </label> 
+                    <span>{{form.cate}}</span>
+                </p>  -->
+                
+                <p>
+                    <label>생활수칙 </label> 
+                    <input value="{{ value }}" class="lr-content" type="text" name="content" maxlength="20" required/>
+                </p>
+                <button type="submit" class="sbtn btn-lg btn-outline-warning rounded-pill px-4 py-2 button-bg-white " >저장</button>            
+            </form>
+        </div>
+    </div>
+</section>
+
+
 {% endblock %}

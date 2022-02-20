@@ -8,13 +8,14 @@
     <div class="side-nav">
         <ul class="d-flex">
             <li>생활관리&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
-            <li><a href="{%url 'home:calendar' %}">캘린더</a></li>
-            <li><a href="">생활수칙</a></li>
-            <li><a href="">가이드라인</a></li>
+            <li><a href="{%url 'home:calendar' %}" style="border-bottom: #fbdb67 2px solid;">캘린더</a></li>
+            <li><a href="{%url 'home:living_rules' %}">생활수칙</a></li>
+            <li><a href="{% url 'home:guideline' %}">가이드라인</a></li>
+
         </ul>
     </div>
 
-    <div class="d-flex mt-4 plr-6">
+    <div class="d-flex mt-4 plr-10">
         <div id="calendar-side">
             
             <div id="cal-profile" class="text-center d-flex flex-column align-items-center pt-3">
@@ -37,25 +38,52 @@
                     <div class="btn btn-sm bg-secondary " style="border-radius: 50%;"><a href="{% url 'setting:myhome_detail' %}"><i class="fas fa-cog text-light"></i></a></div>
                 </div>
             </div>
-            <div id="cal-achieve-rate" class="cal-side-box">
-                <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}일</span></p>
-                <p>공과금 납부일<span class="ps-3">일</span></p>
+
+            <div id="cal-today-date" class="cal-side-box">
+                {{ today_date }}
             </div>
+
+            {% if request.user.home.is_rent %}
+                <div id="cal-achieve-rate" class="cal-side-box">
+                    <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}일</span></p>
+                        {% for utility in utility_list %}
+                            <p>{{utility.name}} 납부일<span class="ps-3">{{utility.date}}일</span></p>
+                        {% endfor %}
+                    </div>
+            {% else %}
+                {% if requse.user.utility_list > 0 %}
+                    <div id="cal-house-info" class="cal-side-box">
+                        {% for utility in utility_list %}
+                        <p>{{utility.name}} 납부일<span class="ps-3">{{utility.date}}일</span></p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endif %}
+            
+
             <div id="cal-todo" class="cal-side-box">
                 <p class="mb-3">오늘의 할 일</p>
-                <p>다섯개 정도 보여주기</p>
+                {% if user_todos.count is 0 %}
+                    <p>현재 할 일이 없어요~!</p>
+                {% else %}
+                    {% for user_todo in user_todos %}
+                        <div class="user-todo">
+                            <p>{{user_todo.content}}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         
         <div id="calendar">
                 <div class="calendar-nav text-center">
                     <div class="ym-wrapper mb-4">
-                        <a class="nav-btn go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"><i class="fa-solid fa-square-caret-left"></i></a>
-                        <a> 
+                        <a class="nav-btn go-prev" href="{% url 'home:calendar' %}?{{ prev_month }}"><i class="fa-solid fa-circle-chevron-left"></i></a>
+                        <a style="margin: 0 1rem;"> 
                             <span class="year">{{ year }}</span>년
                             <span class="month">{{ month }}</span>월
                         </a>
-                        <a class="nav-btn gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"><i class="fa-solid fa-square-caret-right"></i></a>
+                        <a class="nav-btn gi-next" href="{% url 'home:calendar' %}?{{ next_month }}"><i class="fa-solid fa-circle-chevron-right"></i></a>
                     </div>
                     
                 </div>

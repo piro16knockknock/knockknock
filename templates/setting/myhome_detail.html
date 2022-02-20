@@ -1,11 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/setting/myhome_detail.css' %}?after %}">
+{% endblock %}
+
 {% block script %}
 <script defer src="{% static 'js/setting/myhome_detail.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
+<div class="side-nav">
+    <ul class="d-flex">
+        <li>설정&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
+        <li><a style="border-bottom: #fbdb67 2px solid;" href="{%url 'setting:myhome_detail' %}">집 관리</a></li>
+        <li><a href="{%url 'setting:roommate_list' %}">룸메이트 관리</a></li>
+    </ul>
+</div>
 <section class="myhome-detail">
     <div>
         <div class="myhome-info">
@@ -15,11 +26,11 @@
                 <label>현재 집이름</label>
                 <span id="myhome-info__current-home-name">{{ home_name }}</span>
             </p>
-            <p class="myhome-detail__row myhome-detail__row__homename">
+            <p class="myhome-detail__row">
                 <label>집이름 변경</label>
                 <input type="text" id="new-home-name" placeholder="변경할 집 이름을 입력하세요." maxlength="20" />
-                <button type="button" onclick="onClickCheckHomeName()" class="myhome-detail__btn">중복 확인</button>
-                <span id="myhome-detail-alert"></span>
+                <button type="button" onclick="onClickCheckHomeName()" class="myhome-detail__btn ms-2">중복 확인</button>
+                <span id="myhome-detail-alert" class="ms-2"></span>
             </p>
             <p class="myhome-detail__row">
                 <div class="myhome-detail__row__flex_row">
@@ -44,7 +55,7 @@
                     <label>공과금 납부일</label>
                     <div class="myhome-detail__row__utility">
                         <ul class="myhome-detail__row__utility-ul">
-                            <p>※ 최대 다섯개까지 설정 가능합니다.</p>
+                            <p>※ 최대 10개까지 설정 가능합니다.</p>
                             {% for utility in utilities %}
                             <li class="myhome-detail__row__rent myhome-detail__row__utility-li">
                                 <div class="myhome-detail__row__rent-type"><span>종류</span><input class="new-utility-name" value="{{ utility.name }}" name="utility_name" type="text" maxlength="10"/></div>
@@ -70,14 +81,19 @@
         <div class="myhome-roommate">
             <p class="myhome-detail__title">룸메이트</p>
             <hr />
-            <div>
+            <div class="myhome-roommate__row">
                 {% for roommate in roommates %}
                 <div class="myhome-roommate__column">
+                    <a href="{% url 'setting:roommate_list' %}"><img class="cal-profile-img" src={% if roommate.profile_img %}"{{roommate.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}></a>
+                    
+                    {% comment %}
                     {% if roommate.profile_img %}
                     <img src="{{ roommate.profile_img.url }}" height="220" width="220" />
                     {% else %}
                     <i class="fas fa-user-circle"></i>
                     {% endif %}
+                    {% endcomment %}
+
                     <p>{{ roommate.nick_name }}</p>
                 </div>
                 {% endfor %}
@@ -96,26 +112,76 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="myhome-roommate__modal-input"><input type="text"
-                                        id="myhome-roommate-invite__input" placeholder="등록할 룸메이트의 아이디를 입력하세요." />
+                            <nav>
+                                <ul class="nav nav-pills" id="nav-tab" role="tablist">
+                                    <li class="tab-nav-item ms-3">
+                                    <button class="nav-link active fs-4" data-bs-toggle="tab" data-bs-target="#roommate-search-tab" type="button" aria-selected="true">직접 검색</button>
+                                    </li>
+                                    <li class="tab-nav-item">
+                                    <button class="nav-link fs-4" data-bs-toggle="tab" data-bs-target="#roommate-link-tab" type="button" aria-selected="false">초대 링크</button>
+                                    </li>
+                                </ul>
+                            </nav>
+                              <div class="tab-content">
+                                <div id="roommate-search-tab" class="modal-body tab-pane fade show active">
+                                    <div class="myhome-roommate__modal-input">
+                                        <input type="text" id="myhome-roommate-invite__input" placeholder="등록할 룸메이트의 아이디를 입력하세요." />
+                                    </div>
+                                    <div class="form-check">
+                                        <!--유저 검색 결과 리스트가 나타날 곳-->
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary myhome-roommate__modal-font"
+                                            data-bs-dismiss="modal">닫기</button>
+                                        <button type="button" onclick="onClickInvite()"
+                                            class="btn-green btn myhome-roommate__modal-font" data-bs-dismiss="modal">룸메이트
+                                            초대</button>
+                                        <!--ajax로 초대 구현-->
+                                    </div>
                                 </div>
-                                <div class="form-check">
-                                    <!--유저 검색 결과 리스트가 나타날 곳-->
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary myhome-roommate__modal-font"
-                                    data-bs-dismiss="modal">닫기</button>
-                                <button type="button" onclick="onClickInvite()"
-                                    class="btn btn-primary myhome-roommate__modal-font" data-bs-dismiss="modal">룸메이트
-                                    초대</button>
-                                <!--ajax로 초대 구현-->
-                            </div>
+                                <div id="roommate-link-tab" class="modal-body tab-pane fade">
+                                    <div class="myhome-roommate__modal-input mb-4">
+                                        <input type="text" id="myhome-roommate-link__input" value="{{request.user.home.pk}}/{{ request.user.home.invite_link }}" />
+                                        <i id="roommate-invite-url-copy" class="far fa-copy"></i>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary myhome-roommate__modal-font" data-bs-dismiss="modal">닫기</button>
+                                    </div>
+                                </div>                                    
+                              </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="myhome-knock">
+            <p class="myhome-detail__title">노크 중인 유저</p>
+            <hr />
+            {% if knocks %}
+                <div class="myhome-knock__row">
+                    {% for knock in knocks %}
+                        <div data-id='{{ knock.user.pk }}' class="myhome-knock__column">
+                            <img class="cal-profile-img" src={% if knock.user.profile_img %}"{{knock.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                            {% comment %}
+                            {% if knock.user.profile_img %}
+                            <img src="{{ knock.user.profile_img.url }}" height="220" width="220" />
+                            {% else %}
+                            <i class="fas fa-user-circle"></i>
+                            {% endif %}
+                            {% endcomment %}
+
+                            <p>{{ knock.user.nick_name }}</p>
+                            <div class="d-flex justify-content-center mt-2">
+                                <a onclick="onAcceptKnock(this)" data-id='{{ knock.user.pk }}' class="btn btn-green fs-6 tzext-center">수락</a>
+                                <a onclick="onRejectKnock(this)" data-id='{{ knock.user.pk }}' class="btn btn-secondary fs-6 ms-1 text-center">거절</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+            <p class="myhome-knock__empty">현재 노크 중인 유저가 없습니다.</p>
+            {% endif %}
         </div>
         <div class="myhome-move">
             <p class="myhome-detail__title">집 이전</p>

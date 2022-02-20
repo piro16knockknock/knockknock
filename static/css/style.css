@@ -1,8 +1,4 @@
 @import 'reset.css';
-@import 'login/mypage.css';
-@import 'setting/myhome_form.css';
-@import 'setting/myhome_detail.css';
-@import 'setting/roommate_list.css';
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
 @import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
@@ -30,9 +26,9 @@ a {
     text-decoration: none;
 }
 
-.plr-6 {
-    padding-left: 6rem;
-    padding-right: 6rem;
+.plr-10 {
+    padding-left: 10rem;
+    padding-right: 10rem;
 }
 
 .button-bg-white {
@@ -68,6 +64,17 @@ a {
 
 .main-drop-menu li {
     font: 1.4rem black;
+    display: flex;
+    justify-content: space-around;
+}
+
+.main-drop-menu h3{
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+}
+.btn-default{
+    font-size: 1.2rem;
+    width: 8rem;
 }
 
 .cnt-padding{
@@ -88,7 +95,10 @@ a {
 }
 
 .side-nav a:hover {
-    /*background-color: #fbdb67;*/
+    border-bottom: #fbdb67 2px solid;
+}
+
+.side-nav a:active {
     border-bottom: #fbdb67 2px solid;
 }
 

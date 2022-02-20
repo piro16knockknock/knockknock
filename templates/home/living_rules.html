@@ -1,37 +1,73 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
+
+{% block css %}
 <link rel="stylesheet" href="{% static 'css/home/living_rules.css' %}">
-<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#guidelinemodal">가이드라인 모달</button>
-<div class="living-rules">
-    <div class="title">생활수칙</div>
-    {% for cate, rules in order_rules.items %}
-    <button type="button" class="category"  >
-        <h3 class="category-name"><a href="{% url 'home:living_rules' %}">{{ cate.name }}</a></h3>
-        <a href="{% url 'home:living_rule_new' %}">
-            <span class="material-icons-outlined">add_circle_outline</span>
-        </a>
-    </button>
+{% endblock %}
 
+{% block script %}
+<script defer type="text/javascript">
+    const is_show_modal = {{show_modal}};
+</script>
+<script defer src="{% static 'js/home/living_rules.js' %}" type="text/javascript"></script>
+{% endblock %}
 
+{% block content %}
+<section>
+    <div class="side-nav">
+        <ul class="d-flex">
+            <li>생활관리&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
+            <li><a href="{%url 'home:calendar' %}" >캘린더</a></li>
+            <li><a href="{%url 'home:living_rules' %}" style="border-bottom: #fbdb67 2px solid;">생활수칙</a></li>
+            <li><a href="{%url 'home:guideline' %}">가이드라인</a></li>
+        </ul>
+    </div>
+    
+    <!-- <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#guidelinemodal">가이드라인 모달</button> -->
+    
+    
+    <div class="living-rules-container">    
+        <h2>생활수칙</h2>
+        <div class="living-rules">
+            {% for cate, rules in order_rules.items %}
+            <div class="living-rule">
+                <button type="button" class="category"  >
+                    <a href="{% url 'home:living_rule_new' cate.pk %}">
+                        <h3 class="category-name">
+                            {{ cate.name }}
+                            <a href="{% url 'home:living_rule_new' cate.pk %}"><i class="fa-solid fa-plus"></i>  </a>
+                        </h3>
+                    </a>
+                </button>
+            
+                <ul>
+                    {% for m in rules %}
+                        <li class="rule-content">
+                            <p>{{ m.content }}</p>
+                            <div class="content-btns">
+                                <button class="edit-btn"><a href="{% url 'home:living_rule_edit' pk=m.pk %}">수정</a></button>
+                                <button class="del-btn"><a href="{% url 'home:living_rule_delete' pk=m.pk %}">삭제</a></button>
+        
+                            </div>
+                        </li>
+            
+                    {% endfor %}
+                </ul>
+            </div>
+        
+        
+            {% endfor %}
+        </div>
+    
+    </div>
+</section>
 
-    <ul>
-        {% for m in rules %}
-            <li>
-                {{ m.content }}
-                <a href="{% url 'home:living_rule_edit' pk=m.pk %}">수정</a>
-                <a href="{% url 'home:living_rule_delete' pk=m.pk %}">삭제</a>
-            </li>
-
-        {% endfor %}
-    </ul>
-
-    {% endfor %}
-</div>
 
 
 
 <!-- Modal -->
+
+
 <div class="modal fade" id="guidelinemodal" tabindex="-1" aria-labelledby="guidelineModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -44,12 +80,15 @@
             </div>
             <div class="modal-footer">
                 <hr>
-                <button type="button" class="skip_btn" data-bs-dismiss="modal">건너뛰기</button>
+                <button type="button" class="skip_btn" data-bs-dismiss="modal" onclick="skipButton()">건너뛰기</button>
                 <a href="{%url 'home:guideline' %}" class="movetoguideline">보기</a>
-            </div>
             </div>
         </div>
     </div>
+</div>
 
 {% endblock %}
+
+
+
 

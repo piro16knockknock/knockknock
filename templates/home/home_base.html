@@ -4,9 +4,9 @@
     <div class="side-nav">
 		<ul class="d-flex">
 			<li>생활관리&nbsp;<i class="fas fa-angle-right" style="color: #a7a7a7;"></i></li>
-			<li><a href="{%url 'home:calendar' %}">캘린더</a></li>
-			<li><a href="">생활수칙</a></li>
-			<li><a href="">가이드라인</a></li>
+			<li><a href="{%url 'home:calendar' %}" style="border-bottom: #fbdb67 2px solid;">캘린더</a></li>
+			<li><a href="{%url 'home:living_rules' %}">생활수칙</a></li>
+			<li><a href="{% url 'home:guideline' %}">가이드라인</a></li>
 		</ul>
 	</div>
     {% endblock %}
@@ -38,10 +38,39 @@
                     </div>
                 </div>
             </div>
-            <div id="cal-house-info" class="cal-side-box">
-                <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}일</span></p>
-                <p>공과금 납부일<span class="ps-3">일</span></p>
+            <div id="todo-today-date" class="cal-side-box">
+                {{ today }}
             </div>
+            {% if request.user.home.is_rent %}
+                <div id="todo-achieve-rate" class="cal-side-box">
+                    <p>월세 납부일<span class="ps-3">{{request.user.home.rent_date}}일</span></p>
+                        {% for utility in utility_list %}
+                            <p>{{utility.name}} 납부일<span class="ps-3">{{utility.date}}일</span></p>
+                        {% endfor %}
+                    </div>
+            {% else %}
+                {% if requse.user.utility_list > 0 %}
+                    <div id="todo-house-info" class="cal-side-box">
+                        {% for utility in utility_list %}
+                        <p>{{utility.name}} 납부일<span class="ps-3">{{utility.date}}일</span></p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            <div id="cal-todo" class="cal-side-box">
+                <p class="mb-3">오늘의 할 일</p>
+                {% if user_todos.count is 0 %}
+                    <p>현재 할 일이 없어요~!</p>
+                {% else %}
+                    {% for user_todo in user_todos %}
+                        <div class="user-todo">
+                            <p>{{user_todo.content}}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
 		</div>
     {% endblock %}
 </section>

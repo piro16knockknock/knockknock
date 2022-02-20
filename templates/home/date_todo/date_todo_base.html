@@ -20,9 +20,9 @@
                     <li class="tab-nav-item" role="presentation">
                         <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">전체 할일</button>
                     </li>
-                    <li class="me-auto ms-auto">
+                    <li class="today-no-user-text me-auto ms-auto">
                         {% if today == select_date %}
-                            아직 담당이 정해지지 않은 일이 {{ no_user_todos.count }}개 있습니다
+                            아직 담당이 정해지지 않은 일이 <span>{{ no_user_todos.count }}</span>개 있습니다
                         {% endif %}
                     </li>
                     <li style="margin-left: 4rem;" >
@@ -34,14 +34,12 @@
                     {% block data_todo %}
                     {% endblock %}
                 </div>
+
             </div>
             
         </div> <!-- todo-->
 
     </div>
-
-</div>
-
 {% block date_todo_modal %}
 {% endblock %}
 

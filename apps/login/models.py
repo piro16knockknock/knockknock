@@ -7,7 +7,7 @@ from django.contrib.auth.models import AbstractUser
 # 1.User
 class User(AbstractUser):
     home = models.ForeignKey('setting.Home', on_delete=models.SET_NULL, blank=True, null=True)
-    nick_name = models.CharField(max_length=10, unique=True)
+    nick_name = models.CharField(max_length=10, unique=True, null=True)
     profile_img = models.ImageField(null=True, blank=True)
     GENDER_CHOICES = (
         ('여성', '여성'),
@@ -30,3 +30,6 @@ class Notice(models.Model):
     content = models.CharField(max_length=50)
     link = models.CharField(max_length = 200, null=True)
     create_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return "[" + self.receive_user.username + "]" + self.content

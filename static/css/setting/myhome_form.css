@@ -1,3 +1,90 @@
+.nav-pills {
+    justify-content: start;
+    align-items: center;
+    font-size: 1.4rem;
+    border-bottom: 0.3px solid #ddd;
+}
+
+.nav-pills .nav-link.active{
+    background-color: #3d3d3d;
+}
+
+.nav-pills .nav-link {
+    color: black;
+}
+
+/* 초대링크 */
+
+/* 집 검색 */
+.myhome-register__search-container,
+.myhome-register__link-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#myhome-register__search-input,
+#myhome-register__link-input {
+    font-size: 1.3rem;
+    width: 80%;
+    padding: 1rem 2rem;
+    border-radius: .2rem;
+    background-color: rgba(1, 1, 1, 0.05);
+    border: .2rem solid rgb(137, 186, 159);
+}
+
+.myhome-register__search-container a,
+.myhome-register__link-container a  {
+    margin-left: .5rem;
+    padding: .85rem 2rem;
+    font-size: 1.4rem;
+    transition: all .2s ease-in-out;
+    background-color: rgb(255, 197, 109);
+}
+
+.myhome-register__search-container a:hover,
+.myhome-register__link-container a:hover {
+    background-color: tomato;
+}
+
+.myhome-register__home-list {
+    margin: 0 4rem;
+}
+
+.myhome-register__home-list > .form-radio-input{
+    border: 1px solid black;
+    cursor: pointer;
+
+}
+.myhome-register__home-list > .form-radio-input:checked {
+	background-color: rgb(137, 186, 159);
+    color: rgb(137, 186, 159);
+}
+
+
+.myhome-register__empty{
+    padding-top: 3rem;
+    font-size: 1.6rem;
+}
+
+/*검색 결과*/
+.myhome-register__home-list {
+    display: flex;
+    align-items: center;
+}
+.myhome-register__home-list i {
+    margin: 1rem;
+    font-size: 3rem;
+}
+.myhome-register__home-list input {
+    padding: 1rem;
+}
+
+.myhome-register__home-list p {
+    font-size: 1.3rem;
+}
+
+/* 집 직접 등록 */
 .myhome-register {
     display: flex;
     justify-content: center;
@@ -43,10 +130,6 @@
     border-radius: .5rem;
     font-size: 1.3rem;
     padding: .3rem;
-}
-
-.myhome-register__row__homename>input {
-    width: 40rem;
 }
 
 /*전세 월세 버튼*/
@@ -122,6 +205,12 @@
     padding: .5rem 1.5rem;
     color: rgb(255, 197, 109);
     border-radius: 5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.myhome-register__btn:hover {
+    background-color: rgb(255, 197, 109);
+    color: white;
 }
 
 /*공과금*/
@@ -139,4 +228,9 @@
 .myhome-register__row__add-utility {
     margin: 1rem 0;
     font-size: 3rem;
+    transition: all 0.2s ease-in-out;
+}
+.myhome-register__row__add-utility:hover {
+    cursor: pointer;
+    color: rgb(137, 186, 159);
 }

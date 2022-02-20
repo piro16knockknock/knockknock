@@ -51,3 +51,57 @@ const onClickSaveRecordBtn = async (checkedList) => {
         })
     });
 }
+
+// 닉네임 중복확인 시작
+const nick_name = document.getElementById('signup-register-nick_name');
+
+let check_nick_name = ""
+const onClickCheckNickName = async() => {
+  if(nick_name.value == "") return;
+  const url = "../signup/check_nick_name/";
+  const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+          'Content-Type': "application/x-www-form-urlencoded"
+      },
+      body: JSON.stringify({
+          'nick_name' : nick_name.value
+      })
+  });
+  const { is_available: is_available, input_nick_name: input_nick_name } = await res.json()
+  checkUserNickNameHandleResponse(is_available, input_nick_name);
+}
+
+const checkUserNickNameHandleResponse = (is_available, input_nick_name) => {
+  const alert = document.querySelector('#signup-register-alert3');
+  
+  if(is_available){
+      alert.innerHTML=" 사용할 수 있는 닉네임입니다. ";
+      alert.style.color="green";
+      check_nick_name = input_nick_name;
+      
+      return;
+  }
+  else{
+      alert.innerHTML=" 이미 사용 중인 닉네임입니다. ";
+      alert.style.color="red";
+  }
+  // 중복임 =>경고
+  nick_name.value = "";
+}
+
+const nicknameRegisterHandleSubmit = (event) => {
+  
+  if (nick_name.value == "") {
+      alert('입력하지 않은 항목이 있습니다.');
+      event.preventDefault();
+      return;
+  }
+  
+  if (nick_name.value != check_nick_name ){
+      alert("닉네임 중복 확인을 먼저 해주세요.");
+      event.preventDefault();
+      return;
+  }
+}
+// 닉네임 중복확인 끝

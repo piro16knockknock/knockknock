@@ -1,3 +1,110 @@
+.mypage-container{
+    font-size: 1.8rem;
+    display: flex;    
+}
+
+.mypage-profile{
+    width: 15%;
+    height: 22rem;
+    margin-top: 10rem;
+    display: inline-block;
+    outline: solid 1px #c4c4c4;
+    border-radius: 2rem;
+    padding: 2rem;
+}
+
+.edit_info{
+    font-size: 1.2rem;
+}
+
+.edit_info button{
+    padding: 0.3rem 1.2rem;
+    outline: solid 1px #000;
+    border-radius: 2.5rem;
+}
+
+.mypage-info{
+    margin: 3rem 15rem;
+}
+
+.mypage-profile{
+    text-align: center;
+    align-items: center;
+}
+
+.edit-icon{
+    position: absolute;
+    transform: translate(70%, -80%);
+
+}
+.mypage-profile-box {
+    position: relative;
+    margin-left: 5.5rem;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.mypage-profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mypage-profile-username {
+    font-weight: 500;
+    margin: 1.6rem 0;
+    font-size: 1.3rem;
+}
+
+.mypage-profile-username p {
+    color: #707070;
+    width: 30rem;
+    padding-right: 9rem;
+}
+
+.mypage-content{
+    width: 90rem;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mypage-item{
+    width: 37rem;
+    margin: 10rem 0;
+    display: inline-block;
+}
+
+.my-home{
+    font-size: 1.6rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.title-cate{
+    display: flex;
+    justify-content: space-between
+}
+
+.title-cate p{
+    font-size: 1.2rem;
+    color: #696969;
+    position: absolute;
+    transform: translate(125%, 50%);
+}
+
+.past-record{
+    width: 80rem;
+    margin: 15rem 0;
+}
+
+.table{
+    font-size: 1.4rem;
+}
+
+
 /*이전집 기록 보기, 이사하기, 생활수칙보기*/
 #moveHomeModal {
     font-size: 1.5rem;
@@ -93,4 +200,17 @@
 
 .past-record__checkbox:checked {
     background-color: rgb(255, 197, 109);
+}
+
+/*생활수칙 보기 버튼*/
+.btn-green {
+    background-color: rgb(137, 186, 159);
+    border: 1px solid rgb(137, 186, 159);
+    color: white !important;
+    transition: all 0.2s ease-in-out;
+}
+.btn-green:hover {
+    color: white;
+    background-color: rgb(90, 153, 118);
+    border: 1px solid rgb(90, 153, 118);
 }
