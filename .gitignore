@@ -1,11 +1,7 @@
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,django,python,venv
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,django,python,venv
-apps/home/migrations/
-apps/setting/migrations/
-apps/typetest/migrations/
-apps/community/migrations/
-apps/login/migrations/
+
 #.gitignore 수정중
 
 ### Django ###
