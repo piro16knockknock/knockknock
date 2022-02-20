@@ -14,7 +14,7 @@ from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .forms import UserUpdateForm
-from setting.models import LiveIn, Home, PreRoommates
+from setting.models import Invite, Knock, LiveIn, Home, PreRoommates, Utility
 from home.models import Todo
 import json
 from django.http import JsonResponse
@@ -119,11 +119,63 @@ def leave_home(request):
 @login_required
 def mypage(request):
     prehomes, prehome_dict, preroommates_dict = prehome_list(request)
+
+    current_user = request.user
+
+    roommates = User.objects.filter(home=request.user.home)
+    roommates = roommates.exclude(nick_name=request.user.nick_name)
+    invites = Invite.objects.filter(home=request.user.home)
     
-    ctx = {'prehomes' : prehomes,
-           'prehome_dict' : prehome_dict,
-           'preroommates_dict': preroommates_dict }
-    return render(request, 'login/mypage.html', ctx)
+    invite_users = []
+    for invite in invites:
+        if invite.is_accepted is False:
+            invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
+            
+    roommate_titles = {}
+
+    my_titles = {}
+    my_titles = Title.objects.filter(user=current_user)
+    
+    roommate_ratio = {}
+    today = datetime.now()
+    #전체 달성률
+    today_string = f'{today.year}-{today.month}-{today.day}'
+    total_todos = Todo.objects.filter(home = request.user.home, date = today_string)
+    complete_total_todos = total_todos.filter(is_done=True)
+    if total_todos.count() == 0:
+        total_compelete_ratio = 0
+    else:
+        total_compelete_ratio = complete_total_todos.count() / total_todos.count()
+        
+    for roommate in roommates:
+        roommate_titles[current_user.nick_name] = Title.objects.filter(user=current_user)
+    
+    
+
+        #룸메이트 달성률
+        user_todos = total_todos.filter(user=roommate)
+        complete_user_todos = total_todos.filter(is_done = True, user=roommate)
+        if user_todos.count() == 0:
+            user_compelete_ratio = 0
+        else:
+            user_compelete_ratio = complete_user_todos.count() / user_todos.count()
+            
+        roommate_ratio[roommate.nick_name] = int(user_compelete_ratio * 100)
+    
+    
+    ctx = {
+        'roommates' : roommates,
+        'invite_users' : invite_users,
+        'roommate_titles' : roommate_titles,
+        'roommate_ratio' : roommate_ratio,
+        'total_complete_ratio' : int(total_compelete_ratio * 100),
+        'prehomes' : prehomes,
+        'prehome_dict' : prehome_dict,
+        'preroommates_dict': preroommates_dict,
+        'my_titles' : my_titles,
+    }
+    return render(request, 'login/mypage.html', context=ctx)
+
 
 #회원가입 기능
 def sign_up(request):
