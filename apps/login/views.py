@@ -14,7 +14,7 @@ from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .forms import UserUpdateForm
-from setting.models import LiveIn, Home, PreRoommates
+from setting.models import LiveIn, Home, PreRoommates, Knock
 from home.models import Todo
 import json
 from django.http import JsonResponse
@@ -33,14 +33,24 @@ def intro(request):
         today = DateFormat(datetime.now()).format('Y-m-d')
         today_url = '/home/todo/' + str(today)
         user_todos = Todo.objects.filter(user=request.user, date = datetime.now(), is_done=False)[:3]
+        
+        current_user = request.user
+        notice_cnt = Notice.objects.filter(receive_user=current_user).count()
+        
+        current_home = current_user.home
+        knocks = Knock.objects.filter(receive_home=current_home)
+
         ctx = {
             'username' : request.user.username,
             'today_date' : today,
             'today_date_url' : today_url,
             'user_todos' : user_todos,
+            'notice_cnt' : notice_cnt,
+            'knocks' : knocks,
         }
         return render(request, 'login/intro.html', context= ctx)
     else:
+
         return render(request, 'login/intro.html')
 
 #이전집 생활수칙 가져오기
