@@ -201,26 +201,39 @@ a {
 }
 
 #intro-main-cnt {
-    background: url("../img/intro-main2.png");
-    background-size: 80rem;
-    background-position-x: 90%;
-    background-position-y: 70%;
+    background: url("../img/knock_door.png");
+    background-size: 30%;
+    background-position-x: 50%;
+    background-position-y: 65%;
     background-repeat: no-repeat;
     object-fit: contain;
     width: 100%;
     height: 100%;
 
 }
-
+/*
 #intro-main-notlog-cnt {
-    background: url("../img/intro-main1.png");
-    background-size: 80rem;
-    background-position-x: 90%;
-    background-position-y: 70%;
+    background: url("../img/knock_door.png");
+    background-size: 30%;
+    background-position-x: 50%;
+    background-position-y: 65%;
     background-repeat: no-repeat;
     object-fit: contain;
     width: 100%;
     height: 100%;
+}*/
+
+.door-img-box {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+}
+
+.door-img-box:hover img {
+    transform: scale(102%);
+    cursor: pointer;
 }
 
 .intro-main-cnt h2 {
@@ -236,6 +249,7 @@ a {
     font-weight: 200;
     line-height: 2.8rem;
     color: #535353;
+
 }
 
 #intro-main-notlog-cnt h5 {
@@ -245,16 +259,19 @@ a {
 }
 
 #intro-main-notlog-cnt h1 {
-    font-size: 5rem;
+    font-size: 12rem;
     font-weight: 700;
     line-height: 5.3rem;
     margin-bottom: 6rem;
+    color: #FFB649;
 }
 
 #intro-main-notlog-cnt p {
     font-size: 1.6rem;
     line-height: 2.5rem;
     margin-bottom: 5rem;
+    width: 40rem;
+    word-break: keep-all;
 }
 
 #intro-main-notlog-cnt span {
