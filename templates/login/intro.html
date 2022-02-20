@@ -68,7 +68,7 @@
     <div id="intro-main-notlog-cnt" class="intro-main-cnt cnt-padding">
         <div style="z-index: 3; position: relative;">
             <h5>룸메이트와의 쾌적하고 편안한 생활 지킴이</h5>
-            <h1>KNOCK</h1>
+            <h1 id="knock_left">KNOCK</h1>
         </div>
 
         <p style="z-index: 3; position: relative;"><span>노크노크</span>는 한 지붕 아래 함께 살아가는 사람들과의 안정적인 
@@ -79,11 +79,12 @@
             <a href="{% url 'login:login' %}"><img src="{% static 'img/knock_door.png' %}" style="width: 50rem;"></a>
         </div>
         <div class="text-end" style="z-index: 3; position: relative;">
-            <h1>KNOCK</h1>
+            <h1 id="knock_right">KNOCK</h1>
         </div>
     </div>
 </div>
 {% endif %}
+
 <div id="intro-ment">
     <div style="width: 6rem; height: 6rem; background-color: #ddd;"></div>
     <h4>KNOCK/KNOCK</h4>
@@ -91,7 +92,7 @@
 </div>
 
 
-<div id="intro-persona">
+<div id="intro-persona" >
     <div class="py-3 text-center" id="intro-persona-title">
         <div>
         <p>Why?</p></div>
