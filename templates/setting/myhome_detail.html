@@ -162,7 +162,7 @@
                 <div class="myhome-knock__row">
                     {% for knock in knocks %}
                         <div data-id='{{ knock.user.pk }}' class="myhome-knock__column">
-                            <img class="cal-profile-img" src={% if knock.user.profile_img %}"{{knock.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                            <img class="cal-profile-img" src={% if knock.user.profile_img %}"{{knock.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
                             {% comment %}
                             {% if knock.user.profile_img %}
                             <img src="{{ knock.user.profile_img.url }}" height="220" width="220" />
