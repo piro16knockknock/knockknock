@@ -14,7 +14,7 @@ from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .forms import UserUpdateForm
-from setting.models import LiveIn, Home, PreRoommates, Knock
+from setting.models import Invite, Knock, LiveIn, Home, PreRoommates, Utility
 from home.models import Todo
 import json
 from django.http import JsonResponse
@@ -41,7 +41,15 @@ def intro(request):
         today_url = '/home/todo/' + str(today)
         user_todos = Todo.objects.filter(user=request.user, date = datetime.now(), is_done=False)[:3]
         
+
         notice_cnt, notices = nav_notice(request)
+
+        current_user = request.user
+        notice_cnt = Notice.objects.filter(receive_user=current_user).count()
+        
+        current_home = current_user.home
+        knocks = Knock.objects.filter(receive_home=current_home)
+
 
         ctx = {
             'username' : request.user.username,
@@ -50,6 +58,7 @@ def intro(request):
             'user_todos' : user_todos,
             'notice_cnt' : notice_cnt,
             'notices' : notices,
+
         }
         return render(request, 'login/intro.html', context= ctx)
     else:
@@ -132,6 +141,7 @@ def leave_home(request):
 @login_required
 def mypage(request):
     prehomes, prehome_dict, preroommates_dict = prehome_list(request)
+
     notice_cnt, notices = nav_notice(request)
 
     ctx = {'prehomes' : prehomes,
@@ -142,6 +152,66 @@ def mypage(request):
     }
     return render(request, 'login/mypage.html', ctx)
 
+
+    current_user = request.user
+
+    roommates = User.objects.filter(home=request.user.home)
+    roommates = roommates.exclude(nick_name=request.user.nick_name)
+    invites = Invite.objects.filter(home=request.user.home)
+    
+    invite_users = []
+    for invite in invites:
+        if invite.is_accepted is False:
+            invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
+            
+    roommate_titles = {}
+
+    my_titles = {}
+    my_titles = Title.objects.filter(user=current_user)
+    
+    roommate_ratio = {}
+    today = datetime.now()
+    #전체 달성률
+    today_string = f'{today.year}-{today.month}-{today.day}'
+    total_todos = Todo.objects.filter(home = request.user.home, date = today_string)
+    complete_total_todos = total_todos.filter(is_done=True)
+    if total_todos.count() == 0:
+        total_compelete_ratio = 0
+    else:
+        total_compelete_ratio = complete_total_todos.count() / total_todos.count()
+        
+    for roommate in roommates:
+        roommate_titles[current_user.nick_name] = Title.objects.filter(user=current_user)
+    
+    
+
+        #룸메이트 달성률
+        user_todos = total_todos.filter(user=roommate)
+        complete_user_todos = total_todos.filter(is_done = True, user=roommate)
+        if user_todos.count() == 0:
+            user_compelete_ratio = 0
+        else:
+            user_compelete_ratio = complete_user_todos.count() / user_todos.count()
+            
+        roommate_ratio[roommate.nick_name] = int(user_compelete_ratio * 100)
+    
+    
+    ctx = {
+        'roommates' : roommates,
+        'invite_users' : invite_users,
+        'roommate_titles' : roommate_titles,
+        'roommate_ratio' : roommate_ratio,
+        'user_complete_ratio' : int(user_compelete_ratio * 100),
+        'total_complete_ratio' : int(total_compelete_ratio * 100),
+        'prehomes' : prehomes,
+        'prehome_dict' : prehome_dict,
+        'preroommates_dict': preroommates_dict,
+        'my_titles' : my_titles,
+    }
+    return render(request, 'login/mypage.html', context=ctx)
+
+
+
 #회원가입 기능
 def sign_up(request):
     if request.method == "POST":
@@ -150,10 +220,14 @@ def sign_up(request):
             user = User.objects.create_user(
                 username=request.POST.get("username"),
                 password=request.POST.get("password"),
+                profile_img = request.FILES.get('represent'),
                 email=request.POST.get("email"),
                 nick_name=request.POST.get("nick_name"),
                 gender=request.POST.get("gender"),
-            )            
+            )
+            #칭호 생성
+            Title.objects.create(user=user, content="🌱 노크노크 스타터")
+                
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/')
         messages.warning(request, "비밀번호 두 개가 다릅니다.")
