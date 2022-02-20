@@ -168,6 +168,7 @@ def mypage(request):
         'invite_users' : invite_users,
         'roommate_titles' : roommate_titles,
         'roommate_ratio' : roommate_ratio,
+        'user_complete_ratio' : int(user_compelete_ratio * 100),
         'total_complete_ratio' : int(total_compelete_ratio * 100),
         'prehomes' : prehomes,
         'prehome_dict' : prehome_dict,

@@ -86,9 +86,9 @@
                                             <div class="roommate-list__modal-title">
                                                 <p>칭호</p>
                                                 <hr />
-                                                {% for title in roommate_titles|get_item:roommate.nick_name %}
-                                                <span class="cal-profile-title border rounded-pill px-3 py-1 mx-1">
-                                                    🏅{{ title.content }}
+                                                {% for my_title in my_titles %}
+                                                <span class="mypage-profile-title border rounded-pill px-3 py-1 mx-1">
+                                                    🏅{{ my_title.content }}
                                                 </span>
                                                 {% endfor %}
                                             </div>
@@ -161,17 +161,13 @@
                     <div class="mypage-item">
                         <div class="title-cate">
                             <h4>칭호관리</h4>
-                            <p>사용할 칭호 하나를 선택해 주세요.</p>
                         </div>
                         <hr />
                         <div class="mypage-titles">
                             {% for my_title in my_titles %}
-                            <button>
-                                <span class="mypage-profile-title border rounded-pill px-3 py-1 mx-1">
-                                    🏅{{ my_title.content }}
-                                </span>
-                            </button>
-        
+                            <span class="mypage-profile-title border rounded-pill px-3 py-1 mx-1">
+                                🏅{{ my_title.content }}
+                            </span>
                             {% endfor %}
                         </div>
                         </div>
