@@ -273,6 +273,7 @@ def accept_knock(request):
     user.home = request.user.home
     user.save()
     
+    LiveIn.objects.create(user = user, home = request.user.home)
     Knock.objects.filter(user=user).delete()
     #알림 삭제
     Notice.objects.filter(receive_user=request.user, link="/setting/myhome/detail/").delete()
