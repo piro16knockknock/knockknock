@@ -20,7 +20,6 @@
         <ul class="d-flex">
             <li style="margin-left: 3rem;">마이페이지</li>
         </ul>
-    
     </div>
     
     <div class="mypage-container">
@@ -29,252 +28,278 @@
             <div id="mypage-profile" class="text-center d-flex flex-column align-items-center pt-3">
     
                 <div class="mypage-profile-box">
-                    <img class="mypage-profile-img" src={% if user.profile_img %}"{{user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                    <img class="mypage-profile-img" src={% if request.user.profile_img %}"{{ request.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
                     
                 </div>
                 <div class="mypage-profile-username" style="align-items: center;">
-                    {{user.nick_name}}
-                    <p style="margin: auto; padding: 0;">@{{user.username}}</p>
+                    {{request.user.nick_name}}
+                    <p style="margin: auto; padding: 0;">@{{ request.user.username}}</p>
                 </div>
             </div>    
     
         </div>
-    
-            <div class="mypage-info">
-                <div class="mypage-content">
-                    <div class="mypage-item">
-                        <h4>나의 룸메이트</h4>
-                        <hr />
-                        {% for roommate in roommates %}
-                        <li class="mypage-roommate-list">
-                            <div class="mypage-roommate-profile">
-                                <div class="mypage-roommmate-box">
-                                    <img class="mypage-profile-img" src={% if rommmate.profile_img %} "{{rommmate.profile_img.url}}" {% else %} "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
-                                </div>
-                                <p class="mypage-roommate-list__name">{{ roommate.nick_name }}</p>
+        {% if request.user.home %}
+        <div class="mypage-info">
+            <div class="mypage-content">
+                <div class="mypage-item">
+                    <h4>나의 룸메이트</h4>
+                    <hr />
+                    {% for roommate in roommates %}
+                    <li class="mypage-roommate-list">
+                        <div class="mypage-roommate-profile">
+                            <div class="mypage-roommmate-box">
+                                <img class="mypage-profile-img" src={% if rommmate.profile_img %} "{{rommmate.profile_img.url}}" {% else %} "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
                             </div>
-    
-    
-                            <a data-bs-toggle="modal" data-bs-target="#roommateProfileModal-{{ roommate.pk }}"
-                                class="mypage-roommate-list__btn">프로필 보기</a>
-        
-                            <!-- Modal -->
-                            <div class="modal fade" id="roommateProfileModal-{{ roommate.pk }}" tabindex="-1"
-                                aria-labelledby="roommateProfileLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title myhome-roommate__modal-font" id="roommateProfileLabel">프로필 보기</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body roommate-list__modal">
-                                            <div class="roommate-list__modal-profile text-center">
-                                                <div class="mypage-roommmate-box">
-                                                    <img class="mypage-profile-img" src={% if roommate.profile_img %}"{{roommate.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
-                                                        
-                                                </div>
-                                                {% comment %}
-                                                {% if roommate.profile_img %}
-                                                <img src="{{ roommate.profile_img.url }}" />
-                                                {% else %}
-                                                <i class="fas fa-user-circle"></i>
-                                                {% endif %}
-                                                {% endcomment %}
-        
-                                                <p>{{ roommate.nick_name }}</p>
-                                            </div>
-                                            <div class="roommate-list__modal-title">
-                                                <p>칭호</p>
-                                                <hr />
-                                                {% for my_title in my_titles %}
-                                                <span class="mypage-profile-title border rounded-pill px-3 py-1 mx-1">
-                                                    🏅{{ my_title.content }}
-                                                </span>
-                                                {% endfor %}
-                                            </div>
-                                            <div class="roommate-list__modal-title">
-                                                <p>달성률</p>
-                                                <hr />
-                                                <div class="chart-container" >
-                                                    <div class="user-ratio">
-                                                        <div class="chart" data-percent="{{ user_complete_ratio }}" data-bar-color="#ff4241">
-                                                            <span class="percent" data-after="%">{{ user_complete_ratio }}%</span>
-                                                        </div>
-                                                        <p>{{ request.user.nick_name }}</p>
-                                                    </div>
-                                                    <div class="total-ratio">
-                                                        <div class="chart" data-percent="{{ total_complete_ratio }}" data-bar-color="#ff4241">
-                                                            <span class="percent" data-after="%">{{ total_complete_ratio }}%</span>
-                                                        </div>
-                                                        <p>우리집</p>
-                                                    </div>
-                                                </div>
-    
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                            <p class="mypage-roommate-list__name">{{ roommate.nick_name }}</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </div>
+
+
+                <div class="mypage-item">
+                    <h4>나의 집</h4>
+                    <hr />
+                    <div class="my-home">
+                        <p>{{ request.user.home.name }}</p>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#moveHomeModal">이사하기</button>
+                    </div>
+                </div> 
+            </div>
+            <div class="mypage-content">
+                <div class="mypage-item">
+                    <div class="title-cate">
+                        <h4>칭호관리</h4>
+                    </div>
+                    <hr />
+                    <div class="mypage-titles">
+                        {% for my_title in my_titles %}
+                        <span class="mypage-profile-title border rounded-pill px-3 py-1 mx-1">
+                            🏅{{ my_title.content }}
+                        </span>
                         {% endfor %}
                     </div>
-    
-                    {% if request.user.home %}
-                    <div class="mypage-item">
-                        <h4>나의 집</h4>
-                        <hr />
-                        <div class="my-home">
-                            
-                            <p>{{ request.user.home.name }}</p>
-    
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#moveHomeModal">이사하기</button>
-    
-                            {% if request.user.invite and request.user.invite.is_accepted is False %}
-                                <p>초대가 왔어요!</p>
-                                <p>{{request.user.invite.home.name}}</p>
-                                <a href="{% url 'setting:accept_invite' %}" class="btn btn-dark">수락하기</a>
-                            {% endif %}
-                            
-                        </div>
                     </div>
-                    {% else %}
-                    <div class="mypage-item">
-                        <h4>나의 집</h4>
-                        <hr />
-                        <div class="my-home">
-                            <p>등록된 집이 없습니다.</p>
-                            <a href="{% url 'setting:myhome_register' %}" class="btn btn-green">노크하기</a>
-                            {% if request.user.invite and request.user.invite.is_accepted is False %}
-                                <p>초대가 왔어요!</p>
-                                <p>{{request.user.invite.home.name}}</p>
-                                <a href="{% url 'setting:accept_invite' %}" class="btn btn-dark">수락하기</a>
-                            {% endif %}
-    
-    
-                        </div>
-                    </div>
-                    {% endif %}
-    
-                    
-                </div>
-                <div class="mypage-content">
-                    <div class="mypage-item">
-                        <div class="title-cate">
-                            <h4>칭호관리</h4>
-                        </div>
-                        <hr />
-                        <div class="mypage-titles">
-                            {% for my_title in my_titles %}
-                            <span class="mypage-profile-title border rounded-pill px-3 py-1 mx-1">
-                                🏅{{ my_title.content }}
-                            </span>
-                            {% endfor %}
-                        </div>
-                        </div>
-                            
-                    <div class="mypage-item" >
-                        <h4>달성률</h4>
-                        <hr />
-                        <div class="chart-container" style="display: flex; justify-content: flex-start; width: 30rem;">
-                            <div class="user-ratio">
-                                <div class="chart" data-percent="{{ user_complete_ratio }}" data-bar-color="#ff4241">
-                                    <span class="percent" data-after="%">{{ user_complete_ratio }}%</span>
-                                </div>
-                                <p>{{ request.user.nick_name }}</p>
-                            </div>
-                            <div class="total-ratio">
-                                <div class="chart" data-percent="{{ total_complete_ratio }}" data-bar-color="#ff4241">
-                                    <span class="percent" data-after="%">{{ total_complete_ratio }}%</span>
-                                </div>
-                                <p>우리집</p>
-                            </div>
-                        </div>
                         
+                <div class="mypage-item" >
+                    <h4>달성률</h4>
+                    <hr />
+                    <div class="chart-container" style="display: flex; justify-content: flex-start; width: 30rem;">
+                        <div class="user-ratio">
+                            <div class="chart" data-percent="{{ user_complete_ratio }}" data-bar-color="#ff4241">
+                                <span class="percent" data-after="%">{{ user_complete_ratio }}%</span>
+                            </div>
+                            <p>{{ request.user.nick_name }}</p>
+                        </div>
+                        <div class="total-ratio">
+                            <div class="chart" data-percent="{{ total_complete_ratio }}" data-bar-color="#ff4241">
+                                <span class="percent" data-after="%">{{ total_complete_ratio }}%</span>
+                            </div>
+                            <p>{{ request.user.home.name }}}</p>
+                        </div>
                     </div>
-                </div>
-        
-                <!--이전 집 기록 html-->
-                <div class="mypage-content">
-                    <div class="past-record">
-                        <h4>이전 집 기록</h4>
-                        <hr />
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <td>기간</td>
-                                    <td>이름</td>
-                                    
-                                </tr>
-                                {% for prehome in prehomes %}
-                                <tr>
-                                    <td>{{prehome.start_date}} ~ {{prehome.end_date}}</td>
-                                    <td>{{prehome.home.name}}</td>
-                                    <td><a class="btn btn-green" data-bs-toggle="modal"
-                                            data-bs-target="#prehomeRuleModal-{{prehome.pk}}">생활수칙
-                                            보기</a></td>
                     
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="prehomeRuleModal-{{prehome.pk}}" tabindex="-1"
-                                        aria-labelledby="prehomeRuleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog past-record__modal-rule">
-                                            <div class="modal-content">
-                                                <div class="past-record__modal-rule-header">
-                                                    <p class="modal-title" id="prehomeRuleModalLabel">{{ prehome.home.name }}</p>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>룸메이트</p>
-                                                    <hr/>
-                                                    <div class="past-record__preroommates">
-                                                    {% for preroommate in preroommates_dict|get_item:prehome.home.name %}
-                                                        <div class="past-record__preroommates-profile">
-                                                        <img class="cal-profile-img" src={% if preroommate.user.profile_img %}"{{preroommate.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
-                                                        {% comment %}
-                                                        {% if preroommate.user.profile_img %}
-                                                        <img src="{{ preroommate.user.profile_img.url }}" />
-                                                        {% else %}
-                                                        <i class="fas fa-user-circle"></i>
-                                                        {% endif %}
-                                                        {% endcomment %}
-                                                        <p>{{ preroommate.user.nick_name }}</p>
-                                                        </div>
-                                                    {% endfor %}
-                                                    </div>
-                                                    
-                                                    <p>생활수칙</p>
-                                                    <hr/>
-                                                    {% for cate in prehome_dict|get_item:prehome.home.name %}
-                                                    <div class="past-record__modal-rule-cate">{{ cate }}</div>
-                                                    {% for rule in prehome_dict|get_item:prehome.home.name|get_item:cate %}
-                                                    <div class="past-record__modal-rule-content">
-                                                        <p>{{ rule }}</p>
-                                                        <input id="past-record__checkbox-{{prehome.pk}}"
-                                                            class="past-record__checkbox past-record__checkbox-{{prehome.pk}} past-record__display-none"
-                                                            data-cate="{{cate}}" value="{{ rule }}" type="checkbox" />
-                                                    </div>
-                                                    {% endfor %}
-                                                    {% endfor %}
-                                                </div>
-                                                <div class="past-record__modal-rule-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                                    {% if request.user.home %}
-                                                    <a href="#" onclick="takePrehomeRecord({{prehome.pk}})"
-                                                        id="past-record__take-btn-{{prehome.pk}}" class="btn btn-green">생활수칙
-                                                        가져오기</a>
-                                                    <a onclick="savePrehomeRecord({{prehome.pk}})" id="past-record__save-btn-{{prehome.pk}}"
-                                                        class="btn btn-danger past-record__display-none">저장하기</a>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
     
+            <!--이전 집 기록 html-->
+            <div class="mypage-content">
+                <div class="past-record">
+                    <h4>이전 집 기록</h4>
+                    <hr />
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td>기간</td>
+                                <td>이름</td>
+                                
+                            </tr>
+                            {% for prehome in prehomes %}
+                            <tr>
+                                <td>{{prehome.start_date}} ~ {{prehome.end_date}}</td>
+                                <td>{{prehome.home.name}}</td>
+                                <td><a class="btn btn-green" data-bs-toggle="modal"
+                                        data-bs-target="#prehomeRuleModal-{{prehome.pk}}">생활수칙
+                                        보기</a></td>
+                
+                                <!-- Modal -->
+                                <div class="modal fade" id="prehomeRuleModal-{{prehome.pk}}" tabindex="-1"
+                                    aria-labelledby="prehomeRuleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog past-record__modal-rule">
+                                        <div class="modal-content">
+                                            <div class="past-record__modal-rule-header">
+                                                <p class="modal-title" id="prehomeRuleModalLabel">{{ prehome.home.name }}</p>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>룸메이트</p>
+                                                <hr/>
+                                                <div class="past-record__preroommates">
+                                                {% for preroommate in preroommates_dict|get_item:prehome.home.name %}
+                                                    <div class="past-record__preroommates-profile">
+                                                    <img class="cal-profile-img" src={% if preroommate.user.profile_img %}"{{preroommate.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                                                    {% comment %}
+                                                    {% if preroommate.user.profile_img %}
+                                                    <img src="{{ preroommate.user.profile_img.url }}" />
+                                                    {% else %}
+                                                    <i class="fas fa-user-circle"></i>
+                                                    {% endif %}
+                                                    {% endcomment %}
+                                                    <p>{{ preroommate.user.nick_name }}</p>
+                                                    </div>
+                                                {% endfor %}
+                                                </div>
+                                                
+                                                <p>생활수칙</p>
+                                                <hr/>
+                                                {% for cate in prehome_dict|get_item:prehome.home.name %}
+                                                <div class="past-record__modal-rule-cate">{{ cate }}</div>
+                                                {% for rule in prehome_dict|get_item:prehome.home.name|get_item:cate %}
+                                                <div class="past-record__modal-rule-content">
+                                                    <p>{{ rule }}</p>
+                                                    <input id="past-record__checkbox-{{prehome.pk}}"
+                                                        class="past-record__checkbox past-record__checkbox-{{prehome.pk}} past-record__display-none"
+                                                        data-cate="{{cate}}" value="{{ rule }}" type="checkbox" />
+                                                </div>
+                                                {% endfor %}
+                                                {% endfor %}
+                                            </div>
+                                            <div class="past-record__modal-rule-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                {% if request.user.home %}
+                                                <a href="#" onclick="takePrehomeRecord({{prehome.pk}})"
+                                                    id="past-record__take-btn-{{prehome.pk}}" class="btn btn-green">생활수칙
+                                                    가져오기</a>
+                                                <a onclick="savePrehomeRecord({{prehome.pk}})" id="past-record__save-btn-{{prehome.pk}}"
+                                                    class="btn btn-danger past-record__display-none">저장하기</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="mypage-info">
+            <div class="mypage-content">
+                <div class="mypage-item">
+                    <h4>나의 집</h4>
+                    <hr />
+                    <div class="my-home" style="display: flex; flex-direction: column;">
+                        <div style="display: flex; justify-content: space-between; padding-bottom: 0.5rem;">
+                            <p>등록된 집이 없습니다.</p>
+                            <a href="{% url 'setting:myhome_register' %}" class="btn btn-green">노크하기</a>
+                        </div>
+                        {% for invite in user_invites %}
+                        <div style="display: flex; justify-content: space-between; padding-bottom: 0.5rem;">
+                            <p>[ {{ invite.home.name }} ]에서 초대가 왔어요 </p>
+                            <a href="{% url 'setting:accept_invite' %}" class="btn btn-warning">수락하기</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="mypage-item">
+                    <div class="title-cate">
+                        <h4>칭호관리</h4>
+                    </div>
+                    <hr />
+                    <div class="mypage-titles">
+                        {% for my_title in my_titles %}
+                        <span class="mypage-profile-title border rounded-pill px-3 py-1 mx-1">
+                            🏅{{ my_title.content }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    </div>
+            </div>
+    
+            <!--이전 집 기록 html-->
+            <div class="mypage-content">
+                <div class="past-record">
+                    <h4>이전 집 기록</h4>
+                    <hr />
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td>기간</td>
+                                <td>이름</td>
+                                
+                            </tr>
+                            {% for prehome in prehomes %}
+                            <tr>
+                                <td>{{prehome.start_date}} ~ {{prehome.end_date}}</td>
+                                <td>{{prehome.home.name}}</td>
+                                <td><a class="btn btn-green" data-bs-toggle="modal"
+                                        data-bs-target="#prehomeRuleModal-{{prehome.pk}}">생활수칙
+                                        보기</a></td>
+                
+                                <!-- Modal -->
+                                <div class="modal fade" id="prehomeRuleModal-{{prehome.pk}}" tabindex="-1"
+                                    aria-labelledby="prehomeRuleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog past-record__modal-rule">
+                                        <div class="modal-content">
+                                            <div class="past-record__modal-rule-header">
+                                                <p class="modal-title" id="prehomeRuleModalLabel">{{ prehome.home.name }}</p>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>룸메이트</p>
+                                                <hr/>
+                                                <div class="past-record__preroommates">
+                                                {% for preroommate in preroommates_dict|get_item:prehome.home.name %}
+                                                    <div class="past-record__preroommates-profile">
+                                                    <img class="cal-profile-img" src={% if preroommate.user.profile_img %}"{{preroommate.user.profile_img.url}}"{% else %}"https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"{% endif %}>
+                                                    {% comment %}
+                                                    {% if preroommate.user.profile_img %}
+                                                    <img src="{{ preroommate.user.profile_img.url }}" />
+                                                    {% else %}
+                                                    <i class="fas fa-user-circle"></i>
+                                                    {% endif %}
+                                                    {% endcomment %}
+                                                    <p>{{ preroommate.user.nick_name }}</p>
+                                                    </div>
+                                                {% endfor %}
+                                                </div>
+                                                
+                                                <p>생활수칙</p>
+                                                <hr/>
+                                                {% for cate in prehome_dict|get_item:prehome.home.name %}
+                                                <div class="past-record__modal-rule-cate">{{ cate }}</div>
+                                                {% for rule in prehome_dict|get_item:prehome.home.name|get_item:cate %}
+                                                <div class="past-record__modal-rule-content">
+                                                    <p>{{ rule }}</p>
+                                                    <input id="past-record__checkbox-{{prehome.pk}}"
+                                                        class="past-record__checkbox past-record__checkbox-{{prehome.pk}} past-record__display-none"
+                                                        data-cate="{{cate}}" value="{{ rule }}" type="checkbox" />
+                                                </div>
+                                                {% endfor %}
+                                                {% endfor %}
+                                            </div>
+                                            <div class="past-record__modal-rule-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                {% if request.user.home %}
+                                                <a href="#" onclick="takePrehomeRecord({{prehome.pk}})"
+                                                    id="past-record__take-btn-{{prehome.pk}}" class="btn btn-green">생활수칙
+                                                    가져오기</a>
+                                                <a onclick="savePrehomeRecord({{prehome.pk}})" id="past-record__save-btn-{{prehome.pk}}"
+                                                    class="btn btn-danger past-record__display-none">저장하기</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     
         <!-- Modal -->
         <div class="modal fade" id="moveHomeModal" tabindex="-1" aria-labelledby="moveHomeModalLabel" aria-hidden="true">

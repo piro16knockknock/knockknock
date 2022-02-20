@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.dispatch import receiver
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import HomeForm, UtilityForm
 from login.models import *
@@ -398,16 +399,18 @@ def search_user(request):
 @login_required
 def accept_invite(request):
     user = request.user
-    user.invite.is_accepted = True
-    user.invite.save()
+    invite = get_object_or_404(Invite, receive_user = user)
+    invite.is_accepted = True
+    invite.save()
 
-    live_in = LiveIn.objects.create(user=user, home=user.invite.home)
+    live_in = LiveIn.objects.create(user=user, home=invite.home)
     live_in.save()
     
-    user.home = user.invite.home
+    user.home = invite.home
     user.save()
     
     #집이 생겼으므로 노크했던 건 삭제
     Knock.objects.filter(user=request.user).delete()
-    
+    Invite.objects.filter(receive_user=request.user).delete()
+
     return redirect('login:intro')

@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from multiprocessing import context
+from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from datetime import datetime
@@ -124,10 +125,11 @@ def leave_home(request):
     #end_date 저장
     current_home = current_user.home
     LiveIn.objects.filter(home=current_home, user=current_user).update(end_date=timezone.now())
+    pre_live_in = LiveIn.objects.filter(home=current_home, user=current_user).order_by('-id')[0]
+    print("pre_live_in: ",pre_live_in)
     #이사가기를 누른 순간의 룸메이트들 저장
     for roommates in User.objects.filter(home=current_home):
-        PreRoommates.objects.get_or_create(live_in=get_object_or_404(LiveIn, home=current_home),
-                                    user = roommates)
+        PreRoommates.objects.get_or_create(live_in=pre_live_in, user=roommates)
     
     #정보 초기화
     current_user.home = None
@@ -140,74 +142,62 @@ def leave_home(request):
 #mypage
 @login_required
 def mypage(request):
+    # home 있을 때 roomates, user_complete_ratio, total_compelte_ratio
+    # prehomes, prehome_dict, prerommates_dict,  my_titles, invites
+
     prehomes, prehome_dict, preroommates_dict = prehome_list(request)
-
     notice_cnt, notices = nav_notice(request)
-
-    ctx = {'prehomes' : prehomes,
-           'prehome_dict' : prehome_dict,
-           'preroommates_dict': preroommates_dict, 
-            'notice_cnt' : notice_cnt,
-            'notices' : notices,
-    }
-    return render(request, 'login/mypage.html', ctx)
-
 
     current_user = request.user
 
-    roommates = User.objects.filter(home=request.user.home)
-    roommates = roommates.exclude(nick_name=request.user.nick_name)
-    invites = Invite.objects.filter(home=request.user.home)
-    
-    invite_users = []
-    for invite in invites:
-        if invite.is_accepted is False:
-            invite_users.append(User.objects.get(nick_name=invite.receive_user.nick_name))
-            
-    roommate_titles = {}
-
     my_titles = {}
     my_titles = Title.objects.filter(user=current_user)
-    
-    roommate_ratio = {}
-    today = datetime.now()
-    #전체 달성률
-    today_string = f'{today.year}-{today.month}-{today.day}'
-    total_todos = Todo.objects.filter(home = request.user.home, date = today_string)
-    complete_total_todos = total_todos.filter(is_done=True)
-    if total_todos.count() == 0:
-        total_compelete_ratio = 0
-    else:
-        total_compelete_ratio = complete_total_todos.count() / total_todos.count()
-        
-    for roommate in roommates:
-        roommate_titles[current_user.nick_name] = Title.objects.filter(user=current_user)
-    
-    
 
-        #룸메이트 달성률
-        user_todos = total_todos.filter(user=roommate)
-        complete_user_todos = total_todos.filter(is_done = True, user=roommate)
+    if current_user.home:
+        roommates = User.objects.filter(home=request.user.home)
+        roommates = roommates.exclude(nick_name=request.user.nick_name)
+
+        today = datetime.now()
+        #전체 달성률
+        today_string = f'{today.year}-{today.month}-{today.day}'
+        total_todos = Todo.objects.filter(home = request.user.home, date = today_string)
+        complete_total_todos = total_todos.filter(is_done=True)
+        if total_todos.count() == 0:
+            total_compelete_ratio = 0
+        else:
+            total_compelete_ratio = complete_total_todos.count() / total_todos.count()
+        
+        #유저 달성율
+        user_todos = total_todos.filter(user=current_user)
+        complete_user_todos = total_todos.filter(is_done = True, user=current_user)
         if user_todos.count() == 0:
             user_compelete_ratio = 0
         else:
             user_compelete_ratio = complete_user_todos.count() / user_todos.count()
-            
-        roommate_ratio[roommate.nick_name] = int(user_compelete_ratio * 100)
-    
-    
+        
+        #유저 초대
+        user_invites = None
+
+    else:
+        roommates = None
+        total_compelete_ratio = 0
+        user_compelete_ratio = 0
+        user_invites = Invite.objects.filter(receive_user = current_user)
+        print(user_invites.count)
+        
     ctx = {
         'roommates' : roommates,
-        'invite_users' : invite_users,
-        'roommate_titles' : roommate_titles,
-        'roommate_ratio' : roommate_ratio,
         'user_complete_ratio' : int(user_compelete_ratio * 100),
         'total_complete_ratio' : int(total_compelete_ratio * 100),
         'prehomes' : prehomes,
         'prehome_dict' : prehome_dict,
         'preroommates_dict': preroommates_dict,
         'my_titles' : my_titles,
+        'notice_cnt' : notice_cnt,
+        'notices' : notices,
+        'user_invites' : user_invites,
     }
+
     return render(request, 'login/mypage.html', context=ctx)
 
 
