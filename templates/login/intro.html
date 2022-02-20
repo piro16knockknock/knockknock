@@ -4,7 +4,7 @@
 {% block content %}
  <!-- user가 로그인 했을 때 && 유저가 집 없는 경우 OR 집 있는 경우-->
 {% if request.user.is_authenticated %} 
-<div id="intro-main                                 " class="intro-main" style="background-color: #fcda91; height: 100vh;">
+<div id="intro-main" class="intro-main" style="background-color: #fcda91; height: 100vh;">
    <div id="intro-main-cnt" class="intro-main-cnt position-relative cnt-padding">
         {% if request.user.home == None %} <!-- 유저가 집이 없는 경우 -->        
             <div class="mt-5">
