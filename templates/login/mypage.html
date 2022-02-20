@@ -37,10 +37,7 @@
                     <p style="margin: auto; padding: 0;">@{{ request.user.username}}</p>
                 </div>
                 <a href="{% url 'login:user_update' %}" class="edit_info"><button>회원정보 수정</button></a>
-                <!-- 이거 코멘트 지우고 회원탈퇴 연결해주세요 -->
-                {% comment %}
                 <a href="{% url 'login:profile_delete' %}" class="edit_info"><button>회원탈퇴</button></a>
-                {% endcomment%}
             </div>    
     
         </div>
