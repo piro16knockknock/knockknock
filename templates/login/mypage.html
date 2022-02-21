@@ -88,13 +88,13 @@
                     <h4>달성률</h4>
                     <hr />
                     <div class="chart-container" style="display: flex; justify-content: flex-start; width: 30rem;">
-                        <div class="user-ratio">
+                        <div class="user-ratio px-3">
                             <div class="chart" data-percent="{{ user_complete_ratio }}" data-bar-color="#ff4241">
                                 <span class="percent" data-after="%">{{ user_complete_ratio }}%</span>
                             </div>
                             <p>{{ request.user.nick_name }}</p>
                         </div>
-                        <div class="total-ratio">
+                        <div class="total-ratio px-3">
                             <div class="chart" data-percent="{{ total_complete_ratio }}" data-bar-color="#ff4241">
                                 <span class="percent" data-after="%">{{ total_complete_ratio }}%</span>
                             </div>
