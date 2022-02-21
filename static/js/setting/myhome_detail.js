@@ -212,10 +212,10 @@ const searchUserListHandleResponse = (user_list) => {
         const li = document.createElement('div');
         li.classList.add('myhome-roommate__modal-user-list');
 
-        if (user_list[i]['profile'] == "") {
-
+        if (user_list[i]['profile'] == "") { //프로필이 없으면
+            //원래는 <i class="fas fa-user-circle"></i>였지만
             li.innerHTML = `<input class="form-check-input" type="checkbox" value="${user_list[i]['nickname']}" onclick='getCheckboxValue(event)' id="flexCheckDefault">
-                        <i class="fas fa-user-circle"></i>
+                        <img class="cal-profile-img" src="https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=301&q=80"/>
                         <p>${user_list[i]['nickname']}</p>`;
 
         } else {
