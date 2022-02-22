@@ -93,7 +93,7 @@ const onClickKnockHome = async() => {
             'homename': input.value
         })
     });
-    window.location.href = "/";
+    window.location.href = "/setting/myhome/register/";
 }
 
 
