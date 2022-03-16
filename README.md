@@ -1,5 +1,6 @@
 ![image](https://user-images.githubusercontent.com/71166763/158158860-7bcc7e89-a655-4745-846b-03dfe905ae64.png)
 # 🚪 Knock/Knock
+
 ```“...knock knock!”```  
 한 지붕 아래 함께 살아가는 사람들과의 안정적인 거주 생활을 도와주기 위한 생활 관리 서비스.  
   
@@ -64,7 +65,7 @@ COVID-19의 장기화와 함께 동거인과의 시간은 점점 늘어나고 �
     
 ---
 ## 🏡 사이트 소개
-
+![노크노크](https://user-images.githubusercontent.com/71166763/158522315-9765e9fa-5a15-4de9-b992-9dcd2d193b13.png)
 ### 1. 🏠 Main Page
 서비스 소개 페이지. 오늘의 할 일을 바로 확인할 수 있다.
 ![슬라이드2](https://user-images.githubusercontent.com/71166763/158203563-13df0aa9-ecde-4e86-8acf-6509d372c9bf.PNG)
