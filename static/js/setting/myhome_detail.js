@@ -182,10 +182,21 @@ const saveHomeHandleResponse = (new_home_name) => {
 
 /*초대 검색창 - ajax*/
 const search_input = document.querySelector('#myhome-roommate-invite__input');
-search_input.addEventListener("keyup", (e) => {
-    if (search_input.value == "") return;
-    onSearchUserList(search_input.value);
-});
+(function() {
+    let timer;
+    search_input.addEventListener("keyup", (e) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+        
+            if (search_input.value == "") return;
+            console.log(count);
+            count++;
+            onSearchUserList(search_input.value);
+        
+    }, 200);
+    });
+})();
+    
 
 const onSearchUserList = async (value) => {
     const url = "../../myhome/search_user/";
